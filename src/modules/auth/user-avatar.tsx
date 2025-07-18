@@ -33,10 +33,10 @@ const UserAvatar = () => {
           className="relative flex h-10 w-10 items-center justify-center rounded-full"
         >
           <Avatar>
-            <AvatarImage src={user?.Picture} alt={`@${user?.FirstName}`} />
+            <AvatarImage src={user?.picture} alt={`@${user?.firstname}`} />
             <AvatarFallback className="text-black">
-              {user?.FirstName[0]}
-              {user?.LastName[0]}
+              {user?.firstname[0]}
+              {user?.lastname[0]}
             </AvatarFallback>
           </Avatar>
         </Button>
@@ -44,12 +44,12 @@ const UserAvatar = () => {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            {user?.FirstName && user?.LastName && (
+            {user?.firstname && user?.lastname && (
               <p className="text-sm font-medium leading-none">
-                {user?.FirstName} {user?.LastName[0]}.
+                {user?.firstname} {user?.lastname[0]}.
               </p>
             )}
-            <p className="text-xs leading-none text-muted-foreground">{user?.Email}</p>
+            <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
