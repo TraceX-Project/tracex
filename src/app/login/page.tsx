@@ -1,7 +1,9 @@
+import GoogleLoginBtn from '@/modules/auth/google-login-btn';
+
 export default function LoginPage() {
   return (
     <div>
-      <h1>Login Page</h1>
+      <GoogleLoginBtn />
     </div>
   );
 }

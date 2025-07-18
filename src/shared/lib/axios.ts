@@ -1,7 +1,8 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance } from 'axios';
+import { ENV } from '../config/env';
 
 const instance: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+  baseURL: ENV.NEXT_PUBLIC_API_URL,
 });
 
 export default instance;
