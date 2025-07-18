@@ -3,8 +3,7 @@ import { refresh } from '@/modules/auth/_service/auth.service';
 
 import { PATHS } from '@/shared/config/paths';
 import { COOKIE_NAME } from './shared/_constants/cookie';
-import { isTokenExpired, setupTokenCookies } from './actions';
-import { ENV } from './shared/config/env';
+import { isTokenExpired, setTokenCookies } from './shared/utils/token';
 
 const publicRoutes = [PATHS.auth.callback, PATHS.login];
 
@@ -40,25 +39,7 @@ export default async function middleware(request: NextRequest) {
 
       const response = NextResponse.next();
 
-      response.cookies.set({
-        httpOnly: true,
-        path: '/',
-        sameSite: 'strict',
-        maxAge: 60 * 15,
-        name: COOKIE_NAME.accessToken,
-        value: newTokens.accessToken,
-        secure: ENV.NODE_ENV === 'production',
-      });
-
-      response.cookies.set({
-        httpOnly: true,
-        path: '/',
-        sameSite: 'strict',
-        maxAge: 60 * 60 * 24 * 7,
-        name: COOKIE_NAME.refreshToken,
-        value: newTokens.refreshToken,
-        secure: ENV.NODE_ENV === 'production',
-      });
+      setTokenCookies(response, newTokens);
 
       return response;
     } catch (error) {
