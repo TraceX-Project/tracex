@@ -1,10 +1,6 @@
-import { env } from "@/shared/config/env";
+import { redirect } from 'next/navigation';
+import { PATHS } from '@/shared/config/paths';
 
-export default function HomePage() {
-  return (
-    <div>
-      <h1>Hello WOrld</h1>
-      <p>{env.NEXT_PUBLIC_API_URL}</p>
-    </div>
-  );
+export default async function HomePage() {
+  redirect(PATHS.project);
 }
