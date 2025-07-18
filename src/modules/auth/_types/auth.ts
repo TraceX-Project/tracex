@@ -7,7 +7,7 @@ export type GoogleLoginRequest = {
   state: string;
 };
 
-export type TokenResponse = {
+export type Token = {
   accessToken: string;
   refreshToken: string;
 };

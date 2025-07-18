@@ -1,3 +1,9 @@
+import UserAvatar from '@/modules/auth/user-avatar';
+
 export default function ProjectPage() {
-  return <div>project</div>;
+  return (
+    <div>
+      <UserAvatar />
+    </div>
+  );
 }
