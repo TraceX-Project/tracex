@@ -1,11 +1,11 @@
 export type User = {
-  ID: string;
-  FirstName: string;
-  LastName: string;
-  Email: string;
-  Role: string;
-  ProviderID: string;
-  Picture: string;
-  CreatedAt: string;
-  UpdatedAt: string;
+  id: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  role: string;
+  providerId: string;
+  picture: string;
+  createdAt: string;
+  updatedAt: string;
 };
