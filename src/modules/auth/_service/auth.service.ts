@@ -4,7 +4,7 @@ import {
   GetGoogleLoginUrlResponse,
   GoogleLoginRequest,
   RefreshTokenRequest,
-  TokenResponse,
+  Token,
 } from '../_types/auth';
 
 export const getGoogleLoginUrl = async () => {
@@ -14,13 +14,13 @@ export const getGoogleLoginUrl = async () => {
 };
 
 export const googleLogin = async (data: GoogleLoginRequest) => {
-  const response = await axios.post<TokenResponse>(ENDPOINTS.auth.googleLogin, data);
+  const response = await axios.post<Token>(ENDPOINTS.auth.googleLogin, data);
 
   return response.data;
 };
 
 export const refresh = async (data: RefreshTokenRequest) => {
-  const response = await axios.post<TokenResponse>(ENDPOINTS.auth.refresh, data);
+  const response = await axios.post<Token>(ENDPOINTS.auth.refresh, data);
 
   return response.data;
 };

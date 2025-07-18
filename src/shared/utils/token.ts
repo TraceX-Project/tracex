@@ -2,9 +2,9 @@ import { NextResponse } from 'next/server';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { ENV } from '@/shared/config/env';
 import { COOKIE_NAME, TOKEN_MAXAGE } from '@/shared/_constants/cookie';
-import { TokenResponse } from '@/modules/auth/_types/auth';
+import { Token } from '@/modules/auth/_types/auth';
 
-export async function setTokenCookies(response: NextResponse, tokens: TokenResponse) {
+export async function setTokenCookies(response: NextResponse, tokens: Token) {
   response.cookies.set({
     name: COOKIE_NAME.accessToken,
     value: tokens.accessToken,
