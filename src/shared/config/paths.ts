@@ -4,6 +4,8 @@ const ROOTS = {
 
 export const PATHS = {
   root: '/',
+  terms: '/terms',
+  privacy: '/privacy',
   login: '/login',
   project: '/project',
   auth: {
