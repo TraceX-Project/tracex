@@ -2,6 +2,7 @@
 
 import { cookies } from 'next/headers';
 import { ENV } from '../config/env';
+import { COOKIE_NAME } from '../_constants/cookie';
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -13,7 +14,7 @@ interface RequestOptions {
 
 export async function request<T>({ method, path, body }: RequestOptions): Promise<T> {
   const cookieStore = await cookies();
-  const accessToken = cookieStore.get('accessToken')?.value;
+  const accessToken = cookieStore.get(COOKIE_NAME.accessToken)?.value;
 
   const headers: HeadersInit = {
     'Content-Type': 'application/json',

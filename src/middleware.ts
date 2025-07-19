@@ -5,7 +5,7 @@ import { PATHS } from '@/shared/config/paths';
 import { COOKIE_NAME } from './shared/_constants/cookie';
 import { isTokenExpired, setTokenCookies } from './shared/utils/token';
 
-const publicRoutes = [PATHS.auth.callback, PATHS.login];
+const publicRoutes = [PATHS.auth.callback, PATHS.login, PATHS.terms, PATHS.privacy];
 
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -13,8 +13,14 @@ export default async function middleware(request: NextRequest) {
   const accessToken = request.cookies.get(COOKIE_NAME.accessToken)?.value;
   const refreshToken = request.cookies.get(COOKIE_NAME.refreshToken)?.value;
 
+  console.log(`Middleware triggered for ${pathname}`);
+
   if (pathname === PATHS.root) {
     return NextResponse.redirect(new URL(PATHS.project, request.url));
+  }
+
+  if (pathname === PATHS.login && accessToken) {
+    return NextResponse.redirect(new URL(PATHS.root, request.url));
   }
 
   const isPublicRoute = publicRoutes.some(
@@ -24,9 +30,7 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (pathname === PATHS.login && accessToken) {
-    return NextResponse.redirect(new URL(PATHS.root, request.url));
-  }
+  console.log(`Access Token: ${accessToken}`);
 
   if (!accessToken && !refreshToken) {
     return NextResponse.redirect(new URL(PATHS.login, request.url));
