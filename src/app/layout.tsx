@@ -1,18 +1,18 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { cn } from "@/shared/lib/cn";
-import { SITE_CONFIG } from "@/shared/config/site";
-import { ReactQueryProvider } from "@/shared/react-query/react-query-provider";
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
+import { cn } from '@/shared/lib/cn';
+import { SITE_CONFIG } from '@/shared/config/site';
+import { ReactQueryProvider } from '@/shared/react-query/react-query-provider';
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
@@ -31,10 +31,10 @@ type RootLayoutProps = {
 export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
     <html lang="en">
-      <body
-        className={cn(geistSans.variable, geistMono.variable, "antialiased")}
-      >
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+      <body className={cn(geistSans.variable, geistMono.variable, 'antialiased')}>
+        <ReactQueryProvider>
+          <main>{children}</main>
+        </ReactQueryProvider>
       </body>
     </html>
   );

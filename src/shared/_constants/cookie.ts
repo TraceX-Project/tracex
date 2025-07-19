@@ -1,6 +1,7 @@
 export const COOKIE_NAME = {
-  accessToken: 'accessToken',
-  refreshToken: 'refreshToken',
+  accessToken: 'access_token',
+  refreshToken: 'refresh_token',
+  sidebarState: 'sidebar_state',
 };
 
 export const TOKEN_MAXAGE = {
