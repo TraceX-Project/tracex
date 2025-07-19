@@ -19,6 +19,10 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(PATHS.project, request.url));
   }
 
+  if (pathname === PATHS.login && accessToken) {
+    return NextResponse.redirect(new URL(PATHS.root, request.url));
+  }
+
   const isPublicRoute = publicRoutes.some(
     (path) => pathname === path || pathname.startsWith(`${path}/`)
   );
@@ -27,10 +31,6 @@ export default async function middleware(request: NextRequest) {
   }
 
   console.log(`Access Token: ${accessToken}`);
-
-  if (pathname === PATHS.login && accessToken) {
-    return NextResponse.redirect(new URL(PATHS.root, request.url));
-  }
 
   if (!accessToken && !refreshToken) {
     return NextResponse.redirect(new URL(PATHS.login, request.url));
