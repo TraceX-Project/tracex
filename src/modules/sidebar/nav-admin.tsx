@@ -18,7 +18,7 @@ const NavAdmin = () => {
         <SidebarMenu>
           {navAdmin.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild>
+              <SidebarMenuButton tooltip={item.tooltip} asChild>
                 <Link href={item.url}>
                   <item.icon />
                   <span>{item.title}</span>
