@@ -1,17 +1,17 @@
 'use client';
 
 import { Button } from '@/shared/components/ui/button';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useGetGoogleLoginUrl } from './_hooks/use-get-google-login-url';
 
 const GoogleLoginBtn = () => {
   const { mutateAsync: getGoogleLoginUrl } = useGetGoogleLoginUrl();
 
-  const handleGoogleLogin = async () => {
+  const handleGoogleLogin = useCallback(async () => {
     const { url } = await getGoogleLoginUrl();
 
     window.location.replace(url);
-  };
+  }, [getGoogleLoginUrl]);
 
   return (
     <Button onClick={handleGoogleLogin} variant="outline" className="w-full">
