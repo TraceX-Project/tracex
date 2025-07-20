@@ -1,38 +1,34 @@
+'use client';
+
 import {
   Sidebar,
   SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
+  SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from '@/shared/components/ui/sidebar';
-import { items } from './_config/config';
+import NavUser from './nav-user';
+import { useGetProfile } from '../auth/_hooks/use-get-profile';
+import NavHeader from './nav-header';
+import NavMain from './nav-main';
+import NavAdmin from './nav-admin';
 
 const AppSidebar = () => {
+  const { data: user } = useGetProfile();
+
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
+      <SidebarHeader>
+        <NavHeader />
+      </SidebarHeader>
+
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        <NavMain />
+        <NavAdmin />
       </SidebarContent>
+
+      <SidebarFooter>
+        <NavUser user={user!} />
+      </SidebarFooter>
     </Sidebar>
   );
 };

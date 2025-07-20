@@ -13,10 +13,8 @@ export default async function middleware(request: NextRequest) {
   const accessToken = request.cookies.get(COOKIE_NAME.accessToken)?.value;
   const refreshToken = request.cookies.get(COOKIE_NAME.refreshToken)?.value;
 
-  console.log(`Middleware triggered for ${pathname}`);
-
   if (pathname === PATHS.root) {
-    return NextResponse.redirect(new URL(PATHS.project, request.url));
+    return NextResponse.redirect(new URL(PATHS.projects, request.url));
   }
 
   if (pathname === PATHS.login && accessToken) {
@@ -26,11 +24,10 @@ export default async function middleware(request: NextRequest) {
   const isPublicRoute = publicRoutes.some(
     (path) => pathname === path || pathname.startsWith(`${path}/`)
   );
+
   if (isPublicRoute) {
     return NextResponse.next();
   }
-
-  console.log(`Access Token: ${accessToken}`);
 
   if (!accessToken && !refreshToken) {
     return NextResponse.redirect(new URL(PATHS.login, request.url));
