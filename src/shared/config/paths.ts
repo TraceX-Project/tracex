@@ -1,5 +1,6 @@
 const ROOTS = {
   auth: '/auth',
+  admin: '/admin',
 };
 
 export const PATHS = {
@@ -7,8 +8,12 @@ export const PATHS = {
   terms: '/terms',
   privacy: '/privacy',
   login: '/login',
-  project: '/project',
+  projects: '/projects',
   auth: {
     callback: `${ROOTS.auth}/callback`,
+  },
+  admin: {
+    users: `${ROOTS.admin}/users`,
+    devices: `${ROOTS.admin}/devices`,
   },
 };
