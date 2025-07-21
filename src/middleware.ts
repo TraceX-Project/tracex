@@ -43,7 +43,7 @@ export default async function middleware(request: NextRequest) {
       setTokenCookies(response, newTokens);
 
       return response;
-    } catch (error) {
+    } catch {
       return NextResponse.redirect(new URL(PATHS.login, request.url));
     }
   }

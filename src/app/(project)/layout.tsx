@@ -1,4 +1,4 @@
-import { SidebarProvider, SidebarTrigger } from '@/shared/components/ui/sidebar';
+import { SidebarProvider } from '@/shared/components/ui/sidebar';
 import AppSidebar from '@/modules/sidebar/app-sidebar';
 import { cookies } from 'next/headers';
 
@@ -13,10 +13,7 @@ export default async function ProjectLayout({ children }: Props) {
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
       <AppSidebar />
-      <div>
-        <SidebarTrigger />
-        {children}
-      </div>
+      <div>{children}</div>
     </SidebarProvider>
   );
 }

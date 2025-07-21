@@ -1,4 +1,5 @@
-import { Button } from '@/shared/components/ui/button';
+'use client';
+
 import {
   Card,
   CardContent,
@@ -6,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card';
-import { Input } from '@/shared/components/ui/input';
 import GoogleLoginBtn from './google-login-btn';
 
 const LoginCard = () => {
