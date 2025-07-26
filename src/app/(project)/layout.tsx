@@ -13,7 +13,7 @@ export default async function ProjectLayout({ children }: Props) {
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
       <AppSidebar />
-      <div>{children}</div>
+      <div className="w-full">{children}</div>
     </SidebarProvider>
   );
 }
