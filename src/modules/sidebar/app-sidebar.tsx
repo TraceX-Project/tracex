@@ -12,11 +12,10 @@ import NavHeader from './nav-header';
 import NavMain from './nav-main';
 import NavAdmin from './nav-admin';
 import { User } from '../auth/_types/user';
+import { usePathname } from 'next/navigation';
 
 const AppSidebar = () => {
   const { data: user } = useGetProfile();
-
-  console.log('user', user);
 
   return (
     <Sidebar collapsible="icon">

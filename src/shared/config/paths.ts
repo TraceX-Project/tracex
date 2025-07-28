@@ -10,7 +10,7 @@ export const PATHS = {
   privacy: '/privacy',
   login: '/login',
   projects: {
-    root: `${ROOTS.projects}/`,
+    root: `${ROOTS.projects}`,
     detail: (id: string) => `${ROOTS.projects}/${id}`,
   },
   auth: {
