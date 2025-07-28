@@ -5,7 +5,10 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   transpilePackages: ['@t3-oss/env-nextjs', '@t3-oss/env-core'],
   images: {
-    remotePatterns: [new URL('https://media.router-switch.com/**')],
+    remotePatterns: [
+      new URL('https://media.router-switch.com/**'),
+      new URL('https://www.cisco.com/**'),
+    ],
   },
 };
 
