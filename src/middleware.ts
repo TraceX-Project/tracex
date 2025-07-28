@@ -5,7 +5,13 @@ import { PATHS } from '@/shared/config/paths';
 import { COOKIE_NAME } from './shared/_constants/cookie';
 import { isTokenExpired, setTokenCookies } from './shared/utils/token';
 
-const publicRoutes = [PATHS.auth.callback, PATHS.login, PATHS.terms, PATHS.privacy];
+const publicRoutes = [
+  PATHS.auth.callback,
+  PATHS.login,
+  PATHS.terms,
+  PATHS.privacy,
+  PATHS.admin.devices,
+];
 
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -14,7 +20,7 @@ export default async function middleware(request: NextRequest) {
   const refreshToken = request.cookies.get(COOKIE_NAME.refreshToken)?.value;
 
   if (pathname === PATHS.root) {
-    return NextResponse.redirect(new URL(PATHS.projects, request.url));
+    return NextResponse.redirect(new URL(PATHS.projects.root, request.url));
   }
 
   if (pathname === PATHS.login && accessToken) {
@@ -43,7 +49,7 @@ export default async function middleware(request: NextRequest) {
       setTokenCookies(response, newTokens);
 
       return response;
-    } catch (error) {
+    } catch {
       return NextResponse.redirect(new URL(PATHS.login, request.url));
     }
   }

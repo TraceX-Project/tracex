@@ -9,7 +9,7 @@ type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 interface RequestOptions {
   method: HttpMethod;
   path: string;
-  body?: any;
+  body?: unknown;
 }
 
 export async function request<T>({ method, path, body }: RequestOptions): Promise<T> {
@@ -31,5 +31,7 @@ export async function request<T>({ method, path, body }: RequestOptions): Promis
     throw new Error(`API request failed with status ${response.status}`);
   }
 
-  return response.json();
+  const { data } = await response.json();
+
+  return data;
 }

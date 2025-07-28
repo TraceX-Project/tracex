@@ -1,4 +1,4 @@
-import React from 'react';
+'use client';
 
 import {
   SidebarGroup,
@@ -8,28 +8,31 @@ import {
   SidebarMenuItem,
 } from '@/shared/components/ui/sidebar';
 import { navMain } from './_config/config';
-import { FilePlus } from 'lucide-react';
 import Link from 'next/link';
+import CreateProjectModal from '../projects/create-project-modal';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/shared/lib/cn';
 
 const NavMain = () => {
+  const pathname = usePathname();
+
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              tooltip="Create a new project"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
-            >
-              <FilePlus className="size-4" />
-              <span>New Project</span>
-            </SidebarMenuButton>
+            <CreateProjectModal />
           </SidebarMenuItem>
         </SidebarMenu>
+
         <SidebarMenu>
           {navMain.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.tooltip} asChild>
+              <SidebarMenuButton
+                tooltip={item.tooltip}
+                className={cn(item.url === pathname && 'bg-muted text-primary')}
+                asChild
+              >
                 <Link href={item.url}>
                   <item.icon />
                   <span>{item.title}</span>

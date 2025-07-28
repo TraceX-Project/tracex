@@ -1,3 +1,5 @@
+'use client';
+
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -9,8 +11,12 @@ import {
 import React from 'react';
 import { navAdmin } from './_config/config';
 import Link from 'next/link';
+import { cn } from '@/shared/lib/cn';
+import { usePathname } from 'next/navigation';
 
 const NavAdmin = () => {
+  const pathname = usePathname();
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Admin</SidebarGroupLabel>
@@ -18,7 +24,11 @@ const NavAdmin = () => {
         <SidebarMenu>
           {navAdmin.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.tooltip} asChild>
+              <SidebarMenuButton
+                tooltip={item.tooltip}
+                className={cn(item.url === pathname && 'bg-muted text-primary')}
+                asChild
+              >
                 <Link href={item.url}>
                   <item.icon />
                   <span>{item.title}</span>

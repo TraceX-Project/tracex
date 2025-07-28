@@ -4,7 +4,7 @@ import { Folder, Users, Monitor } from 'lucide-react';
 export const navMain = [
   {
     title: 'My Projects',
-    url: PATHS.projects,
+    url: PATHS.projects.root,
     icon: Folder,
     tooltip: 'View your projects',
   },
