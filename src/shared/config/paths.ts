@@ -1,6 +1,7 @@
 const ROOTS = {
   auth: '/auth',
   admin: '/admin',
+  projects: '/projects',
 };
 
 export const PATHS = {
@@ -8,7 +9,10 @@ export const PATHS = {
   terms: '/terms',
   privacy: '/privacy',
   login: '/login',
-  projects: '/projects',
+  projects: {
+    root: `${ROOTS.projects}/`,
+    detail: (id: string) => `${ROOTS.projects}/${id}`,
+  },
   auth: {
     callback: `${ROOTS.auth}/callback`,
   },

@@ -20,7 +20,7 @@ export default async function middleware(request: NextRequest) {
   const refreshToken = request.cookies.get(COOKIE_NAME.refreshToken)?.value;
 
   if (pathname === PATHS.root) {
-    return NextResponse.redirect(new URL(PATHS.projects, request.url));
+    return NextResponse.redirect(new URL(PATHS.projects.root, request.url));
   }
 
   if (pathname === PATHS.login && accessToken) {
