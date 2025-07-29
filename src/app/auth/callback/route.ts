@@ -10,7 +10,7 @@ export async function GET(request: Request) {
   const state = searchParams.get('state');
 
   if (!code || !state) {
-    console.log('Request URL', request.url);
+    console.log('Request URL', request);
     return NextResponse.redirect(new URL(PATHS.login, request.url));
   }
 
