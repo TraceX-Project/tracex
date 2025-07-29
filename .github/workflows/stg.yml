@@ -17,6 +17,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Create .env file
+        run: |
+          echo "NODE_ENV=${NODE_ENV}" >> .env
+          echo "NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}" >> .env
+
       - name: Deploy docker-compose stack
         run: docker compose up -d --build --force-recreate
 
