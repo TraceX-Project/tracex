@@ -15,15 +15,24 @@ const publicRoutes = [
 
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-
+  const forwardedHost = request.headers.get('x-forwarded-host');
+  const forwardedProto = request.headers.get('x-forwarded-proto') || 'https';
   const accessToken = request.cookies.get(COOKIE_NAME.accessToken)?.value;
   const refreshToken = request.cookies.get(COOKIE_NAME.refreshToken)?.value;
 
   if (pathname === PATHS.root) {
+    if (forwardedHost) {
+      return NextResponse.redirect(`${forwardedProto}://${forwardedHost}${PATHS.login}`);
+    }
+
     return NextResponse.redirect(new URL(PATHS.projects.root, request.url));
   }
 
   if (pathname === PATHS.login && accessToken) {
+    if (forwardedHost) {
+      return NextResponse.redirect(`${forwardedProto}://${forwardedHost}${PATHS.login}`);
+    }
+
     return NextResponse.redirect(new URL(PATHS.root, request.url));
   }
 
@@ -36,6 +45,10 @@ export default async function middleware(request: NextRequest) {
   }
 
   if (!accessToken && !refreshToken) {
+    if (forwardedHost) {
+      return NextResponse.redirect(`${forwardedProto}://${forwardedHost}${PATHS.login}`);
+    }
+
     return NextResponse.redirect(new URL(PATHS.login, request.url));
   }
 
@@ -50,6 +63,10 @@ export default async function middleware(request: NextRequest) {
 
       return response;
     } catch {
+      if (forwardedHost) {
+      return NextResponse.redirect(`${forwardedProto}://${forwardedHost}${PATHS.login}`);
+    }
+    
       return NextResponse.redirect(new URL(PATHS.login, request.url));
     }
   }
