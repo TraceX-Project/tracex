@@ -21,12 +21,10 @@ import { User } from '../auth/_types/user';
 import { redirect } from 'next/navigation';
 import { logout } from '../auth/_service/auth.service';
 import { PATHS } from '@/shared/config/paths';
+import { useGetProfile } from '../auth/_hooks/use-get-profile';
 
-type Props = {
-  user: User;
-};
-
-const NavUser = ({ user }: Props) => {
+const NavUser = () => {
+  const { data: user } = useGetProfile();
   const { isMobile } = useSidebar();
 
   const handleLogout = async () => {
@@ -34,6 +32,10 @@ const NavUser = ({ user }: Props) => {
 
     redirect(PATHS.login);
   };
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <SidebarMenu>

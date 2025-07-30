@@ -1,12 +1,10 @@
-'use server';
-
 import { User } from '../_types/user';
 import { ENDPOINTS } from '@/shared/config/endpoints';
-import { request } from '@/shared/lib/api';
+import { SuccessResponse } from '@/shared/types/response';
+import axios from '@/shared/lib/axios';
 
 export const getUserProfile = async () => {
-  return request<User>({
-    method: 'GET',
-    path: ENDPOINTS.users.profile,
-  });
+  const { data } = await axios.get<SuccessResponse<User>>(ENDPOINTS.users.profile);
+
+  return data.data;
 };

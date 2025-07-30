@@ -1,5 +1,3 @@
-'use server';
-
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import {
   GetGoogleLoginUrlResponse,
@@ -8,16 +6,16 @@ import {
   Token,
 } from '../_types/auth';
 import { request } from '@/shared/lib/api';
-import { cookies } from 'next/headers';
-import { COOKIE_NAME } from '@/shared/_constants/cookie';
+import axios from '@/shared/lib/axios';
+import { SuccessResponse } from '@/shared/types/response';
+import { clearTokenCookies } from '@/modules/auth/_utils/token';
 
 export const getGoogleLoginUrl = async () => {
-  const response = await request<GetGoogleLoginUrlResponse>({
-    method: 'GET',
-    path: ENDPOINTS.auth.googleLoginLink,
-  });
+  const { data } = await axios.get<SuccessResponse<GetGoogleLoginUrlResponse>>(
+    ENDPOINTS.auth.googleLoginLink
+  );
 
-  return response;
+  return data.data;
 };
 
 export const googleLogin = async (data: GoogleLoginRequest) => {
@@ -41,12 +39,7 @@ export const refresh = async (data: RefreshTokenRequest) => {
 };
 
 export const logout = async () => {
-  await request<void>({
-    method: 'POST',
-    path: ENDPOINTS.auth.logout,
-  });
+  await axios.post(ENDPOINTS.auth.logout, {});
 
-  const cookieStore = await cookies();
-  cookieStore.delete(COOKIE_NAME.accessToken);
-  cookieStore.delete(COOKIE_NAME.refreshToken);
+  await clearTokenCookies();
 };
