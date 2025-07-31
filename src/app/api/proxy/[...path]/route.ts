@@ -60,6 +60,12 @@ async function handleRequest(request: NextRequest, apiPaths: string[]) {
   const method = request.method;
   const requestBody = ['POST', 'PUT', 'PATCH'].includes(method) ? await request.json() : undefined;
 
+  console.log('Request to API:', {
+    apiUrl,
+    method,
+    requestBody,
+  });
+
   try {
     const response = await fetch(apiUrl, {
       method,
@@ -108,6 +114,7 @@ async function handleRequest(request: NextRequest, apiPaths: string[]) {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${newTokens.data.accessToken}`,
         },
+        body: JSON.stringify(requestBody) || undefined,
       });
 
       const retryData = await retryResponse.json();
