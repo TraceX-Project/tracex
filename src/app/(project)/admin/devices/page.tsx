@@ -4,10 +4,10 @@ import SiteHeader from '@/modules/sidebar/site-header';
 
 export default function AdminDevicesPage() {
   return (
-    <div className="">
+    <div className="h-screen flex flex-col">
       <SiteHeader title="Manage Devices" />
 
-      <div className="container mx-auto space-y-4 p-5">
+      <div className="container mx-auto space-y-4 p-5 flex flex-col flex-1">
         <div className="flex justify-end">
           <CreateDeviceModal />
         </div>

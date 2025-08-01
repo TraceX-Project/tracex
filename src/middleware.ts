@@ -5,13 +5,7 @@ import { PATHS } from '@/shared/config/paths';
 import { COOKIE_NAME } from './shared/_constants/cookie';
 import { isTokenExpired, setTokenCookies } from './modules/auth/_utils/token';
 
-const publicRoutes = [
-  PATHS.auth.callback,
-  PATHS.login,
-  PATHS.terms,
-  PATHS.privacy,
-  PATHS.admin.devices,
-];
+const publicRoutes = [PATHS.auth.callback, PATHS.login, PATHS.terms, PATHS.privacy];
 
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

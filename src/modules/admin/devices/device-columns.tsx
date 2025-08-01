@@ -5,52 +5,40 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu';
 import { Button } from '@/shared/components/ui/button';
 import { EllipsisVertical } from 'lucide-react';
-import { Checkbox } from '@/shared/components/ui/checkbox';
 import { Badge } from '@/shared/components/ui/badge';
 
 export const deviceColumns: ColumnDef<Device>[] = [
   {
-    id: 'select',
-    header: ({ table }) => (
-      <div className="flex items-center justify-center">
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="flex items-center justify-center">
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      </div>
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    header: 'Front Panel',
     accessorKey: 'frontPanel',
+    header: 'Front Panel',
     cell: ({ row }) => {
       return (
-        <div className="relative w-20 h-20">
+        <div className="relative aspect-square size-20">
           <Image
             src={row.getValue('frontPanel')}
-            alt={row.getValue('modelName')}
-            className="rounded-md object-cover"
+            alt={`${row.getValue('modelName')} Front Panel`}
+            className="rounded-md"
+            fill
+          />
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: 'backPanel',
+    header: 'Back Panel',
+    cell: ({ row }) => {
+      return (
+        <div className="relative aspect-square size-20">
+          <Image
+            src={row.getValue('backPanel')}
+            alt={`${row.getValue('modelName')} Back Panel`}
+            className="rounded-md"
             fill
           />
         </div>
@@ -61,7 +49,7 @@ export const deviceColumns: ColumnDef<Device>[] = [
     header: () => <div className="w-full text-left">Model Name</div>,
     accessorKey: 'modelName',
     cell: ({ row }) => {
-      return <p>{row.getValue('modelName')}</p>;
+      return <p className="bg-red-100">{row.getValue('modelName')}</p>;
     },
   },
   {
@@ -85,6 +73,10 @@ export const deviceColumns: ColumnDef<Device>[] = [
         </Badge>
       );
     },
+  },
+  {
+    header: 'Size',
+    accessorKey: 'size',
   },
   {
     id: 'actions',
