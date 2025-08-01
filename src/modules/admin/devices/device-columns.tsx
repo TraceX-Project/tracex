@@ -48,9 +48,6 @@ export const deviceColumns: ColumnDef<Device>[] = [
   {
     header: () => <div className="w-full text-left">Model Name</div>,
     accessorKey: 'modelName',
-    cell: ({ row }) => {
-      return <p className="bg-red-100">{row.getValue('modelName')}</p>;
-    },
   },
   {
     header: 'Brand',
