@@ -19,7 +19,7 @@ export const navAdmin = [
   },
   {
     title: 'Manage Devices',
-    url: PATHS.admin.devices,
+    url: PATHS.admin.devices.root,
     icon: Monitor,
     tooltip: 'Manage devices',
   },

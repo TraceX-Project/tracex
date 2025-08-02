@@ -43,6 +43,7 @@ const CreateProjectModal = () => {
         router.push(PATHS.projects.detail(createdProject.id));
 
         openDialog.setFalse();
+        form.reset();
 
         toast.success('Project created successfully!');
       } catch (error) {
@@ -93,7 +94,10 @@ const CreateProjectModal = () => {
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="grid gap-4">
-          <form.AppField name="name" children={(field) => <field.TextField label="Name" />} />
+          <form.AppField
+            name="name"
+            children={(field) => <field.TextField label="Name" placeholder="Enter project name" />}
+          />
 
           <DialogFooter>
             <DialogClose asChild>
