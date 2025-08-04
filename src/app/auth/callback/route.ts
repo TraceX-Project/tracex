@@ -1,7 +1,6 @@
 import { googleLogin } from '@/modules/auth/_service/auth.service';
-import { ENV } from '@/shared/config/env';
 import { PATHS } from '@/shared/config/paths';
-import { setTokenCookies } from '@/shared/utils/token';
+import { setTokenCookies } from '@/modules/auth/_utils/token';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
@@ -9,16 +8,8 @@ export async function GET(request: Request) {
 
   const code = searchParams.get('code');
   const state = searchParams.get('state');
-  const forwardedHost = request.headers.get('x-forwarded-host');
-  const forwardedProto = request.headers.get('x-forwarded-proto') || 'https';
 
   if (!code || !state) {
-    console.log('Request URL', request);
-
-    if (forwardedHost) {
-      return NextResponse.redirect(`${forwardedProto}://${forwardedHost}${PATHS.login}`);
-    }
-
     return NextResponse.redirect(new URL(PATHS.login, request.url));
   }
 
@@ -42,10 +33,6 @@ export async function GET(request: Request) {
 
     return response;
   } catch {
-    if (forwardedHost) {
-      return NextResponse.redirect(`https://${forwardedHost}${PATHS.login}`);
-    }
-
     return NextResponse.redirect(new URL(PATHS.login, request.url));
   }
 }

@@ -1,7 +1,7 @@
 import { Label } from '@/shared/components/ui/label';
 import React from 'react';
-import { Input } from '@/shared/components/ui/input';
 import { useFieldContext } from '../form';
+import { Input } from '@/shared/components/ui/input';
 import { cn } from '@/shared/lib/cn';
 
 type Props = {
@@ -11,8 +11,8 @@ type Props = {
   required?: boolean;
 };
 
-const TextField = ({ label, placeholder, disabled, required }: Props) => {
-  const field = useFieldContext<string>();
+const NumberField = ({ label, placeholder, disabled, required }: Props) => {
+  const field = useFieldContext<number>();
   const hasError = !field.state.meta.isValid;
   const errorMessage = field.state.meta.errors[0]?.message;
 
@@ -24,15 +24,16 @@ const TextField = ({ label, placeholder, disabled, required }: Props) => {
 
       <div className="flex flex-col gap-1">
         <Input
+          type="number"
           id={field.name}
           name={field.name}
-          value={field.state.value}
+          value={Number.isNaN(field.state.value) ? '' : field.state.value}
           placeholder={placeholder}
-          onChange={(e) => field.handleChange(e.target.value)}
-          className={cn(hasError && 'border-destructive focus-visible:ring-destructive')}
-          onBlur={field.handleBlur}
+          onChange={(e) => field.handleChange(e.target.valueAsNumber)}
           disabled={disabled}
           required={required}
+          onBlur={field.handleBlur}
+          className={cn(hasError && 'border-destructive focus-visible:ring-destructive')}
         />
 
         {hasError && <p className="text-sm text-destructive break-words">{errorMessage}</p>}
@@ -41,4 +42,4 @@ const TextField = ({ label, placeholder, disabled, required }: Props) => {
   );
 };
 
-export default TextField;
+export default NumberField;

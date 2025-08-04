@@ -5,4 +5,5 @@ export type Device = {
   type: 'router' | 'switch';
   frontPanel: string;
   backPanel: string;
+  size: number;
 };

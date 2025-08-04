@@ -9,18 +9,24 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/components/ui/dialog';
+import { useRouter } from 'next/navigation';
 
 import { SidebarMenuButton } from '@/shared/components/ui/sidebar';
 import { useAppForm } from '@/shared/tanstack-form/form';
 import { FilePlus } from 'lucide-react';
-import React, { FormEvent, useCallback } from 'react';
-import z from 'zod';
-
-const projectSchema = z.object({
-  name: z.string().min(1, 'Project name is required'),
-});
+import React, { FormEvent, use, useCallback } from 'react';
+import { projectSchema } from './_schema/schema';
+import { useCreateProject } from './_hooks/use-create-project';
+import { PATHS } from '@/shared/config/paths';
+import { useBoolean } from '@/shared/hooks/use-boolean';
+import { toast } from 'sonner';
+import { AxiosError } from 'axios';
 
 const CreateProjectModal = () => {
+  const { mutateAsync: createNewProject } = useCreateProject();
+  const openDialog = useBoolean(false);
+  const router = useRouter();
+
   const form = useAppForm({
     defaultValues: {
       name: 'Untitled Project',
@@ -29,8 +35,25 @@ const CreateProjectModal = () => {
       onChange: projectSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log('submit form: ', value);
-      await new Promise((r) => setTimeout(r, 10000));
+      try {
+        const createdProject = await createNewProject({
+          name: value.name,
+        });
+
+        router.push(PATHS.projects.detail(createdProject.id));
+
+        openDialog.setFalse();
+        form.reset();
+
+        toast.success('Project created successfully!');
+      } catch (error) {
+        const message =
+          error instanceof AxiosError
+            ? (error.response?.data?.error ?? 'An error occurred.')
+            : 'Failed to create project. Please try again.';
+
+        toast.error(message);
+      }
     },
   });
 
@@ -42,14 +65,18 @@ const CreateProjectModal = () => {
     [form]
   );
 
+  const handleDialogOpenChange = useCallback(
+    (isOpen: boolean) => {
+      if (!isOpen) {
+        form.reset();
+      }
+      openDialog.setValue(isOpen);
+    },
+    [form, openDialog]
+  );
+
   return (
-    <Dialog
-      onOpenChange={(isOpen) => {
-        if (!isOpen) {
-          form.reset();
-        }
-      }}
-    >
+    <Dialog open={openDialog.value} onOpenChange={handleDialogOpenChange}>
       <DialogTrigger asChild>
         <SidebarMenuButton
           tooltip="Create a new project"
@@ -67,7 +94,10 @@ const CreateProjectModal = () => {
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="grid gap-4">
-          <form.AppField name="name" children={(field) => <field.TextField label="Name" />} />
+          <form.AppField
+            name="name"
+            children={(field) => <field.TextField label="Name" placeholder="Enter project name" />}
+          />
 
           <DialogFooter>
             <DialogClose asChild>

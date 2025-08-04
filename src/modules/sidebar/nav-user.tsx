@@ -21,12 +21,11 @@ import { User } from '../auth/_types/user';
 import { redirect } from 'next/navigation';
 import { logout } from '../auth/_service/auth.service';
 import { PATHS } from '@/shared/config/paths';
+import { useGetProfile } from '../auth/_hooks/use-get-profile';
+import { getImageProps } from 'next/image';
 
-type Props = {
-  user: User;
-};
-
-const NavUser = ({ user }: Props) => {
+const NavUser = () => {
+  const { data: user } = useGetProfile();
   const { isMobile } = useSidebar();
 
   const handleLogout = async () => {
@@ -34,6 +33,17 @@ const NavUser = ({ user }: Props) => {
 
     redirect(PATHS.login);
   };
+
+  if (!user) {
+    return null;
+  }
+
+  const { props:nextImageProps } = getImageProps({
+    src: user.picture,
+    alt: `@${user.firstname}`,
+    width: 32,
+    height: 32,
+  });
 
   return (
     <SidebarMenu>
@@ -45,7 +55,7 @@ const NavUser = ({ user }: Props) => {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user?.picture} alt={`@${user?.firstname}`} />
+                <AvatarImage {...nextImageProps} />
                 <AvatarFallback className="rounded-lg">
                   {user?.firstname[0]}
                   {user?.lastname[0]}

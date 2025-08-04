@@ -18,6 +18,9 @@ export const PATHS = {
   },
   admin: {
     users: `${ROOTS.admin}/users`,
-    devices: `${ROOTS.admin}/devices`,
+    devices: {
+      root: `${ROOTS.admin}/devices`,
+      new: `${ROOTS.admin}/devices/new`,
+    },
   },
 };

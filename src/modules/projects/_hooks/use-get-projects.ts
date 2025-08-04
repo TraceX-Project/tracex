@@ -1,0 +1,9 @@
+import { useQuery } from '@tanstack/react-query';
+import { QUERY_KEYS } from '../_config/config';
+import { getProjects } from '../_services/projects.service';
+
+export const useGetProjects = () =>
+  useQuery({
+    queryKey: [QUERY_KEYS.projects],
+    queryFn: getProjects,
+  });
