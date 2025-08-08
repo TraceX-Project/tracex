@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { getUserProfile } from '../_service/users.service';
-import { QUERY_KEYS } from '../_config/config';
+import { QUERY_KEYS } from '@/shared/constants/query_key';
 
 export const useGetProfile = () =>
   useQuery({

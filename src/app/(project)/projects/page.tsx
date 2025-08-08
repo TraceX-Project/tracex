@@ -5,7 +5,7 @@ export default function ProjectsPage() {
   return (
     <div>
       <SiteHeader title="My Projects" />
-      <div className="container mx-auto space-y-4 p-5">
+      <div className="container mx-auto space-y-4 p-5 pt-20">
         <ProjectList />
       </div>
     </div>

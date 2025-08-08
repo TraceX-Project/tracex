@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers';
 import { ENV } from '../config/env';
-import { COOKIE_NAME } from '../_constants/cookie';
+import { COOKIE_NAME } from '../constants/cookie';
 import { isTokenExpired, setTokenCookies } from '@/modules/auth/_utils/token';
 import { SuccessResponse } from '../types/response';
 import { ENDPOINTS } from '../config/endpoints';

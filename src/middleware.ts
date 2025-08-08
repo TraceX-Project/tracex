@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { PATHS } from '@/shared/config/paths';
-import { COOKIE_NAME } from './shared/_constants/cookie';
+import { COOKIE_NAME } from './shared/constants/cookie';
 
 const publicRoutes = [PATHS.auth.callback, PATHS.login, PATHS.terms, PATHS.privacy];
 
