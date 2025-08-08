@@ -8,7 +8,7 @@ export const useCreateProject = () => {
 
   return useMutation({
     mutationFn: (data: CreateProjectRequest) => createProject(data),
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.projects] });
     },
   });

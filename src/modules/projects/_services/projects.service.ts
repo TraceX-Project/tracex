@@ -1,17 +1,22 @@
-import axios from '@/shared/lib/axios';
 import { CreateProjectRequest, Project } from '../_types/projects';
 import { ENDPOINTS } from '@/shared/config/endpoints';
-import { SuccessResponse } from '@/shared/types/response';
+import { request } from '@/shared/lib/api';
 
 export const createProject = async (payload: CreateProjectRequest) => {
-  console.log("creaeteProject payload: ", payload);
-  const { data } = await axios.post<SuccessResponse<Project>>(ENDPOINTS.projects.create, payload);
+  const response = await request<Project>({
+    method: 'POST',
+    path: ENDPOINTS.projects.create,
+    body: payload,
+  });
 
-  return data.data;
+  return response.data;
 };
 
 export const getProjects = async () => {
-  const { data } = await axios.get<SuccessResponse<Project[]>>(ENDPOINTS.projects.getAll);
+  const response = await request<Project[]>({
+    method: 'GET',
+    path: ENDPOINTS.projects.getAll,
+  });
 
-  return data.data;
+  return response;
 };

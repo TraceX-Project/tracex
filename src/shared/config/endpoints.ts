@@ -5,7 +5,6 @@ const ROOTS = {
 };
 
 export const ENDPOINTS = {
-  proxyApi: `/api/proxy`,
   auth: {
     googleLoginLink: `${ROOTS.auth}`,
     googleLogin: `${ROOTS.auth}/login`,

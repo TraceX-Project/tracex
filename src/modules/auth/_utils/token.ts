@@ -7,10 +7,9 @@ import { COOKIE_NAME, TOKEN_MAXAGE } from '@/shared/_constants/cookie';
 import { Token } from '@/modules/auth/_types/auth';
 import { cookies } from 'next/headers';
 
-export async function setTokenCookies(response: NextResponse, tokens: Token) {
-  response.cookies.set({
-    name: COOKIE_NAME.accessToken,
-    value: tokens.accessToken,
+export async function setTokenCookies(token: Token) {
+  const cookieStore = await cookies();
+  cookieStore.set(COOKIE_NAME.accessToken, token.accessToken, {
     httpOnly: true,
     sameSite: 'strict',
     path: '/',
@@ -18,9 +17,7 @@ export async function setTokenCookies(response: NextResponse, tokens: Token) {
     maxAge: TOKEN_MAXAGE.accessToken,
   });
 
-  response.cookies.set({
-    name: COOKIE_NAME.refreshToken,
-    value: tokens.refreshToken,
+  cookieStore.set(COOKIE_NAME.refreshToken, token.refreshToken, {
     httpOnly: true,
     sameSite: 'strict',
     path: '/',

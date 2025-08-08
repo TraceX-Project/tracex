@@ -20,7 +20,6 @@ import { useCreateProject } from './_hooks/use-create-project';
 import { PATHS } from '@/shared/config/paths';
 import { useBoolean } from '@/shared/hooks/use-boolean';
 import { toast } from 'sonner';
-import { AxiosError } from 'axios';
 
 const CreateProjectModal = () => {
   const { mutateAsync: createNewProject } = useCreateProject();
@@ -47,12 +46,11 @@ const CreateProjectModal = () => {
 
         toast.success('Project created successfully!');
       } catch (error) {
-        const message =
-          error instanceof AxiosError
-            ? (error.response?.data?.error ?? 'An error occurred.')
-            : 'Failed to create project. Please try again.';
-
-        toast.error(message);
+        toast.error(
+          error instanceof Error
+            ? error.message
+            : 'An unexpected error occurred while creating the project.'
+        );
       }
     },
   });
