@@ -24,12 +24,12 @@ type ProjectItemProps = {
 };
 
 const ProjectItem = ({ name, id }: ProjectItemProps) => {
-  const { mutateAsync } = useDeleteProject();
+  const { mutateAsync: deleteProject } = useDeleteProject();
   const { value: isOpen, toggle: toggleIsOpen, setFalse: setIsOpenFalse } = useBoolean(false);
 
   const handleDelete = useCallback(async () => {
     try {
-      await mutateAsync(id);
+      await deleteProject(id);
 
       toast.success(`Project ${name} deleted successfully!`);
     } catch (error) {
@@ -39,7 +39,7 @@ const ProjectItem = ({ name, id }: ProjectItemProps) => {
           : 'An unexpected error occurred while deleting the project.'
       );
     }
-  }, [id]);
+  }, [id, name, deleteProject]);
 
   return (
     <div className="border rounded-md overflow-hidden shadow hover:shadow-lg transition-shadow duration-300">
