@@ -38,7 +38,7 @@ const NavUser = () => {
     return null;
   }
 
-  const { props:nextImageProps } = getImageProps({
+  const { props: nextImageProps } = getImageProps({
     src: user.picture,
     alt: `@${user.firstname}`,
     width: 32,
@@ -79,7 +79,7 @@ const NavUser = () => {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user?.picture} alt={`@${user?.firstname}`} />
+                  <AvatarImage {...nextImageProps} />
                   <AvatarFallback className="rounded-lg">
                     {user?.firstname[0]}
                     {user?.lastname[0]}

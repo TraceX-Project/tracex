@@ -29,7 +29,7 @@ export async function GET(request: Request) {
       }
     );
 
-    await setTokenCookies(response, token);
+    await setTokenCookies(token);
 
     return response;
   } catch {

@@ -1,16 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { refresh } from '@/modules/auth/_service/auth.service';
 
 import { PATHS } from '@/shared/config/paths';
 import { COOKIE_NAME } from './shared/_constants/cookie';
-import { isTokenExpired, setTokenCookies } from './modules/auth/_utils/token';
 
 const publicRoutes = [PATHS.auth.callback, PATHS.login, PATHS.terms, PATHS.privacy];
 
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const accessToken = request.cookies.get(COOKIE_NAME.accessToken)?.value;
-  const refreshToken = request.cookies.get(COOKIE_NAME.refreshToken)?.value;
 
   if (pathname === PATHS.root) {
     return NextResponse.redirect(new URL(PATHS.projects.root, request.url));
@@ -26,25 +23,6 @@ export default async function middleware(request: NextRequest) {
 
   if (isPublicRoute) {
     return NextResponse.next();
-  }
-
-  if (!accessToken && !refreshToken) {
-    return NextResponse.redirect(new URL(PATHS.login, request.url));
-  }
-
-  const isExpired = accessToken ? await isTokenExpired(accessToken) : true;
-  if (isExpired && refreshToken) {
-    try {
-      const newTokens = await refresh({ refreshToken });
-
-      const response = NextResponse.next();
-
-      setTokenCookies(response, newTokens);
-
-      return response;
-    } catch {
-      return NextResponse.redirect(new URL(PATHS.login, request.url));
-    }
   }
 
   return NextResponse.next();

@@ -11,7 +11,3 @@ export type Token = {
   accessToken: string;
   refreshToken: string;
 };
-
-export type RefreshTokenRequest = {
-  refreshToken: string;
-};
