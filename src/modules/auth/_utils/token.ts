@@ -3,7 +3,7 @@
 import { NextResponse } from 'next/server';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { ENV } from '@/shared/config/env';
-import { COOKIE_NAME, TOKEN_MAXAGE } from '@/shared/_constants/cookie';
+import { COOKIE_NAME, TOKEN_MAXAGE } from '@/shared/constants/cookie';
 import { Token } from '@/modules/auth/_types/auth';
 import { cookies } from 'next/headers';
 

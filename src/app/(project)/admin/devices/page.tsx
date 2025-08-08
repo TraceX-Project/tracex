@@ -9,7 +9,7 @@ export default function AdminDevicesPage() {
     <div className="h-screen flex flex-col">
       <SiteHeader title="Manage Devices" />
 
-      <div className="container mx-auto space-y-4 p-5 flex flex-col flex-1">
+      <div className="container mx-auto space-y-4 p-5 flex flex-col flex-1 pt-20">
         <div className="flex justify-end">
           <Button>
             <Link href={PATHS.admin.devices.new}>Create New Device</Link>

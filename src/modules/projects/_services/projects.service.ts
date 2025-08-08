@@ -20,3 +20,12 @@ export const getProjects = async () => {
 
   return response;
 };
+
+export const deleteProject = async (projectId: string) => {
+  const response = await request<void>({
+    method: 'DELETE',
+    path: `${ENDPOINTS.projects.delete(projectId)}`,
+  });
+
+  return response;
+};
