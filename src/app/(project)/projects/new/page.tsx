@@ -1,20 +1,21 @@
-import ProjectList from '@/modules/projects/projects-list';
+import CreateProjectForm from '@/modules/projects/create-project-form';
 import SiteHeader from '@/modules/sidebar/site-header';
 import { Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'My Projects',
-    description: 'View and manage all your projects',
+    title: 'Create New Project',
+    description: 'Create a new project',
   };
 }
 
-export default function ProjectsPage() {
+export default function CreateNewProjectPage() {
   return (
     <div>
-      <SiteHeader title="My Projects" />
+      <SiteHeader title="Create new project" />
+
       <div className="container mx-auto space-y-4 p-5 pt-20">
-        <ProjectList />
+        <CreateProjectForm />
       </div>
     </div>
   );

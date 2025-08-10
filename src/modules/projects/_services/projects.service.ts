@@ -1,4 +1,4 @@
-import { CreateProjectRequest, Project } from '../_types/projects';
+import { CreateProjectRequest, Project, UpdateProjectRequest } from '../_types/projects';
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
 
@@ -28,4 +28,23 @@ export const deleteProject = async (projectId: string) => {
   });
 
   return response;
+};
+
+export const getProject = async (projectId: string) => {
+  const response = await request<Project>({
+    method: 'GET',
+    path: `${ENDPOINTS.projects.getById(projectId)}`,
+  });
+
+  return response.data;
+};
+
+export const updateProject = async (projectId: string, payload: UpdateProjectRequest) => {
+  const response = await request<Project>({
+    method: 'PUT',
+    path: `${ENDPOINTS.projects.update(projectId)}`,
+    body: payload,
+  });
+
+  return response.data;
 };

@@ -6,3 +6,5 @@ export type Project = {
 export type CreateProjectRequest = {
   name: string;
 };
+
+export type UpdateProjectRequest = Partial<CreateProjectRequest>;
