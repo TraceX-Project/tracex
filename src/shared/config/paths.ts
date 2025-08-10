@@ -11,7 +11,9 @@ export const PATHS = {
   login: '/login',
   projects: {
     root: `${ROOTS.projects}`,
+    new: `${ROOTS.projects}/new`,
     detail: (id: string) => `${ROOTS.projects}/${id}`,
+    edit: (id: string) => `${ROOTS.projects}/${id}/edit`,
   },
   auth: {
     callback: `${ROOTS.auth}/callback`,

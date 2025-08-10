@@ -11,7 +11,7 @@ export default function AdminDevicesPage() {
 
       <div className="container mx-auto space-y-4 p-5 flex flex-col flex-1 pt-20">
         <div className="flex justify-end">
-          <Button>
+          <Button asChild>
             <Link href={PATHS.admin.devices.new}>Create New Device</Link>
           </Button>
         </div>

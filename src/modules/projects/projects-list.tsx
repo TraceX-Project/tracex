@@ -17,6 +17,7 @@ import { useBoolean } from '@/shared/hooks/use-boolean';
 import { useCallback } from 'react';
 import { useDeleteProject } from './_hooks/use-delete-project';
 import { toast } from 'sonner';
+import { Skeleton } from '@/shared/components/ui/skeleton';
 
 type ProjectItemProps = {
   name: string;
@@ -68,7 +69,9 @@ const ProjectItem = ({ name, id }: ProjectItemProps) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href={PATHS.projects.edit(id)}>Edit</Link>
+            </DropdownMenuItem>
             <DropdownMenuItem className="text-red-500" onClick={toggleIsOpen}>
               Delete
             </DropdownMenuItem>
@@ -86,15 +89,43 @@ const ProjectItem = ({ name, id }: ProjectItemProps) => {
   );
 };
 
+const ProjectSkeleton = () => {
+  return (
+    <div className="border rounded-md overflow-hidden shadow">
+      <Skeleton className="w-full h-48" />
+      <div className="flex items-center justify-between p-4">
+        <Skeleton className="h-5 w-2/3" />
+        <Skeleton className="h-6 w-6 rounded-full" />
+      </div>
+    </div>
+  );
+};
+
 const ProjectList = () => {
   const { data: projects, isLoading } = useGetProjects();
 
   if (isLoading) {
-    return <div className="text-center text-gray-500">Loading projects...</div>;
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <ProjectSkeleton key={index} />
+        ))}
+      </div>
+    );
   }
 
   if (!projects || projects.data.length === 0) {
-    return <div className="text-center text-gray-500">No projects found</div>;
+    return (
+      <div className="flex flex-col items-center justify-center text-center text-gray-500 py-10">
+        <p className="text-lg font-medium">No projects yet</p>
+        <p className="text-sm text-gray-400 mb-6">
+          Create your first project to start using the system.
+        </p>
+        <Button asChild>
+          <Link href={PATHS.projects.new}>New Project</Link>
+        </Button>
+      </div>
+    );
   }
 
   return (

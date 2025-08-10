@@ -9,9 +9,10 @@ import {
 } from '@/shared/components/ui/sidebar';
 import { navMain } from './_config/config';
 import Link from 'next/link';
-import CreateProjectModal from '../projects/create-project-modal';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/shared/lib/cn';
+import { FilePlus } from 'lucide-react';
+import { PATHS } from '@/shared/config/paths';
 
 const NavMain = () => {
   const pathname = usePathname();
@@ -21,7 +22,16 @@ const NavMain = () => {
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <CreateProjectModal />
+            <SidebarMenuButton
+              tooltip="Create a new project"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
+              asChild
+            >
+              <Link href={PATHS.projects.new}>
+                <FilePlus className="size-4" />
+                <span>New Project</span>
+              </Link>
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
 
