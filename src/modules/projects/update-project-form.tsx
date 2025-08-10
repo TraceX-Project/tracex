@@ -47,7 +47,7 @@ const UpdateProjectForm = ({ project }: Props) => {
         toast.error(
           error instanceof Error
             ? error.message
-            : 'An unexpected error occurred while creating the project.'
+            : 'An unexpected error occurred while updating the project.'
         );
       }
     },

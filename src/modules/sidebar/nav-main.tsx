@@ -11,7 +11,6 @@ import { navMain } from './_config/config';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/shared/lib/cn';
-import { useBoolean } from '@/shared/hooks/use-boolean';
 import { FilePlus } from 'lucide-react';
 import { PATHS } from '@/shared/config/paths';
 
