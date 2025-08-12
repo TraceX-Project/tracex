@@ -8,12 +8,7 @@ const compat = new FlatCompat({
 
 export default tseslint.config(
   {
-    ignores: [
-      '.next',
-      './src/shared/components/ui',
-      './src/shared/tanstack-form/ui',
-      // './src/shared/lib/api.ts',
-    ],
+    ignores: ['.next', './src/shared/components/ui'],
     plugins: {
       'unused-imports': unusedImports,
     },
