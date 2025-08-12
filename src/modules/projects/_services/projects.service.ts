@@ -1,4 +1,8 @@
-import { CreateProjectRequest, Project, UpdateProjectRequest } from '../_types/projects';
+import {
+  type CreateProjectRequest,
+  type Project,
+  type UpdateProjectRequest,
+} from '../_types/projects';
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
 

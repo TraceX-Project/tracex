@@ -9,15 +9,15 @@ import {
   TableRow,
 } from '@/shared/components/ui/table';
 import {
-  ColumnFiltersState,
+  type ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
+  type SortingState,
   useReactTable,
-  VisibilityState,
+  type VisibilityState,
 } from '@tanstack/react-table';
 import React from 'react';
 import { deviceColumns } from './device-columns';
@@ -59,9 +59,9 @@ const DevicesTable = () => {
   });
 
   return (
-    <div className="flex flex-1 flex-col min-h-0 h-full gap-4">
+    <div className="flex h-full min-h-0 flex-1 flex-col gap-4">
       <div className="relative flex flex-1">
-        <div className="overflow-hidden inset-0 rounded-md border flex flex-col absolute">
+        <div className="absolute inset-0 flex flex-col overflow-hidden rounded-md border">
           <Table>
             <TableHeader className="bg-muted">
               {table.getHeaderGroups().map((headerGroup) => (

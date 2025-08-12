@@ -3,3 +3,9 @@ export type SuccessResponse<T> = {
   message: string;
   data: T;
 };
+
+export type ErrorResponse = {
+  code: number;
+  message: string;
+  error: string;
+};

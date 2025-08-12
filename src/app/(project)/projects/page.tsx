@@ -1,6 +1,6 @@
 import ProjectList from '@/modules/projects/projects-list';
 import SiteHeader from '@/modules/sidebar/site-header';
-import { Metadata } from 'next';
+import { type Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

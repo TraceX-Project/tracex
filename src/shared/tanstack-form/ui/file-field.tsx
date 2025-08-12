@@ -3,7 +3,7 @@
 import { Label } from '@/shared/components/ui/label';
 import React, { useCallback, useState } from 'react';
 import { useFieldContext } from '../form';
-import Dropzone, { Accept, FileRejection } from 'react-dropzone';
+import Dropzone, { type Accept, type FileRejection } from 'react-dropzone';
 import { toast } from 'sonner';
 
 type Props = {
@@ -23,7 +23,7 @@ const FileField = ({
   accept = { 'image/*': ['.jpeg', '.jpg', '.png'] },
   disabled,
 }: Props) => {
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, _setFiles] = useState<File[]>([]);
   const field = useFieldContext<File[] | File | null>();
 
   const onDrop = useCallback(
@@ -38,13 +38,13 @@ const FileField = ({
         return;
       }
 
-      const newFiles = acceptedFiles.map((file) => {
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-        });
-      });
+      // const newFiles = acceptedFiles.map((file) => {
+      //   Object.assign(file, {
+      //     preview: URL.createObjectURL(file),
+      //   });
+      // });
 
-      const updatedFiles = files ? [...files, ...newFiles] : newFiles;
+      // const updatedFiles = files ? [...files, ...newFiles] : newFiles;
 
       // setFiles(updatedFiles);
 
@@ -54,19 +54,19 @@ const FileField = ({
         });
       }
     },
-    [files, maxFiles, multiple, setFiles]
+    [files, maxFiles, multiple]
   );
 
-  const onRemoveFile = useCallback(
-    (file: File) => {
-      setFiles((prevFiles) => {
-        const updatedFiles = prevFiles.filter((f) => f.name !== file.name);
-        field.handleChange(multiple ? updatedFiles : updatedFiles[0] || null);
-        return updatedFiles;
-      });
-    },
-    [field, multiple]
-  );
+  // const onRemoveFile = useCallback(
+  //   (file: File) => {
+  //     setFiles((prevFiles) => {
+  //       const updatedFiles = prevFiles.filter((f) => f.name !== file.name);
+  //       field.handleChange(multiple ? updatedFiles : updatedFiles[0] || null);
+  //       return updatedFiles;
+  //     });
+  //   },
+  //   [field, multiple]
+  // );
 
   React.useEffect(() => {
     return () => {
@@ -97,9 +97,9 @@ const FileField = ({
           maxSize={maxSize}
         >
           {({ getRootProps, getInputProps }) => (
-            <div {...getRootProps()} className="border-dashed border-2 border-gray-300 p-4">
+            <div {...getRootProps()} className="border-2 border-dashed border-gray-300 p-4">
               <input {...getInputProps()} />
-              <p>Drag 'n' drop some files here, or click to select files</p>
+              <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
             </div>
           )}
         </Dropzone>

@@ -26,7 +26,7 @@ type ProjectItemProps = {
 
 const ProjectItem = ({ name, id }: ProjectItemProps) => {
   const { mutateAsync: deleteProject } = useDeleteProject();
-  const { value: isOpen, toggle: toggleIsOpen, setFalse: setIsOpenFalse } = useBoolean(false);
+  const { value: isOpen, toggle: toggleIsOpen } = useBoolean(false);
 
   const handleDelete = useCallback(async () => {
     try {
@@ -43,19 +43,19 @@ const ProjectItem = ({ name, id }: ProjectItemProps) => {
   }, [id, name, deleteProject]);
 
   return (
-    <div className="border rounded-md overflow-hidden shadow hover:shadow-lg transition-shadow duration-300">
+    <div className="overflow-hidden rounded-md border shadow transition-shadow duration-300 hover:shadow-lg">
       <Link href={PATHS.projects.detail(id)} passHref>
         <Image
           src="https://www.cisco.com/content/dam/cisco-cdc/site/images/legacy/assets/swa/img/anchor-info/network-designed-628x353.jpg"
           alt={name}
           width={400}
           height={250}
-          className="object-cover w-full h-48 cursor-pointer"
+          className="h-48 w-full cursor-pointer object-cover"
         />
       </Link>
 
       <div className="flex items-center justify-between p-4">
-        <h3 className="text-base font-semibold truncate">{name}</h3>
+        <h3 className="truncate text-base font-semibold">{name}</h3>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -63,7 +63,7 @@ const ProjectItem = ({ name, id }: ProjectItemProps) => {
               variant="ghost"
               size="icon"
               aria-label="Project actions"
-              className="p-1 w-6 h-6"
+              className="h-6 w-6 p-1"
             >
               <MoreVertical className="h-4 w-4" />
             </Button>
@@ -91,8 +91,8 @@ const ProjectItem = ({ name, id }: ProjectItemProps) => {
 
 const ProjectSkeleton = () => {
   return (
-    <div className="border rounded-md overflow-hidden shadow">
-      <Skeleton className="w-full h-48" />
+    <div className="overflow-hidden rounded-md border shadow">
+      <Skeleton className="h-48 w-full" />
       <div className="flex items-center justify-between p-4">
         <Skeleton className="h-5 w-2/3" />
         <Skeleton className="h-6 w-6 rounded-full" />
@@ -106,7 +106,7 @@ const ProjectList = () => {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
         {Array.from({ length: 6 }).map((_, index) => (
           <ProjectSkeleton key={index} />
         ))}
@@ -116,9 +116,9 @@ const ProjectList = () => {
 
   if (!projects || projects.data.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center text-center text-gray-500 py-10">
+      <div className="flex flex-col items-center justify-center py-10 text-center text-gray-500">
         <p className="text-lg font-medium">No projects yet</p>
-        <p className="text-sm text-gray-400 mb-6">
+        <p className="mb-6 text-sm text-gray-400">
           Create your first project to start using the system.
         </p>
         <Button asChild>
@@ -129,7 +129,7 @@ const ProjectList = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
       {projects.data.map((project) => (
         <ProjectItem key={project.id} name={project.name} id={project.id} />
       ))}

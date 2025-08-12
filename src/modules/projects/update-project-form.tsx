@@ -1,7 +1,7 @@
 'use client';
 
-import React, { FormEvent, useCallback } from 'react';
-import { projectSchema, ProjectSchema } from './_schema/schema';
+import React, { type FormEvent, useCallback } from 'react';
+import { projectSchema } from './_schema/schema';
 import {
   Card,
   CardContent,
@@ -11,7 +11,7 @@ import {
 } from '@/shared/components/ui/card';
 import { useAppForm } from '@/shared/tanstack-form/form';
 import { useUpdateProject } from './_hooks/use-update-project';
-import { Project } from './_types/projects';
+import { type Project } from './_types/projects';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { PATHS } from '@/shared/config/paths';
@@ -33,7 +33,7 @@ const UpdateProjectForm = ({ project }: Props) => {
     },
     onSubmit: async ({ value }) => {
       try {
-        const updatedProject = await updateProject({
+        await updateProject({
           projectId: project.id,
           data: {
             name: value.name,
@@ -62,7 +62,7 @@ const UpdateProjectForm = ({ project }: Props) => {
   );
 
   return (
-    <Card className="max-w-2xl w-full mx-auto">
+    <Card className="mx-auto w-full max-w-2xl">
       <CardHeader>
         <CardTitle className="text-left text-2xl font-bold">Update Project</CardTitle>
         <CardDescription>Modify the details of your existing project.</CardDescription>

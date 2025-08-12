@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { updateProject } from '../_services/projects.service';
-import { UpdateProjectRequest } from '../_types/projects';
+import { type UpdateProjectRequest } from '../_types/projects';
 import { getQueryClient } from '@/shared/tanstack-query/get-query-client';
 import { QUERY_KEYS } from '@/shared/constants/query_key';
 

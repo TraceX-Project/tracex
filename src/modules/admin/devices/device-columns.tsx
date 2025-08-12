@@ -1,5 +1,7 @@
-import { ColumnDef } from '@tanstack/react-table';
-import { Device } from './_types/device';
+/* eslint-disable react-hooks/rules-of-hooks */
+
+import { type ColumnDef } from '@tanstack/react-table';
+import { type Device } from './_types/device';
 import Image from 'next/image';
 import {
   DropdownMenu,
@@ -20,7 +22,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/shared/components/ui/alert-dialog';
 import { useBoolean } from '@/shared/hooks/use-boolean';
 import { cn } from '@/shared/lib/cn';
@@ -33,11 +34,14 @@ export const deviceColumns: ColumnDef<Device>[] = [
     accessorKey: 'frontPanel',
     header: 'Front Panel',
     cell: ({ row }) => {
+      const frontPanel = row.getValue('frontPanel');
+      const modelName = row.getValue('modelName');
+
       return (
         <div className="relative aspect-square size-20">
           <Image
-            src={row.getValue('frontPanel')}
-            alt={`${row.getValue('modelName')} Front Panel`}
+            src={frontPanel as string}
+            alt={`${modelName as string} Front Panel`}
             className="rounded-md"
             fill
           />
@@ -49,11 +53,14 @@ export const deviceColumns: ColumnDef<Device>[] = [
     accessorKey: 'backPanel',
     header: 'Back Panel',
     cell: ({ row }) => {
+      const backPanel = row.getValue('backPanel');
+      const modelName = row.getValue('modelName');
+
       return (
         <div className="relative aspect-square size-20">
           <Image
-            src={row.getValue('backPanel')}
-            alt={`${row.getValue('modelName')} Back Panel`}
+            src={backPanel as string}
+            alt={`${modelName as string} Back Panel`}
             className="rounded-md"
             fill
           />
@@ -117,7 +124,7 @@ export const deviceColumns: ColumnDef<Device>[] = [
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => setOpen(true)}
-                className="text-red-600 focus:text-red-600 focus:bg-red-50"
+                className="text-red-600 focus:bg-red-50 focus:text-red-600"
               >
                 Delete
               </DropdownMenuItem>

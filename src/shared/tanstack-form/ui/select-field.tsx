@@ -4,12 +4,12 @@ import { Label } from '@/shared/components/ui/label';
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '@/shared/components/ui/select';
+import { type FieldError } from './types/form';
+import { getErrorMessage } from './utils/error';
 
 type Props = {
   label: string;
@@ -20,7 +20,7 @@ type Props = {
 const SelectField = ({ label, options, placeholder }: Props) => {
   const field = useFieldContext<string>();
   const hasError = !field.state.meta.isValid;
-  const errorMessage = field.state.meta.errors[0]?.message;
+  const error = field.state.meta.errors[0] as FieldError;
 
   return (
     <div className="grid gap-3">
@@ -42,7 +42,9 @@ const SelectField = ({ label, options, placeholder }: Props) => {
           </SelectContent>
         </Select>
 
-        {hasError && <p className="text-sm text-destructive break-words">{errorMessage}</p>}
+        {hasError && (
+          <p className="text-destructive text-sm break-words">{getErrorMessage(error)}</p>
+        )}
       </div>
     </div>
   );

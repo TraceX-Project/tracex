@@ -1,4 +1,4 @@
-import { Device } from '../_types/device';
+import { type Device } from '../_types/device';
 
 export const devices: Device[] = [
   {

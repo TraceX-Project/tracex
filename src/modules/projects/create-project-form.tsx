@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FormEvent, useCallback } from 'react';
+import React, { type FormEvent, useCallback } from 'react';
 import { useCreateProject } from './_hooks/use-create-project';
 import { useRouter } from 'next/navigation';
 import { useAppForm } from '@/shared/tanstack-form/form';
@@ -56,7 +56,7 @@ const CreateProjectForm = () => {
   );
 
   return (
-    <Card className="max-w-2xl w-full mx-auto">
+    <Card className="mx-auto w-full max-w-2xl">
       <CardHeader>
         <CardTitle className="text-left text-2xl font-bold">Create New Project</CardTitle>
         <CardDescription>

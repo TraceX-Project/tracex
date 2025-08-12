@@ -1,4 +1,4 @@
-import { User } from '../_types/user';
+import { type User } from '../_types/user';
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
 
