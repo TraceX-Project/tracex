@@ -9,6 +9,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/shared/components/ui/alert-dialog';
+import { cn } from '@/shared/lib/cn';
+import { buttonVariants } from '@/shared/components/ui/button';
 
 type DeleteAlertDialogProps = {
   open: boolean;
@@ -35,7 +37,14 @@ const DeleteProjectModal = ({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm} className="bg-red-600 hover:bg-red-700">
+          <AlertDialogAction
+            onClick={onConfirm}
+            className={cn(
+              buttonVariants({
+                variant: 'destructive',
+              })
+            )}
+          >
             Delete
           </AlertDialogAction>
         </AlertDialogFooter>

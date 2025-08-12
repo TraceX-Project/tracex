@@ -72,7 +72,7 @@ const ProjectItem = ({ name, id }: ProjectItemProps) => {
             <DropdownMenuItem asChild>
               <Link href={PATHS.projects.edit(id)}>Edit</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem className="text-red-500" onClick={toggleIsOpen}>
+            <DropdownMenuItem variant="destructive" onClick={toggleIsOpen}>
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
