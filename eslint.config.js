@@ -8,7 +8,7 @@ const compat = new FlatCompat({
 
 export default tseslint.config(
   {
-    ignores: ['.next', './src/shared/components/ui'],
+    ignores: ['.next'],
     plugins: {
       'unused-imports': unusedImports,
     },
@@ -22,6 +22,23 @@ export default tseslint.config(
       ...tseslint.configs.stylisticTypeChecked,
     ],
     rules: {
+      // general
+      'no-alert': 'off',
+      camelcase: 'off',
+      'no-console': 'off',
+      'no-unused-vars': 'off',
+      'no-nested-ternary': 'warn',
+      'no-param-reassign': 'off',
+      'no-underscore-dangle': 'off',
+      'no-restricted-exports': 'off',
+      'no-promise-executor-return': 'off',
+      'import/prefer-default-export': 'off',
+      'prefer-destructuring': ['warn', { object: true, array: false }],
+
+      // TypeScript
+      '@typescript-eslint/naming-convention': 'off',
+      '@typescript-eslint/no-use-before-define': 'warn',
+      '@typescript-eslint/consistent-type-exports': 'warn',
       '@typescript-eslint/array-type': 'off',
       '@typescript-eslint/consistent-type-definitions': 'off',
       '@typescript-eslint/consistent-type-imports': [
@@ -36,7 +53,8 @@ export default tseslint.config(
         'error',
         { checksVoidReturn: { attributes: false } },
       ],
-      'no-unused-vars': 'off',
+
+      // Unused imports
       'unused-imports/no-unused-imports': 'error',
       'unused-imports/no-unused-vars': [
         'warn',
@@ -47,12 +65,22 @@ export default tseslint.config(
           argsIgnorePattern: '^_',
         },
       ],
+
+      // React
       'react/no-children-prop': [
         'error',
         {
           allowFunctions: true,
         },
       ],
+      'react/react-in-jsx-scope': 'off',
+      'react/no-array-index-key': 'off',
+      'react/require-default-props': 'off',
+      'react/jsx-props-no-spreading': 'off',
+      'react/function-component-definition': 'off',
+      'react/jsx-no-useless-fragment': ['warn', { allowExpressions: true }],
+      'react/no-unstable-nested-components': ['warn', { allowAsProps: true }],
+      'react/jsx-no-duplicate-props': ['warn', { ignoreCase: false }],
     },
   },
   {
