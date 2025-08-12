@@ -24,6 +24,9 @@ import {
 } from '@/shared/components/ui/alert-dialog';
 import { useBoolean } from '@/shared/hooks/use-boolean';
 import { cn } from '@/shared/lib/cn';
+import React from 'react';
+import Link from 'next/link';
+import { PATHS } from '@/shared/config/paths';
 
 export const deviceColumns: ColumnDef<Device>[] = [
   {
@@ -95,7 +98,7 @@ export const deviceColumns: ColumnDef<Device>[] = [
       const { value: open, setValue: setOpen } = useBoolean(false);
 
       return (
-        <>
+        <React.Fragment>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -108,7 +111,9 @@ export const deviceColumns: ColumnDef<Device>[] = [
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-32">
-              <DropdownMenuItem>Edit</DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href={PATHS.admin.devices.edit(device.id)}>Edit</Link>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => setOpen(true)}
@@ -141,7 +146,7 @@ export const deviceColumns: ColumnDef<Device>[] = [
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-        </>
+        </React.Fragment>
       );
     },
   },

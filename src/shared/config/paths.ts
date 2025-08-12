@@ -23,6 +23,7 @@ export const PATHS = {
     devices: {
       root: `${ROOTS.admin}/devices`,
       new: `${ROOTS.admin}/devices/new`,
+      edit: (id: string) => `${ROOTS.admin}/devices/${id}/edit`,
     },
   },
 };
