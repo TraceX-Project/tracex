@@ -1,6 +1,7 @@
 import { FlatCompat } from '@eslint/eslintrc';
 import tseslint from 'typescript-eslint';
 import unusedImports from 'eslint-plugin-unused-imports';
+import pluginQuery from '@tanstack/eslint-plugin-query';
 
 const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
@@ -11,6 +12,7 @@ export default tseslint.config(
     ignores: ['.next'],
     plugins: {
       'unused-imports': unusedImports,
+      '@tanstack/query': pluginQuery,
     },
   },
   ...compat.extends('next/core-web-vitals'),
@@ -20,8 +22,12 @@ export default tseslint.config(
       ...tseslint.configs.recommended,
       ...tseslint.configs.recommendedTypeChecked,
       ...tseslint.configs.stylisticTypeChecked,
+      // ...pluginQuery.configs.recommended.rules,
     ],
     rules: {
+      // Tanstack query
+      ...pluginQuery.configs.recommended.rules,
+
       // general
       'no-alert': 'off',
       camelcase: 'off',

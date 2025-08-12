@@ -15,6 +15,10 @@ type Props = {
   disabled?: boolean;
 };
 
+function isFileWithPreview(file: File | FileRejection): file is File & { preview?: string } {
+  return 'preview' in file && typeof file.preview === 'string';
+}
+
 const FileField = ({
   label,
   multiple = false,
@@ -109,7 +113,3 @@ const FileField = ({
 };
 
 export default FileField;
-
-function isFileWithPreview(file: File | FileRejection): file is File & { preview?: string } {
-  return 'preview' in file && typeof file.preview === 'string';
-}
