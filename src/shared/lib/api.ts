@@ -4,9 +4,9 @@ import { cookies } from 'next/headers';
 import { ENV } from '../config/env';
 import { COOKIE_NAME } from '../constants/cookie';
 import { isTokenExpired, setTokenCookies } from '@/modules/auth/_utils/token';
-import { SuccessResponse } from '../types/response';
+import { type ErrorResponse, type SuccessResponse } from '../types/response';
 import { ENDPOINTS } from '../config/endpoints';
-import { Token } from '@/modules/auth/_types/auth';
+import { type Token } from '@/modules/auth/_types/auth';
 import { redirect } from 'next/navigation';
 import { PATHS } from '../config/paths';
 
@@ -42,11 +42,17 @@ const apiFetch = async <T>(
   const result = await response.json();
 
   if (!response.ok) {
-    if (typeof result.error === 'string') {
-      result.error = result.error.charAt(0).toUpperCase() + result.error.slice(1);
+    if (
+      typeof result === 'object' &&
+      result !== null &&
+      'error' in result &&
+      typeof (result as ErrorResponse).error === 'string'
+    ) {
+      const errorMsg = (result as ErrorResponse).error;
+      throw new Error(errorMsg.charAt(0).toUpperCase() + errorMsg.slice(1));
     }
 
-    throw new Error(result.error || 'An error occurred while processing your request');
+    throw new Error('An error occurred while processing your request');
   }
 
   return result as SuccessResponse<T>;
@@ -66,11 +72,11 @@ const refresh = async (refreshToken: string): Promise<Token> => {
     throw new Error('Unauthorized: Refresh token is invalid or expired');
   }
 
-  const { data: token } = await response.json();
+  const { data: token } = (await response.json()) as SuccessResponse<Token>;
 
-  setTokenCookies(token);
+  await setTokenCookies(token);
 
-  return token as Token;
+  return token;
 };
 
 export async function request<T>({
@@ -102,7 +108,7 @@ export async function request<T>({
     try {
       const { accessToken } = await refresh(refreshToken);
       token = accessToken;
-    } catch (error) {
+    } catch {
       redirect(PATHS.login);
     }
   }

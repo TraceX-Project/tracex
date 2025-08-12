@@ -3,6 +3,8 @@ import React from 'react';
 import { useFieldContext } from '../form';
 import { Input } from '@/shared/components/ui/input';
 import { cn } from '@/shared/lib/cn';
+import { type FieldError } from './types/form';
+import { getErrorMessage } from './utils/error';
 
 type Props = {
   label: string;
@@ -14,7 +16,7 @@ type Props = {
 const NumberField = ({ label, placeholder, disabled, required }: Props) => {
   const field = useFieldContext<number>();
   const hasError = !field.state.meta.isValid;
-  const errorMessage = field.state.meta.errors[0]?.message;
+  const error = field.state.meta.errors[0] as FieldError;
 
   return (
     <div className="grid gap-3">
@@ -36,7 +38,9 @@ const NumberField = ({ label, placeholder, disabled, required }: Props) => {
           className={cn(hasError && 'border-destructive focus-visible:ring-destructive')}
         />
 
-        {hasError && <p className="text-sm text-destructive break-words">{errorMessage}</p>}
+        {hasError && (
+          <p className="text-destructive text-sm break-words">{getErrorMessage(error)}</p>
+        )}
       </div>
     </div>
   );

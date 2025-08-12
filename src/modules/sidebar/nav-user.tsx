@@ -17,7 +17,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/shared/components/ui/sidebar';
-import { User } from '../auth/_types/user';
 import { redirect } from 'next/navigation';
 import { logout } from '../auth/_service/auth.service';
 import { PATHS } from '@/shared/config/paths';

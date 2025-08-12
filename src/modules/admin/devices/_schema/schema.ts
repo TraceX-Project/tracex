@@ -1,10 +1,5 @@
-import { file, z } from 'zod';
-import {
-  DEVICE_ACCEPTED_FILE_TYPES,
-  DEVICE_MAX_FILE_SIZE,
-  DeviceBrand,
-  DeviceType,
-} from '../_constants/device';
+import { z } from 'zod';
+import { DeviceBrand, DeviceType } from '../_constants/device';
 
 export const projectSchema = z.object({
   modelName: z

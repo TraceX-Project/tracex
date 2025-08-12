@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 import { PATHS } from '@/shared/config/paths';
 import { COOKIE_NAME } from './shared/constants/cookie';

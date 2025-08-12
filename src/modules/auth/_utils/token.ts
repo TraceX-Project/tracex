@@ -1,10 +1,9 @@
 'use server';
 
-import { NextResponse } from 'next/server';
-import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { jwtDecode, type JwtPayload } from 'jwt-decode';
 import { ENV } from '@/shared/config/env';
 import { COOKIE_NAME, TOKEN_MAXAGE } from '@/shared/constants/cookie';
-import { Token } from '@/modules/auth/_types/auth';
+import { type Token } from '@/modules/auth/_types/auth';
 import { cookies } from 'next/headers';
 
 export async function setTokenCookies(token: Token) {

@@ -1,5 +1,7 @@
-import { ColumnDef } from '@tanstack/react-table';
-import { Device } from './_types/device';
+/* eslint-disable react-hooks/rules-of-hooks */
+
+import { type ColumnDef } from '@tanstack/react-table';
+import { type Device } from './_types/device';
 import Image from 'next/image';
 import {
   DropdownMenu,
@@ -8,20 +10,38 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu';
-import { Button } from '@/shared/components/ui/button';
+import { Button, buttonVariants } from '@/shared/components/ui/button';
 import { EllipsisVertical } from 'lucide-react';
 import { Badge } from '@/shared/components/ui/badge';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/shared/components/ui/alert-dialog';
+import { useBoolean } from '@/shared/hooks/use-boolean';
+import { cn } from '@/shared/lib/cn';
+import React from 'react';
+import Link from 'next/link';
+import { PATHS } from '@/shared/config/paths';
 
 export const deviceColumns: ColumnDef<Device>[] = [
   {
     accessorKey: 'frontPanel',
     header: 'Front Panel',
     cell: ({ row }) => {
+      const frontPanel = row.getValue('frontPanel');
+      const modelName = row.getValue('modelName');
+
       return (
         <div className="relative aspect-square size-20">
           <Image
-            src={row.getValue('frontPanel')}
-            alt={`${row.getValue('modelName')} Front Panel`}
+            src={frontPanel as string}
+            alt={`${modelName as string} Front Panel`}
             className="rounded-md"
             fill
           />
@@ -33,11 +53,14 @@ export const deviceColumns: ColumnDef<Device>[] = [
     accessorKey: 'backPanel',
     header: 'Back Panel',
     cell: ({ row }) => {
+      const backPanel = row.getValue('backPanel');
+      const modelName = row.getValue('modelName');
+
       return (
         <div className="relative aspect-square size-20">
           <Image
-            src={row.getValue('backPanel')}
-            alt={`${row.getValue('modelName')} Back Panel`}
+            src={backPanel as string}
+            alt={`${modelName as string} Back Panel`}
             className="rounded-md"
             fill
           />
@@ -77,24 +100,61 @@ export const deviceColumns: ColumnDef<Device>[] = [
   },
   {
     id: 'actions',
-    cell: () => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
-            size="icon"
-          >
-            <EllipsisVertical />
-            <span className="sr-only">Open menu</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
+    cell: ({ row }) => {
+      const device = row.original;
+      const { value: open, setValue: setOpen } = useBoolean(false);
+
+      return (
+        <React.Fragment>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
+                size="icon"
+              >
+                <EllipsisVertical />
+                <span className="sr-only">Open menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-32">
+              <DropdownMenuItem asChild>
+                <Link href={PATHS.admin.devices.edit(device.id)}>Edit</Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => setOpen(true)}
+                className="text-red-600 focus:bg-red-50 focus:text-red-600"
+              >
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <AlertDialog open={open} onOpenChange={setOpen}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Confirm Delete</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Do you want to delete <strong>{device.modelName}</strong>? This action cannot be
+                  undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  className={cn(buttonVariants({ variant: 'destructive' }))}
+                  onClick={() => {
+                    console.log('Deleting device:', device.id);
+                  }}
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </React.Fragment>
+      );
+    },
   },
 ];

@@ -1,4 +1,4 @@
-import { AnyFieldMeta } from '@tanstack/react-form';
+import { type AnyFieldMeta } from '@tanstack/react-form';
 import React from 'react';
 
 type Props = {
@@ -27,7 +27,7 @@ const FieldErrors = ({ meta }: Props) => {
   }
 
   return meta.errors.map(parseError).map((error, index) => (
-    <p key={index} className="text-sm text-destructive break-words">
+    <p key={index} className="text-destructive text-sm break-words">
       {error}
     </p>
   ));
