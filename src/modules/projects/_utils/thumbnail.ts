@@ -14,35 +14,41 @@ export const generateThumbnail = async (projectId: string) => {
     headless: true,
   });
 
-  const page = await browser.newPage();
+  try {
+    const page = await browser.newPage();
 
-  const accessToken = cookieStore.get(COOKIE_NAME.accessToken)?.value;
-  const refreshToken = cookieStore.get(COOKIE_NAME.refreshToken)?.value;
+    const accessToken = cookieStore.get(COOKIE_NAME.accessToken)?.value;
+    const refreshToken = cookieStore.get(COOKIE_NAME.refreshToken)?.value;
 
-  await page.setCookie(
-    {
-      name: COOKIE_NAME.accessToken,
-      value: accessToken!,
-      domain: new URL(ENV.NEXT_PUBLIC_APP_URL).hostname,
-      path: '/',
-    },
-    {
-      name: COOKIE_NAME.refreshToken,
-      value: refreshToken!,
-      domain: new URL(ENV.NEXT_PUBLIC_APP_URL).hostname,
-      path: '/',
+    if (!accessToken || !refreshToken) {
+      throw new Error('Missing authentication cookies');
     }
-  );
 
-  const projectUrl = `${ENV.NEXT_PUBLIC_APP_URL}${PATHS.projects.detail(projectId)}`;
-  await page.goto(projectUrl, { waitUntil: 'networkidle2' });
-  await page.setViewport({ width: 800, height: 600 });
+    await page.setCookie(
+      {
+        name: COOKIE_NAME.accessToken,
+        value: accessToken,
+        domain: new URL(ENV.NEXT_PUBLIC_APP_URL).hostname,
+        path: '/',
+      },
+      {
+        name: COOKIE_NAME.refreshToken,
+        value: refreshToken,
+        domain: new URL(ENV.NEXT_PUBLIC_APP_URL).hostname,
+        path: '/',
+      }
+    );
 
-  const outputDir = path.join(process.cwd(), 'public/thumbnails');
-  if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
+    const projectUrl = `${ENV.NEXT_PUBLIC_APP_URL}${PATHS.projects.detail(projectId)}`;
+    await page.goto(projectUrl, { waitUntil: 'networkidle2' });
+    await page.setViewport({ width: 800, height: 600 });
 
-  const outputPath = path.join(outputDir, `${projectId}.png`);
-  await page.screenshot({ path: outputPath as `${string}.png`, type: 'png' });
+    const outputDir = path.join(process.cwd(), 'public/thumbnails');
+    if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
 
-  await browser.close();
+    const outputPath = path.join(outputDir, `${projectId}.png`);
+    await page.screenshot({ path: outputPath as `${string}.png`, type: 'png' });
+  } finally {
+    await browser.close();
+  }
 };

@@ -15,7 +15,7 @@ const CaptureThumbnail = ({ id }: Props) => {
     } catch (error) {
       console.error('Error capturing thumbnail:', error);
     }
-  }, []);
+  }, [id]);
 
   return <Button onClick={captureThumbnail}>Capture</Button>;
 };
