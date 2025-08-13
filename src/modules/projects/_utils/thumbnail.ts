@@ -40,11 +40,13 @@ export const generateThumbnail = async (projectId: string) => {
     );
 
     const projectUrl = `${ENV.NEXT_PUBLIC_APP_URL}${PATHS.projects.detail(projectId)}`;
-    await page.goto(projectUrl, { waitUntil: 'networkidle2' });
+    await page.goto(projectUrl, { waitUntil: 'domcontentloaded', timeout: 10000 });
     await page.setViewport({ width: 800, height: 600 });
 
     const outputDir = path.join(process.cwd(), 'public/thumbnails');
-    if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
+    if (!fs.existsSync(outputDir)) {
+      fs.mkdirSync(outputDir, { recursive: true });
+    }
 
     const outputPath = path.join(outputDir, `${projectId}.png`);
     await page.screenshot({ path: outputPath as `${string}.png`, type: 'png' });
