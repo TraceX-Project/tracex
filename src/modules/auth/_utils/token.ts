@@ -14,6 +14,7 @@ export async function setTokenCookies(token: Token) {
     path: '/',
     secure: ENV.NODE_ENV === 'production',
     maxAge: TOKEN_MAXAGE.accessToken,
+    domain: new URL(ENV.NEXT_PUBLIC_APP_URL).hostname,
   });
 
   cookieStore.set(COOKIE_NAME.refreshToken, token.refreshToken, {
@@ -22,6 +23,7 @@ export async function setTokenCookies(token: Token) {
     path: '/',
     secure: ENV.NODE_ENV === 'production',
     maxAge: TOKEN_MAXAGE.refreshToken,
+    domain: new URL(ENV.NEXT_PUBLIC_APP_URL).hostname,
   });
 }
 

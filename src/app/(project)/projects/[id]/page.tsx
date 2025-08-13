@@ -1,3 +1,5 @@
+import CaptureThumbnail from '@/modules/projects/capture-thumbnail';
+
 type Props = {
   params: Promise<{ id: string }>;
 };
@@ -5,5 +7,11 @@ type Props = {
 export default async function ProjectPage({ params }: Props) {
   const { id } = await params;
 
-  return <div>Project ID: {id}</div>;
+  return (
+    <div>
+      <p>Project ID: {id}</p>
+
+      <CaptureThumbnail id={id} />
+    </div>
+  );
 }
