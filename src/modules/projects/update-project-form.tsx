@@ -44,6 +44,8 @@ const UpdateProjectForm = ({ project }: Props) => {
 
         toast.success('Project updated successfully!');
       } catch (error) {
+        console.error('Error updating project:', error);
+
         toast.error(
           error instanceof Error
             ? error.message
