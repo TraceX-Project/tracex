@@ -45,7 +45,7 @@ export const getProject = async (projectId: string) => {
 
 export const updateProject = async (projectId: string, payload: UpdateProjectRequest) => {
   const response = await request<Project>({
-    method: 'PUT',
+    method: 'PATCH',
     path: `${ENDPOINTS.projects.update(projectId)}`,
     body: payload,
   });
