@@ -31,10 +31,10 @@ import { PATHS } from '@/shared/config/paths';
 
 export const deviceColumns: ColumnDef<Device>[] = [
   {
-    accessorKey: 'frontPanel',
+    accessorKey: 'FrontPanelURL',
     header: 'Front Panel',
     cell: ({ row }) => {
-      const frontPanel = row.getValue('frontPanel');
+      const frontPanel = row.getValue('FrontPanelURL');
       const modelName = row.getValue('modelName');
 
       return (
@@ -50,10 +50,10 @@ export const deviceColumns: ColumnDef<Device>[] = [
     },
   },
   {
-    accessorKey: 'backPanel',
+    accessorKey: 'BackPanelURL',
     header: 'Back Panel',
     cell: ({ row }) => {
-      const backPanel = row.getValue('backPanel');
+      const backPanel = row.getValue('BackPanelURL');
       const modelName = row.getValue('modelName');
 
       return (

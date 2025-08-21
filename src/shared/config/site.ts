@@ -1,5 +1,5 @@
 export const SITE_CONFIG = {
-  name: "TraceX",
-  description: "",
-  keywords: ""
-}
+  name: 'TraceX',
+  description: '',
+  keywords: '',
+};

@@ -20,13 +20,10 @@ export const projectSchema = z.object({
     .number({ message: 'Unit size must be a number' })
     .int({ message: 'Unit size must be an integer' })
     .positive({ message: 'Unit size must be greater than zero' }),
-  //   frontPanel: z
-  //     .instanceof(File)
-  //     .nullable()
-  //     .refine((file) => file === null || file.size <= DEVICE_MAX_FILE_SIZE, {
-  //       message: 'Front panel image must be less than 2MB',
-  //     })
-  //     .refine((file) => file === null || DEVICE_ACCEPTED_FILE_TYPES.includes(file.type), {
-  //       message: 'Front panel image must be a JPEG or PNG',
-  //     }),
+  frontPanel: z.string().max(1000, {
+    message: 'Front panel image URL must be at most 100 characters',
+  }),
+  backPanel: z.string().max(1000, {
+    message: 'Back panel image URL must be at most 100 characters',
+  }),
 });

@@ -3,7 +3,22 @@ export type Device = {
   modelName: string;
   brand: 'cisco' | 'dell' | 'mikrotik';
   type: 'router' | 'switch';
-  frontPanel: string;
-  backPanel: string;
+  FrontPanelURL: string;
+  BackPanelURL: string;
   size: number;
 };
+
+export type OutputImage = {
+  url: string;
+};
+
+export type CreateDeviceTemplateRequest = {
+  modelName: string;
+  brand: 'cisco' | 'dell' | 'mikrotik';
+  type: 'router' | 'switch';
+  FrontPanelURL: string;
+  BackPanelURL: string;
+  size: number;
+};
+
+export type UpdateDeviceTemplateRequest = Partial<CreateDeviceTemplateRequest>;
