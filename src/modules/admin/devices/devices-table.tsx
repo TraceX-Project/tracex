@@ -21,7 +21,6 @@ import {
 } from '@tanstack/react-table';
 import React from 'react';
 import { deviceColumns } from './device-columns';
-import { devices } from './_mocks/device';
 import { Button } from '@/shared/components/ui/button';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { Label } from '@/shared/components/ui/label';
@@ -32,15 +31,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/components/ui/select';
+import { useGetDeviceTemplates } from './_hooks/use-get-deviceTemplates';
 
 const DevicesTable = () => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const { data: devices, isLoading } = useGetDeviceTemplates();
 
   const table = useReactTable({
-    data: devices,
+    data: devices?.data ?? [],
     columns: deviceColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -58,6 +59,7 @@ const DevicesTable = () => {
     },
   });
 
+  if (isLoading) return <div>Loading...</div>;
   return (
     <div className="flex h-full min-h-0 flex-1 flex-col gap-4">
       <div className="relative flex flex-1">

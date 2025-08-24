@@ -3,7 +3,7 @@ import { deleteDeviceTemplate } from '../_services/devices.service';
 import { QUERY_KEYS } from '@/shared/constants/query_key';
 import { useMutation } from '@tanstack/react-query';
 
-const useDeleteDeviceTemplate = () => {
+export const useDeleteDeviceTemplate = () => {
   const queryClient = getQueryClient();
 
   return useMutation({

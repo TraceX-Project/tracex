@@ -28,19 +28,21 @@ import { cn } from '@/shared/lib/cn';
 import React from 'react';
 import Link from 'next/link';
 import { PATHS } from '@/shared/config/paths';
+import { FrontPanelURLMock, BackPanelURLMock } from './_types/device';
+import { useDeleteDeviceTemplate } from './_hooks/use-delete-deviceTemplates';
 
 export const deviceColumns: ColumnDef<Device>[] = [
   {
-    accessorKey: 'FrontPanelURL',
+    accessorKey: 'frontPanelUrl',
     header: 'Front Panel',
     cell: ({ row }) => {
-      const frontPanel = row.getValue('FrontPanelURL');
+      const frontPanel = row.getValue('frontPanelUrl');
       const modelName = row.getValue('modelName');
 
       return (
         <div className="relative aspect-square size-20">
           <Image
-            src={frontPanel as string}
+            src={(frontPanel as string) || FrontPanelURLMock}
             alt={`${modelName as string} Front Panel`}
             className="rounded-md"
             fill
@@ -50,16 +52,16 @@ export const deviceColumns: ColumnDef<Device>[] = [
     },
   },
   {
-    accessorKey: 'BackPanelURL',
+    accessorKey: 'backPanelUrl',
     header: 'Back Panel',
     cell: ({ row }) => {
-      const backPanel = row.getValue('BackPanelURL');
+      const backPanel = row.getValue('backPanelUrl');
       const modelName = row.getValue('modelName');
 
       return (
         <div className="relative aspect-square size-20">
           <Image
-            src={backPanel as string}
+            src={(backPanel as string) || BackPanelURLMock}
             alt={`${modelName as string} Back Panel`}
             className="rounded-md"
             fill
@@ -101,6 +103,7 @@ export const deviceColumns: ColumnDef<Device>[] = [
   {
     id: 'actions',
     cell: ({ row }) => {
+      const { mutateAsync: deleteDeviceTemplate } = useDeleteDeviceTemplate();
       const device = row.original;
       const { value: open, setValue: setOpen } = useBoolean(false);
 
@@ -145,7 +148,7 @@ export const deviceColumns: ColumnDef<Device>[] = [
                 <AlertDialogAction
                   className={cn(buttonVariants({ variant: 'destructive' }))}
                   onClick={() => {
-                    console.log('Deleting device:', device.id);
+                    deleteDeviceTemplate(device.id);
                   }}
                 >
                   Delete
