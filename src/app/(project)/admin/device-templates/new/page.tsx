@@ -4,7 +4,7 @@ import SiteHeader from '@/modules/sidebar/site-header';
 export default function CreateDevicePage() {
   return (
     <div>
-      <SiteHeader title="Create New Device" />
+      <SiteHeader title="Create New Device Template" />
 
       <div className="container mx-auto flex flex-1 flex-col space-y-4 p-5 pt-20">
         <DeviceTemplateForm />

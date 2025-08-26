@@ -152,7 +152,7 @@ const DeviceTemplateForm = () => {
   return (
     <Card className="mx-auto w-full max-w-3xl">
       <CardHeader>
-        <CardTitle className="text-left text-2xl font-bold">Create New Device</CardTitle>
+        <CardTitle className="text-left text-2xl font-bold">Create New Device Template</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -212,11 +212,11 @@ const DeviceTemplateForm = () => {
               <field.FileField
                 label="Front Panel"
                 disabled={isUploading}
-                onFileSelect={(files) => {
-                  if (files && files.length > 0) {
-                    handleFileUpload(files[0], 'front');
-                  }
-                }}
+                // onFileSelect={(files) => {
+                //   if (files && files.length > 0) {
+                //     handleFileUpload(files[0], 'front');
+                //   }
+                // }}
               />
             )}
           />
@@ -232,11 +232,11 @@ const DeviceTemplateForm = () => {
               <field.FileField
                 label="Back Panel"
                 disabled={isUploading}
-                onFileSelect={(files) => {
-                  if (files && files.length > 0) {
-                    handleFileUpload(files[0], 'back');
-                  }
-                }}
+                // onFileSelect={(files) => {
+                //   if (files && files.length > 0) {
+                //     handleFileUpload(files[0], 'back');
+                //   }
+                // }}
               />
             )}
           />
