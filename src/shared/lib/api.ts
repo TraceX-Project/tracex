@@ -37,7 +37,7 @@ const apiFetch = async <T>(
     headers['Content-Type'] = 'application/json';
   }
 
-  const requestBody = body ? (isFormData ? (body) : JSON.stringify(body)) : undefined;
+  const requestBody = body ? (isFormData ? body : JSON.stringify(body)) : undefined;
 
   const response = await fetch(url, {
     method,
