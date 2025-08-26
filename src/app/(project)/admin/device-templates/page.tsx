@@ -1,4 +1,4 @@
-import DevicesTable from '@/modules/admin/devices/devices-table';
+import DeviceTemplatesTable from '@/modules/admin/device-templates/device-templates-table';
 import SiteHeader from '@/modules/sidebar/site-header';
 import { Button } from '@/shared/components/ui/button';
 import { Separator } from '@/shared/components/ui/separator';
@@ -24,7 +24,7 @@ export default function AdminDevicesPage() {
 
         <Separator />
 
-        <DevicesTable />
+        <DeviceTemplatesTable />
       </div>
     </div>
   );

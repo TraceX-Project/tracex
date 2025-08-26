@@ -2,12 +2,12 @@ import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
 import {
   type CreateDeviceTemplateRequest,
-  type Device,
+  type DeviceTemplate,
   type UpdateDeviceTemplateRequest,
-} from '../_types/device';
+} from '../_types/device-template';
 
 export const createDeviceTemplate = async (payload: CreateDeviceTemplateRequest) => {
-  const response = await request<Device>({
+  const response = await request<DeviceTemplate>({
     method: 'POST',
     path: ENDPOINTS.deviceTemplates.create,
     body: payload,
@@ -16,7 +16,7 @@ export const createDeviceTemplate = async (payload: CreateDeviceTemplateRequest)
 };
 
 export const getDeviceTemplates = async () => {
-  const response = await request<Device[]>({
+  const response = await request<DeviceTemplate[]>({
     method: 'GET',
     path: ENDPOINTS.deviceTemplates.getAll,
   });
@@ -24,7 +24,7 @@ export const getDeviceTemplates = async () => {
 };
 
 export const getDeviceTemplate = async (id: string) => {
-  const response = await request<Device>({
+  const response = await request<DeviceTemplate>({
     method: 'GET',
     path: ENDPOINTS.deviceTemplates.getById(id),
   });
@@ -40,7 +40,7 @@ export const deleteDeviceTemplate = async (id: string) => {
 };
 
 export const updateDeviceTemplate = async (id: string, payload: UpdateDeviceTemplateRequest) => {
-  const response = await request<Device>({
+  const response = await request<DeviceTemplate>({
     method: 'PATCH',
     path: ENDPOINTS.deviceTemplates.update(id),
     body: payload,

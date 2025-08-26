@@ -7,15 +7,15 @@ import {
   DEVICE_TYPES_OPTIONS,
   DeviceBrand,
   DeviceType,
-} from './_constants/device';
+} from './_constants/device-template';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
-import { projectSchema } from './_schema/schema';
-import { useCreateDeviceTemplate } from './_hooks/use-create-deviceTemplate';
+import { deviceTemplateSchema } from './_schema/schema';
+import { useCreateDeviceTemplate } from './_hooks/use-create-device-template';
 import { useUploadAttachment } from './_hooks/use-upload-attachment';
 import { useDeleteAttachment } from './_hooks/use-delete-attachment';
 import { toast } from 'sonner';
 
-const DeviceForm = () => {
+const DeviceTemplateForm = () => {
   const { mutateAsync: createNewDeviceTemplate } = useCreateDeviceTemplate();
   const { mutateAsync: uploadAttachment, isPending: isUploading } = useUploadAttachment();
   const { mutateAsync: deleteAttachment } = useDeleteAttachment();
@@ -101,7 +101,7 @@ const DeviceForm = () => {
       unitSize: 1,
     },
     validators: {
-      onChange: projectSchema,
+      onChange: deviceTemplateSchema,
     },
     onSubmit: async ({ value }) => {
       console.log('frontPanel', value.frontPanel);
@@ -258,4 +258,4 @@ const DeviceForm = () => {
   );
 };
 
-export default DeviceForm;
+export default DeviceTemplateForm;

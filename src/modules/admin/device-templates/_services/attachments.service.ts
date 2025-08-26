@@ -1,6 +1,6 @@
 import { request } from '@/shared/lib/api';
 import { ENDPOINTS } from '@/shared/config/endpoints';
-import { type OutputImage } from '../_types/device';
+import { type OutputImage } from '../_types/device-template';
 
 export const attachmentsService = {
   upload: async (file: File) => {

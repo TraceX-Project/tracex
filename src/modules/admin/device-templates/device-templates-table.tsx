@@ -2,13 +2,13 @@
 
 import DataTable from '@/shared/components/ui/table/data-table';
 import React from 'react';
-import { useGetDeviceTemplates } from './_hooks/use-get-deviceTemplates';
+import { useGetDeviceTemplates } from './_hooks/use-get-device-templates';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import { useDataTable } from '@/shared/hooks/use-data-table';
-import { deviceColumns } from './device-columns';
+import { deviceTemplateColumns } from './device-template-columns';
 import DataTableSkeleton from '@/shared/components/ui/table/data-table-skeleton';
 
-const DevicesTable = () => {
+const DeviceTemplatesTable = () => {
   const { data: devices, isLoading } = useGetDeviceTemplates();
   const [pageSize] = useQueryState('perPage', parseAsInteger.withDefault(10));
   const totalDevices = devices?.data?.length ?? 0;
@@ -17,7 +17,7 @@ const DevicesTable = () => {
 
   const { table } = useDataTable({
     data: devices?.data ?? [],
-    columns: deviceColumns,
+    columns: deviceTemplateColumns,
     pageCount,
   });
 
@@ -30,4 +30,4 @@ const DevicesTable = () => {
   return <DataTable table={table}></DataTable>;
 };
 
-export default DevicesTable;
+export default DeviceTemplatesTable;

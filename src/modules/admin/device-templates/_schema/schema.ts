@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { DeviceBrand, DeviceType } from '../_constants/device';
+import { DeviceBrand, DeviceType } from '../_constants/device-template';
 
-export const projectSchema = z.object({
+export const deviceTemplateSchema = z.object({
   modelName: z
     .string()
     .min(1, {
