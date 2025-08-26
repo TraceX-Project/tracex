@@ -20,10 +20,10 @@ export const PATHS = {
   },
   admin: {
     users: `${ROOTS.admin}/users`,
-    devices: {
-      root: `${ROOTS.admin}/devices`,
-      new: `${ROOTS.admin}/devices/new`,
-      edit: (id: string) => `${ROOTS.admin}/devices/${id}/edit`,
+    deviceTemplates: {
+      root: `${ROOTS.admin}/device-templates`,
+      new: `${ROOTS.admin}/device-templates/new`,
+      edit: (id: string) => `${ROOTS.admin}/device-templates/${id}/edit`,
     },
   },
 };

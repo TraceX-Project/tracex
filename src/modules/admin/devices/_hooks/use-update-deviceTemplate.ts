@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { getQueryClient } from '@/shared/tanstack-query/get-query-client';
-import { QUERY_KEYS } from '@/shared/constants/query_key';
+import { QUERY_KEYS } from '@/shared/constants/query-key';
 import { updateDeviceTemplate } from '../_services/devices.service';
 import { type UpdateDeviceTemplateRequest } from '../_types/device';
 

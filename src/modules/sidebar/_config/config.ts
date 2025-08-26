@@ -18,9 +18,9 @@ export const navAdmin = [
     tooltip: 'Manage users',
   },
   {
-    title: 'Manage Devices',
-    url: PATHS.admin.devices.root,
+    title: 'Manage Device Templates',
+    url: PATHS.admin.deviceTemplates.root,
     icon: Monitor,
-    tooltip: 'Manage devices',
+    tooltip: 'Manage device templates',
   },
 ];

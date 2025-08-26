@@ -6,9 +6,10 @@ import { useGetDeviceTemplates } from './_hooks/use-get-deviceTemplates';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import { useDataTable } from '@/shared/hooks/use-data-table';
 import { deviceColumns } from './device-columns';
+import DataTableSkeleton from '@/shared/components/ui/table/data-table-skeleton';
 
 const DevicesTable = () => {
-  const { data: devices } = useGetDeviceTemplates();
+  const { data: devices, isLoading } = useGetDeviceTemplates();
   const [pageSize] = useQueryState('perPage', parseAsInteger.withDefault(10));
   const totalDevices = devices?.data?.length ?? 0;
 
@@ -18,9 +19,13 @@ const DevicesTable = () => {
     data: devices?.data ?? [],
     columns: deviceColumns,
     pageCount,
-    shallow: false,
-    debounceMs: 500,
   });
+
+  if (isLoading) {
+    return (
+      <DataTableSkeleton columnCount={6} rowCount={8} withViewOptions={false} filterCount={0} />
+    );
+  }
 
   return <DataTable table={table}></DataTable>;
 };

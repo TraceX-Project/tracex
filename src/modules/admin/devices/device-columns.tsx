@@ -122,7 +122,7 @@ export const deviceColumns: ColumnDef<Device>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-32">
               <DropdownMenuItem asChild>
-                <Link href={PATHS.admin.devices.edit(device.id)}>Edit</Link>
+                <Link href={PATHS.admin.deviceTemplates.edit(device.id)}>Edit</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem

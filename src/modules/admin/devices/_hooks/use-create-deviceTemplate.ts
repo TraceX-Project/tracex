@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { QUERY_KEYS } from '@/shared/constants/query_key';
+import { QUERY_KEYS } from '@/shared/constants/query-key';
 import { getQueryClient } from '@/shared/tanstack-query/get-query-client';
 import { createDeviceTemplate } from '../_services/devices.service';
 import { type CreateDeviceTemplateRequest } from '../_types/device';
