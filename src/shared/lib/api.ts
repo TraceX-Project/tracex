@@ -17,32 +17,27 @@ type RequestOptions = {
   path: string;
   body?: unknown;
   auth?: boolean;
-  contentType?: string;
 };
 
 const apiFetch = async <T>(
   url: string,
   method: HttpMethod,
   token?: string,
-  body?: unknown,
-  contentType?: string
+  body?: unknown
 ): Promise<SuccessResponse<T>> => {
   const headers: HeadersInit = {};
-
-  if (!(body instanceof FormData)) {
-    headers['Content-Type'] = contentType ?? 'application/json';
-  }
 
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  let requestBody: string | FormData | undefined;
-  if (body instanceof FormData) {
-    requestBody = body;
-  } else if (body) {
-    requestBody = JSON.stringify(body);
+  const isFormData = body instanceof FormData;
+
+  if (!isFormData) {
+    headers['Content-Type'] = 'application/json';
   }
+
+  const requestBody = body ? (isFormData ? (body) : JSON.stringify(body)) : undefined;
 
   const response = await fetch(url, {
     method,
@@ -94,7 +89,6 @@ export async function request<T>({
   method,
   path,
   body,
-  contentType,
   auth = true,
 }: RequestOptions): Promise<SuccessResponse<T>> {
   const cookieStore = await cookies();
@@ -125,5 +119,5 @@ export async function request<T>({
     }
   }
 
-  return apiFetch<T>(url, method, token, body, contentType);
+  return apiFetch<T>(url, method, token, body);
 }
