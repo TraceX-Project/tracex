@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { DeviceBrand, DeviceType } from '../_constants/device-template';
+import { DeviceBrand, DeviceType } from '../_types/device-template';
 
 export const deviceTemplateSchema = z.object({
   modelName: z
@@ -20,10 +20,10 @@ export const deviceTemplateSchema = z.object({
     .number({ message: 'Unit size must be a number' })
     .int({ message: 'Unit size must be an integer' })
     .positive({ message: 'Unit size must be greater than zero' }),
-  frontPanel: z.string().max(1000, {
-    message: 'Front panel image URL must be at most 100 characters',
+  frontPanelId: z.string().uuid({
+    message: 'Front panel ID must be a valid UUID',
   }),
-  backPanel: z.string().max(1000, {
-    message: 'Back panel image URL must be at most 100 characters',
+  backPanelId: z.string().uuid({
+    message: 'Back panel ID must be a valid UUID',
   }),
 });

@@ -1,135 +1,48 @@
 'use client';
 
 import { useAppForm } from '@/shared/tanstack-form/form';
-import React, { useCallback, useState } from 'react';
-import {
-  DEVICE_BRANDS_OPTIONS,
-  DEVICE_TYPES_OPTIONS,
-  DeviceBrand,
-  DeviceType,
-} from './_constants/device-template';
+import React, { useCallback } from 'react';
+import { DEVICE_BRANDS_OPTIONS, DEVICE_TYPES_OPTIONS } from './_constants/device-template';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { deviceTemplateSchema } from './_schema/schema';
 import { useCreateDeviceTemplate } from './_hooks/use-create-device-template';
-import { useUploadAttachment } from './_hooks/use-upload-attachment';
-import { useDeleteAttachment } from './_hooks/use-delete-attachment';
 import { toast } from 'sonner';
+import { DeviceBrand, DeviceType } from './_types/device-template';
+import { useUploadFile } from '@/shared/hooks/use-upload-file';
+import { useRouter } from 'next/navigation';
+import { PATHS } from '@/shared/config/paths';
 
 const DeviceTemplateForm = () => {
   const { mutateAsync: createNewDeviceTemplate } = useCreateDeviceTemplate();
-  const { mutateAsync: uploadAttachment, isPending: isUploading } = useUploadAttachment();
-  const { mutateAsync: deleteAttachment } = useDeleteAttachment();
-
-  // State to store uploaded URLs and IDs
-  const [frontPanelURL, setFrontPanelURL] = useState<string>('');
-  const [backPanelURL, setBackPanelURL] = useState<string>('');
-  const [frontPanelId, setFrontPanelId] = useState<string>('');
-  const [backPanelId, setBackPanelId] = useState<string>('');
-
-  // Handle file upload with deletion of old image
-  const handleFileUpload = async (file: File, type: 'front' | 'back') => {
-    try {
-      // Delete old image if it exists
-      const oldId = type === 'front' ? frontPanelId : backPanelId;
-      if (oldId) {
-        try {
-          await deleteAttachment(oldId);
-          toast.success(`Old ${type === 'front' ? 'front' : 'back'} panel image deleted`);
-        } catch (error) {
-          console.error(`Failed to delete old ${type} panel image:`, error);
-          // Continue with upload even if delete fails
-        }
-      }
-
-      // Upload new image
-      const result = await uploadAttachment(file);
-      console.log(result);
-      const { url } = result;
-      console.log('URL:', url);
-
-      if (type === 'front') {
-        setFrontPanelURL(url);
-        // setFrontPanelId(id);
-        form.setFieldValue('frontPanel', url);
-      } else {
-        setBackPanelURL(url);
-        // setBackPanelId(id);
-        form.setFieldValue('backPanel', url);
-      }
-
-      toast.success(`${type === 'front' ? 'Front' : 'Back'} panel image uploaded successfully`);
-    } catch (error) {
-      toast.error(`Failed to upload ${type === 'front' ? 'front' : 'back'} panel image`);
-    }
-  };
-
-  // Cleanup function to delete uploaded images on component unmount if not submitted
-  React.useEffect(() => {
-    return () => {
-      // Only cleanup if there are uploaded images and form wasn't successfully submitted
-      const cleanupImages = async () => {
-        if (frontPanelId) {
-          try {
-            await deleteAttachment(frontPanelId);
-          } catch (error) {
-            console.error('Failed to cleanup front panel image:', error);
-          }
-        }
-        if (backPanelId) {
-          try {
-            await deleteAttachment(backPanelId);
-          } catch (error) {
-            console.error('Failed to cleanup back panel image:', error);
-          }
-        }
-      };
-
-      // Only cleanup if we have images but form hasn't been successfully submitted
-      if ((frontPanelId || backPanelId) && (frontPanelURL || backPanelURL)) {
-        cleanupImages();
-      }
-    };
-  }, [frontPanelId, backPanelId, frontPanelURL, backPanelURL, deleteAttachment]);
+  const { onUpload: onUploadFront } = useUploadFile();
+  const { onUpload: onUploadBack } = useUploadFile();
+  const router = useRouter();
 
   const form = useAppForm({
     defaultValues: {
       modelName: '',
       brand: DeviceBrand.CISCO,
       type: DeviceType.ROUTER,
-      frontPanel: '',
-      backPanel: '',
+      frontPanelId: '',
+      backPanelId: '',
       unitSize: 1,
     },
     validators: {
       onChange: deviceTemplateSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log('frontPanel', value.frontPanel);
-      console.log('backPanel', value.backPanel);
-
-      if (!frontPanelURL || !backPanelURL) {
-        toast.error('Please upload both front and back panel images');
-        return;
-      }
-
       try {
-        const createdDeviceTemplate = await createNewDeviceTemplate({
+        await createNewDeviceTemplate({
           modelName: value.modelName,
           brand: value.brand,
           type: value.type,
-          FrontPanelURL: frontPanelURL,
-          BackPanelURL: backPanelURL,
-          size: value.unitSize,
+          frontPanelId: value.frontPanelId,
+          backPanelId: value.backPanelId,
+          unitSize: value.unitSize,
         });
 
-        // Reset form and URLs
-        form.reset();
-        setFrontPanelURL('');
-        setBackPanelURL('');
-        // setFrontPanelId('');
-        // setBackPanelId('');
-
         toast.success('Device template created successfully');
+        router.push(PATHS.admin.deviceTemplates.root);
       } catch (error) {
         toast.error(
           error instanceof Error
@@ -165,7 +78,6 @@ const DeviceTemplateForm = () => {
               )}
             />
           </div>
-
           {/* Group: Unit Size, Brand, Type */}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
             {/* Unit Size */}
@@ -206,45 +118,22 @@ const DeviceTemplateForm = () => {
               />
             </div>
           </div>
-          <form.AppField
-            name="frontPanel"
-            children={(field) => (
-              <field.FileField
-                label="Front Panel"
-                disabled={isUploading}
-                // onFileSelect={(files) => {
-                //   if (files && files.length > 0) {
-                //     handleFileUpload(files[0], 'front');
-                //   }
-                // }}
-              />
-            )}
-          />
-          {frontPanelURL && (
-            <div className="mt-2">
-              <p className="text-sm text-green-600">✓ Front panel uploaded successfully</p>
-            </div>
-          )}
 
+          {/* Front Panel Upload */}
           <form.AppField
-            name="backPanel"
+            name="frontPanelId"
             children={(field) => (
-              <field.FileField
-                label="Back Panel"
-                disabled={isUploading}
-                // onFileSelect={(files) => {
-                //   if (files && files.length > 0) {
-                //     handleFileUpload(files[0], 'back');
-                //   }
-                // }}
-              />
+              <field.FileUploader label="Front Panel" maxFiles={1} onUpload={onUploadFront} />
             )}
           />
-          {backPanelURL && (
-            <div className="mt-2">
-              <p className="text-sm text-green-600">✓ Back panel uploaded successfully</p>
-            </div>
-          )}
+
+          {/* Back Panel Upload */}
+          <form.AppField
+            name="backPanelId"
+            children={(field) => (
+              <field.FileUploader label="Back Panel" maxFiles={1} onUpload={onUploadBack} />
+            )}
+          />
 
           {/* Submit Button */}
           <div className="flex justify-start">

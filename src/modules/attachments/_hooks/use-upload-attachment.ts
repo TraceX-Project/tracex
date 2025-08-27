@@ -3,6 +3,12 @@ import { uploadAttachment } from '../_services/attachments.service';
 
 export const useUploadAttachment = () => {
   return useMutation({
-    mutationFn: (formData: FormData) => uploadAttachment(formData),
+    mutationFn: (file: File) => {
+      const formData = new FormData();
+
+      formData.append('file', file);
+
+      return uploadAttachment(formData);
+    },
   });
 };

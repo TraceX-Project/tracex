@@ -2,7 +2,6 @@
 
 import { Label } from '@/shared/components/ui/label';
 import React, { useCallback, useEffect } from 'react';
-import { useFieldContext } from '../form';
 import Dropzone, { type DropzoneProps, type FileRejection } from 'react-dropzone';
 import { toast } from 'sonner';
 import { useControllableState } from '@/shared/hooks/use-controllable-state';
@@ -13,6 +12,8 @@ import { Progress } from '@/shared/components/ui/progress';
 import { Button } from '@/shared/components/ui/button';
 import { Upload, X } from 'lucide-react';
 import { cn } from '@/shared/lib/cn';
+import { useFieldContext } from '../form';
+import { type UploadAttachmentResponse } from '@/modules/attachments/_types/attachments';
 
 function isFileWithPreview(file: File): file is File & { preview?: string } {
   return 'preview' in file && typeof file.preview === 'string';
@@ -63,7 +64,7 @@ const FileCard = ({ file, onRemove, progress }: FileCardProps) => {
   );
 };
 
-interface FileFieldProps extends React.HTMLAttributes<HTMLDivElement> {
+interface FileUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
   label: string;
   multiple?: boolean;
   progresses?: Record<string, number>;
@@ -72,11 +73,11 @@ interface FileFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   accept?: DropzoneProps['accept'];
   disabled?: boolean;
   value?: File[];
-  onUpload?: (files: File[]) => Promise<void>;
+  onUpload?: (files: File[]) => Promise<UploadAttachmentResponse[]>;
   onValueChange?: React.Dispatch<React.SetStateAction<File[]>>;
 }
 
-const FileField = ({
+const FileUploader = ({
   label,
   multiple = false,
   maxFiles = 1,
@@ -89,9 +90,8 @@ const FileField = ({
   onValueChange,
   className,
   ...dropzoneProps
-}: FileFieldProps) => {
-  const field = useFieldContext<File[] | File | null>();
-
+}: FileUploaderProps) => {
+  const field = useFieldContext<string[] | string | null>();
   const [files, setFiles] = useControllableState({
     prop: valueProp,
     onChange: onValueChange,
@@ -130,8 +130,15 @@ const FileField = ({
 
         toast.promise(onUpload(updatedFiles), {
           loading: `Uploading ${target}...`,
-          success: () => {
-            setFiles([]);
+          success: (uploadedFiles) => {
+            if (uploadedFiles.length > 0) {
+              if (maxFiles === 1) {
+                field.setValue(uploadedFiles[0]?.id);
+              } else {
+                field.setValue(uploadedFiles.map((file) => file.id));
+              }
+            }
+
             return `${target} uploaded`;
           },
           error: `Failed to upload ${target}`,
@@ -174,7 +181,7 @@ const FileField = ({
         {label}
       </Label>
 
-      <div>
+      <div className="relative flex flex-col gap-6 overflow-hidden">
         <Dropzone
           onDrop={onDrop}
           accept={accept}
@@ -244,4 +251,4 @@ const FileField = ({
   );
 };
 
-export default FileField;
+export default FileUploader;

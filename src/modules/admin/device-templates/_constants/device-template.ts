@@ -1,13 +1,4 @@
-export enum DeviceBrand {
-  CISCO = 'cisco',
-  DELL = 'dell',
-  MIKROTIK = 'mikrotik',
-}
-
-export enum DeviceType {
-  ROUTER = 'router',
-  SWITCH = 'switch',
-}
+import { DeviceBrand, DeviceType } from '../_types/device-template';
 
 export const DEVICE_BRANDS_OPTIONS = [
   { value: DeviceBrand.CISCO, label: 'Cisco' },
