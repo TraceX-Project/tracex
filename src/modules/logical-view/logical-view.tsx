@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import '@xyflow/react/dist/style.css';
 import {
   ReactFlow,
@@ -26,8 +26,32 @@ type Props = {
 };
 export const LogicalView = ({ id }: Props) => {
   const { data: devices } = useGetDevicesInProject(id);
+
+  console.log('devices', devices);
+
   const [nodes, setNodes] = useState<NodeType[]>([]);
   const [edges, setEdges] = useState<EdgeType[]>([]);
+
+  useEffect(() => {
+    if (!devices) return;
+
+    const initialNodes: NodeType[] = devices.nodes.map((node, index) => ({
+      id: node.id,
+      position: node.position,
+      type: node.type,
+      data: { label: `Node ${index + 1}` },
+    }));
+
+    const initialEdges: EdgeType[] = devices.edges.map((edge) => ({
+      id: `${edge.source}-${edge.target}`,
+      source: edge.source,
+      target: edge.target,
+    }));
+
+    const layouted = getLayoutedElements(initialNodes, initialEdges);
+    setNodes(layouted.nodes);
+    setEdges(layouted.edges);
+  }, [devices]);
 
   const dagreGraph = new dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 
@@ -90,7 +114,7 @@ export const LogicalView = ({ id }: Props) => {
           type: node.category,
           data: {
             label: `Node ${index + 1}`,
-            data: node,
+            // data: node,
           },
         });
       }

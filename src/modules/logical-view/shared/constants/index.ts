@@ -1,9 +1,10 @@
 import { type Edge } from '@xyflow/react';
 import { Routernode, Switchnode } from '../components/index';
+import { DeviceType } from '@/modules/admin/device-templates/_types/device-template';
 
 export const nodeTypes = {
-  Router: Routernode,
-  Switch: Switchnode,
+  [`${DeviceType.ROUTER}`]: Routernode,
+  [`${DeviceType.SWITCH}`]: Switchnode,
 };
 
 export type InterfaceInfo = {
@@ -42,7 +43,7 @@ export type NodeType = {
   type: string;
   data: {
     label: string;
-    data: DeviceNode;
+    // data: DeviceNode;
   };
 };
 

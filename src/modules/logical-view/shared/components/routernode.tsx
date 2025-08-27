@@ -1,5 +1,4 @@
 import React from 'react';
-// import router from '@/../public/router-svgrepo-com.svg'
 import { Handle, Position } from '@xyflow/react';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/shared/components/ui/hover-card';
 import {
@@ -11,6 +10,7 @@ import {
   TableRow,
 } from '@/shared/components/ui/table';
 import { Label } from '@radix-ui/react-label';
+import Image from 'next/image';
 
 type interface_info = {
   name: string;
@@ -29,7 +29,7 @@ export const Routernode = ({ data }: { data: informations }) => {
     <HoverCard>
       <HoverCardTrigger>
         <div className="router-node flex flex-col items-center justify-center">
-          {/* <Image src={router} alt='router-image' width={50} height={50} /> */}
+          <Image src="/router.svg" alt="router-image" width={50} height={50} />
           <Handle type="source" position={Position.Bottom} />
           <Handle type="target" position={Position.Top} />
           <p className="text-[10px]">{data.hostname}</p>
