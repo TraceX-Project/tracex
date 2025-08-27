@@ -1,3 +1,4 @@
+
 const ROOTS = {
   auth: '/v1/auth',
   users: '/v1/users',
@@ -33,5 +34,9 @@ export const ENDPOINTS = {
   attachments: {
     upload: `${ROOTS.attachments}/upload`,
     delete: (id: string) => `${ROOTS.attachments}/${id}`,
+  },
+  devices: {
+    addDevice: (id: string) => `${ROOTS.projects}/${id}/devices`,
+    getDevicesInProject: (id: string) => `${ROOTS.projects}/${id}/devices`,
   },
 };

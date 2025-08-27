@@ -19,8 +19,13 @@ import {
   nodeWidth,
 } from './shared/constants';
 import { Sidebar } from './shared/components/sidebar';
+import { useGetDevicesInProject } from './_hooks/use-get-devices';
 
-export const LogicalView = () => {
+type Props = {
+  id: string;
+};
+export const LogicalView = ({ id }: Props) => {
+  const { data: devices } = useGetDevicesInProject(id);
   const [nodes, setNodes] = useState<NodeType[]>([]);
   const [edges, setEdges] = useState<EdgeType[]>([]);
 

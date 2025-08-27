@@ -7,5 +7,5 @@ type Props = {
 export default async function LogicalViewPage({ params }: Props) {
   const { id } = await params;
 
-  return <LogicalView />;
+  return <LogicalView id={id} />;
 }
