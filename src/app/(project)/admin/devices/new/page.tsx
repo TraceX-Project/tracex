@@ -6,7 +6,7 @@ export default function CreateDevicePage() {
     <div>
       <SiteHeader title="Create New Device" />
 
-      <div className="container mx-auto space-y-4 p-5 flex flex-col flex-1 pt-20">
+      <div className="container mx-auto flex flex-1 flex-col space-y-4 p-5 pt-20">
         <DeviceForm />
       </div>
     </div>

@@ -8,11 +8,13 @@ import { toast } from 'sonner';
 
 type Props = {
   label: string;
+  placeholder?: string;
   multiple?: boolean;
   maxFiles?: number;
   maxSize?: number;
   accept?: Accept;
   disabled?: boolean;
+  onFileSelect?: (files: File[]) => void;
 };
 
 function isFileWithPreview(file: File | FileRejection): file is File & { preview?: string } {
@@ -21,11 +23,13 @@ function isFileWithPreview(file: File | FileRejection): file is File & { preview
 
 const FileField = ({
   label,
+  placeholder,
   multiple = false,
   maxFiles = 1,
   maxSize = 1024 * 1024 * 2, // 2MB
   accept = { 'image/*': ['.jpeg', '.jpg', '.png'] },
   disabled,
+  onFileSelect,
 }: Props) => {
   const [files, _setFiles] = useState<File[]>([]);
   const field = useFieldContext<File[] | File | null>();
@@ -42,15 +46,21 @@ const FileField = ({
         return;
       }
 
-      // const newFiles = acceptedFiles.map((file) => {
-      //   Object.assign(file, {
-      //     preview: URL.createObjectURL(file),
-      //   });
-      // });
+      const newFiles = acceptedFiles.map((file) => {
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        });
+        return file;
+      });
 
-      // const updatedFiles = files ? [...files, ...newFiles] : newFiles;
+      const updatedFiles = files ? [...files, ...newFiles] : newFiles;
 
-      // setFiles(updatedFiles);
+      _setFiles(updatedFiles);
+
+      // Call the onFileSelect callback if provided
+      if (onFileSelect) {
+        onFileSelect(updatedFiles);
+      }
 
       if (rejectedFiles.length > 0) {
         rejectedFiles.forEach(({ file }) => {
@@ -58,12 +68,12 @@ const FileField = ({
         });
       }
     },
-    [files, maxFiles, multiple]
+    [files, maxFiles, multiple, onFileSelect]
   );
 
   // const onRemoveFile = useCallback(
   //   (file: File) => {
-  //     setFiles((prevFiles) => {
+  //     _setFiles((prevFiles) => {
   //       const updatedFiles = prevFiles.filter((f) => f.name !== file.name);
   //       field.handleChange(multiple ? updatedFiles : updatedFiles[0] || null);
   //       return updatedFiles;
@@ -103,7 +113,21 @@ const FileField = ({
           {({ getRootProps, getInputProps }) => (
             <div {...getRootProps()} className="border-2 border-dashed border-gray-300 p-4">
               <input {...getInputProps()} />
-              <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
+              {files && files.length > 0 ? (
+                files.map((file, index) => (
+                  <img
+                    key={index}
+                    src={(file as File & { preview?: string }).preview}
+                    alt={`Preview of ${file.name}`}
+                    style={{ maxWidth: 'full', maxHeight: 'full', marginRight: '8px' }}
+                  />
+                ))
+              ) : (
+                <p>
+                  {placeholder ??
+                    'Drag &apos;n&apos; drop some files here, or click to select files'}
+                </p>
+              )}
             </div>
           )}
         </Dropzone>

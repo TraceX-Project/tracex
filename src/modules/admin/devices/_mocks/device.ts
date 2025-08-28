@@ -6,9 +6,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-001',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -17,9 +17,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-002',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -28,9 +28,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-003',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -39,9 +39,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-004',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -50,9 +50,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-005',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -61,9 +61,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-006',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -72,9 +72,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-007',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -83,9 +83,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-008',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -94,9 +94,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-009',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -105,9 +105,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-010',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -116,9 +116,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-011',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -127,9 +127,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-012',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -138,9 +138,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-013',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -149,9 +149,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-014',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -160,9 +160,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-015',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -171,9 +171,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-016',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -182,9 +182,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-017',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -193,9 +193,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-018',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -204,9 +204,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-019',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -215,9 +215,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-020',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -226,9 +226,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-021',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -237,9 +237,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-022',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -248,9 +248,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-023',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -259,9 +259,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-024',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -270,9 +270,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-025',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -281,9 +281,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-026',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -292,9 +292,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-027',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -303,9 +303,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-028',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -314,9 +314,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-029',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -325,9 +325,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-030',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -336,9 +336,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-031',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -347,9 +347,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-032',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -358,9 +358,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-033',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -369,9 +369,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-034',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -380,9 +380,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-035',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -391,9 +391,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-036',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -402,9 +402,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-037',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -413,9 +413,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-038',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -424,9 +424,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-039',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -435,9 +435,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-040',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -446,9 +446,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-041',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -457,9 +457,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-042',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -468,9 +468,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-043',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -479,9 +479,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-044',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -490,9 +490,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-045',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -501,9 +501,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-046',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -512,9 +512,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-047',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -523,9 +523,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-048',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -534,9 +534,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-049',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -545,9 +545,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-050',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -556,9 +556,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-051',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -567,9 +567,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-052',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -578,9 +578,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-053',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -589,9 +589,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-054',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -600,9 +600,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-055',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -611,9 +611,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-056',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -622,9 +622,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-057',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -633,9 +633,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-058',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -644,9 +644,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-059',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -655,9 +655,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-060',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -666,9 +666,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-061',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -677,9 +677,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-062',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -688,9 +688,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-063',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -699,9 +699,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-064',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -710,9 +710,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-065',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -721,9 +721,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-066',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -732,9 +732,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-067',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -743,9 +743,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-068',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -754,9 +754,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-069',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -765,9 +765,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-070',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -776,9 +776,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-071',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -787,9 +787,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-072',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -798,9 +798,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-073',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -809,9 +809,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-074',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -820,9 +820,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-075',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -831,9 +831,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-076',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -842,9 +842,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-077',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -853,9 +853,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-078',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -864,9 +864,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-079',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -875,9 +875,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-080',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -886,9 +886,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-081',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -897,9 +897,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-082',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -908,9 +908,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-083',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -919,9 +919,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-084',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -930,9 +930,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-085',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -941,9 +941,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-086',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -952,9 +952,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-087',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -963,9 +963,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-088',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -974,9 +974,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-089',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -985,9 +985,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-090',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -996,9 +996,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-091',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -1007,9 +1007,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-092',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -1018,9 +1018,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-093',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -1029,9 +1029,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-094',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -1040,9 +1040,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-095',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -1051,9 +1051,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-096',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -1062,9 +1062,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-097',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -1073,9 +1073,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-098',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -1084,9 +1084,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-099',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },
@@ -1095,9 +1095,9 @@ export const devices: Device[] = [
     modelName: 'ISR 4451-X-100',
     brand: 'cisco',
     type: 'router',
-    frontPanel:
+    FrontPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
-    backPanel:
+    BackPanelURL:
       'https://media.router-switch.com/media/mf_webp/jpg/media/catalog/product/cache/b90fceee6a5fa7acd36a04c7b968181c/c/i/cisco_isr4451-x-k9.webp',
     size: 1,
   },

@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   transpilePackages: ['@t3-oss/env-nextjs', '@t3-oss/env-core'],
   images: {
+    domains:["localhost"],
     remotePatterns: [
       // For Google profile images
       new URL('https://lh3.googleusercontent.com/**'),

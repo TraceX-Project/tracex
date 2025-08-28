@@ -6,10 +6,10 @@ import Link from 'next/link';
 
 export default function AdminDevicesPage() {
   return (
-    <div className="h-screen flex flex-col">
+    <div className="flex h-screen flex-col">
       <SiteHeader title="Manage Devices" />
 
-      <div className="container mx-auto space-y-4 p-5 flex flex-col flex-1 pt-20">
+      <div className="container mx-auto flex flex-1 flex-col space-y-4 p-5 pt-20">
         <div className="flex justify-end">
           <Button asChild>
             <Link href={PATHS.admin.devices.new}>Create New Device</Link>

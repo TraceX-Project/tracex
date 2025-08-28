@@ -14,7 +14,7 @@ type Props = {
 
 const SiteHeader = ({ title }: Props) => {
   return (
-    <header className="fixed w-full top-0 z-50 bg-white flex h-16 border-b shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+    <header className="fixed top-0 z-50 flex h-16 w-full shrink-0 items-center gap-2 border-b bg-white transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
       <div className="flex items-center gap-2 px-4">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
