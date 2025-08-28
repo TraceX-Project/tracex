@@ -5,12 +5,21 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   transpilePackages: ['@t3-oss/env-nextjs', '@t3-oss/env-core'],
   images: {
-    domains:["localhost"],
     remotePatterns: [
       // For Google profile images
       new URL('https://lh3.googleusercontent.com/**'),
+
+      // For mock up images
       new URL('https://media.router-switch.com/**'),
       new URL('https://www.cisco.com/**'),
+
+      // For minio (local)
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '9000',
+        pathname: '/**',
+      },
     ],
   },
 };

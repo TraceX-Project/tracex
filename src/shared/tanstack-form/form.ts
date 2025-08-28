@@ -3,7 +3,7 @@ import SubmitBtn from './ui/submit-btn';
 import TextField from './ui/text-field';
 import SelectField from './ui/select-field';
 import NumberField from './ui/number-field';
-import FileField from './ui/file-field';
+import FileUploader from './ui/file-uploader';
 
 export const { fieldContext, formContext, useFieldContext, useFormContext } =
   createFormHookContexts();
@@ -15,7 +15,7 @@ export const { useAppForm } = createFormHook({
     TextField,
     SelectField,
     NumberField,
-    FileField,
+    FileUploader,
   },
   formComponents: {
     SubmitBtn,

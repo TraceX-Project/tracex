@@ -5,6 +5,7 @@ import { cn } from '@/shared/lib/cn';
 import { SITE_CONFIG } from '@/shared/config/site';
 import { ReactQueryProvider } from '@/shared/tanstack-query/react-query-provider';
 import { Toaster } from '@/shared/components/ui/sonner';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -33,10 +34,12 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
     <html lang="en">
       <body className={cn(geistSans.variable, geistMono.variable, 'antialiased')}>
-        <ReactQueryProvider>
-          <main>{children}</main>
-          <Toaster position="top-right" closeButton richColors />
-        </ReactQueryProvider>
+        <NuqsAdapter>
+          <ReactQueryProvider>
+            <main>{children}</main>
+            <Toaster position="top-right" closeButton richColors />
+          </ReactQueryProvider>
+        </NuqsAdapter>
       </body>
     </html>
   );

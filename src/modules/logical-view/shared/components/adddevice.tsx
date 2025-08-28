@@ -60,7 +60,7 @@ export const AddDevice = () => {
               />
             </div>
             <div className="grid gap-3">
-              <form.AppField
+              {/* <form.AppField
                 name="files"
                 children={(field) => (
                   <field.FileField
@@ -72,7 +72,7 @@ export const AddDevice = () => {
                     disabled={false}
                   />
                 )}
-              />
+              /> */}
             </div>
           </div>
           <DialogFooter>

@@ -1,0 +1,35 @@
+import DeviceTemplatesTable from '@/modules/admin/device-templates/device-templates-table';
+import SiteHeader from '@/modules/sidebar/site-header';
+import { Button } from '@/shared/components/ui/button';
+import { Separator } from '@/shared/components/ui/separator';
+import { PATHS } from '@/shared/config/paths';
+import { Plus } from 'lucide-react';
+import Link from 'next/link';
+
+export default function AdminDevicesPage() {
+  return (
+    <div className="flex h-screen flex-col">
+      <SiteHeader title="Manage Devices" />
+
+      <div className="container mx-auto flex flex-1 flex-col space-y-4 p-5 pt-20">
+        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight">Device Templates</h2>
+            <p className="text-muted-foreground text-sm">Manage device templates</p>
+          </div>
+
+          <Button asChild>
+            <Link href={PATHS.admin.deviceTemplates.new} className="flex items-center gap-2">
+              <Plus className="h-4 w-4" />
+              New Template
+            </Link>
+          </Button>
+        </div>
+
+        <Separator />
+
+        <DeviceTemplatesTable />
+      </div>
+    </div>
+  );
+}
