@@ -39,7 +39,7 @@ export const generateThumbnail = async (projectId: string) => {
       }
     );
 
-    const projectUrl = `${ENV.NEXT_PUBLIC_APP_URL}${PATHS.projects.detail(projectId)}`;
+    const projectUrl = `${ENV.NEXT_PUBLIC_APP_URL}${PATHS.projects.logical(projectId)}`;
     await page.goto(projectUrl, { waitUntil: 'domcontentloaded', timeout: 10000 });
     await page.setViewport({ width: 800, height: 600 });
 

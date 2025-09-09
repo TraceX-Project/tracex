@@ -138,7 +138,7 @@ const DeviceTemplateForm = () => {
           {/* Submit Button */}
           <div className="flex justify-start">
             <form.AppForm>
-              <form.SubmitBtn label={'Create'} />
+              <form.SubmitButton>Create</form.SubmitButton>
             </form.AppForm>
           </div>
         </form>

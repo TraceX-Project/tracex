@@ -1,9 +1,10 @@
 import { createFormHook, createFormHookContexts } from '@tanstack/react-form';
-import SubmitBtn from './ui/submit-btn';
-import TextField from './ui/text-field';
-import SelectField from './ui/select-field';
-import NumberField from './ui/number-field';
 import FileUploader from './ui/file-uploader';
+import SubmitButton from '../components/form/submit-button';
+import TextField from '../components/form/text-field';
+import SelectField from '../components/form/select-field';
+import NumberField from '../components/form/number-field';
+import FileField from '../components/form/file-field';
 
 export const { fieldContext, formContext, useFieldContext, useFormContext } =
   createFormHookContexts();
@@ -15,9 +16,11 @@ export const { useAppForm } = createFormHook({
     TextField,
     SelectField,
     NumberField,
+    FileField,
     FileUploader,
   },
   formComponents: {
-    SubmitBtn,
+    // SubmitBtn,
+    SubmitButton,
   },
 });

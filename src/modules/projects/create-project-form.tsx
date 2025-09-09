@@ -32,7 +32,7 @@ const CreateProjectForm = () => {
           name: value.name,
         });
 
-        router.push(PATHS.projects.detail(createdProject.id));
+        router.push(PATHS.projects.logical(createdProject.id));
 
         form.reset();
 
@@ -74,7 +74,7 @@ const CreateProjectForm = () => {
 
           {/* Submit Button */}
           <form.AppForm>
-            <form.SubmitBtn label="Create" />
+            <form.SubmitButton>Create</form.SubmitButton>
           </form.AppForm>
         </form>
       </CardContent>

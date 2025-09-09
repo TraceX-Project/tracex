@@ -77,7 +77,7 @@ const UpdateProjectForm = ({ project }: Props) => {
 
           {/* Submit Button */}
           <form.AppForm>
-            <form.SubmitBtn label="Save" />
+            <form.SubmitButton>Update Project</form.SubmitButton>
           </form.AppForm>
         </form>
       </CardContent>

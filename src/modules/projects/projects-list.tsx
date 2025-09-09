@@ -44,7 +44,7 @@ const ProjectItem = ({ name, id }: ProjectItemProps) => {
 
   return (
     <div className="overflow-hidden rounded-md border shadow transition-shadow duration-300 hover:shadow-lg">
-      <Link href={PATHS.projects.detail(id)} passHref>
+      <Link href={PATHS.projects.logical(id)} passHref>
         <Image
           src="https://www.cisco.com/content/dam/cisco-cdc/site/images/legacy/assets/swa/img/anchor-info/network-designed-628x353.jpg"
           alt={name}

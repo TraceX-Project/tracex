@@ -1,27 +1,22 @@
+import { useFieldContext } from '@/shared/tanstack-form/form';
 import React from 'react';
-import { useFieldContext } from '../form';
-import { Label } from '@/shared/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/shared/components/ui/select';
-import { type FieldError } from './types/form';
-import { getErrorMessage } from './utils/error';
+import { Label } from '../ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import FieldErrors from './field-errors';
 
-type Props = {
+interface SelectOption {
+  value: string;
   label: string;
-  options: { value: string; label: string }[];
+}
+
+interface Props {
+  label: string;
+  options: SelectOption[];
   placeholder?: string;
-};
+}
 
-const SelectField = ({ label, options, placeholder }: Props) => {
-  const field = useFieldContext<string>();
-  const hasError = !field.state.meta.isValid;
-  const error = field.state.meta.errors[0] as FieldError;
-
+const SelectField = ({ label, placeholder, options }: Props) => {
+  const field = useFieldContext<string | undefined>();
   return (
     <div className="grid gap-3">
       <Label htmlFor={field.name} className="font-medium">
@@ -42,9 +37,7 @@ const SelectField = ({ label, options, placeholder }: Props) => {
           </SelectContent>
         </Select>
 
-        {hasError && (
-          <p className="text-destructive text-sm break-words">{getErrorMessage(error)}</p>
-        )}
+        <FieldErrors meta={field.state.meta} />
       </div>
     </div>
   );

@@ -1,7 +1,8 @@
 import React from 'react';
-import { Skeleton } from '../skeleton';
+
+import { Skeleton } from '../ui/skeleton';
 import { cn } from '@/shared/lib/cn';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 
 interface Props extends React.ComponentProps<'div'> {
   columnCount: number;

@@ -1,11 +1,11 @@
-import { LogicalView } from '@/modules/logical-view/logical-view';
+import LogicalView from '@/modules/logical-view/logical-view';
 
 type Props = {
   params: Promise<{ id: string }>;
 };
 
 export default async function LogicalViewPage({ params }: Props) {
-  const { id } = await params;
+  const { id: projectId } = await params;
 
-  return <LogicalView id={id} />;
+  return <LogicalView projectId={projectId} />;
 }

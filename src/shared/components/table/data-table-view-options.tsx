@@ -2,10 +2,10 @@
 
 import type { Table } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
-import { Popover, PopoverContent, PopoverTrigger } from '../popover';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { cn } from '@/shared/lib/cn';
 import { Settings2, CheckIcon, ChevronsUpDown } from 'lucide-react';
-import { Button } from '../button';
+import { Button } from '../ui/button';
 import {
   Command,
   CommandEmpty,
@@ -13,7 +13,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '../command';
+} from '../ui/command';
 
 interface Props<TData> {
   table: Table<TData>;

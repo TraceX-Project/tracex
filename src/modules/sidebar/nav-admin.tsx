@@ -9,7 +9,7 @@ import {
   SidebarMenuItem,
 } from '@/shared/components/ui/sidebar';
 import React from 'react';
-import { navAdmin } from './_config/config';
+import { navAdmin } from './_constants/constants';
 import Link from 'next/link';
 import { cn } from '@/shared/lib/cn';
 import { usePathname } from 'next/navigation';
