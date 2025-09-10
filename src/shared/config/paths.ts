@@ -9,6 +9,7 @@ export const PATHS = {
   terms: '/terms',
   privacy: '/privacy',
   login: '/login',
+  account: '/account',
   projects: {
     root: `${ROOTS.projects}`,
     new: `${ROOTS.projects}/new`,
