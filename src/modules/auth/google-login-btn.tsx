@@ -3,14 +3,19 @@
 import { Button } from '@/shared/components/ui/button';
 import React, { useCallback } from 'react';
 import { useGetGoogleLoginUrl } from './_hooks/use-get-google-login-url';
+import { toast } from 'sonner';
 
 const GoogleLoginBtn = () => {
   const { mutateAsync: getGoogleLoginUrl } = useGetGoogleLoginUrl();
 
   const handleGoogleLogin = useCallback(async () => {
-    const { url } = await getGoogleLoginUrl();
+    try {
+      const { url } = await getGoogleLoginUrl();
 
-    window.location.replace(url);
+      window.location.replace(url);
+    } catch (error) {
+      toast.error('Failed to get Google login URL. Please try again.');
+    }
   }, [getGoogleLoginUrl]);
 
   return (

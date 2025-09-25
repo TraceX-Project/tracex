@@ -78,7 +78,7 @@ const refresh = async (refreshToken: string): Promise<Token> => {
     throw new Error('Unauthorized: Refresh token is invalid or expired');
   }
 
-  const { data: token } = (await response.json()) as SuccessResponse<Token>;
+  const token = (await response.json()) as SuccessResponse<Token>;
 
   await setTokenCookies(token);
 

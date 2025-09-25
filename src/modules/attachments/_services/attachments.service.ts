@@ -9,7 +9,7 @@ export const uploadAttachment = async (formData: FormData) => {
     body: formData,
   });
 
-  return response.data;
+  return response;
 };
 
 export const deleteAttachment = async (attachmentId: string) => {
@@ -18,5 +18,5 @@ export const deleteAttachment = async (attachmentId: string) => {
     path: ENDPOINTS.attachments.delete(attachmentId),
   });
 
-  return response.data;
+  return response;
 };

@@ -1,11 +1,6 @@
-export type SuccessResponse<T> = {
-  code: number;
-  message: string;
-  data: T;
-};
-
+export type SuccessResponse<T> = T;
 export type ErrorResponse = {
-  code: number;
+  statusCode: number;
   message: string;
   error: string;
 };

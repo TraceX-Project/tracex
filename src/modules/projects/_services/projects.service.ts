@@ -13,7 +13,7 @@ export const createProject = async (payload: CreateProjectRequest) => {
     body: payload,
   });
 
-  return response.data;
+  return response;
 };
 
 export const getProjects = async () => {
@@ -40,7 +40,7 @@ export const getProject = async (projectId: string) => {
     path: `${ENDPOINTS.projects.getById(projectId)}`,
   });
 
-  return response.data;
+  return response;
 };
 
 export const updateProject = async (projectId: string, payload: UpdateProjectRequest) => {
@@ -50,5 +50,5 @@ export const updateProject = async (projectId: string, payload: UpdateProjectReq
     body: payload,
   });
 
-  return response.data;
+  return response;
 };

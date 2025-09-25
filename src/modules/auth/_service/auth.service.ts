@@ -14,7 +14,7 @@ export const getGoogleLoginUrl = async () => {
     auth: false,
   });
 
-  return response.data;
+  return response;
 };
 
 export const googleLogin = async (data: GoogleLoginRequest) => {
@@ -25,7 +25,7 @@ export const googleLogin = async (data: GoogleLoginRequest) => {
     auth: false,
   });
 
-  return response.data;
+  return response;
 };
 
 export const logout = async () => {

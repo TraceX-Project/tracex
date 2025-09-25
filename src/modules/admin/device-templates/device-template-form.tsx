@@ -50,7 +50,6 @@ const DeviceTemplateForm = () => {
             : 'An unexpected error occurred while creating the device template.'
         );
       }
-      console.log('Form submitted with values:', value);
     },
   });
 
@@ -138,7 +137,7 @@ const DeviceTemplateForm = () => {
           {/* Submit Button */}
           <div className="flex justify-start">
             <form.AppForm>
-              <form.SubmitBtn label={'Create'} />
+              <form.SubmitButton>Create</form.SubmitButton>
             </form.AppForm>
           </div>
         </form>

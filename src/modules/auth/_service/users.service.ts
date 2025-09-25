@@ -8,5 +8,5 @@ export const getUserProfile = async () => {
     path: ENDPOINTS.users.profile,
   });
 
-  return response.data;
+  return response;
 };
