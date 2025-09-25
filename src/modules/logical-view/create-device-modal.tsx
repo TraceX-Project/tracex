@@ -18,12 +18,11 @@ import { createDeviceSchema } from './_schema/schema';
 import { useGetDeviceTemplates } from '../admin/device-templates/_hooks/use-get-device-templates';
 
 const CreateDeviceModal = () => {
-  console.log('RENDER CreateDeviceModal');
   const { data: deviceTemplates } = useGetDeviceTemplates();
 
   const transformedDeviceTemplates = useMemo(
     () =>
-      deviceTemplates?.data?.map((template) => ({
+      deviceTemplates?.map((template) => ({
         label: template.modelName,
         value: template.id,
       })) ?? [],
@@ -50,8 +49,6 @@ const CreateDeviceModal = () => {
     },
     [form]
   );
-
-  console.log(deviceTemplates);
 
   return (
     <Dialog>

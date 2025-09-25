@@ -1,16 +1,15 @@
-
 const ROOTS = {
-  auth: '/v1/auth',
-  users: '/v1/users',
-  projects: '/v1/projects',
-  deviceTemplates: '/v1/device-templates',
-  attachments: '/v1/attachments',
+  auth: '/auth',
+  users: '/users',
+  projects: '/projects',
+  deviceTemplates: '/device-templates',
+  attachments: '/attachments',
 };
 
 export const ENDPOINTS = {
   auth: {
-    googleLoginLink: `${ROOTS.auth}`,
-    googleLogin: `${ROOTS.auth}/login`,
+    googleLoginLink: `${ROOTS.auth}/google/url`,
+    googleLogin: `${ROOTS.auth}/google/login`,
     refresh: `${ROOTS.auth}/refresh`,
     logout: `${ROOTS.auth}/logout`,
   },

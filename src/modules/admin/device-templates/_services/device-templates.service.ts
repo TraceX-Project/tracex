@@ -12,7 +12,7 @@ export const createDeviceTemplate = async (payload: CreateDeviceTemplateRequest)
     path: ENDPOINTS.deviceTemplates.create,
     body: payload,
   });
-  return response.data;
+  return response;
 };
 
 export const getDeviceTemplates = async () => {
@@ -28,7 +28,7 @@ export const getDeviceTemplate = async (id: string) => {
     method: 'GET',
     path: ENDPOINTS.deviceTemplates.getById(id),
   });
-  return response.data;
+  return response;
 };
 
 export const deleteDeviceTemplate = async (id: string) => {
@@ -45,5 +45,5 @@ export const updateDeviceTemplate = async (id: string, payload: UpdateDeviceTemp
     path: ENDPOINTS.deviceTemplates.update(id),
     body: payload,
   });
-  return response.data;
+  return response;
 };

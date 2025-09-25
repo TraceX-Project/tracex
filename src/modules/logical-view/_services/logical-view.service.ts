@@ -9,5 +9,5 @@ export const getDevicesInProject = async (projectId: string) => {
     method: 'GET',
     path: ENDPOINTS.devices.getDevicesInProject(projectId),
   });
-  return response.data;
+  return response;
 };

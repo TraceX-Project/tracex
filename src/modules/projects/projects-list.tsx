@@ -114,7 +114,7 @@ const ProjectList = () => {
     );
   }
 
-  if (!projects || projects.data.length === 0) {
+  if (!projects || projects.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-10 text-center text-gray-500">
         <p className="text-lg font-medium">No projects yet</p>
@@ -130,7 +130,7 @@ const ProjectList = () => {
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-      {projects.data.map((project) => (
+      {projects.map((project) => (
         <ProjectItem key={project.id} name={project.name} id={project.id} />
       ))}
     </div>

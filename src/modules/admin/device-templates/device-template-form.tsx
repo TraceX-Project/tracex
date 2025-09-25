@@ -50,7 +50,6 @@ const DeviceTemplateForm = () => {
             : 'An unexpected error occurred while creating the device template.'
         );
       }
-      console.log('Form submitted with values:', value);
     },
   });
 

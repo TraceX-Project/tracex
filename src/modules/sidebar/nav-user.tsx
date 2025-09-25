@@ -48,17 +48,17 @@ const NavUser = () => {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <UserAvatar
-                firstname={user?.firstname}
-                lastname={user?.lastname}
-                picture={user?.picture}
+                firstName={user?.firstName}
+                lastName={user?.lastName}
+                avatarUrl={user?.avatarUrl}
                 size={32}
-                alt={`@${user?.firstname}`}
+                alt={`@${user?.firstName}`}
                 className="rounded-lg"
               />
 
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">
-                  {user?.firstname} {user?.lastname}
+                  {user?.firstName} {user?.lastName}
                 </span>
                 <span className="truncate text-xs">{user?.email}</span>
               </div>
@@ -74,16 +74,15 @@ const NavUser = () => {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <UserAvatar
-                  firstname={user?.firstname}
-                  lastname={user?.lastname}
-                  picture={user?.picture}
-                  size={32}
-                  alt={`@${user?.firstname}`}
+                  firstName={user?.firstName}
+                  lastName={user?.lastName}
+                  avatarUrl={user?.avatarUrl}
+                  alt={`@${user?.firstName}`}
                   className="rounded-lg"
                 />
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">
-                    {user?.firstname} {user?.lastname}
+                    {user?.firstName} {user?.lastName}
                   </span>
                   <span className="truncate text-xs">{user?.email}</span>
                 </div>

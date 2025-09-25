@@ -3,22 +3,30 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { getImageProps } from 'next/image';
 
 interface Props extends React.ComponentProps<typeof Avatar> {
-  firstname: string;
-  lastname: string;
-  picture: string;
-  size: number;
+  firstName: string;
+  lastName: string;
+  avatarUrl: string;
   alt: string;
+  size?: number;
 }
 
-const UserAvatar = ({ firstname, lastname, picture, size, alt, className, ...props }: Props) => {
+const UserAvatar = ({
+  firstName,
+  lastName,
+  avatarUrl,
+  alt,
+  className,
+  size = 32,
+  ...props
+}: Props) => {
   const { props: nextImageProps } = getImageProps({
-    src: picture,
-    alt: `@${firstname}`,
+    src: avatarUrl,
+    alt: `@${firstName}`,
     width: size,
     height: size,
   });
 
-  const fallbackName = `${firstname.charAt(0).toUpperCase()}${lastname.charAt(0).toUpperCase()}`;
+  const fallbackName = `${firstName.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}`;
 
   return (
     <Avatar className={className} {...props}>
