@@ -11,28 +11,14 @@ export const deviceTemplateColumns: ColumnDef<DeviceTemplate>[] = [
     header: 'Front Panel',
     cell: ({ row }) => {
       return (
-        <div className="relative aspect-square size-20">
+        <div className="relative w-120 h-24 mx-10">
           <Image
             src={row.getValue('frontPanelUrl')}
             alt={row.getValue('modelName')}
             className="rounded-md"
-            fill
-          />
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: 'backPanelUrl',
-    header: 'Back Panel',
-    cell: ({ row }) => {
-      return (
-        <div className="relative aspect-square size-20">
-          <Image
-            src={row.getValue('backPanelUrl')}
-            alt={row.getValue('modelName')}
-            className="rounded-md"
-            fill
+            style={{ objectFit: 'contain', width: '100%', height: '100%' }}
+            width={480}
+            height={96}
           />
         </div>
       );

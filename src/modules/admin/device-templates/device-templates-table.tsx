@@ -8,6 +8,8 @@ import { useDataTable } from '@/shared/hooks/use-data-table';
 import { deviceTemplateColumns } from './device-template-columns';
 import DataTableSkeleton from '@/shared/components/table/data-table-skeleton';
 
+
+
 const DeviceTemplatesTable = () => {
   const { data: devices, isLoading } = useGetDeviceTemplates();
   const [pageSize] = useQueryState('perPage', parseAsInteger.withDefault(10));
@@ -20,10 +22,9 @@ const DeviceTemplatesTable = () => {
     columns: deviceTemplateColumns,
     pageCount,
   });
-
   if (isLoading) {
     return (
-      <DataTableSkeleton columnCount={6} rowCount={8} withViewOptions={false} filterCount={0} />
+      <DataTableSkeleton columnCount={5} rowCount={8} withViewOptions={false} filterCount={0} />
     );
   }
 

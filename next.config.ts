@@ -12,7 +12,6 @@ const nextConfig: NextConfig = {
       // For mock up images
       new URL('https://media.router-switch.com/**'),
       new URL('https://www.cisco.com/**'),
-
       // For minio (local)
       {
         protocol: 'http',

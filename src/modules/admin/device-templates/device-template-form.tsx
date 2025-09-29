@@ -2,30 +2,49 @@
 
 import { useAppForm } from '@/shared/tanstack-form/form';
 import React, { useCallback } from 'react';
-import { DEVICE_BRANDS_OPTIONS, DEVICE_TYPES_OPTIONS } from './_constants/device-template';
+import { DEVICE_VENDORS_OPTIONS, DEVICE_TYPES_OPTIONS, DEVICE_PORT_ALIGNMENT_OPTIONS } from './_constants/device-template';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { deviceTemplateSchema } from './_schema/schema';
 import { useCreateDeviceTemplate } from './_hooks/use-create-device-template';
 import { toast } from 'sonner';
-import { DeviceBrand, DeviceType } from './_types/device-template';
+import { Vendor, DeviceType, Alignment, PortInput } from './_types/device-template';
 import { useUploadFile } from '@/shared/hooks/use-upload-file';
 import { useRouter } from 'next/navigation';
 import { PATHS } from '@/shared/config/paths';
+// import { DeviceTemplateStepper } from './device-template-stepper';
+import { Label } from '@radix-ui/react-label';
+import { Separator } from '@radix-ui/react-select';
+import { Button } from '@/shared/components/ui/button';
+import { DeviceTemplateComplete } from './device-template-complete';
+import { DeviceTemplateFirst } from './device-template-first';
+import { DeviceTemplateSecond } from './device-template-second';
+import { defineStepper } from '@stepperize/react';
+import { DeviceTemplateStepper } from './device-template-stepper';
 
 const DeviceTemplateForm = () => {
   const { mutateAsync: createNewDeviceTemplate } = useCreateDeviceTemplate();
   const { onUpload: onUploadFront } = useUploadFile();
-  const { onUpload: onUploadBack } = useUploadFile();
   const router = useRouter();
+  // const { useStepper, steps, utils } = defineStepper(
+  //       { id: "Basic", title: "Basic Information", description: "First step" },
+  //       { id: "Upload", title: "Upload Panel Image", description: "Second step" },
+  //       { id: "Labelling", title: "Labelling", description: "Third step" }
+  // );
+    
+  // const stepper = useStepper();
+  // const currentIndex = utils.getIndex(stepper.current.id);
 
   const form = useAppForm({
     defaultValues: {
       modelName: '',
-      brand: DeviceBrand.CISCO,
-      type: DeviceType.ROUTER,
-      frontPanelId: '',
-      backPanelId: '',
+      vendor: Vendor.CISCO,
+      deviceType: DeviceType.ROUTER,
+      rows:1,
+      columns:1,
+      alignment: Alignment.HORIZONTAL,
+      frontPanelUrl: '',
       unitSize: 1,
+      ports: [] as PortInput[],
     },
     validators: {
       onChange: deviceTemplateSchema,
@@ -34,11 +53,14 @@ const DeviceTemplateForm = () => {
       try {
         await createNewDeviceTemplate({
           modelName: value.modelName,
-          brand: value.brand,
-          type: value.type,
-          frontPanelId: value.frontPanelId,
-          backPanelId: value.backPanelId,
+          vendor: value.vendor,
+          deviceType: value.deviceType,
+          frontPanelUrl: value.frontPanelUrl,
+          rows: 1,
+          columns: 1,
+          alignment: Alignment.HORIZONTAL,
           unitSize: value.unitSize,
+          ports: [],
         });
 
         toast.success('Device template created successfully');
@@ -62,87 +84,72 @@ const DeviceTemplateForm = () => {
   );
 
   return (
-    <Card className="mx-auto w-full max-w-3xl">
-      <CardHeader>
-        <CardTitle className="text-left text-2xl font-bold">Create New Device Template</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Model Name */}
-          <div>
-            <form.AppField
-              name="modelName"
-              children={(field) => (
-                <field.TextField label="Model Name" placeholder="Enter model name" />
-              )}
-            />
-          </div>
-          {/* Group: Unit Size, Brand, Type */}
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-            {/* Unit Size */}
-            <div>
-              <form.AppField
-                name="unitSize"
-                children={(field) => (
-                  <field.NumberField label="Unit Size" placeholder="Enter unit size" />
-                )}
-              />
-            </div>
-
-            {/* Brand */}
-            <div>
-              <form.AppField
-                name="brand"
-                children={(field) => (
-                  <field.SelectField
-                    label="Brand"
-                    options={DEVICE_BRANDS_OPTIONS}
-                    placeholder="Select a brand"
-                  />
-                )}
-              />
-            </div>
-
-            {/* Type */}
-            <div>
-              <form.AppField
-                name="type"
-                children={(field) => (
-                  <field.SelectField
-                    label="Type"
-                    options={DEVICE_TYPES_OPTIONS}
-                    placeholder="Select a type"
-                  />
-                )}
-              />
-            </div>
-          </div>
-
-          {/* Front Panel Upload */}
-          <form.AppField
-            name="frontPanelId"
-            children={(field) => (
-              <field.FileUploader label="Front Panel" maxFiles={1} onUpload={onUploadFront} />
-            )}
-          />
-
-          {/* Back Panel Upload */}
-          <form.AppField
-            name="backPanelId"
-            children={(field) => (
-              <field.FileUploader label="Back Panel" maxFiles={1} onUpload={onUploadBack} />
-            )}
-          />
-
-          {/* Submit Button */}
-          <div className="flex justify-start">
-            <form.AppForm>
-              <form.SubmitButton>Create</form.SubmitButton>
-            </form.AppForm>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+    // <Card className="mx-auto w-full max-w-3xl">
+    //     <CardHeader className='flex justify-between items-center'>
+    //         <CardTitle>Checkout</CardTitle>
+    //         <Label>Step {currentIndex + 1} of {steps.length}</Label>
+    //     </CardHeader>
+    //     <CardContent>
+    //         <div aria-label="Checkout Steps" className="group my-4">
+    //             <ol className="flex items-center justify-between gap-2" aria-orientation="horizontal">
+    //                 {stepper.all.map((step, index, array) => (
+    //                     <React.Fragment key={step.id}>
+    //                         <li className="flex items-center gap-4 flex-shrink-0">
+    //                             <Button
+    //                                 type="button"
+    //                                 role="tab"
+    //                                 variant={index <= currentIndex ? 'default' : 'secondary'}
+    //                                 aria-current={
+    //                                     stepper.current.id === step.id ? 'step' : undefined
+    //                                 }
+    //                                 aria-posinset={index + 1}
+    //                                 aria-setsize={steps.length}
+    //                                 aria-selected={stepper.current.id === step.id}
+    //                                 className="flex size-10 items-center justify-center rounded-full"
+    //                                 onClick={() => stepper.goTo(step.id)}
+    //                             >
+    //                                 {index + 1}
+    //                             </Button>
+    //                             <Label className="text-sm font-medium">{step.title}</Label>
+    //                         </li>
+    //                         {index < array.length - 1 && (
+    //                             <Separator
+    //                                 className={`flex-1 ${index < currentIndex ? 'bg-primary' : 'bg-muted'
+    //                                     }`}
+    //                             />
+    //                         )}
+    //                     </React.Fragment>
+    //                 ))}
+    //             </ol>
+    //         </div>
+    //         <div className="space-y-4">
+    //             {stepper.switch({
+    //                 Basic: () => <DeviceTemplateFirst form={form} />,
+    //                 Upload: () => <DeviceTemplateSecond form={form} />,
+    //                 Labelling: () => <DeviceTemplateComplete form={form} />,
+    //             })}
+    //             {!stepper.isLast ? (
+    //                 <div className="flex justify-end gap-4">
+    //                     <Button
+    //                         variant="secondary"
+    //                         onClick={stepper.prev}
+    //                         disabled={stepper.isFirst}
+    //                     >
+    //                         Back
+    //                     </Button>
+    //                     <Button onClick={stepper.next}>
+    //                         {stepper.isLast ? 'Complete' : 'Next'}
+    //                     </Button>
+    //                 </div>
+    //             ) : (
+    //                 <div className="flex justify-end gap-4">
+    //                     <Button onClick={() =>handleSubmit}>Complete</Button>
+    //                 </div>
+    //             )}
+    //         </div>
+    //     </CardContent>
+    // </Card>
+    <DeviceTemplateStepper form={form}  />
   );
 };
 

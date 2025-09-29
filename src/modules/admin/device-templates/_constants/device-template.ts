@@ -1,9 +1,14 @@
-import { DeviceBrand, DeviceType } from '../_types/device-template';
+import { Vendor, DeviceType } from '../_types/device-template';
 
-export const DEVICE_BRANDS_OPTIONS = [
-  { value: DeviceBrand.CISCO, label: 'Cisco' },
-  { value: DeviceBrand.DELL, label: 'Dell' },
-  { value: DeviceBrand.MIKROTIK, label: 'Mikrotik' },
+export const DEVICE_VENDORS_OPTIONS = [
+  { value: Vendor.CISCO, label: 'Cisco' },
+  { value: Vendor.DELL, label: 'Dell' },
+  { value: Vendor.MIKROTIK, label: 'Mikrotik' },
+];
+
+export const DEVICE_PORT_ALIGNMENT_OPTIONS = [
+  { value: 'horizontal', label: 'Horizontal' },
+  { value: 'vertical', label: 'Vertical' },
 ];
 
 export const DEVICE_TYPES_OPTIONS = [
