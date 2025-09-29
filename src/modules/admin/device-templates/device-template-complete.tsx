@@ -1,9 +1,8 @@
 import React from 'react'
 import { DEVICE_PORT_ALIGNMENT_OPTIONS } from './_constants/device-template'
-import type { AppFieldExtendedReactFormApi } from '@/shared/types/forms';
 
 type DeviceTemplateStepperProps = {
-    form: AppFieldExtendedReactFormApi;
+    form: any;
 };
 export const DeviceTemplateComplete = ({form}:DeviceTemplateStepperProps) => {
   return (

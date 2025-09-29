@@ -1,10 +1,10 @@
 import React from 'react'
 import { DEVICE_PORT_ALIGNMENT_OPTIONS } from './_constants/device-template'
-import type { AppFieldExtendedReactFormApi } from '@/shared/types/forms';
 import { useUploadFile } from '@/shared/hooks/use-upload-file';
 
+
 type DeviceTemplateStepperProps = {
-  form: AppFieldExtendedReactFormApi;
+  form: any;
 };
 
 export const DeviceTemplateSecond = ({ form }: DeviceTemplateStepperProps) => {

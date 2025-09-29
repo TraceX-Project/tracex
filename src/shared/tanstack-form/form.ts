@@ -5,6 +5,7 @@ import TextField from '../components/form/text-field';
 import SelectField from '../components/form/select-field';
 import NumberField from '../components/form/number-field';
 import FileField from '../components/form/file-field';
+import { JSX } from 'react/jsx-runtime';
 
 export const { fieldContext, formContext, useFieldContext, useFormContext } =
   createFormHookContexts();
