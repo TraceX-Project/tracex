@@ -11,7 +11,7 @@ export default function ProjectLayout({ children }: Props) {
       <ProjectNavbar />
 
       <div className="relative flex flex-1 flex-col">
-        <div className="absolute top-4 left-1/2 z-10 -translate-x-1/2 transform">
+        <div className="absolute top-4 left-1/2 z-50 -translate-x-1/2 transform">
           <ChangingViewButton />
         </div>
 
