@@ -5,15 +5,17 @@ type Props = {
   children: React.ReactNode;
 };
 
-export default async function LogicalViewLayout({ children }: Props) {
+export default function ProjectLayout({ children }: Props) {
   return (
-    <div className="h-screen w-full overflow-hidden">
-      <div className="flex h-full flex-col">
-        <ProjectNavbar />
-        <div>
+    <div className="flex h-screen w-full flex-col overflow-hidden">
+      <ProjectNavbar />
+
+      <div className="relative flex flex-1 flex-col">
+        <div className="absolute top-4 left-1/2 z-10 -translate-x-1/2 transform">
           <ChangingViewButton />
-          <div>{children}</div>
         </div>
+
+        <div className="flex-1">{children}</div>
       </div>
     </div>
   );

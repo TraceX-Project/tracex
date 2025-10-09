@@ -17,7 +17,7 @@ const ProjectNavbar = () => {
       </div>
 
       {/* Center */}
-      <h2 className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold">Title</h2>
+      <h2 className="absolute left-1/2 -translate-x-1/2 font-semibold">Title</h2>
 
       {/* Right */}
       <div>
