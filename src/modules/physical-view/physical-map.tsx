@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import Map, { ViewStateChangeEvent } from 'react-map-gl/mapbox';
+import Map, { ViewStateChangeEvent, Marker } from 'react-map-gl/mapbox';
 import { ENV } from '@/shared/config/env';
 import { useRef, useEffect } from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -32,6 +32,7 @@ export function PhysicalMap() {
         center: [selectedLocation.lng, selectedLocation.lat],
         essential: true,
         zoom: 15,
+        duration: 2000,
       });
     }
   }, [selectedLocation]);
@@ -46,7 +47,16 @@ export function PhysicalMap() {
         onMove={onMove}
         mapStyle="mapbox://styles/mapbox/streets-v12"
         style={{ width: '100%', height: '100%' }}
-      />
+      >
+        {selectedLocation && (
+          <Marker
+            longitude={selectedLocation.lng}
+            latitude={selectedLocation.lat}
+            anchor="bottom"
+            color="red"
+          />
+        )}
+      </Map>
     </div>
   );
 }
