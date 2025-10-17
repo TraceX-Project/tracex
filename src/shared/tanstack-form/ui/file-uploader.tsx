@@ -14,6 +14,7 @@ import { Upload, X } from 'lucide-react';
 import { cn } from '@/shared/lib/cn';
 import { useFieldContext } from '../form';
 import { type UploadAttachmentResponse } from '@/modules/attachments/_types/attachments';
+import FieldErrors from './field-errors';
 
 function isFileWithPreview(file: File): file is File & { preview?: string } {
   return 'preview' in file && typeof file.preview === 'string';
@@ -232,6 +233,7 @@ const FileUploader = ({
             </div>
           )}
         </Dropzone>
+        <FieldErrors meta={field.state.meta} />
         {files?.length ? (
           <ScrollArea className="h-fit w-full px-3">
             <div className="max-h-48 space-y-4">

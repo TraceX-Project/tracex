@@ -3,4 +3,6 @@ export const QUERY_KEYS = {
   projects: 'projects',
   deviceTemplates: 'deviceTemplates',
   devices: 'devices',
+  ports: 'ports',
+  task:'task',
 };

@@ -16,6 +16,15 @@ export const DEVICE_TYPES_OPTIONS = [
   { value: DeviceType.SWITCH, label: 'Switch' },
 ];
 
+
+export const DEVICE_INTERFACES_TYPES_OPTIONS = [
+  { value: "Gigabyte", label: 'Gigabyte' },
+  { value: "FastEthernet", label: 'FastEthernet' },
+  { value: "TenGigabit", label: 'TenGigabit' },
+  { value: "HundredGigabit", label: 'HundredGigabit' },
+  { value: "Ethernet", label: 'Ethernet' },
+];
+
 export const DEVICE_ACCEPTED_FILE_TYPES = ['image/jpeg', 'image/png'];
 
 export const DEVICE_MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB

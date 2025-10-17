@@ -121,6 +121,7 @@ const FileField = (props: FileFieldProps) => {
 
       setFiles(updatedFiles);
 
+      console.log("updatedFiles", updatedFiles);
       field.setValue(multiple || maxFiles > 1 ? updatedFiles : updatedFiles[0]);
 
       if (rejectedFiles.length > 0) {
@@ -135,8 +136,9 @@ const FileField = (props: FileFieldProps) => {
         toast.promise(onUpload(updatedFiles), {
           loading: `Uploading ${target}...`,
           success: () => {
-            setFiles([]);
-            field.setValue(multiple || maxFiles > 1 ? [] : undefined);
+            // setFiles([]);
+            // field.setValue(multiple || maxFiles > 1 ? [] : undefined);
+            // console.log("setValue");
             return `${target} uploaded`;
           },
           error: `Failed to upload ${target}`,
@@ -255,6 +257,7 @@ const FileField = (props: FileFieldProps) => {
           </ScrollArea>
         ) : null}
       </div>
+
     </div>
   );
 };

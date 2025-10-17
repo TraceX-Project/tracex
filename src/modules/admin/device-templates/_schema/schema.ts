@@ -23,12 +23,38 @@ export const deviceTemplateSchema = z.object({
     .number({ message: 'Unit size must be a number' })
     .int({ message: 'Unit size must be an integer' })
     .positive({ message: 'Unit size must be greater than zero' }),
-  frontPanelUrl: z.string().min(1, { message: 'Front panel image is required' }),
+  frontPanel: z
+  .instanceof(File, { message: 'Front panel must be a valid file' })
+  .refine((file) => !!file, { message: 'Front panel image is required' })
+  .refine((file) => file.size <= 2 * 1024 * 1024, {
+    message: 'File size must be less than 2MB',
+  })
+  .refine((file) => ['image/jpeg', 'image/png'].includes(file.type), {
+    message: 'Only JPEG and PNG files are accepted',
+  }),
   ports: z.array(z.object({
-    name: z.string().min(1, { message: 'Port name is required' }),
     x: z.number({ message: 'X coordinate must be a number' }),
     y: z.number({ message: 'Y coordinate must be a number' }),
-    width: z.number({ message: 'Width must be a number' }).positive({ message: 'Width must be greater than zero' }),
-    height: z.number({ message: 'Height must be a number' }).positive({ message: 'Height must be greater than zero' }),
+    w: z.number({ message: 'Width must be a number' }).positive({ message: 'Width must be greater than zero' }),
+    h: z.number({ message: 'Height must be a number' }).positive({ message: 'Height must be greater than zero' }),
   })),
 });
+
+
+export const stepSchemas = {
+  Basic: deviceTemplateSchema.pick({
+    vendor: true,
+    modelName: true,
+    deviceType: true,
+    unitSize: true,
+  }),
+  Upload: deviceTemplateSchema.pick({
+    frontPanel: true,
+    rows: true,
+    columns: true,
+  }),
+  Labelling: deviceTemplateSchema.pick({
+    ports: true,
+    alignment: true,
+  }),
+};

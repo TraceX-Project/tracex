@@ -1,6 +1,6 @@
-import React from 'react'
-import { DEVICE_PORT_ALIGNMENT_OPTIONS } from './_constants/device-template'
-import { useUploadFile } from '@/shared/hooks/use-upload-file';
+import React, { useEffect } from 'react'
+import { useCreatePorts } from './_hooks/use-create-ports';
+import { useGetPorts } from './_hooks/use-get-ports';
 
 
 type DeviceTemplateStepperProps = {
@@ -8,14 +8,33 @@ type DeviceTemplateStepperProps = {
 };
 
 export const DeviceTemplateSecond = ({ form }: DeviceTemplateStepperProps) => {
-  const { onUpload: onUploadFront } = useUploadFile();
+  const { mutateAsync: createPorts } = useCreatePorts();
+  const [taskId, setTaskId] = React.useState<string>('');
+
+  const { data: ports, isLoading } = useGetPorts(taskId);
+
+  const handleUpload = async (files: File[]) => {
+    const result = await createPorts(files);
+    if (result?.taskId) {
+      setTaskId(result.taskId);
+      console.log("File",files[0])
+      form.setFieldValue('frontPanel', files[0]);
+    }
+  };
+
+  useEffect(() => {
+    if (!isLoading && ports) {
+      form.setFieldValue('ports', ports.ports);
+    }
+  }, [isLoading, ports, form]);
+
   return (
     <form onSubmit={form.handleSubmit} className="space-y-6">
       {/* Front Panel Upload */}
       <form.AppField
-        name="frontPanelUrl"
+        name="frontPanel"
         children={(field:any) => (
-          <field.FileUploader label="Front Panel" maxFiles={1} onUpload={onUploadFront} />
+          <field.FileField label="Front Panel" onUpload={handleUpload} />
         )}
       />
       
@@ -36,21 +55,9 @@ export const DeviceTemplateSecond = ({ form }: DeviceTemplateStepperProps) => {
               <field.NumberField label="Columns" placeholder="Enter number of columns" />
             )}
           />
-        </div>
-        {/* port alignment */}
-        <div>
-          <form.AppField
-            name="alignment"
-            children={(field:any) => (
-              <field.SelectField
-                label="Port Alignment"
-                options={DEVICE_PORT_ALIGNMENT_OPTIONS}
-                placeholder="Select a port alignment"
-              />
-            )}
-          />
-        </div>
+        </div>     
       </div>
     </form>
   )
 }
+

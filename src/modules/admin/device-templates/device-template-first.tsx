@@ -42,7 +42,7 @@ export const DeviceTemplateFirst = ({ form }: DeviceTemplateStepperProps) => {
                         />
                     )}
                 />
-                </div>
+            </div>
             {/* Unit Size */}
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
                 {/* Unit Size */}

@@ -10,15 +10,10 @@ export enum DeviceType {
 }
 
 export type Port = {
-  name: string;
-  id: string;
   x: number;
   y: number;
-  width: number;
-  height: number;
-  deviceTemplateId: string;
-  createdAt: Date;
-  updatedAt: Date;
+  w: number;
+  h: number;
 }
 
 export type DeviceTemplate = {
@@ -43,19 +38,23 @@ export type OutputImage = {
   url: string;
 };
 
+export type DevicePorts = {
+  taskId: string;
+  status: string;
+  ports: Port[];
+}
 export type PortInput = {
-  name: string;
   x: number;
   y: number;
-  width: number;
-  height: number;
+  w: number;
+  h: number;
 }
 
 export type CreateDeviceTemplateRequest = {
   modelName: string;
   vendor: Vendor;
   deviceType: DeviceType;
-  frontPanelUrl: string;
+  frontPanel: File;
   unitSize: number;
   rows: number;
   columns: number;

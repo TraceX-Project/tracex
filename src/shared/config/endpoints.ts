@@ -4,6 +4,7 @@ const ROOTS = {
   projects: '/projects',
   deviceTemplates: '/device-templates',
   attachments: '/attachments',
+  ports: '/ports',
 };
 
 export const ENDPOINTS = {
@@ -38,4 +39,8 @@ export const ENDPOINTS = {
     addDevice: (id: string) => `${ROOTS.projects}/${id}/devices`,
     getDevicesInProject: (id: string) => `${ROOTS.projects}/${id}/devices`,
   },
+  ports: {
+    createPorts: `${ROOTS.ports}/predict`,
+    getPortsInDevice: (taskId: string) => `${ROOTS.ports}/result/${taskId}`,
+  }
 };
