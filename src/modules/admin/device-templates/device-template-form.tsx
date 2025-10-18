@@ -1,7 +1,7 @@
 'use client';
 
 import { useAppForm } from '@/shared/tanstack-form/form';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { deviceTemplateSchema, stepSchemas } from './_schema/schema';
 import { useCreateDeviceTemplate } from './_hooks/use-create-device-template';
@@ -20,14 +20,18 @@ import { toast } from 'sonner';
 const DeviceTemplateForm = () => {
   const { mutateAsync: createNewDeviceTemplate } = useCreateDeviceTemplate();
   const router = useRouter();
+
   const { useStepper, steps, utils } = defineStepper(
-    { id: "Basic", title: "Basic Information", description: "First step" },
-    { id: "Upload", title: "Upload Panel Image", description: "Second step" },
-    { id: "Labelling", title: "Labelling", description: "Third step" }
+    { id: 'Basic', title: 'Basic Information' },
+    { id: 'Upload', title: 'Upload Panel Image' },
+    { id: 'Labelling', title: 'Labelling' }
   );
 
   const stepper = useStepper();
-  const currentIndex = utils.getIndex(stepper.current.id);
+  const currentIndex = useMemo(
+    () => utils.getIndex(stepper.current.id),
+    [stepper.current.id, utils]
+  );
 
   const form = useAppForm({
     defaultValues: {
@@ -37,25 +41,18 @@ const DeviceTemplateForm = () => {
       rows: 1,
       columns: 1,
       alignment: Alignment.HORIZONTAL,
-      frontPanel:  null as unknown as File,
+      frontPanel: null as unknown as File,
       unitSize: 1,
       ports: [] as PortInput[],
     },
-    validators: {
-      onChange: deviceTemplateSchema,
-    },
+    validators: { onChange: deviceTemplateSchema },
     onSubmit: async ({ value }) => {
       try {
-
         await createNewDeviceTemplate({
-          modelName: value.modelName,
-          vendor: value.vendor,
-          deviceType: value.deviceType,
-          frontPanel: value.frontPanel,
+          ...value,
           rows: 1,
           columns: 1,
           alignment: Alignment.HORIZONTAL,
-          unitSize: value.unitSize,
           ports: [],
         });
 
@@ -71,174 +68,128 @@ const DeviceTemplateForm = () => {
     },
   });
 
+  const validateStep = useCallback(
+    async (stepId: keyof typeof stepSchemas) => {
+      const schema = stepSchemas[stepId];
+      const keys = Object.keys(schema.shape) as (keyof typeof schema.shape)[];
+
+      const results = await Promise.all(
+        keys.map(async (key) => {
+          const result = await form.validateField(key, 'change');
+
+          return Array.isArray(result) ? result.length === 0 : !result;
+        })
+      );
+
+      return results.every(Boolean);
+    },
+    [form]
+  );
+
+  const handleNext = useCallback(async () => {
+    const isValid = await validateStep(stepper.current.id);
+    if (!isValid) {
+      return;
+    }
+
+    stepper.next();
+  }, [stepper, validateStep]);
+
+  const handleGoToStep = useCallback(
+    async (targetStepId: keyof typeof stepSchemas) => {
+      const currentIdx = stepper.all.findIndex((s) => s.id === stepper.current.id);
+      const targetIdx = stepper.all.findIndex((s) => s.id === targetStepId);
+
+      for (let i = currentIdx; i < targetIdx; i++) {
+        const valid = await validateStep(stepper.all[i].id);
+        if (!valid) {
+          stepper.goTo(stepper.all[i].id);
+          return;
+        }
+      }
+
+      stepper.goTo(targetStepId);
+    },
+    [stepper, validateStep]
+  );
+
   const handleSubmit = useCallback(
-    (event: React.FormEvent<HTMLButtonElement>) => {
-      event.preventDefault();
+    (e: React.FormEvent<HTMLButtonElement>) => {
+      e.preventDefault();
       form.handleSubmit();
     },
     [form]
   );
-  const handleNext = useCallback(async () => {
-    const currentStepId = stepper.current.id;
-    const schema = stepSchemas[currentStepId];
-    const keysToValidate = Object.keys(schema.shape);
-
-    console.log(form.getFieldValue("frontPanel"))
-
-    const validationResults = await Promise.all(
-      keysToValidate.map(async (key) => {
-        const result = await form.validateField(key as any, 'change');
-        let valid = true;
-        if (Array.isArray(result)) {
-          valid = result.length === 0;
-        } else {
-          valid = !result;
-        }
-        return { key, valid };
-      })
-    );
-
-    const hasError = validationResults.some((r) => !r.valid);
-
-    if (!hasError) {
-      stepper.next();
-    } else {
-      console.log('Validation errors:', validationResults.filter((r) => !r.valid));
-    }
-  }, [form, stepper]);
-
-  const handleGoToStep = useCallback(
-    async (targetStepId: "Basic" | "Upload" | "Labelling") => {
-      const currentIndex = stepper.all.findIndex(
-        (step) => step.id === stepper.current.id
-      );
-      const targetIndex = stepper.all.findIndex(
-        (step) => step.id === targetStepId
-      );
-
-      if (targetIndex <= currentIndex) {
-        stepper.goTo(targetStepId);
-        return;
-      }
-
-      for (let i = currentIndex; i < targetIndex; i++) {
-        const stepToValidate = stepper.all[i];
-        const schema = stepSchemas[stepToValidate.id];
-        const keysToValidate = Object.keys(schema.shape);
-
-        console.log(`Validating step: ${stepToValidate.id}`);
-
-        const validationResults = await Promise.all(
-          keysToValidate.map(async (key) => {
-            const result = await form.validateField(key as any, 'change');
-            let valid = true;
-            if (Array.isArray(result)) {
-              valid = result.length === 0;
-            } else {
-              valid = !result;
-            }
-            return { key, valid };
-          })
-        );
-        const hasError = validationResults.some((r) => !r.valid);
-        if (hasError) {
-          stepper.goTo(stepToValidate.id);
-          return;
-        }
-      }
-      console.log("All intermediate steps are valid. Navigating to:", targetStepId);
-      stepper.goTo(targetStepId);
-    },
-    [stepper, form]
-  );
-
 
   return (
     <Card className="mx-auto w-full max-w-3xl">
-      <CardHeader className='flex justify-between items-center'>
+      <CardHeader className="flex items-center justify-between">
         <CardTitle>Checkout</CardTitle>
-        <Label>Step {currentIndex + 1} of {steps.length}</Label>
+        <Label>
+          Step {currentIndex + 1} of {steps.length}
+        </Label>
       </CardHeader>
       <CardContent>
-        <div aria-label="Checkout Steps" className="group my-4">
+        {/* Stepper Navigation */}
+        <div className="group my-4" aria-label="Checkout Steps">
           <ol className="flex items-center justify-between gap-2" aria-orientation="horizontal">
-            {stepper.all.map((step, index, array) => (
+            {stepper.all.map((step, idx, arr) => (
               <React.Fragment key={step.id}>
-                <li className="flex items-center gap-4 flex-shrink-0">
+                <li className="flex flex-shrink-0 items-center gap-4">
                   <Button
                     type="button"
                     role="tab"
-                    variant={index <= currentIndex ? 'default' : 'secondary'}
-                    aria-current={
-                      stepper.current.id === step.id ? 'step' : undefined
-                    }
-                    aria-posinset={index + 1}
+                    variant={idx <= currentIndex ? 'default' : 'secondary'}
+                    aria-current={stepper.current.id === step.id ? 'step' : undefined}
+                    aria-posinset={idx + 1}
                     aria-setsize={steps.length}
                     aria-selected={stepper.current.id === step.id}
                     className="flex size-10 items-center justify-center rounded-full"
                     onClick={() => handleGoToStep(step.id)}
                   >
-                    {index + 1}
+                    {idx + 1}
                   </Button>
                   <Label className="text-sm font-medium">{step.title}</Label>
                 </li>
-                {index < array.length - 1 && (
+                {idx < arr.length - 1 && (
                   <Separator
-                    className={`flex-1 ${index < currentIndex ? 'bg-primary' : 'bg-muted'
-                      }`}
+                    className={`flex-1 ${idx < currentIndex ? 'bg-primary' : 'bg-muted'}`}
                   />
                 )}
               </React.Fragment>
             ))}
           </ol>
         </div>
+
+        {/* Step Content */}
         <div className="space-y-4">
           {stepper.switch({
             Basic: () => <DeviceTemplateFirst form={form} />,
             Upload: () => <DeviceTemplateSecond form={form} />,
             Labelling: () => <DeviceTemplateComplete form={form} />,
           })}
-          {!stepper.isLast ? (
-            <div className='flex justify-between items-center'>
-              <Button
-                variant="secondary"
-                onClick={() => router.push(PATHS.admin.deviceTemplates.root)}
-              >
-                cancel
-              </Button>
-              <div className="flex gap-4">
-                <Button
-                  variant="secondary"
-                  onClick={stepper.prev}
-                  disabled={stepper.isFirst}
-                >
+
+          {/* Navigation Buttons */}
+          <div className="flex items-center justify-between">
+            <Button
+              variant="secondary"
+              onClick={() => router.push(PATHS.admin.deviceTemplates.root)}
+            >
+              Cancel
+            </Button>
+            <div className="flex gap-4">
+              {!stepper.isFirst && (
+                <Button variant="secondary" onClick={stepper.prev}>
                   Back
                 </Button>
-                <Button onClick={handleNext}>
-                  Next
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className='flex justify-between items-center'>
-              <Button
-                variant="secondary"
-                onClick={() => router.push(PATHS.admin.deviceTemplates.root)}
-              >
-                cancel
-              </Button>
-              <div className="flex gap-4">
-                <Button
-                  variant="secondary"
-                  onClick={stepper.prev}
-                  disabled={stepper.isFirst}
-                >
-                  Back
-                </Button>
+              )}
+              {!stepper.isLast ? (
+                <Button onClick={handleNext}>Next</Button>
+              ) : (
                 <Button onClick={handleSubmit}>Complete</Button>
-              </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </CardContent>
     </Card>
