@@ -46,6 +46,7 @@ const DeviceTemplateForm = () => {
     },
     onSubmit: async ({ value }) => {
       try {
+
         await createNewDeviceTemplate({
           modelName: value.modelName,
           vendor: value.vendor,
@@ -71,7 +72,7 @@ const DeviceTemplateForm = () => {
   });
 
   const handleSubmit = useCallback(
-    (event: React.FormEvent<HTMLFormElement>) => {
+    (event: React.FormEvent<HTMLButtonElement>) => {
       event.preventDefault();
       form.handleSubmit();
     },
@@ -234,7 +235,7 @@ const DeviceTemplateForm = () => {
                 >
                   Back
                 </Button>
-                <Button onClick={() => handleSubmit}>Complete</Button>
+                <Button onClick={handleSubmit}>Complete</Button>
               </div>
             </div>
           )}

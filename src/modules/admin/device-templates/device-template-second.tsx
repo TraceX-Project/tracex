@@ -29,7 +29,7 @@ export const DeviceTemplateSecond = ({ form }: DeviceTemplateStepperProps) => {
   }, [isLoading, ports, form]);
 
   return (
-    <form onSubmit={form.handleSubmit} className="space-y-6">
+    <div className="space-y-6">
       {/* Front Panel Upload */}
       <form.AppField
         name="frontPanel"
@@ -38,7 +38,7 @@ export const DeviceTemplateSecond = ({ form }: DeviceTemplateStepperProps) => {
         )}
       />
       
-      {/* Group: Unit Size, Vendor, Type */}
+      {/* Group: Rows, Cols */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
         <div>
           <form.AppField
@@ -48,6 +48,7 @@ export const DeviceTemplateSecond = ({ form }: DeviceTemplateStepperProps) => {
             )}
           />
         </div>
+
         <div>
           <form.AppField
             name="columns"
@@ -57,7 +58,7 @@ export const DeviceTemplateSecond = ({ form }: DeviceTemplateStepperProps) => {
           />
         </div>     
       </div>
-    </form>
+    </div>
   )
 }
 

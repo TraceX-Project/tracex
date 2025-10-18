@@ -7,7 +7,7 @@ type DeviceTemplateStepperProps = {
 
 export const DeviceTemplateFirst = ({ form }: DeviceTemplateStepperProps) => {
     return (
-        <form onSubmit={form.handleSubmit} className="space-y-6">
+        <div className="space-y-6">
             {/* Vendor */}
             <div>
                 <form.AppField
@@ -55,6 +55,6 @@ export const DeviceTemplateFirst = ({ form }: DeviceTemplateStepperProps) => {
                     />
                 </div>
             </div>
-        </form>
+        </div>
     )
 }

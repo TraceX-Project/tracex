@@ -38,7 +38,7 @@ export const DeviceTemplateComplete = ({ form }: DeviceTemplateStepperProps) => 
   }, [image]);
 
   return (
-    <form onSubmit={form.handleSubmit} className="space-y-6">
+    <div className="space-y-6">
       {/* Image Preview with Resizable Rectangle */}
       <Stage width={800} height={200}>
         <Layer>
@@ -125,6 +125,6 @@ export const DeviceTemplateComplete = ({ form }: DeviceTemplateStepperProps) => 
           />
         </div>
       </div>
-    </form>
+    </div>
   );
 };
