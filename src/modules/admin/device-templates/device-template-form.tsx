@@ -16,6 +16,7 @@ import { DeviceTemplateSecond } from './device-template-second';
 import { defineStepper } from '@stepperize/react';
 import { Separator } from '@/shared/components/ui/separator';
 import { toast } from 'sonner';
+import { Coming_Soon, Playwrite_CL_Guides } from 'next/font/google';
 
 const DeviceTemplateForm = () => {
   const { mutateAsync: createNewDeviceTemplate } = useCreateDeviceTemplate();
@@ -77,6 +78,8 @@ const DeviceTemplateForm = () => {
         keys.map(async (key) => {
           const result = await form.validateField(key, 'change');
 
+          console.log(result);
+
           return Array.isArray(result) ? result.length === 0 : !result;
         })
       );
@@ -101,7 +104,9 @@ const DeviceTemplateForm = () => {
       const targetIdx = stepper.all.findIndex((s) => s.id === targetStepId);
 
       for (let i = currentIdx; i < targetIdx; i++) {
-        const valid = await validateStep(stepper.all[i].id);
+        const stepId = stepper.all[i].id;
+        const valid = await validateStep(stepId);
+
         if (!valid) {
           stepper.goTo(stepper.all[i].id);
           return;
@@ -124,7 +129,7 @@ const DeviceTemplateForm = () => {
   return (
     <Card className="mx-auto w-full max-w-3xl">
       <CardHeader className="flex items-center justify-between">
-        <CardTitle>Checkout</CardTitle>
+        <CardTitle>Create Device Template</CardTitle>
         <Label>
           Step {currentIndex + 1} of {steps.length}
         </Label>

@@ -11,7 +11,7 @@ export const deviceTemplateColumns: ColumnDef<DeviceTemplate>[] = [
     header: 'Front Panel',
     cell: ({ row }) => {
       return (
-        <div className="relative w-120 h-24 mx-10">
+        <div className="relative mx-10 h-24 w-120">
           <Image
             src={row.getValue('frontPanelUrl')}
             alt={row.getValue('modelName')}
@@ -29,23 +29,23 @@ export const deviceTemplateColumns: ColumnDef<DeviceTemplate>[] = [
     accessorKey: 'modelName',
   },
   {
-    header: 'Brand',
-    accessorKey: 'brand',
+    header: 'Vendor',
+    accessorKey: 'vendor',
     cell: ({ row }) => {
       return (
         <Badge variant="default" className="capitalize">
-          {row.getValue('brand')}
+          {row.getValue('vendor')}
         </Badge>
       );
     },
   },
   {
-    header: 'Type',
-    accessorKey: 'type',
+    header: 'Device Type',
+    accessorKey: 'deviceType',
     cell: ({ row }) => {
       return (
         <Badge variant="outline" className="capitalize">
-          {row.getValue('type')}
+          {row.getValue('deviceType')}
         </Badge>
       );
     },

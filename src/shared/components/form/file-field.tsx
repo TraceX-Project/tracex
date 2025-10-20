@@ -121,7 +121,7 @@ const FileField = (props: FileFieldProps) => {
 
       setFiles(updatedFiles);
 
-      console.log("updatedFiles", updatedFiles);
+      console.log('updatedFiles', updatedFiles);
       field.setValue(multiple || maxFiles > 1 ? updatedFiles : updatedFiles[0]);
 
       if (rejectedFiles.length > 0) {
@@ -167,6 +167,30 @@ const FileField = (props: FileFieldProps) => {
       });
     };
   }, [files]);
+
+  React.useEffect(() => {
+    const fieldValue = field.state.value;
+
+    if (fieldValue && (!files || files.length === 0)) {
+      if (multiple || maxFiles > 1) {
+        const fieldFiles = Array.isArray(fieldValue) ? fieldValue : [fieldValue];
+        const filesWithPreview = fieldFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        );
+
+        setFiles(filesWithPreview);
+      } else {
+        const file = Array.isArray(fieldValue) ? fieldValue[0] : fieldValue;
+        const fileWithPreview = Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        });
+
+        setFiles([fileWithPreview]);
+      }
+    }
+  }, [field.state.value, files, multiple, maxFiles]);
 
   const isDisabled = disabled || (files?.length ?? 0) >= maxFiles;
 
@@ -257,7 +281,6 @@ const FileField = (props: FileFieldProps) => {
           </ScrollArea>
         ) : null}
       </div>
-
     </div>
   );
 };
