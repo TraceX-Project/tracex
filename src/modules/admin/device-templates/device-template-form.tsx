@@ -1,22 +1,24 @@
 'use client';
 
-import { useAppForm } from '@/shared/tanstack-form/form';
+import { FormType, useAppForm } from '@/shared/tanstack-form/form';
 import React, { useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { deviceTemplateSchema, stepSchemas } from './_schema/schema';
 import { useCreateDeviceTemplate } from './_hooks/use-create-device-template';
-import { Vendor, DeviceType, Alignment, PortInput } from './_types/device-template';
+import { Vendor, DeviceType, Alignment, PortInput, PortType } from './_types/device-template';
 import { useRouter } from 'next/navigation';
 import { PATHS } from '@/shared/config/paths';
 import { Label } from '@radix-ui/react-label';
 import { Button } from '@/shared/components/ui/button';
-import { DeviceTemplateComplete } from './device-template-complete';
-import { DeviceTemplateFirst } from './device-template-first';
-import { DeviceTemplateSecond } from './device-template-second';
+import LabelingForm from './labeling-form';
+import BasicInformationForm from './basic-information-form';
+import UploadPanelForm from './upload-panel-form';
 import { defineStepper } from '@stepperize/react';
 import { Separator } from '@/shared/components/ui/separator';
 import { toast } from 'sonner';
-import { Coming_Soon, Playwrite_CL_Guides } from 'next/font/google';
+import { v4 as uuidv4 } from 'uuid';
+
+type DeviceFormType = ReturnType<typeof useAppForm>;
 
 const DeviceTemplateForm = () => {
   const { mutateAsync: createNewDeviceTemplate } = useCreateDeviceTemplate();
@@ -25,7 +27,7 @@ const DeviceTemplateForm = () => {
   const { useStepper, steps, utils } = defineStepper(
     { id: 'Basic', title: 'Basic Information' },
     { id: 'Upload', title: 'Upload Panel Image' },
-    { id: 'Labelling', title: 'Labelling' }
+    { id: 'Labeling', title: 'Labeling' }
   );
 
   const stepper = useStepper();
@@ -45,20 +47,32 @@ const DeviceTemplateForm = () => {
       frontPanel: null as unknown as File,
       unitSize: 1,
       ports: [] as PortInput[],
+      portRanges: [
+        {
+          start: 1,
+          end: 1,
+          runningNumber: 1,
+          prefix: '',
+          portType: PortType.FAST_ETHERNET,
+          id: uuidv4(),
+        },
+      ],
     },
     validators: { onChange: deviceTemplateSchema },
     onSubmit: async ({ value }) => {
       try {
-        await createNewDeviceTemplate({
-          ...value,
-          rows: 1,
-          columns: 1,
-          alignment: Alignment.HORIZONTAL,
-          ports: [],
-        });
+        console.log('Create Device Template', value);
 
-        toast.success('Device template created successfully');
-        router.push(PATHS.admin.deviceTemplates.root);
+        // await createNewDeviceTemplate({
+        //   ...value,
+        //   rows: 1,
+        //   columns: 1,
+        //   alignment: Alignment.HORIZONTAL,
+        //   ports: [],
+        // });
+
+        // toast.success('Device template created successfully');
+        // router.push(PATHS.admin.deviceTemplates.root);
       } catch (error) {
         toast.error(
           error instanceof Error
@@ -136,7 +150,7 @@ const DeviceTemplateForm = () => {
       </CardHeader>
       <CardContent>
         {/* Stepper Navigation */}
-        <div className="group my-4" aria-label="Checkout Steps">
+        <div className="group my-4 hidden sm:block" aria-label="Checkout Steps">
           <ol className="flex items-center justify-between gap-2" aria-orientation="horizontal">
             {stepper.all.map((step, idx, arr) => (
               <React.Fragment key={step.id}>
@@ -169,9 +183,9 @@ const DeviceTemplateForm = () => {
         {/* Step Content */}
         <div className="space-y-4">
           {stepper.switch({
-            Basic: () => <DeviceTemplateFirst form={form} />,
-            Upload: () => <DeviceTemplateSecond form={form} />,
-            Labelling: () => <DeviceTemplateComplete form={form} />,
+            Basic: () => <BasicInformationForm form={form as unknown as DeviceFormType} />,
+            Upload: () => <UploadPanelForm form={form as unknown as DeviceFormType} />,
+            Labeling: () => <LabelingForm form={form as unknown as DeviceFormType} />,
           })}
 
           {/* Navigation Buttons */}
@@ -191,7 +205,7 @@ const DeviceTemplateForm = () => {
               {!stepper.isLast ? (
                 <Button onClick={handleNext}>Next</Button>
               ) : (
-                <Button onClick={handleSubmit}>Complete</Button>
+                <Button onClick={handleSubmit}>Create</Button>
               )}
             </div>
           </div>

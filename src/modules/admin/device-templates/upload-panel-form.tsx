@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import { useCreatePorts } from './_hooks/use-create-ports';
 import { useGetPorts } from './_hooks/use-get-ports';
+import { useAppForm } from '@/shared/tanstack-form/form';
+import { Label } from '@/shared/components/ui/label';
 
-type DeviceTemplateStepperProps = {
-  form: any;
+type Props = {
+  form: ReturnType<typeof useAppForm>;
 };
 
-export const DeviceTemplateSecond = ({ form }: DeviceTemplateStepperProps) => {
+const UploadPanelForm = ({ form }: Props) => {
   const { mutateAsync: createPorts } = useCreatePorts();
   const [taskId, setTaskId] = React.useState<string>('');
 
@@ -16,7 +18,6 @@ export const DeviceTemplateSecond = ({ form }: DeviceTemplateStepperProps) => {
     const result = await createPorts(files);
     if (result?.taskId) {
       setTaskId(result.taskId);
-      console.log('File', files[0]);
       form.setFieldValue('frontPanel', files[0]);
     }
   };
@@ -32,29 +33,31 @@ export const DeviceTemplateSecond = ({ form }: DeviceTemplateStepperProps) => {
       {/* Front Panel Upload */}
       <form.AppField
         name="frontPanel"
-        children={(field: any) => <field.FileField label="Front Panel" onUpload={handleUpload} />}
+        children={(field) => <field.FileField label="Front Panel" onUpload={handleUpload} />}
       />
 
-      {/* Group: Rows, Columns */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-        <div>
+      {/* Row, Column */}
+      <div className="font-medium">
+        <div className="flex items-center gap-4">
+          <Label className="text-sm font-semibold">Port Layout:</Label>
+          <Label className="text-sm font-medium">Row</Label>
           <form.AppField
             name="rows"
-            children={(field: any) => (
-              <field.NumberField label="Rows" placeholder="Enter number of rows" />
-            )}
+            children={(field) => <field.NumberField placeholder="Enter number of rows" />}
           />
-        </div>
 
-        <div>
+          <Label className="text-sm font-medium">Column</Label>
           <form.AppField
             name="columns"
-            children={(field: any) => (
-              <field.NumberField label="Columns" placeholder="Enter number of columns" />
-            )}
+            children={(field) => <field.NumberField placeholder="Enter number of columns" />}
           />
         </div>
+        <p className="text-muted-foreground mt-4 text-xs font-normal italic">
+          e.g. 2 rows, 24 columns for standard 48 ports switch.
+        </p>
       </div>
     </div>
   );
 };
+
+export default UploadPanelForm;

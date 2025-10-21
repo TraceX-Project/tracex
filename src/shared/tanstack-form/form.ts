@@ -5,7 +5,6 @@ import TextField from '../components/form/text-field';
 import SelectField from '../components/form/select-field';
 import NumberField from '../components/form/number-field';
 
-
 export const { fieldContext, formContext, useFieldContext, useFormContext } =
   createFormHookContexts();
 
@@ -23,3 +22,5 @@ export const { useAppForm } = createFormHook({
     SubmitButton,
   },
 });
+
+export type FormType = ReturnType<typeof useAppForm>;

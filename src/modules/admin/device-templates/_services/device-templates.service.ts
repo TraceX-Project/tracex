@@ -59,11 +59,9 @@ export const createPorts = async (formData: FormData) => {
 };
 
 export const getPorts = async (taskId: string) => {
-  console.log("taskIdgetPorts", taskId);
   const response = await request<DevicePorts>({
     method: 'GET',
     path: ENDPOINTS.ports.getPortsInDevice(taskId),
   });
-  console.log(response);
   return response;
 };

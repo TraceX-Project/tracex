@@ -5,7 +5,7 @@ import { Input } from '../ui/input';
 import FieldErrors from './field-errors';
 
 interface Props extends React.ComponentProps<'input'> {
-  label: string;
+  label?: string;
 }
 
 const TextField = ({ label, ...inputProps }: Props) => {

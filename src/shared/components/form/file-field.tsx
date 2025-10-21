@@ -121,7 +121,6 @@ const FileField = (props: FileFieldProps) => {
 
       setFiles(updatedFiles);
 
-      console.log('updatedFiles', updatedFiles);
       field.setValue(multiple || maxFiles > 1 ? updatedFiles : updatedFiles[0]);
 
       if (rejectedFiles.length > 0) {
