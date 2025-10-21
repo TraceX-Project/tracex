@@ -18,8 +18,6 @@ import { Separator } from '@/shared/components/ui/separator';
 import { toast } from 'sonner';
 import { v4 as uuidv4 } from 'uuid';
 
-type DeviceFormType = ReturnType<typeof useAppForm>;
-
 const DeviceTemplateForm = () => {
   const { mutateAsync: createNewDeviceTemplate } = useCreateDeviceTemplate();
   const router = useRouter();
@@ -183,9 +181,9 @@ const DeviceTemplateForm = () => {
         {/* Step Content */}
         <div className="space-y-4">
           {stepper.switch({
-            Basic: () => <BasicInformationForm form={form as unknown as DeviceFormType} />,
-            Upload: () => <UploadPanelForm form={form as unknown as DeviceFormType} />,
-            Labeling: () => <LabelingForm form={form as unknown as DeviceFormType} />,
+            Basic: () => <BasicInformationForm form={form as unknown as FormType} />,
+            Upload: () => <UploadPanelForm form={form as unknown as FormType} />,
+            Labeling: () => <LabelingForm form={form as unknown as FormType} />,
           })}
 
           {/* Navigation Buttons */}
