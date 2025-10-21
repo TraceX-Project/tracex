@@ -38,19 +38,27 @@ const UploadPanelForm = ({ form }: Props) => {
 
       {/* Row, Column */}
       <div className="font-medium">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
           <Label className="text-sm font-semibold">Port Layout:</Label>
-          <Label className="text-sm font-medium">Row</Label>
-          <form.AppField
-            name="rows"
-            children={(field) => <field.NumberField placeholder="Enter number of rows" />}
-          />
+          <div className="flex gap-4">
+            <Label className="text-sm font-medium">Row</Label>
+            <form.AppField
+              name="rows"
+              children={(field) => (
+                <field.NumberField className="w-20" placeholder="Enter number of rows" />
+              )}
+            />
+          </div>
 
-          <Label className="text-sm font-medium">Column</Label>
-          <form.AppField
-            name="columns"
-            children={(field) => <field.NumberField placeholder="Enter number of columns" />}
-          />
+          <div className="flex gap-4">
+            <Label className="text-sm font-medium">Column</Label>
+            <form.AppField
+              name="columns"
+              children={(field) => (
+                <field.NumberField className="w-20" placeholder="Enter number of columns" />
+              )}
+            />
+          </div>
         </div>
         <p className="text-muted-foreground mt-4 text-xs font-normal italic">
           e.g. 2 rows, 24 columns for standard 48 ports switch.
