@@ -11,28 +11,14 @@ export const deviceTemplateColumns: ColumnDef<DeviceTemplate>[] = [
     header: 'Front Panel',
     cell: ({ row }) => {
       return (
-        <div className="relative aspect-square size-20">
+        <div className="relative mx-10 h-24 w-120">
           <Image
             src={row.getValue('frontPanelUrl')}
             alt={row.getValue('modelName')}
             className="rounded-md"
-            fill
-          />
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: 'backPanelUrl',
-    header: 'Back Panel',
-    cell: ({ row }) => {
-      return (
-        <div className="relative aspect-square size-20">
-          <Image
-            src={row.getValue('backPanelUrl')}
-            alt={row.getValue('modelName')}
-            className="rounded-md"
-            fill
+            style={{ objectFit: 'contain', width: '100%', height: '100%' }}
+            width={480}
+            height={96}
           />
         </div>
       );
@@ -43,23 +29,23 @@ export const deviceTemplateColumns: ColumnDef<DeviceTemplate>[] = [
     accessorKey: 'modelName',
   },
   {
-    header: 'Brand',
-    accessorKey: 'brand',
+    header: 'Vendor',
+    accessorKey: 'vendor',
     cell: ({ row }) => {
       return (
         <Badge variant="default" className="capitalize">
-          {row.getValue('brand')}
+          {row.getValue('vendor')}
         </Badge>
       );
     },
   },
   {
-    header: 'Type',
-    accessorKey: 'type',
+    header: 'Device Type',
+    accessorKey: 'deviceType',
     cell: ({ row }) => {
       return (
         <Badge variant="outline" className="capitalize">
-          {row.getValue('type')}
+          {row.getValue('deviceType')}
         </Badge>
       );
     },

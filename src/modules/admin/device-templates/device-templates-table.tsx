@@ -20,10 +20,9 @@ const DeviceTemplatesTable = () => {
     columns: deviceTemplateColumns,
     pageCount,
   });
-
   if (isLoading) {
     return (
-      <DataTableSkeleton columnCount={6} rowCount={8} withViewOptions={false} filterCount={0} />
+      <DataTableSkeleton columnCount={5} rowCount={8} withViewOptions={false} filterCount={0} />
     );
   }
 

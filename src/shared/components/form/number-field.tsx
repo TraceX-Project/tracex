@@ -5,7 +5,7 @@ import FieldErrors from './field-errors';
 import { Label } from '../ui/label';
 
 interface Props extends React.ComponentProps<'input'> {
-  label: string;
+  label?: string;
 }
 
 const NumberField = ({ label, ...inputProps }: Props) => {
@@ -13,9 +13,11 @@ const NumberField = ({ label, ...inputProps }: Props) => {
 
   return (
     <div className="grid gap-3">
-      <Label htmlFor={field.name} className="font-medium">
-        {label}
-      </Label>
+      {label && (
+        <Label htmlFor={field.name} className="font-medium">
+          {label}
+        </Label>
+      )}
 
       <div className="flex flex-col gap-1">
         <Input

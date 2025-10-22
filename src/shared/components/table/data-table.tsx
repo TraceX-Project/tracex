@@ -24,7 +24,7 @@ const DataTable = <TData,>({ table, actionBar, children }: Props<TData>) => {
       <div className="relative flex flex-1">
         <div className="absolute inset-0 flex overflow-hidden rounded-lg border">
           <ScrollArea className="h-full w-full">
-            <Table>
+            <Table >
               <TableHeader className="bg-muted sticky top-0 z-10">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>

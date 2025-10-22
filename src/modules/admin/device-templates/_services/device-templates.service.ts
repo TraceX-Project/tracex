@@ -1,5 +1,6 @@
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
+import { DevicePorts } from '../_types/device-template';
 import {
   type CreateDeviceTemplateRequest,
   type DeviceTemplate,
@@ -44,6 +45,23 @@ export const updateDeviceTemplate = async (id: string, payload: UpdateDeviceTemp
     method: 'PATCH',
     path: ENDPOINTS.deviceTemplates.update(id),
     body: payload,
+  });
+  return response;
+};
+
+export const createPorts = async (formData: FormData) => {
+  const response = await request<{ taskId: string; status: string }>({
+    method: 'POST',
+    path: ENDPOINTS.ports.createPorts,
+    body: formData,
+  });
+  return response;
+};
+
+export const getPorts = async (taskId: string) => {
+  const response = await request<DevicePorts>({
+    method: 'GET',
+    path: ENDPOINTS.ports.getPortsInDevice(taskId),
   });
   return response;
 };

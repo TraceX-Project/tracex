@@ -1,4 +1,7 @@
-export enum DeviceBrand {
+import { deviceTemplateSchema } from '../_schema/schema';
+import { z } from 'zod';
+
+export enum Vendor {
   CISCO = 'cisco',
   DELL = 'dell',
   MIKROTIK = 'mikrotik',
@@ -9,27 +12,67 @@ export enum DeviceType {
   SWITCH = 'switch',
 }
 
+export enum Alignment {
+  HORIZONTAL = 'horizontal',
+  VERTICAL = 'vertical',
+}
+
+export enum PortType {
+  FAST_ETHERNET = 'FastEthernet',
+  GIGABIT_ETHERNET = 'GigabitEthernet',
+  TEN_GIGABIT_ETHERNET = 'TenGigabitEthernet',
+}
+
+export type Port = {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+};
+
 export type DeviceTemplate = {
   id: string;
   modelName: string;
-  brand: DeviceBrand;
-  type: DeviceType;
-  FrontPanelURL: string;
-  BackPanelURL: string;
-  size: number;
+  vendor: Vendor;
+  deviceType: DeviceType;
+  unitSize: number;
+  rows: number;
+  columns: number;
+  alignment: Alignment;
+  frontPanelUrl: string;
+  ports: Port[];
 };
 
 export type OutputImage = {
   url: string;
 };
 
+export type DevicePorts = {
+  taskId: string;
+  status: string;
+  ports: Port[];
+};
+export type PortInput = {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+};
+
 export type CreateDeviceTemplateRequest = {
   modelName: string;
-  brand: DeviceBrand;
-  type: DeviceType;
-  frontPanelId: string;
-  backPanelId: string;
+  vendor: Vendor;
+  deviceType: DeviceType;
+  frontPanel: File;
   unitSize: number;
+  rows: number;
+  columns: number;
+  alignment: Alignment;
+  ports: PortInput[];
 };
 
 export type UpdateDeviceTemplateRequest = Partial<CreateDeviceTemplateRequest>;
+
+export type DeviceTemplateFormData = z.infer<typeof deviceTemplateSchema>;
+
+export type PortRange = z.infer<typeof deviceTemplateSchema.shape.portRanges>[0];
