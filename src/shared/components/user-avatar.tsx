@@ -21,7 +21,7 @@ const UserAvatar = ({
 }: Props) => {
   const { props: nextImageProps } = getImageProps({
     src: avatarUrl,
-    alt: `@${firstName}`,
+    alt: alt ?? `@${firstName}`,
     width: size,
     height: size,
   });

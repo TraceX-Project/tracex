@@ -18,7 +18,6 @@ export const { useAppForm } = createFormHook({
     FileField,
   },
   formComponents: {
-    // SubmitBtn,
     SubmitButton,
   },
 });

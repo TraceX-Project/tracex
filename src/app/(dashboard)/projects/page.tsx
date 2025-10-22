@@ -11,9 +11,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function ProjectsPage() {
   return (
-    <div>
+    <div className="flex min-h-screen flex-col">
       <SiteHeader title="My Projects" />
-      <div className="container mx-auto space-y-4 p-5 pt-20">
+      <div className="container mx-auto flex h-full flex-1 flex-col space-y-4 p-5 pt-20">
         <ProjectList />
       </div>
     </div>

@@ -1,0 +1,41 @@
+'use client';
+
+import React, { useCallback } from 'react';
+import { SearchBoxProps } from '@mapbox/search-js-react/dist/components/SearchBox';
+import { ENV } from '@/shared/config/env';
+import dynamic from 'next/dynamic';
+import { usePhysicalMapStore } from './_store/physical-map.store';
+import { SearchBoxRetrieveResponse } from '@mapbox/search-js-core';
+
+const SearchBox = dynamic(
+  () =>
+    import('@mapbox/search-js-react').then(
+      (mod) => mod.SearchBox as React.ComponentType<SearchBoxProps>
+    ),
+  { ssr: false }
+);
+
+const MapboxSearchBox = () => {
+  const setSelectedLocation = usePhysicalMapStore((state) => state.setSelectedLocation);
+
+  const onRetrieve = useCallback(
+    (event: SearchBoxRetrieveResponse) => {
+      if (event.features && event.features.length > 0) {
+        const feature = event.features[0];
+        const [lng, lat] = feature.geometry.coordinates;
+        setSelectedLocation({ lng, lat });
+      }
+    },
+    [setSelectedLocation]
+  );
+
+  return (
+    <SearchBox
+      placeholder="Search for a location"
+      onRetrieve={onRetrieve}
+      accessToken={ENV.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+    />
+  );
+};
+
+export default MapboxSearchBox;

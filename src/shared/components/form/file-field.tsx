@@ -186,7 +186,7 @@ const FileField = (props: FileFieldProps) => {
         setFiles([fileWithPreview]);
       }
     }
-  }, [field.state.value, files, multiple, maxFiles]);
+  }, [field.state.value]);
 
   const isDisabled = disabled || (files?.length ?? 0) >= maxFiles;
 

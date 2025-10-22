@@ -42,7 +42,7 @@ const LogicalView = ({ projectId }: Props) => {
   return (
     <div className="relative h-full w-full">
       <ReactFlow
-        className="min-h-screen w-full"
+        className="w-full"
         nodes={nodes}
         edges={edges}
         nodeTypes={NODE_TYPES}
