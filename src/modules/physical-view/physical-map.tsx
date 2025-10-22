@@ -30,6 +30,7 @@ export function PhysicalMap() {
   return (
     <div className="relative h-full w-full">
       <MapboxSearchBox />
+
       <MapContainer
         onMapRef={(ref) => (mapRef.current = ref)}
         viewState={viewState}

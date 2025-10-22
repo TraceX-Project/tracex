@@ -13,6 +13,7 @@ type PhysicalMapStoreState = {
   actions: {
     setSelectedLocation: (location: Location | null) => void;
     setAddress: (address: Address) => void;
+    reset: () => void;
   };
 };
 
@@ -22,5 +23,6 @@ export const usePhysicalMapStore = create<PhysicalMapStoreState>((set) => ({
   actions: {
     setSelectedLocation: (location) => set({ selectedLocation: location }),
     setAddress: (address) => set({ address }),
+    reset: () => set({ selectedLocation: null, address: null }),
   },
 }));

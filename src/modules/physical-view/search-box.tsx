@@ -16,7 +16,7 @@ const SearchBox = dynamic(
 );
 
 const MapboxSearchBox = () => {
-  const { setSelectedLocation, setAddress } = usePhysicalMapStore((state) => state.actions);
+  const { setSelectedLocation, setAddress, reset } = usePhysicalMapStore((state) => state.actions);
 
   const onRetrieve = useCallback(
     (event: SearchBoxRetrieveResponse) => {
@@ -36,12 +36,19 @@ const MapboxSearchBox = () => {
     [setSelectedLocation]
   );
 
+  const onClear = useCallback(() => {
+    reset();
+  }, [reset]);
+
   return (
-    <SearchBox
-      placeholder="Search for a location"
-      onRetrieve={onRetrieve}
-      accessToken={ENV.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
-    />
+    <div className="absolute top-4 left-4 z-50 max-w-md">
+      <SearchBox
+        placeholder="Search for a location"
+        onRetrieve={onRetrieve}
+        accessToken={ENV.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+        onClear={onClear}
+      />
+    </div>
   );
 };
 
