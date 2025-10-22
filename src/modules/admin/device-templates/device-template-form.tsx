@@ -28,6 +28,8 @@ const DeviceTemplateForm = () => {
     { id: 'Labeling', title: 'Labeling' }
   );
 
+  type StepId = (typeof steps)[number]['id'];
+
   const stepper = useStepper();
   const currentIndex = useMemo(
     () => utils.getIndex(stepper.current.id),
@@ -82,19 +84,36 @@ const DeviceTemplateForm = () => {
   });
 
   const validateStep = useCallback(
-    async (stepId: keyof typeof stepSchemas) => {
-      const schema = stepSchemas[stepId];
-      const keys = Object.keys(schema.shape) as (keyof typeof schema.shape)[];
+    async (stepId: StepId): Promise<boolean> => {
+      try {
+        const schema = stepSchemas[stepId];
+        const formValues = form.state.values as Record<string, unknown>;
 
-      const results = await Promise.all(
-        keys.map(async (key) => {
-          const result = await form.validateField(key, 'change');
+        const stepFields: Record<string, unknown> = {};
+        for (const fieldName of Object.keys(schema.shape)) {
+          stepFields[fieldName] = formValues[fieldName];
+        }
 
-          return Array.isArray(result) ? result.length === 0 : !result;
-        })
-      );
+        const validationResult = schema.safeParse(stepFields);
 
-      return results.every(Boolean);
+        if (validationResult.success) {
+          return true;
+        }
+
+        const validationPromises = validationResult.error.issues.map(async (issue) => {
+          const fieldName = issue.path[0];
+          if (typeof fieldName === 'string') {
+            return form.validateField(fieldName as keyof typeof schema.shape, 'change');
+          }
+        });
+
+        await Promise.allSettled(validationPromises);
+
+        return false;
+      } catch (error) {
+        console.error('Error during step validation:', error);
+        return false;
+      }
     },
     [form]
   );
@@ -109,14 +128,13 @@ const DeviceTemplateForm = () => {
   }, [stepper, validateStep]);
 
   const handleGoToStep = useCallback(
-    async (targetStepId: keyof typeof stepSchemas) => {
+    async (targetStepId: StepId) => {
       const currentIdx = stepper.all.findIndex((s) => s.id === stepper.current.id);
       const targetIdx = stepper.all.findIndex((s) => s.id === targetStepId);
 
       for (let i = currentIdx; i < targetIdx; i++) {
         const stepId = stepper.all[i].id;
         const valid = await validateStep(stepId);
-
         if (!valid) {
           stepper.goTo(stepper.all[i].id);
           return;
