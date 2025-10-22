@@ -6,7 +6,7 @@ import { useCallback } from 'react';
 type Props = {
   onMapRef: (ref: MapRef | null) => void;
   viewState: Pick<ViewState, 'longitude' | 'latitude' | 'zoom'>;
-  onViewStateChange: (viewState: any) => void;
+  onViewStateChange: (viewState: ViewState) => void;
   children?: React.ReactNode;
 };
 
