@@ -6,6 +6,6 @@ export const useGetDevicesInProject = (projectId: string) => {
   return useQuery({
     queryKey: [QUERY_KEYS.projects, projectId, QUERY_KEYS.devices],
     queryFn: () => getDevicesInProject(projectId),
-    enabled: !!projectId,
+    enabled: false,
   });
 };

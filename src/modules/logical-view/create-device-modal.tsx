@@ -35,7 +35,7 @@ const CreateDeviceModal = () => {
       files: [] as File[],
     },
     validators: {
-      onChange: createDeviceSchema,
+      onSubmit: createDeviceSchema,
     },
     onSubmit: async ({ value }) => {
       console.log(value);
