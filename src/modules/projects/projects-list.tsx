@@ -18,6 +18,7 @@ import { useCallback } from 'react';
 import { useDeleteProject } from './_hooks/use-delete-project';
 import { toast } from 'sonner';
 import { Skeleton } from '@/shared/components/ui/skeleton';
+import EmptyProject from './empty-project';
 
 type ProjectItemProps = {
   name: string;
@@ -43,7 +44,7 @@ const ProjectItem = ({ name, id }: ProjectItemProps) => {
   }, [id, name, deleteProject]);
 
   return (
-    <div className="overflow-hidden rounded-md border shadow transition-shadow duration-300 hover:shadow-lg">
+    <div className="overflow-hidden rounded-md border bg-white shadow transition-shadow duration-300 hover:shadow-lg">
       <Link href={PATHS.projects.logical(id)} passHref>
         <Image
           src="https://www.cisco.com/content/dam/cisco-cdc/site/images/legacy/assets/swa/img/anchor-info/network-designed-628x353.jpg"
@@ -116,14 +117,8 @@ const ProjectList = () => {
 
   if (!projects || projects.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-10 text-center text-gray-500">
-        <p className="text-lg font-medium">No projects yet</p>
-        <p className="mb-6 text-sm text-gray-400">
-          Create your first project to start using the system.
-        </p>
-        <Button asChild>
-          <Link href={PATHS.projects.new}>New Project</Link>
-        </Button>
+      <div className="flex w-full flex-1 items-center justify-center">
+        <EmptyProject />
       </div>
     );
   }
