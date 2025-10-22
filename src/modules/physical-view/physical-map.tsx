@@ -1,11 +1,14 @@
 'use client';
 
 import * as React from 'react';
-import Map from 'react-map-gl/mapbox';
+import Map, { ViewStateChangeEvent } from 'react-map-gl/mapbox';
 import { ENV } from '@/shared/config/env';
-
-// Configure Mapbox GL CSS
+import { useRef, useEffect } from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import MapboxSearchBox from './search-box';
+import { useCallback } from 'react';
+import { usePhysicalMapStore } from './_store/physical-map.store';
+import type { MapRef } from 'react-map-gl/mapbox';
 
 const INITIAL_VIEW_STATE = {
   longitude: 100.7758382356726,
@@ -14,12 +17,34 @@ const INITIAL_VIEW_STATE = {
 };
 
 export function PhysicalMap() {
+  const selectedLocation = usePhysicalMapStore((state) => state.selectedLocation);
+  const mapRef = useRef<MapRef | null>(null);
+
+  const [viewState, setViewState] = React.useState(INITIAL_VIEW_STATE);
+
+  const onMove = useCallback((evt: ViewStateChangeEvent) => {
+    setViewState(evt.viewState);
+  }, []);
+
+  useEffect(() => {
+    if (selectedLocation && mapRef.current) {
+      mapRef.current.flyTo({
+        center: [selectedLocation.lng, selectedLocation.lat],
+        essential: true,
+        zoom: 15,
+      });
+    }
+  }, [selectedLocation]);
+
   return (
     <div className="h-full w-full">
+      <MapboxSearchBox />
       <Map
+        ref={mapRef}
         mapboxAccessToken={ENV.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
-        initialViewState={INITIAL_VIEW_STATE}
-        mapStyle="mapbox://styles/mapbox/streets-v9"
+        {...viewState}
+        onMove={onMove}
+        mapStyle="mapbox://styles/mapbox/streets-v12"
         style={{ width: '100%', height: '100%' }}
       />
     </div>
