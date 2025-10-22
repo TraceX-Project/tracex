@@ -103,7 +103,7 @@ const DeviceTemplateForm = () => {
         const validationPromises = validationResult.error.issues.map(async (issue) => {
           const fieldName = issue.path[0];
           if (typeof fieldName === 'string') {
-            await form.validateField(fieldName as keyof typeof schema.shape, 'change');
+            return form.validateField(fieldName as keyof typeof schema.shape, 'change');
           }
         });
 
