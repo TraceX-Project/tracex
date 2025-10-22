@@ -1,30 +1,20 @@
 'use client';
 
 import * as React from 'react';
-import Map, { ViewStateChangeEvent, Marker } from 'react-map-gl/mapbox';
-import { ENV } from '@/shared/config/env';
 import { useRef, useEffect } from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapboxSearchBox from './search-box';
-import { useCallback } from 'react';
 import { usePhysicalMapStore } from './_store/physical-map.store';
 import type { MapRef } from 'react-map-gl/mapbox';
-
-const INITIAL_VIEW_STATE = {
-  longitude: 100.7758382356726,
-  latitude: 13.729223964884206,
-  zoom: 15,
-};
+import { INITIAL_VIEW_STATE } from './_constants/constants';
+import MapContainer from './map-container';
+import LocationMarker from './location-marker';
+import LocationInfoCard from './location-info-card';
 
 export function PhysicalMap() {
   const selectedLocation = usePhysicalMapStore((state) => state.selectedLocation);
   const mapRef = useRef<MapRef | null>(null);
-
   const [viewState, setViewState] = React.useState(INITIAL_VIEW_STATE);
-
-  const onMove = useCallback((evt: ViewStateChangeEvent) => {
-    setViewState(evt.viewState);
-  }, []);
 
   useEffect(() => {
     if (selectedLocation && mapRef.current) {
@@ -38,25 +28,17 @@ export function PhysicalMap() {
   }, [selectedLocation]);
 
   return (
-    <div className="h-full w-full">
+    <div className="relative h-full w-full">
       <MapboxSearchBox />
-      <Map
-        ref={mapRef}
-        mapboxAccessToken={ENV.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
-        {...viewState}
-        onMove={onMove}
-        mapStyle="mapbox://styles/mapbox/streets-v12"
-        style={{ width: '100%', height: '100%' }}
+      <MapContainer
+        onMapRef={(ref) => (mapRef.current = ref)}
+        viewState={viewState}
+        onViewStateChange={setViewState}
       >
-        {selectedLocation && (
-          <Marker
-            longitude={selectedLocation.lng}
-            latitude={selectedLocation.lat}
-            anchor="bottom"
-            color="red"
-          />
-        )}
-      </Map>
+        <LocationMarker />
+      </MapContainer>
+
+      <LocationInfoCard />
     </div>
   );
 }

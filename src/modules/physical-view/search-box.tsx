@@ -16,14 +16,21 @@ const SearchBox = dynamic(
 );
 
 const MapboxSearchBox = () => {
-  const setSelectedLocation = usePhysicalMapStore((state) => state.setSelectedLocation);
+  const { setSelectedLocation, setAddress } = usePhysicalMapStore((state) => state.actions);
 
   const onRetrieve = useCallback(
     (event: SearchBoxRetrieveResponse) => {
       if (event.features && event.features.length > 0) {
         const feature = event.features[0];
         const [lng, lat] = feature.geometry.coordinates;
+
         setSelectedLocation({ lng, lat });
+
+        console.log('feature', feature);
+        setAddress({
+          address: feature.properties.full_address,
+          name: feature.properties.name,
+        });
       }
     },
     [setSelectedLocation]

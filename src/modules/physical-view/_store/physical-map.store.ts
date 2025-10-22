@@ -2,12 +2,25 @@ import { create } from 'zustand';
 
 export type Location = { lng: number; lat: number };
 
+type Address = {
+  name: string;
+  address: string;
+};
+
 type PhysicalMapStoreState = {
   selectedLocation: Location | null;
-  setSelectedLocation: (location: Location | null) => void;
+  address: Address | null;
+  actions: {
+    setSelectedLocation: (location: Location | null) => void;
+    setAddress: (address: Address) => void;
+  };
 };
 
 export const usePhysicalMapStore = create<PhysicalMapStoreState>((set) => ({
   selectedLocation: null,
-  setSelectedLocation: (location) => set({ selectedLocation: location }),
+  address: null,
+  actions: {
+    setSelectedLocation: (location) => set({ selectedLocation: location }),
+    setAddress: (address) => set({ address }),
+  },
 }));
