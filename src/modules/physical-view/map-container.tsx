@@ -1,11 +1,11 @@
 import * as React from 'react';
-import Map, { ViewStateChangeEvent, MapRef } from 'react-map-gl/mapbox';
+import Map, { ViewStateChangeEvent, MapRef, ViewState } from 'react-map-gl/mapbox';
 import { ENV } from '@/shared/config/env';
 import { useCallback } from 'react';
 
 type Props = {
   onMapRef: (ref: MapRef | null) => void;
-  viewState: any;
+  viewState: Pick<ViewState, 'longitude' | 'latitude' | 'zoom'>;
   onViewStateChange: (viewState: any) => void;
   children?: React.ReactNode;
 };
