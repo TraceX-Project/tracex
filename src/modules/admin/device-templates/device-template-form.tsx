@@ -28,6 +28,8 @@ const DeviceTemplateForm = () => {
     { id: 'Labeling', title: 'Labeling' }
   );
 
+  type StepId = (typeof steps)[number]['id'];
+
   const stepper = useStepper();
   const currentIndex = useMemo(
     () => utils.getIndex(stepper.current.id),
@@ -82,31 +84,39 @@ const DeviceTemplateForm = () => {
   });
 
   const validateStep = useCallback(
-    async (stepId: keyof typeof stepSchemas) => {
-      const schema = stepSchemas[stepId];
-      const values = form.state.values as Record<string, unknown>;
-      const keys = Object.keys(schema.shape);
-      const partial: Record<string, unknown> = {};
-      for (const k of keys) partial[k] = values[k];
+    async (stepId: StepId): Promise<boolean> => {
+      try {
+        const schema = stepSchemas[stepId];
+        const formValues = form.state.values as Record<string, unknown>;
 
-      const result = schema.safeParse(partial);
-      const isValid = result.success;
-      if (!isValid) {
-        for (const issue of result.error.issues) {
-          const pathKey = issue.path[0];
-          if (typeof pathKey === 'string') {
-            try {
-              await form.validateField(pathKey as any, 'change');
-            } catch (e) {
-            }
-          }
+        const stepFields: Record<string, unknown> = {};
+        for (const fieldName of Object.keys(schema.shape)) {
+          stepFields[fieldName] = formValues[fieldName];
         }
+
+        const validationResult = schema.safeParse(stepFields);
+
+        if (validationResult.success) {
+          return true;
+        }
+
+        const validationPromises = validationResult.error.issues.map(async (issue) => {
+          const fieldName = issue.path[0];
+          if (typeof fieldName === 'string') {
+            await form.validateField(fieldName as keyof typeof schema.shape, 'change');
+          }
+        });
+
+        await Promise.allSettled(validationPromises);
+
+        return false;
+      } catch (error) {
+        console.error('Error during step validation:', error);
+        return false;
       }
-      return isValid;
     },
     [form]
   );
-
 
   const handleNext = useCallback(async () => {
     const isValid = await validateStep(stepper.current.id);
@@ -118,9 +128,10 @@ const DeviceTemplateForm = () => {
   }, [stepper, validateStep]);
 
   const handleGoToStep = useCallback(
-    async (targetStepId: keyof typeof stepSchemas) => {
+    async (targetStepId: StepId) => {
       const currentIdx = stepper.all.findIndex((s) => s.id === stepper.current.id);
       const targetIdx = stepper.all.findIndex((s) => s.id === targetStepId);
+
       for (let i = currentIdx; i < targetIdx; i++) {
         const stepId = stepper.all[i].id;
         const valid = await validateStep(stepId);
@@ -129,6 +140,7 @@ const DeviceTemplateForm = () => {
           return;
         }
       }
+
       stepper.goTo(targetStepId);
     },
     [stepper, validateStep]
