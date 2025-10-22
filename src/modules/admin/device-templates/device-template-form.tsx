@@ -84,20 +84,29 @@ const DeviceTemplateForm = () => {
   const validateStep = useCallback(
     async (stepId: keyof typeof stepSchemas) => {
       const schema = stepSchemas[stepId];
-      const keys = Object.keys(schema.shape) as (keyof typeof schema.shape)[];
+      const values = form.state.values as Record<string, unknown>;
+      const keys = Object.keys(schema.shape);
+      const partial: Record<string, unknown> = {};
+      for (const k of keys) partial[k] = values[k];
 
-      const results = await Promise.all(
-        keys.map(async (key) => {
-          const result = await form.validateField(key, 'change');
-
-          return Array.isArray(result) ? result.length === 0 : !result;
-        })
-      );
-
-      return results.every(Boolean);
+      const result = schema.safeParse(partial);
+      const isValid = result.success;
+      if (!isValid) {
+        for (const issue of result.error.issues) {
+          const pathKey = issue.path[0];
+          if (typeof pathKey === 'string') {
+            try {
+              await form.validateField(pathKey as any, 'change');
+            } catch (e) {
+            }
+          }
+        }
+      }
+      return isValid;
     },
     [form]
   );
+
 
   const handleNext = useCallback(async () => {
     const isValid = await validateStep(stepper.current.id);
@@ -112,17 +121,14 @@ const DeviceTemplateForm = () => {
     async (targetStepId: keyof typeof stepSchemas) => {
       const currentIdx = stepper.all.findIndex((s) => s.id === stepper.current.id);
       const targetIdx = stepper.all.findIndex((s) => s.id === targetStepId);
-
       for (let i = currentIdx; i < targetIdx; i++) {
         const stepId = stepper.all[i].id;
         const valid = await validateStep(stepId);
-
         if (!valid) {
           stepper.goTo(stepper.all[i].id);
           return;
         }
       }
-
       stepper.goTo(targetStepId);
     },
     [stepper, validateStep]
