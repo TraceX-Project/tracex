@@ -1,5 +1,3 @@
-// Replace your entire PortRangeConfiguration component with this:
-
 import React, { useCallback } from 'react';
 import { DeviceTemplateFormData, PortRange, PortType } from './_types/device-template';
 import { Button } from '@/shared/components/ui/button';
@@ -10,6 +8,7 @@ import { DEVICE_PORT_TYPES_OPTIONS } from './_constants/device-template';
 import { Plus, Trash2 } from 'lucide-react';
 import { useStore } from '@tanstack/react-form';
 import { FormType } from '@/shared/tanstack-form/form';
+import { Label } from '@/shared/components/ui/label';
 
 type Props = {
   form: FormType;
@@ -43,14 +42,10 @@ const PortRangeConfiguration = ({ form }: Props) => {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Header Section */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h3 className="text-foreground text-xl font-semibold">Port Range Configuration</h3>
-        <Button type="button" onClick={addPortRange} size="sm">
-          <Plus className="h-4 w-4" />
-          Add Port Range
-        </Button>
+        <Label className="font-medium">Port Range Configuration</Label>
       </div>
 
       {/* Port Range List */}
@@ -150,6 +145,16 @@ const PortRangeConfiguration = ({ form }: Props) => {
           </Card>
         ))}
       </div>
+
+      {/* Add Port Range Button */}
+      <Button
+        type="button"
+        onClick={addPortRange}
+        className="bg-secondary text-muted-foreground hover:bg-secondary/90 hover:text-foreground w-full border border-dashed hover:border-solid"
+      >
+        <Plus className="h-4 w-4" />
+        Add Port Range
+      </Button>
     </div>
   );
 };
