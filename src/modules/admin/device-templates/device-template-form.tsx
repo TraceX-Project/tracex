@@ -90,8 +90,6 @@ const DeviceTemplateForm = () => {
         keys.map(async (key) => {
           const result = await form.validateField(key, 'change');
 
-          console.log(result);
-
           return Array.isArray(result) ? result.length === 0 : !result;
         })
       );

@@ -61,7 +61,7 @@ export const deviceTemplateSchema = z.object({
           .number({ message: 'End port must be a number' })
           .min(1, { message: 'End port must be greater than zero' }),
         prefix: z.string({ message: 'Prefix must be a string' }).regex(PORT_PREFIX_REGEX, {
-          message: 'Prefix must match the regex pattern',
+          message: 'Prefix must be in format X/Y (e.g., 1/0, 2/1)',
         }),
         runningNumber: z
           .number({ message: 'Running number must be a number' })

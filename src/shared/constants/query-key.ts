@@ -4,5 +4,5 @@ export const QUERY_KEYS = {
   deviceTemplates: 'deviceTemplates',
   devices: 'devices',
   ports: 'ports',
-  task:'task',
+  task: 'task',
 };

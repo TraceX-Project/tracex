@@ -135,9 +135,6 @@ const FileField = (props: FileFieldProps) => {
         toast.promise(onUpload(updatedFiles), {
           loading: `Uploading ${target}...`,
           success: () => {
-            // setFiles([]);
-            // field.setValue(multiple || maxFiles > 1 ? [] : undefined);
-            // console.log("setValue");
             return `${target} uploaded`;
           },
           error: `Failed to upload ${target}`,
@@ -246,9 +243,7 @@ const FileField = (props: FileFieldProps) => {
                       <span className="rtl:hidden">
                         Drag {`'n'`} drop files here, or click to select files
                       </span>
-                      <span className="ltr:hidden">
-                        اسحب وأفلت الملفات هنا، أو انقر لتحديد الملفات
-                      </span>
+                      <span className="ltr:hidden">Click to select files</span>
                     </p>
                     <p className="text-muted-foreground/70 text-sm">
                       You can upload
