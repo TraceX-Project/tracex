@@ -1,6 +1,6 @@
 'use client';
 
-import { MapPinPlus } from 'lucide-react';
+import { MapPinPlus, X } from 'lucide-react';
 import { Card, CardContent } from '@/shared/components/ui/card';
 import { Separator } from '@/shared/components/ui/separator';
 import { Button } from '@/shared/components/ui/button';
@@ -9,14 +9,28 @@ import { usePhysicalMapStore } from './_store/physical-map.store';
 const LocationInfoCard = () => {
   const selectedLocation = usePhysicalMapStore((state) => state.selectedLocation);
   const address = usePhysicalMapStore((state) => state.address);
+  const { reset } = usePhysicalMapStore((state) => state.actions);
 
   if (!address) {
     return null;
   }
 
+  const handleClearSelection = () => {
+    reset();
+  };
+
   return (
     <div className="absolute bottom-4 left-1/2 z-10 -translate-x-1/2 transform">
-      <Card className="mx-auto max-w-md shadow-lg backdrop-blur-sm">
+      <Card className="relative mx-auto w-full max-w-md shadow-lg backdrop-blur-sm">
+        <Button
+          size="icon"
+          variant="ghost"
+          className="absolute top-2 right-2 h-6 w-6 rounded-full"
+          onClick={handleClearSelection}
+          title="Clear selection"
+        >
+          <X className="h-3 w-3" />
+        </Button>
         <CardContent className="flex items-center gap-4">
           <div className="space-y-2">
             <h2 className="text-sm font-semibold">{address.name}</h2>

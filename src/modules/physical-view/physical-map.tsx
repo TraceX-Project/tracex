@@ -13,6 +13,7 @@ import LocationInfoCard from './location-info-card';
 
 export function PhysicalMap() {
   const selectedLocation = usePhysicalMapStore((state) => state.selectedLocation);
+  const { reset } = usePhysicalMapStore((state) => state.actions);
   const mapRef = useRef<MapRef | null>(null);
   const [viewState, setViewState] = React.useState(INITIAL_VIEW_STATE);
 
@@ -26,6 +27,10 @@ export function PhysicalMap() {
       });
     }
   }, [selectedLocation]);
+
+  useEffect(() => {
+    reset();
+  }, []);
 
   return (
     <div className="relative h-full w-full">
