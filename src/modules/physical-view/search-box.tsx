@@ -48,6 +48,10 @@ const MapboxSearchBox = () => {
         onRetrieve={onRetrieve}
         accessToken={ENV.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
         onClear={onClear}
+        options={{
+          language: 'th',
+          country: 'th',
+        }}
       />
     </div>
   );
