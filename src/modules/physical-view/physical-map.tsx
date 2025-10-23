@@ -15,7 +15,7 @@ import { ENV } from '@/shared/config/env';
 
 export function PhysicalMap() {
   const selectedLocation = usePhysicalMapStore((state) => state.selectedLocation);
-  const { reset, setSelectedLocation, setAddress } = usePhysicalMapStore((state) => state.actions);
+  const { reset, setSelectedLocation } = usePhysicalMapStore((state) => state.actions);
   const mapRef = useRef<MapRef | null>(null);
   const [viewState, setViewState] = React.useState(INITIAL_VIEW_STATE);
   const geoCodingCore = useGeocodingCore({
@@ -25,8 +25,10 @@ export function PhysicalMap() {
 
   useEffect(() => {
     if (selectedLocation && mapRef.current) {
+      const { lat, lng } = selectedLocation.location;
+
       mapRef.current.flyTo({
-        center: [selectedLocation.lng, selectedLocation.lat],
+        center: [lng, lat],
         essential: true,
         zoom: 15,
         duration: 2000,
@@ -42,8 +44,6 @@ export function PhysicalMap() {
     async (evt: MapMouseEvent) => {
       const { lngLat } = evt;
 
-      setSelectedLocation({ lng: lngLat.lng, lat: lngLat.lat });
-
       const result = await geoCodingCore.reverse(
         {
           lat: lngLat.lat,
@@ -58,9 +58,13 @@ export function PhysicalMap() {
 
       const feature = result.features[0];
 
-      setAddress({
+      setSelectedLocation({
         address: feature.properties.full_address,
         name: feature.properties.name,
+        location: {
+          lat: lngLat.lat,
+          lng: lngLat.lng,
+        },
       });
     },
     [setSelectedLocation]

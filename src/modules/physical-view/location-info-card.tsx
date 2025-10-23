@@ -8,10 +8,9 @@ import { usePhysicalMapStore } from './_store/physical-map.store';
 
 const LocationInfoCard = () => {
   const selectedLocation = usePhysicalMapStore((state) => state.selectedLocation);
-  const address = usePhysicalMapStore((state) => state.address);
   const { reset } = usePhysicalMapStore((state) => state.actions);
 
-  if (!address) {
+  if (!selectedLocation) {
     return null;
   }
 
@@ -33,11 +32,11 @@ const LocationInfoCard = () => {
         </Button>
         <CardContent className="flex items-center gap-4">
           <div className="space-y-2">
-            <h2 className="text-sm font-semibold">{address.name}</h2>
-            <p className="text-muted-foreground line-clamp-2 text-sm">{address.address}</p>
+            <h2 className="text-sm font-semibold">{selectedLocation.name}</h2>
+            <p className="text-muted-foreground line-clamp-2 text-sm">{selectedLocation.address}</p>
             <Separator className="w-full max-w-[200px]" />
             <p className="text-muted-foreground text-xs">
-              {selectedLocation?.lat}, {selectedLocation?.lng}
+              {selectedLocation?.location?.lat}, {selectedLocation?.location?.lng}
             </p>
           </div>
 

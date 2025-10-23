@@ -10,8 +10,8 @@ const LocationMarker = () => {
 
   return (
     <Marker
-      longitude={selectedLocation.lng}
-      latitude={selectedLocation.lat}
+      longitude={selectedLocation.location.lng}
+      latitude={selectedLocation.location.lat}
       anchor="bottom"
       color="red"
     />

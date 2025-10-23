@@ -16,7 +16,7 @@ const SearchBox = dynamic(
 );
 
 const MapboxSearchBox = () => {
-  const { setSelectedLocation, setAddress, reset } = usePhysicalMapStore((state) => state.actions);
+  const { setSelectedLocation, reset } = usePhysicalMapStore((state) => state.actions);
   const clearTrigger = usePhysicalMapStore((state) => state.clearTrigger);
 
   const onRetrieve = useCallback(
@@ -25,9 +25,11 @@ const MapboxSearchBox = () => {
         const feature = event.features[0];
         const [lng, lat] = feature.geometry.coordinates;
 
-        setSelectedLocation({ lng, lat });
-
-        setAddress({
+        setSelectedLocation({
+          location: {
+            lat,
+            lng,
+          },
           address: feature.properties.full_address,
           name: feature.properties.name,
         });

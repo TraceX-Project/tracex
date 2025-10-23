@@ -2,18 +2,17 @@ import { create } from 'zustand';
 
 export type Location = { lng: number; lat: number };
 
-type Address = {
+type MapLocation = {
   name: string;
   address: string;
+  location: Location;
 };
 
 type PhysicalMapStoreState = {
-  selectedLocation: Location | null;
-  address: Address | null;
+  selectedLocation: MapLocation | null;
   clearTrigger: number;
   actions: {
-    setSelectedLocation: (location: Location | null) => void;
-    setAddress: (address: Address) => void;
+    setSelectedLocation: (location: MapLocation | null) => void;
     reset: () => void;
   };
 };
@@ -24,8 +23,6 @@ export const usePhysicalMapStore = create<PhysicalMapStoreState>((set, get) => (
   clearTrigger: 0,
   actions: {
     setSelectedLocation: (location) => set({ selectedLocation: location }),
-    setAddress: (address) => set({ address }),
-    reset: () =>
-      set({ selectedLocation: null, address: null, clearTrigger: get().clearTrigger + 1 }),
+    reset: () => set({ selectedLocation: null, clearTrigger: get().clearTrigger + 1 }),
   },
 }));
