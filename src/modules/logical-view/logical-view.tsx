@@ -25,25 +25,9 @@ type Props = {
 const LogicalView = ({ projectId }: Props) => {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
-  const mockDevices = useMemo(
-    () => ({
-      nodes: [
-        { id: 'r1', name: 'Router 1', position: { x: 0, y: 0 }, type: DeviceType.ROUTER },
-        { id: 's1', name: 'Switch 1', position: { x: 0, y: 0 }, type: DeviceType.SWITCH },
-        { id: 's2', name: 'Switch 2', position: { x: 0, y: 0 }, type: DeviceType.SWITCH },
-      ],
-      edges: [
-        { source: 'r1', target: 's1' },
-        { source: 'r1', target: 's2' },
-      ],
-    }),
-    []
-  );
+  const { data: devices } = useGetDevicesInProject(projectId);
 
-  const { data: devices = mockDevices } = useGetDevicesInProject(projectId);
   const { nodes: layoutedNodes, edges: layoutedEdges } = useMemo(() => {
-    if (!devices) return { nodes: [], edges: [] };
-
     const mappedDevices = mapDevicesToReactFlow(devices!);
 
     return getLayoutedElements(mappedDevices.nodes, mappedDevices.edges);
