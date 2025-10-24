@@ -12,6 +12,7 @@ import { createBuildingSchema } from './_schema.ts/schema';
 import { FormEvent, useCallback } from 'react';
 import { usePhysicalMapStore } from './_store/physical-map.store';
 import { useCreateBuilding } from './_hooks/use-create-building';
+import { toast } from 'sonner';
 
 type Props = {
   projectId: string;
@@ -20,7 +21,7 @@ type Props = {
 const CreateBuildingDialog = ({ projectId }: Props) => {
   const isOpen = usePhysicalMapStore((state) => state.isCreateBuildingModalOpen);
   const selectedLocation = usePhysicalMapStore((state) => state.selectedLocation);
-  const { setIsCreateBuildingModalOpen } = usePhysicalMapStore((state) => state.actions);
+  const { setIsCreateBuildingModalOpen, reset } = usePhysicalMapStore((state) => state.actions);
   const { mutateAsync: createBuilding } = useCreateBuilding();
 
   const form = useAppForm({
@@ -41,13 +42,14 @@ const CreateBuildingDialog = ({ projectId }: Props) => {
           location: selectedLocation!.location,
         };
 
-        const result = await createBuilding({
-          projectId,
-          payload,
-        });
-        console.log('create buildings value', result);
+        await createBuilding({ projectId, payload });
+
+        setIsCreateBuildingModalOpen(false);
+        reset();
+
+        toast.success('Building created successfully');
       } catch (error) {
-        console.error('Error creating building:', error);
+        toast.error('Error creating building');
       }
     },
   });
