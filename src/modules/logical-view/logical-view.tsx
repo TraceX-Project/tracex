@@ -16,7 +16,6 @@ import CreateDeviceModal from './create-device-modal';
 import { NODE_TYPES } from './_constants/logical-view';
 import { mapDevicesToReactFlow } from './_utils/react-flow';
 import { getLayoutedElements } from './_utils/graph';
-import { DeviceType } from '../admin/device-templates/_types/device-template';
 
 type Props = {
   projectId: string;
