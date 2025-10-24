@@ -14,7 +14,11 @@ import { useGeocodingCore } from '@mapbox/search-js-react';
 import { ENV } from '@/shared/config/env';
 import CreateBuildingDialog from './create-building-modal';
 
-export function PhysicalMap() {
+type Props = {
+  projectId: string;
+};
+
+export function PhysicalMap({ projectId }: Props) {
   const selectedLocation = usePhysicalMapStore((state) => state.selectedLocation);
   const { reset, setSelectedLocation } = usePhysicalMapStore((state) => state.actions);
   const mapRef = useRef<MapRef | null>(null);
@@ -40,7 +44,7 @@ export function PhysicalMap() {
 
   useEffect(() => {
     reset();
-  }, []);
+  }, [reset]);
 
   const handleMapClick = useCallback(
     async (evt: MapMouseEvent) => {
@@ -69,7 +73,7 @@ export function PhysicalMap() {
         },
       });
     },
-    [setSelectedLocation]
+    [setSelectedLocation, geoCodingCore]
   );
 
   return (
@@ -86,7 +90,7 @@ export function PhysicalMap() {
       </MapContainer>
 
       <LocationInfoCard />
-      <CreateBuildingDialog />
+      <CreateBuildingDialog projectId={projectId} />
     </div>
   );
 }

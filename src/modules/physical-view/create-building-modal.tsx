@@ -11,11 +11,17 @@ import { useAppForm } from '@/shared/tanstack-form/form';
 import { createBuildingSchema } from './_schema.ts/schema';
 import { FormEvent, useCallback } from 'react';
 import { usePhysicalMapStore } from './_store/physical-map.store';
+import { useCreateBuilding } from './_hooks/use-create-building';
 
-const CreateBuildingDialog = () => {
+type Props = {
+  projectId: string;
+};
+
+const CreateBuildingDialog = ({ projectId }: Props) => {
   const isOpen = usePhysicalMapStore((state) => state.isCreateBuildingModalOpen);
   const selectedLocation = usePhysicalMapStore((state) => state.selectedLocation);
   const { setIsCreateBuildingModalOpen } = usePhysicalMapStore((state) => state.actions);
+  const { mutateAsync: createBuilding } = useCreateBuilding();
 
   const form = useAppForm({
     defaultValues: {
@@ -30,11 +36,16 @@ const CreateBuildingDialog = () => {
     },
     onSubmit: async ({ value }) => {
       try {
-        const createdBuilding = {
+        const payload = {
           ...value,
-          location: selectedLocation?.location,
+          location: selectedLocation!.location,
         };
-        console.log('create buildings value', createdBuilding);
+
+        const result = await createBuilding({
+          projectId,
+          payload,
+        });
+        console.log('create buildings value', result);
       } catch (error) {
         console.error('Error creating building:', error);
       }
