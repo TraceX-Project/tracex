@@ -23,6 +23,7 @@ export const ENDPOINTS = {
     update: (id: string) => `${ROOTS.projects}/${id}`,
     delete: (id: string) => `${ROOTS.projects}/${id}`,
     createBuilding: (id: string) => `${ROOTS.projects}/${id}/buildings`,
+    getBuildings: (id: string) => `${ROOTS.projects}/${id}/buildings`,
   },
   deviceTemplates: {
     create: `${ROOTS.deviceTemplates}`,

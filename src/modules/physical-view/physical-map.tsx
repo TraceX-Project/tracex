@@ -13,6 +13,8 @@ import LocationInfoCard from './location-info-card';
 import { useGeocodingCore } from '@mapbox/search-js-react';
 import { ENV } from '@/shared/config/env';
 import CreateBuildingDialog from './create-building-modal';
+import { useGetBuildings } from './_hooks/use-get-buildings';
+import BuildingMarker from './building-marker';
 
 type Props = {
   projectId: string;
@@ -23,6 +25,8 @@ export function PhysicalMap({ projectId }: Props) {
   const { reset, setSelectedLocation } = usePhysicalMapStore((state) => state.actions);
   const mapRef = useRef<MapRef | null>(null);
   const [viewState, setViewState] = React.useState(INITIAL_VIEW_STATE);
+  const { data: buildings } = useGetBuildings(projectId);
+  console.log('building', buildings);
 
   const geoCodingCore = useGeocodingCore({
     accessToken: ENV.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN,
@@ -87,6 +91,9 @@ export function PhysicalMap({ projectId }: Props) {
         onMapClick={handleMapClick}
       >
         <LocationMarker />
+        {buildings?.map((building) => (
+          <BuildingMarker key={building.id} building={building} />
+        ))}
       </MapContainer>
 
       <LocationInfoCard />

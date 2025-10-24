@@ -11,3 +11,12 @@ export const createBuilding = async (projectId: string, payload: CreateBuildingR
 
   return response;
 };
+
+export const getBuildings = async (projectId: string) => {
+  const response = await request<Building[]>({
+    method: 'GET',
+    path: ENDPOINTS.projects.getBuildings(projectId),
+  });
+
+  return response;
+};
