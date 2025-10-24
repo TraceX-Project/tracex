@@ -8,7 +8,7 @@ import { usePhysicalMapStore } from './_store/physical-map.store';
 
 const LocationInfoCard = () => {
   const selectedLocation = usePhysicalMapStore((state) => state.selectedLocation);
-  const { reset } = usePhysicalMapStore((state) => state.actions);
+  const { reset, setIsCreateBuildingModalOpen } = usePhysicalMapStore((state) => state.actions);
 
   if (!selectedLocation) {
     return null;
@@ -16,6 +16,10 @@ const LocationInfoCard = () => {
 
   const handleClearSelection = () => {
     reset();
+  };
+
+  const handleAddBuilding = () => {
+    setIsCreateBuildingModalOpen(true);
   };
 
   return (
@@ -40,7 +44,7 @@ const LocationInfoCard = () => {
             </p>
           </div>
 
-          <Button size="icon" className="h-10 w-10 rounded-full">
+          <Button onClick={handleAddBuilding} size="icon" className="h-10 w-10 rounded-full">
             <MapPinPlus className="h-4 w-4" />
           </Button>
         </CardContent>

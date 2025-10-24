@@ -11,9 +11,11 @@ type MapLocation = {
 type PhysicalMapStoreState = {
   selectedLocation: MapLocation | null;
   clearTrigger: number;
+  isCreateBuildingModalOpen: boolean;
   actions: {
     setSelectedLocation: (location: MapLocation | null) => void;
     reset: () => void;
+    setIsCreateBuildingModalOpen: (isOpen: boolean) => void;
   };
 };
 
@@ -21,8 +23,10 @@ export const usePhysicalMapStore = create<PhysicalMapStoreState>((set, get) => (
   selectedLocation: null,
   address: null,
   clearTrigger: 0,
+  isCreateBuildingModalOpen: false,
   actions: {
     setSelectedLocation: (location) => set({ selectedLocation: location }),
     reset: () => set({ selectedLocation: null, clearTrigger: get().clearTrigger + 1 }),
+    setIsCreateBuildingModalOpen: (isOpen) => set({ isCreateBuildingModalOpen: isOpen }),
   },
 }));

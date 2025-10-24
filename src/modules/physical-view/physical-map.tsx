@@ -12,12 +12,14 @@ import LocationMarker from './location-marker';
 import LocationInfoCard from './location-info-card';
 import { useGeocodingCore } from '@mapbox/search-js-react';
 import { ENV } from '@/shared/config/env';
+import CreateBuildingDialog from './create-building-modal';
 
 export function PhysicalMap() {
   const selectedLocation = usePhysicalMapStore((state) => state.selectedLocation);
   const { reset, setSelectedLocation } = usePhysicalMapStore((state) => state.actions);
   const mapRef = useRef<MapRef | null>(null);
   const [viewState, setViewState] = React.useState(INITIAL_VIEW_STATE);
+
   const geoCodingCore = useGeocodingCore({
     accessToken: ENV.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN,
     language: 'en',
@@ -84,6 +86,7 @@ export function PhysicalMap() {
       </MapContainer>
 
       <LocationInfoCard />
+      <CreateBuildingDialog />
     </div>
   );
 }
