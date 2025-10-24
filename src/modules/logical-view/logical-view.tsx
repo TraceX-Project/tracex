@@ -42,6 +42,8 @@ const LogicalView = ({ projectId }: Props) => {
 
   const { data: devices = mockDevices } = useGetDevicesInProject(projectId);
   const { nodes: layoutedNodes, edges: layoutedEdges } = useMemo(() => {
+    if (!devices) return { nodes: [], edges: [] };
+
     const mappedDevices = mapDevicesToReactFlow(devices!);
 
     return getLayoutedElements(mappedDevices.nodes, mappedDevices.edges);
