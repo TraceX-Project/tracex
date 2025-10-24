@@ -22,11 +22,14 @@ type Props = {
 
 export function PhysicalMap({ projectId }: Props) {
   const selectedLocation = usePhysicalMapStore((state) => state.selectedLocation);
-  const { reset, setSelectedLocation } = usePhysicalMapStore((state) => state.actions);
+  const isFromSearch = usePhysicalMapStore((state) => state.isFromSearch);
+  const { reset, setSelectedLocation, setIsFromSearch } = usePhysicalMapStore(
+    (state) => state.actions
+  );
+
   const mapRef = useRef<MapRef | null>(null);
   const [viewState, setViewState] = React.useState(INITIAL_VIEW_STATE);
   const { data: buildings } = useGetBuildings(projectId);
-  console.log('building', buildings);
 
   const geoCodingCore = useGeocodingCore({
     accessToken: ENV.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN,
@@ -37,12 +40,11 @@ export function PhysicalMap({ projectId }: Props) {
     if (selectedLocation && mapRef.current) {
       const { lat, lng } = selectedLocation.location;
       const currentZoom = mapRef.current.getZoom();
-      const targetZoom = currentZoom < 10 ? 15 : currentZoom;
 
-      mapRef.current.easeTo({
+      mapRef.current.flyTo({
         center: [lng, lat],
         essential: true,
-        zoom: targetZoom,
+        zoom: isFromSearch ? 15 : currentZoom,
         duration: 2000,
       });
     }
@@ -70,9 +72,10 @@ export function PhysicalMap({ projectId }: Props) {
 
       const feature = result.features[0];
 
+      setIsFromSearch(false);
       setSelectedLocation({
-        address: feature.properties.full_address,
-        name: feature.properties.name,
+        address: feature?.properties?.full_address,
+        name: feature?.properties?.name,
         location: {
           lat: lngLat.lat,
           lng: lngLat.lng,

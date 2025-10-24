@@ -11,21 +11,25 @@ type MapLocation = {
 type PhysicalMapStoreState = {
   selectedLocation: MapLocation | null;
   clearTrigger: number;
+  isFromSearch: boolean;
   isCreateBuildingModalOpen: boolean;
   actions: {
     setSelectedLocation: (location: MapLocation | null) => void;
     reset: () => void;
     setIsCreateBuildingModalOpen: (isOpen: boolean) => void;
+    setIsFromSearch: (isFromSearch: boolean) => void;
   };
 };
 
 export const usePhysicalMapStore = create<PhysicalMapStoreState>((set, get) => ({
   selectedLocation: null,
   clearTrigger: 0,
+  isFromSearch: false,
   isCreateBuildingModalOpen: false,
   actions: {
     setSelectedLocation: (location) => set({ selectedLocation: location }),
     reset: () => set({ selectedLocation: null, clearTrigger: get().clearTrigger + 1 }),
     setIsCreateBuildingModalOpen: (isOpen) => set({ isCreateBuildingModalOpen: isOpen }),
+    setIsFromSearch: (isFromSearch) => set({ isFromSearch }),
   },
 }));
