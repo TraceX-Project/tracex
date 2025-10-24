@@ -36,11 +36,13 @@ export function PhysicalMap({ projectId }: Props) {
   useEffect(() => {
     if (selectedLocation && mapRef.current) {
       const { lat, lng } = selectedLocation.location;
+      const currentZoom = mapRef.current.getZoom();
+      const targetZoom = currentZoom < 10 ? 15 : currentZoom;
 
-      mapRef.current.flyTo({
+      mapRef.current.easeTo({
         center: [lng, lat],
         essential: true,
-        zoom: 15,
+        zoom: targetZoom,
         duration: 2000,
       });
     }
