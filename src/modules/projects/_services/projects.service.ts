@@ -44,7 +44,7 @@ export const getProject = async (projectId: string) => {
 
     return response;
   } catch (error: unknown) {
-    if (error instanceof ApiError && (error as ApiError).status === 404) {
+    if (error instanceof ApiError && error.status === 404) {
       return null;
     }
 

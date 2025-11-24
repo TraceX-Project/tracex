@@ -9,7 +9,6 @@ import { Project } from './_types/projects';
 import CreateDeviceModal from '../logical-view/create-device-modal';
 import { IconFileExport } from '@tabler/icons-react';
 import { usePathname } from 'next/navigation';
-import path from 'path';
 
 type Props = {
   project: Project;
