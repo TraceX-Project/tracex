@@ -3,8 +3,13 @@ export type User = {
   firstName: string;
   lastName: string;
   email: string;
-  role: string;
+  role: UserRole;
   avatarUrl: string;
   createdAt: string;
   updatedAt: string;
 };
+
+export enum UserRole {
+  ADMIN = 'admin',
+  USER = 'user',
+}

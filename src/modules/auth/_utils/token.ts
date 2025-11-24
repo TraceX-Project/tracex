@@ -42,3 +42,13 @@ export async function clearTokenCookies() {
   cookieStore.delete(COOKIE_NAME.accessToken);
   cookieStore.delete(COOKIE_NAME.refreshToken);
 }
+
+export async function getUserRoleFromToken(token: string): Promise<string | null> {
+  try {
+    const decoded = jwtDecode<JwtPayload & { role?: string }>(token);
+
+    return decoded.role || null;
+  } catch {
+    return null;
+  }
+}
