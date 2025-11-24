@@ -1,35 +1,50 @@
 import React from 'react';
+import { Field, FieldLabel, FieldContent, FieldError, FieldDescription } from '../ui/field';
 import { Input } from '../ui/input';
 import { useFieldContext } from '@/shared/tanstack-form/form';
-import FieldErrors from './field-errors';
-import { Label } from '../ui/label';
 
-interface Props extends React.ComponentProps<'input'> {
+interface Props extends Omit<React.ComponentProps<'input'>, 'type'> {
   label?: string;
+  description?: string;
+  showErrorMessage?: boolean;
+  orientation?: 'vertical' | 'horizontal' | 'responsive';
 }
 
-const NumberField = ({ label, ...inputProps }: Props) => {
+const NumberField = ({
+  label,
+  description,
+  showErrorMessage = true,
+  orientation = 'vertical',
+  ...inputProps
+}: Props) => {
   const field = useFieldContext<number>();
+  const hasErrors = field.state.meta.errors.length > 0;
 
   return (
-    <div className="grid gap-3">
-      {label && (
-        <Label htmlFor={field.name} className="font-medium">
-          {label}
-        </Label>
+    <Field orientation={orientation}>
+      {orientation !== 'vertical' && description ? (
+        <FieldContent>
+          {label && <FieldLabel htmlFor={field.name}>{label}</FieldLabel>}
+          {description && <FieldDescription>{description}</FieldDescription>}
+        </FieldContent>
+      ) : (
+        <>
+          {label && <FieldLabel htmlFor={field.name}>{label}</FieldLabel>}
+          {description && <FieldDescription>{description}</FieldDescription>}
+        </>
       )}
 
-      <div className="flex flex-col gap-1">
-        <Input
-          type="number"
-          value={field.state.value}
-          onChange={(e) => field.handleChange(e.target.valueAsNumber)}
-          {...inputProps}
-        />
+      <Input
+        id={field.name}
+        type="number"
+        value={field.state.value}
+        onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+        aria-invalid={hasErrors}
+        {...inputProps}
+      />
 
-        <FieldErrors meta={field.state.meta} />
-      </div>
-    </div>
+      {showErrorMessage && hasErrors && <FieldError errors={field.state.meta.errors} />}
+    </Field>
   );
 };
 

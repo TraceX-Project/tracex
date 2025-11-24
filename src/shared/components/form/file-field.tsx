@@ -19,8 +19,7 @@ import { cn } from '@/shared/lib/cn';
 import { Upload, X } from 'lucide-react';
 import { formatBytes } from '@/shared/utils/file';
 import { useFieldContext } from '@/shared/tanstack-form/form';
-import { Label } from '../ui/label';
-import FieldErrors from './field-errors';
+import { Field, FieldContent, FieldDescription, FieldError, FieldLabel } from '../ui/field';
 
 interface FileCardProps {
   file: File;
@@ -74,7 +73,8 @@ interface FileFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   maxFiles?: DropzoneProps['maxFiles'];
   multiple?: boolean;
   disabled?: boolean;
-  label: string;
+  label?: string;
+  description?: string;
 }
 
 const FileField = (props: FileFieldProps) => {
@@ -90,9 +90,11 @@ const FileField = (props: FileFieldProps) => {
     multiple = false,
     disabled = false,
     className,
+    description,
     ...dropzoneProps
   } = props;
   const field = useFieldContext<File | File[] | undefined>();
+  const hasErrors = field.state.meta.errors.length > 0;
 
   const [files, setFiles] = useControllableState({
     prop: valueProp,
@@ -191,12 +193,11 @@ const FileField = (props: FileFieldProps) => {
   const isDisabled = disabled || (files?.length ?? 0) >= maxFiles;
 
   return (
-    <div className="grid gap-3">
-      <Label htmlFor={field.name} className="font-medium">
-        {label}
-      </Label>
+    <Field orientation="vertical">
+      {label && <FieldLabel htmlFor={field.name}>{label}</FieldLabel>}
+      {description && <FieldDescription>{description}</FieldDescription>}
 
-      <div className="relative flex flex-col gap-1 overflow-hidden">
+      <FieldContent className="relative flex flex-col gap-1 overflow-hidden">
         <Dropzone
           onDrop={onDrop}
           accept={accept}
@@ -221,6 +222,7 @@ const FileField = (props: FileFieldProps) => {
                 'ring-offset-background focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
                 isDragActive && 'border-muted-foreground/50',
                 isDisabled && 'pointer-events-none opacity-60',
+                hasErrors && 'border-red-500 bg-red-50',
                 className
               )}
               {...dropzoneProps}
@@ -228,29 +230,50 @@ const FileField = (props: FileFieldProps) => {
               <input {...getInputProps()} />
               {isDragActive ? (
                 <div className="flex flex-col items-center justify-center gap-4 sm:px-5">
-                  <div className="rounded-full border border-dashed p-3">
-                    <Upload className="text-muted-foreground size-7" aria-hidden="true" />
+                  <div
+                    className={cn(
+                      'rounded-full border border-dashed p-3',
+                      hasErrors && 'border-red-400'
+                    )}
+                  >
+                    <Upload
+                      className={cn('text-muted-foreground size-7', hasErrors && 'text-red-500')}
+                    />
                   </div>
-                  <p className="text-muted-foreground font-medium">Drop the files here</p>
+                  <p
+                    className={cn('text-muted-foreground font-medium', hasErrors && 'text-red-600')}
+                  >
+                    Drop the files here
+                  </p>
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center gap-4 sm:px-5">
-                  <div className="rounded-full border border-dashed p-3">
-                    <Upload className="text-muted-foreground size-7" aria-hidden="true" />
+                  <div
+                    className={cn(
+                      'rounded-full border border-dashed p-3',
+                      hasErrors && 'border-red-400'
+                    )}
+                  >
+                    <Upload
+                      className={cn('text-muted-foreground size-7', hasErrors && 'text-red-500')}
+                    />
                   </div>
                   <div className="space-y-px">
-                    <p className="text-muted-foreground font-medium">
-                      <span className="rtl:hidden">
-                        Drag {`'n'`} drop files here, or click to select files
-                      </span>
-                      <span className="ltr:hidden">Click to select files</span>
+                    <p
+                      className={cn(
+                        'text-muted-foreground font-medium',
+                        hasErrors && 'text-red-600'
+                      )}
+                    >
+                      Drag 'n' drop files here, or click to select files
                     </p>
-                    <p className="text-muted-foreground/70 text-sm">
-                      You can upload
-                      {maxFiles > 1
-                        ? ` ${maxFiles === Infinity ? 'multiple' : maxFiles}
-                      files (up to ${formatBytes(maxSize)} each)`
-                        : ` a file with ${formatBytes(maxSize)}`}
+                    <p
+                      className={cn(
+                        'text-muted-foreground/70 text-sm',
+                        hasErrors && 'text-red-500'
+                      )}
+                    >
+                      You can upload {maxFiles} files
                     </p>
                   </div>
                 </div>
@@ -258,7 +281,7 @@ const FileField = (props: FileFieldProps) => {
             </div>
           )}
         </Dropzone>
-        <FieldErrors meta={field.state.meta} />
+        <FieldError errors={field.state.meta.errors} />
 
         {files?.length ? (
           <ScrollArea className="mt-6 h-fit w-full px-3">
@@ -274,8 +297,8 @@ const FileField = (props: FileFieldProps) => {
             </div>
           </ScrollArea>
         ) : null}
-      </div>
-    </div>
+      </FieldContent>
+    </Field>
   );
 };
 

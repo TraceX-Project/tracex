@@ -1,34 +1,62 @@
-import { useFieldContext } from '@/shared/tanstack-form/form';
 import React from 'react';
-import { Label } from '../ui/label';
+import { Field, FieldLabel, FieldContent, FieldError, FieldDescription } from '../ui/field';
 import { Input } from '../ui/input';
-import FieldErrors from './field-errors';
+import { useFieldContext } from '@/shared/tanstack-form/form';
 
 interface Props extends React.ComponentProps<'input'> {
   label?: string;
+  description?: string;
+  showErrorMessage?: boolean;
+  orientation?: 'vertical' | 'horizontal' | 'responsive';
 }
 
-const TextField = ({ label, ...inputProps }: Props) => {
+const TextField = ({
+  label,
+  description,
+  showErrorMessage = true,
+  orientation = 'vertical',
+  type,
+  ...inputProps
+}: Props) => {
   const field = useFieldContext<string>();
+  const hasErrors = field.state.meta.errors.length > 0;
+
+  const handleOnBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    field.handleBlur();
+
+    const value = e.target.value;
+    const trimmedValue = typeof value === 'string' ? value.trim() : value;
+
+    e.target.value = trimmedValue;
+    field.handleChange(trimmedValue);
+  };
 
   return (
-    <div className="grid gap-3">
-      <Label htmlFor={field.name} className="font-medium">
-        {label}
-      </Label>
+    <Field orientation={orientation}>
+      {orientation !== 'vertical' && description ? (
+        <FieldContent>
+          {label && <FieldLabel htmlFor={field.name}>{label}</FieldLabel>}
+          {description && <FieldDescription>{description}</FieldDescription>}
+        </FieldContent>
+      ) : (
+        <>
+          {label && <FieldLabel htmlFor={field.name}>{label}</FieldLabel>}
+          {description && <FieldDescription>{description}</FieldDescription>}
+        </>
+      )}
 
-      <div className="flex flex-col gap-1">
-        <Input
-          id={field.name}
-          value={field.state.value}
-          onChange={(e) => field.handleChange(e.target.value)}
-          onBlur={field.handleBlur}
-          {...inputProps}
-        />
+      <Input
+        id={field.name}
+        value={field.state.value}
+        onChange={(e) => field.handleChange(e.target.value)}
+        onBlur={handleOnBlur}
+        aria-invalid={hasErrors}
+        type={type}
+        {...inputProps}
+      />
 
-        <FieldErrors meta={field.state.meta} />
-      </div>
-    </div>
+      {showErrorMessage && hasErrors && <FieldError errors={field.state.meta.errors} />}
+    </Field>
   );
 };
 
