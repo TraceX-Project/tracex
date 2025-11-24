@@ -1,9 +1,3 @@
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-} from '@/shared/components/ui/breadcrumb';
 import { Separator } from '@/shared/components/ui/separator';
 import { SidebarTrigger } from '@/shared/components/ui/sidebar';
 import React from 'react';
@@ -18,13 +12,7 @@ const SiteHeader = ({ title }: Props) => {
       <div className="flex items-center gap-2 px-4">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbPage>{title}</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <p className="text-lg font-semibold">{title}</p>
       </div>
     </header>
   );
