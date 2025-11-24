@@ -29,6 +29,8 @@ const MapContainer = ({ onMapRef, viewState, onViewStateChange, children, onMapC
       onClick={onMapClick}
       mapStyle="mapbox://styles/mapbox/streets-v12"
       style={{ width: '100%', height: '100%' }}
+      minZoom={6}
+      maxZoom={22}
     >
       {children}
     </Map>
