@@ -32,7 +32,7 @@ export default async function middleware(request: NextRequest) {
   }
 
   if (isAdminRoute(pathname)) {
-    const userRole = await getUserRoleFromToken(accessToken || '');
+    const userRole = await getUserRoleFromToken(accessToken ?? '');
 
     if (userRole !== UserRole.ADMIN) {
       return NextResponse.redirect(new URL(PATHS.projects.root, request.url));
