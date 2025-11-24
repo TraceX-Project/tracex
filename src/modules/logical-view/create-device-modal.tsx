@@ -53,8 +53,9 @@ const CreateDeviceModal = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
+        <Button size="sm" variant="outline">
           <Plus />
+          Add device
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
