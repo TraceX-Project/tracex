@@ -16,25 +16,49 @@ const SearchBox = dynamic(
 );
 
 const MapboxSearchBox = () => {
-  const setSelectedLocation = usePhysicalMapStore((state) => state.setSelectedLocation);
+  const { setSelectedLocation, reset, setIsFromSearch } = usePhysicalMapStore(
+    (state) => state.actions
+  );
+  const clearTrigger = usePhysicalMapStore((state) => state.clearTrigger);
 
   const onRetrieve = useCallback(
     (event: SearchBoxRetrieveResponse) => {
       if (event.features && event.features.length > 0) {
         const feature = event.features[0];
         const [lng, lat] = feature.geometry.coordinates;
-        setSelectedLocation({ lng, lat });
+
+        setIsFromSearch(true);
+        setSelectedLocation({
+          location: {
+            lat,
+            lng,
+          },
+          address: feature?.properties?.full_address,
+          name: feature?.properties?.name,
+        });
       }
     },
     [setSelectedLocation]
   );
 
+  const onClear = useCallback(() => {
+    reset();
+  }, [reset]);
+
   return (
-    <SearchBox
-      placeholder="Search for a location"
-      onRetrieve={onRetrieve}
-      accessToken={ENV.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
-    />
+    <div className="absolute top-4 left-4 z-50 max-w-md">
+      <SearchBox
+        key={clearTrigger}
+        placeholder="Search for a location"
+        onRetrieve={onRetrieve}
+        accessToken={ENV.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+        onClear={onClear}
+        options={{
+          language: 'th',
+          country: 'th',
+        }}
+      />
+    </div>
   );
 };
 

@@ -10,8 +10,13 @@ import NavUser from './nav-user';
 import NavHeader from './nav-header';
 import NavMain from './nav-main';
 import NavAdmin from './nav-admin';
+import { useGetProfile } from '../auth/_hooks/use-get-profile';
+import { UserRole } from '../auth/_types/user';
 
 const AppSidebar = () => {
+  const { data: user } = useGetProfile();
+  const isAdmin = user?.role === UserRole.ADMIN;
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -20,7 +25,7 @@ const AppSidebar = () => {
 
       <SidebarContent>
         <NavMain />
-        <NavAdmin />
+        {isAdmin && <NavAdmin />}
       </SidebarContent>
 
       <SidebarFooter>

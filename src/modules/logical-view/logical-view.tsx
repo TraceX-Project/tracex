@@ -24,8 +24,8 @@ type Props = {
 const LogicalView = ({ projectId }: Props) => {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
-
   const { data: devices } = useGetDevicesInProject(projectId);
+
   const { nodes: layoutedNodes, edges: layoutedEdges } = useMemo(() => {
     const mappedDevices = mapDevicesToReactFlow(devices!);
 

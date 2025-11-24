@@ -3,7 +3,6 @@ const ROOTS = {
   users: '/users',
   projects: '/projects',
   deviceTemplates: '/device-templates',
-  attachments: '/attachments',
   ports: '/ports',
 };
 
@@ -23,6 +22,8 @@ export const ENDPOINTS = {
     getById: (id: string) => `${ROOTS.projects}/${id}`,
     update: (id: string) => `${ROOTS.projects}/${id}`,
     delete: (id: string) => `${ROOTS.projects}/${id}`,
+    createBuilding: (id: string) => `${ROOTS.projects}/${id}/buildings`,
+    getBuildings: (id: string) => `${ROOTS.projects}/${id}/buildings`,
   },
   deviceTemplates: {
     create: `${ROOTS.deviceTemplates}`,
@@ -31,10 +32,6 @@ export const ENDPOINTS = {
     update: (id: string) => `${ROOTS.deviceTemplates}/${id}`,
     delete: (id: string) => `${ROOTS.deviceTemplates}/${id}`,
   },
-  attachments: {
-    upload: `${ROOTS.attachments}/upload`,
-    delete: (id: string) => `${ROOTS.attachments}/${id}`,
-  },
   devices: {
     addDevice: (id: string) => `${ROOTS.projects}/${id}/devices`,
     getDevicesInProject: (id: string) => `${ROOTS.projects}/${id}/devices`,
@@ -42,5 +39,5 @@ export const ENDPOINTS = {
   ports: {
     createPorts: `${ROOTS.ports}/predict`,
     getPortsInDevice: (taskId: string) => `${ROOTS.ports}/result/${taskId}`,
-  }
+  },
 };
