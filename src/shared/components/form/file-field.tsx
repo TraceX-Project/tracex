@@ -265,7 +265,7 @@ const FileField = (props: FileFieldProps) => {
                         hasErrors && 'text-red-600'
                       )}
                     >
-                      Drag 'n' drop files here, or click to select files
+                      Drag &apos;n&apos; drop files here, or click to select files
                     </p>
                     <p
                       className={cn(
