@@ -107,7 +107,12 @@ const ManageFloors = ({ buildingId }: Props) => {
         <div>
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold">{building?.name}</h2>
-            <CreateFloorModal variant="outline" size="sm" title="Add Floor" />
+            <CreateFloorModal
+              buildingId={buildingId}
+              variant="outline"
+              size="sm"
+              title="Add Floor"
+            />
           </div>
           <DndContext
             sensors={sensors}

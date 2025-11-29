@@ -15,7 +15,7 @@ const ScreenGuard = ({ children }: Props) => {
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+  }, [setMounted]);
 
   if (!mounted) {
     return null;

@@ -6,11 +6,11 @@ import { notFound } from 'next/navigation';
 
 type Props = {
   children: React.ReactNode;
-  params: Promise<{ id: string }>;
+  params: Promise<{ projectId: string }>;
 };
 
 export default async function ProjectLayout({ children, params }: Props) {
-  const { id: projectId } = await params;
+  const { projectId } = await params;
 
   const parsedProjectId = uuidSchema.safeParse(projectId);
   if (!parsedProjectId.success) {

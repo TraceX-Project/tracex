@@ -10,7 +10,11 @@ import { FolderCode } from 'lucide-react';
 import React from 'react';
 import CreateFloorModal from './create-floor-modal';
 
-const EmptyBuilding = () => {
+type EmptyBuildingProps = {
+  buildingId: string;
+};
+
+const EmptyBuilding = ({ buildingId }: EmptyBuildingProps) => {
   return (
     <Empty>
       <EmptyHeader>
@@ -23,7 +27,7 @@ const EmptyBuilding = () => {
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
-        <CreateFloorModal title="Create Floor" />
+        <CreateFloorModal title="Create Floor" buildingId={buildingId} />
       </EmptyContent>
     </Empty>
   );
