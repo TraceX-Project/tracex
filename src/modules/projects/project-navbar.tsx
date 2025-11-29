@@ -17,8 +17,6 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from '@/shared/components/ui/breadcrumb';
-import { useQueryStates } from 'nuqs';
-import { parseAsUUID } from '@/shared/utils/parsers';
 import ManageFloors from '../buildings/manage-floors';
 import { useGetBuilding } from '../buildings/_hooks/use-get-building';
 

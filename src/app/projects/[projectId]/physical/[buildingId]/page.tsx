@@ -16,13 +16,13 @@ export default function BuildingPage({ params }: Props) {
   const router = useRouter();
 
   useEffect(() => {
-    if (building && building.floors?.length) {
+    if (building?.floors?.length) {
       const sortedFloors = [...building.floors].sort((a, b) => a.sortOrder - b.sortOrder);
       const defaultFloor = sortedFloors[sortedFloors.length - 1];
 
       router.replace(PATHS.projects.floorView(projectId, building.id, defaultFloor.id));
     }
-  }, [building, router]);
+  }, [building, router, projectId]);
 
   if (isLoading || !building) {
     return <div className="h-full w-full animate-pulse bg-gray-200" />;

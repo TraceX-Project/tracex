@@ -1,4 +1,4 @@
-import { Position } from '@/modules/logical-view/_types/logical-view';
+import { type Position } from '@/modules/logical-view/_types/logical-view';
 import { create } from 'zustand';
 
 type RoomState = {

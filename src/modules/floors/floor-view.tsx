@@ -6,8 +6,6 @@ import { useGetBuilding } from '../buildings/_hooks/use-get-building';
 import { type Floor } from './_types/floor';
 import FloorPlanDisplay from './floorplan-display';
 import FloorSelector from './floor-selector';
-import { useQueryState } from 'nuqs';
-import { parseAsUUID } from '@/shared/utils/parsers';
 
 type Props = {
   buildingId: string;

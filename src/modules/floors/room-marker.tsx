@@ -1,5 +1,5 @@
 import React from 'react';
-import { Room } from '../rooms/_types/room';
+import { type Room } from '../rooms/_types/room';
 
 type Props = {
   room: Room;

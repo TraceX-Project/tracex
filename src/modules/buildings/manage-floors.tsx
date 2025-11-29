@@ -87,7 +87,7 @@ const ManageFloors = ({ buildingId }: Props) => {
     try {
       await reorderFloors({ buildingId, floors });
       toast.success('Floors reordered successfully.');
-    } catch (error) {
+    } catch {
       toast.error('Failed to reorder floors. Please try again.');
     }
   };
