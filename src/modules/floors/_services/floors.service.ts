@@ -1,6 +1,6 @@
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
-import { Floor } from '../_types/floor';
+import { type Floor } from '../_types/floor';
 
 export const createFloor = async (buildingId: string, formData: FormData) => {
   const response = await request<Floor>({

@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import EmptyBuilding from '../buildings/empty-building';
 import { useGetBuilding } from '../buildings/_hooks/use-get-building';
-import { type Floor } from './_types/floor';
 import FloorPlanDisplay from './floorplan-display';
 import FloorSelector from './floor-selector';
 import { useGetFloor } from './_hooks/use-get-floor';

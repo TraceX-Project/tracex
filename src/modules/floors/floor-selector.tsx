@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { Button } from '@/shared/components/ui/button';
 import { PATHS } from '@/shared/config/paths';
 import { useRouter } from 'next/navigation';
-import { Building } from '../buildings/_types/buildings';
+import { type Building } from '../buildings/_types/buildings';
 
 type Props = {
   building: Building;
