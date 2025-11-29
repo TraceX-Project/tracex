@@ -53,8 +53,9 @@ const CreateDeviceModal = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
+        <Button size="sm" variant="outline">
           <Plus />
+          Add device
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
@@ -94,7 +95,6 @@ const CreateDeviceModal = () => {
             <form.AppForm>
               <form.SubmitButton>Create</form.SubmitButton>
             </form.AppForm>
-            {/* <Button type="submit">Save changes</Button> */}
           </DialogFooter>
         </form>
       </DialogContent>

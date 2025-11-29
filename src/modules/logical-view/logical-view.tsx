@@ -12,7 +12,6 @@ import {
   type Edge,
 } from '@xyflow/react';
 import { useGetDevicesInProject } from './_hooks/use-get-devices';
-import CreateDeviceModal from './create-device-modal';
 import { NODE_TYPES } from './_constants/logical-view';
 import { mapDevicesToReactFlow } from './_utils/react-flow';
 import { getLayoutedElements } from './_utils/graph';
@@ -54,10 +53,6 @@ const LogicalView = ({ projectId }: Props) => {
         <Background variant={BackgroundVariant.Dots} />
         <Controls />
       </ReactFlow>
-
-      <div className="absolute right-10 bottom-10 z-10">
-        <CreateDeviceModal />
-      </div>
     </div>
   );
 };

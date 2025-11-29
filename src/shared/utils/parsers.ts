@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { dataTableConfig } from '@/shared/config/data-table';
 
 import type { ExtendedColumnFilter, ExtendedColumnSort } from '@/shared/types/data-table';
+import { uuidSchema } from '../lib/zod';
 
 const sortingItemSchema = z.object({
   id: z.string(),
@@ -79,3 +80,14 @@ export const getFiltersStateParser = <TData>(columnIds?: string[] | Set<string>)
       ),
   });
 };
+
+export const parseAsUUID = createParser({
+  parse: (value) => {
+    try {
+      return uuidSchema.parse(value);
+    } catch {
+      return null;
+    }
+  },
+  serialize: (value) => uuidSchema.parse(value),
+});

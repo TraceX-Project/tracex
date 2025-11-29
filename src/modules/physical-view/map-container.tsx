@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Map, { ViewStateChangeEvent, MapRef, ViewState } from 'react-map-gl/mapbox';
+import Map, { type ViewStateChangeEvent, type MapRef, type ViewState } from 'react-map-gl/mapbox';
 import { ENV } from '@/shared/config/env';
 import { useCallback } from 'react';
-import { MapMouseEvent } from 'mapbox-gl';
+import { type MapMouseEvent } from 'mapbox-gl';
 
 type Props = {
   onMapRef: (ref: MapRef | null) => void;
@@ -29,6 +29,12 @@ const MapContainer = ({ onMapRef, viewState, onViewStateChange, children, onMapC
       onClick={onMapClick}
       mapStyle="mapbox://styles/mapbox/streets-v12"
       style={{ width: '100%', height: '100%' }}
+      minZoom={6}
+      maxZoom={18}
+      dragRotate={false}
+      touchZoomRotate={false}
+      keyboard={false}
+      touchPitch={false}
     >
       {children}
     </Map>

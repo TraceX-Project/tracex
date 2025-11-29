@@ -8,14 +8,9 @@ const LocationMarker = () => {
     return null;
   }
 
-  return (
-    <Marker
-      longitude={selectedLocation.location.lng}
-      latitude={selectedLocation.location.lat}
-      anchor="bottom"
-      color="red"
-    />
-  );
+  const { location } = selectedLocation;
+
+  return <Marker longitude={location.lng} latitude={location.lat} anchor="bottom" color="red" />;
 };
 
 export default LocationMarker;

@@ -21,3 +21,5 @@ export const createBuildingSchema = z.object({
       }),
   }),
 });
+
+export type CreateBuildingSchema = z.infer<typeof createBuildingSchema>;

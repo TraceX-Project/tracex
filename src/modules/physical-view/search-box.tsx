@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useCallback } from 'react';
-import { SearchBoxProps } from '@mapbox/search-js-react/dist/components/SearchBox';
+import { type SearchBoxProps } from '@mapbox/search-js-react/dist/components/SearchBox';
 import { ENV } from '@/shared/config/env';
 import dynamic from 'next/dynamic';
 import { usePhysicalMapStore } from './_store/physical-map.store';
-import { SearchBoxRetrieveResponse } from '@mapbox/search-js-core';
+import { type SearchBoxRetrieveResponse } from '@mapbox/search-js-core';
 
 const SearchBox = dynamic(
   () =>

@@ -12,15 +12,15 @@ import LocationMarker from './location-marker';
 import LocationInfoCard from './location-info-card';
 import { useGeocodingCore } from '@mapbox/search-js-react';
 import { ENV } from '@/shared/config/env';
-import CreateBuildingDialog from './create-building-modal';
-import { useGetBuildings } from './_hooks/use-get-buildings';
+import CreateBuildingModal from './create-building-modal';
 import BuildingMarker from './building-marker';
+import { useGetBuildings } from '../buildings/_hooks/use-get-buildings';
 
 type Props = {
   projectId: string;
 };
 
-export function PhysicalMap({ projectId }: Props) {
+const PhysicalMap = ({ projectId }: Props) => {
   const selectedLocation = usePhysicalMapStore((state) => state.selectedLocation);
   const isFromSearch = usePhysicalMapStore((state) => state.isFromSearch);
   const { reset, setSelectedLocation, setIsFromSearch } = usePhysicalMapStore(
@@ -41,7 +41,7 @@ export function PhysicalMap({ projectId }: Props) {
       const { lat, lng } = selectedLocation.location;
       const currentZoom = mapRef.current.getZoom();
 
-      mapRef.current.flyTo({
+      mapRef.current.easeTo({
         center: [lng, lat],
         essential: true,
         zoom: isFromSearch ? 15 : currentZoom,
@@ -50,13 +50,13 @@ export function PhysicalMap({ projectId }: Props) {
     }
   }, [selectedLocation]);
 
-  useEffect(() => {
-    reset();
-  }, [reset]);
+  // useEffect(() => {
+  //   reset();
+  // }, [reset]);
 
   const handleMapClick = useCallback(
-    async (evt: MapMouseEvent) => {
-      const { lngLat } = evt;
+    async (event: MapMouseEvent) => {
+      const { lngLat } = event;
 
       const result = await geoCodingCore.reverse(
         {
@@ -72,7 +72,7 @@ export function PhysicalMap({ projectId }: Props) {
 
       const feature = result.features[0];
 
-      setIsFromSearch(false);
+      // setIsFromSearch(false);
       setSelectedLocation({
         address: feature?.properties?.full_address,
         name: feature?.properties?.name,
@@ -102,7 +102,10 @@ export function PhysicalMap({ projectId }: Props) {
       </MapContainer>
 
       <LocationInfoCard />
-      <CreateBuildingDialog projectId={projectId} />
+
+      <CreateBuildingModal projectId={projectId} />
     </div>
   );
-}
+};
+
+export default PhysicalMap;

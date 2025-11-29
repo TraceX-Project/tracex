@@ -24,7 +24,7 @@ const TextField = ({
   const handleOnBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     field.handleBlur();
 
-    const value = e.target.value;
+    const {value} = e.target;
     const trimmedValue = typeof value === 'string' ? value.trim() : value;
 
     e.target.value = trimmedValue;

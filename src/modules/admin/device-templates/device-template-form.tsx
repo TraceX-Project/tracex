@@ -1,11 +1,11 @@
 'use client';
 
-import { FormType, useAppForm } from '@/shared/tanstack-form/form';
+import { type FormType, useAppForm } from '@/shared/tanstack-form/form';
 import React, { useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { deviceTemplateSchema, stepSchemas } from './_schema/schema';
 import { useCreateDeviceTemplate } from './_hooks/use-create-device-template';
-import { Vendor, DeviceType, Alignment, PortInput, PortType } from './_types/device-template';
+import { Vendor, DeviceType, Alignment, type PortInput, PortType } from './_types/device-template';
 import { useRouter } from 'next/navigation';
 import { PATHS } from '@/shared/config/paths';
 import { Label } from '@radix-ui/react-label';
