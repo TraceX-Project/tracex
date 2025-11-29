@@ -33,7 +33,7 @@ const ProjectNavbar = ({ project }: Props) => {
     floorId: parseAsUUID,
     roomId: parseAsUUID,
   });
-  const { data: building } = useGetBuilding(query.buildingId || '');
+  const { data: building } = useGetBuilding(query.buildingId ?? '');
 
   const renderButtons = () => {
     if (query.buildingId) {

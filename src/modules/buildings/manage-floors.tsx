@@ -38,7 +38,7 @@ type Props = {
 const ManageFloors = ({ buildingId }: Props) => {
   const { data: building, isLoading } = useGetBuilding(buildingId);
   const { mutateAsync: reorderFloors } = useReorderFloors();
-  const [floors, setFloors] = useState(building?.floors || []);
+  const [floors, setFloors] = useState(building?.floors ?? []);
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
