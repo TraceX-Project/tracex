@@ -5,7 +5,7 @@ import { PATHS } from '@/shared/config/paths';
 import { ChevronLeft, Share2 } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
-import { Project } from './_types/projects';
+import { type Project } from './_types/projects';
 import CreateDeviceModal from '../logical-view/create-device-modal';
 import { IconFileExport } from '@tabler/icons-react';
 import { usePathname } from 'next/navigation';

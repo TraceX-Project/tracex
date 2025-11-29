@@ -1,6 +1,6 @@
 import { Marker } from 'react-map-gl/mapbox';
 import Link from 'next/link';
-import { Building } from '../buildings/_types/buildings';
+import { type Building } from '../buildings/_types/buildings';
 import { IconMapPinFilled } from '@tabler/icons-react';
 
 type Props = {

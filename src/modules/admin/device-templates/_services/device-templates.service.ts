@@ -1,6 +1,6 @@
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
-import { DevicePorts } from '../_types/device-template';
+import { type DevicePorts } from '../_types/device-template';
 import {
   type CreateDeviceTemplateRequest,
   type DeviceTemplate,

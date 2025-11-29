@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { CreateBuildingRequest } from '../../buildings/_types/buildings';
+import { type CreateBuildingRequest } from '../../buildings/_types/buildings';
 import { createBuilding } from '../../buildings/_services/buildings.service';
 import { getQueryClient } from '@/shared/tanstack-query/get-query-client';
 import { QUERY_KEYS } from '@/shared/constants/query-key';

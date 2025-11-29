@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Map, { ViewStateChangeEvent, MapRef, ViewState } from 'react-map-gl/mapbox';
+import Map, { type ViewStateChangeEvent, type MapRef, type ViewState } from 'react-map-gl/mapbox';
 import { ENV } from '@/shared/config/env';
 import { useCallback } from 'react';
-import { MapMouseEvent } from 'mapbox-gl';
+import { type MapMouseEvent } from 'mapbox-gl';
 
 type Props = {
   onMapRef: (ref: MapRef | null) => void;

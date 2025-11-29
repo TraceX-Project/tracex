@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import EmptyBuilding from './empty-building';
 import { useGetBuilding } from './_hooks/use-get-building';
-import { Floor } from '../floors/_types/floor';
+import { type Floor } from '../floors/_types/floor';
 import FloorPlanDisplay from './floorplan-display';
 import FloorSelector from './floor-selector';
 

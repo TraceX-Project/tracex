@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { reorderFloors } from '../../buildings/_services/buildings.service';
 import { getQueryClient } from '@/shared/tanstack-query/get-query-client';
 import { QUERY_KEYS } from '@/shared/constants/query-key';
-import { Floor } from '@/modules/floors/_types/floor';
+import { type Floor } from '@/modules/floors/_types/floor';
 
 export const useReorderFloors = () => {
   const queryClient = getQueryClient();

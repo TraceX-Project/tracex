@@ -1,10 +1,9 @@
-import React, { FormEvent, useCallback } from 'react';
-import { Button, buttonVariants } from '@/shared/components/ui/button';
+import React, { type FormEvent, useCallback } from 'react';
+import { Button, type buttonVariants } from '@/shared/components/ui/button';
 import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -19,7 +18,7 @@ import { useCreateFloor } from '../floors/_hooks/use-create-floor';
 import { useBoolean } from '@/shared/hooks/use-boolean';
 import { createFloorSchema } from '../floors/_schema/schema';
 import { Plus } from 'lucide-react';
-import { VariantProps } from 'class-variance-authority';
+import { type VariantProps } from 'class-variance-authority';
 
 type Props = {
   title: string;

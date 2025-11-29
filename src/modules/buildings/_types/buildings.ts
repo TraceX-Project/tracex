@@ -1,8 +1,8 @@
-import { z } from 'zod';
-import { Location } from '../../physical-view/_store/physical-map.store';
-import { Floor } from '@/modules/floors/_types/floor';
-import { Project } from '@/modules/projects/_types/projects';
-import { createBuildingSchema } from '../_schema/schema';
+import { type z } from 'zod';
+import { type Location } from '../../physical-view/_store/physical-map.store';
+import { type Floor } from '@/modules/floors/_types/floor';
+import { type Project } from '@/modules/projects/_types/projects';
+import { type createBuildingSchema } from '../_schema/schema';
 
 export type CreateBuildingRequest = z.infer<typeof createBuildingSchema>;
 

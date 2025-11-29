@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { useMediaQuery } from '../hooks/use-media-query';
 import { useBoolean } from '../hooks/use-boolean';

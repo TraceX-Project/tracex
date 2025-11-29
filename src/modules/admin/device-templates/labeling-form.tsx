@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Stage, Layer, Image as KImage, Rect, Transformer } from 'react-konva';
 import useImage from 'use-image';
-import { PortInput } from './_types/device-template';
+import { type PortInput } from './_types/device-template';
 import PortTypeConfiguration from './port-range-configuration';
 import { Button } from '@/shared/components/ui/button';
-import Konva from 'konva';
-import { useAppForm } from '@/shared/tanstack-form/form';
+import type Konva from 'konva';
+import { type useAppForm } from '@/shared/tanstack-form/form';
 
 type Props = {
   form: ReturnType<typeof useAppForm>;

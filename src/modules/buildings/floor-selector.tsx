@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Floor } from '../floors/_types/floor';
+import { type Floor } from '../floors/_types/floor';
 import { Button } from '@/shared/components/ui/button';
 
 type Props = {

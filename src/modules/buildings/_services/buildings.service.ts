@@ -1,7 +1,7 @@
 import { request } from '@/shared/lib/api';
-import { Building, CreateBuildingRequest } from '../_types/buildings';
+import { type Building, type CreateBuildingRequest } from '../_types/buildings';
 import { ENDPOINTS } from '@/shared/config/endpoints';
-import { Floor } from '@/modules/floors/_types/floor';
+import { type Floor } from '@/modules/floors/_types/floor';
 
 export const createBuilding = async (projectId: string, payload: CreateBuildingRequest) => {
   const response = await request<Building>({

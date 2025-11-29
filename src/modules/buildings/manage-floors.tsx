@@ -3,7 +3,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -16,9 +15,8 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  DragEndEvent,
+  type DragEndEvent,
 } from '@dnd-kit/core';
-import { Label } from '@/shared/components/ui/label';
 import { Layers } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useGetBuilding } from './_hooks/use-get-building';
