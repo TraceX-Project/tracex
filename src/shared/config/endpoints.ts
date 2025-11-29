@@ -5,6 +5,7 @@ const ROOTS = {
   deviceTemplates: '/device-templates',
   ports: '/ports',
   buildings: '/buildings',
+  floors: '/floors',
 };
 
 export const ENDPOINTS = {
@@ -45,5 +46,8 @@ export const ENDPOINTS = {
     createFloor: (buildingId: string) => `${ROOTS.buildings}/${buildingId}/floors`,
     getById: (id: string) => `${ROOTS.buildings}/${id}`,
     reorderFloors: (buildingId: string) => `${ROOTS.buildings}/${buildingId}/floors/reorder`,
+  },
+  floors: {
+    getById: (id: string) => `${ROOTS.floors}/${id}`,
   },
 };

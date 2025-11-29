@@ -6,7 +6,7 @@ type Props = {
 };
 
 export default function FloorPage({ params }: Props) {
-  const { buildingId } = use(params);
+  const { buildingId, floorId } = use(params);
 
-  return <BuildingView buildingId={buildingId} />;
+  return <BuildingView buildingId={buildingId} floorId={floorId} />;
 }

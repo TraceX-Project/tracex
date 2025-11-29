@@ -6,4 +6,5 @@ export const QUERY_KEYS = {
   ports: 'ports',
   task: 'task',
   buildings: 'buildings',
+  floors: 'floors',
 };

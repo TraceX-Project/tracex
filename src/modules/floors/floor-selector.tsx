@@ -1,30 +1,26 @@
 import React, { useCallback, useMemo } from 'react';
-import { type Floor } from './_types/floor';
 import { Button } from '@/shared/components/ui/button';
-import { useQueryState } from 'nuqs';
-import { parseAsUUID } from '@/shared/utils/parsers';
+import { PATHS } from '@/shared/config/paths';
+import { useRouter } from 'next/navigation';
+import { Building } from '../buildings/_types/buildings';
 
 type Props = {
-  floors: Floor[];
-  selectedFloor: Floor | null;
-  onSelect: (floor: Floor) => void;
+  building: Building;
+  currentFloorId: string;
 };
 
-const FloorSelector = ({ floors, selectedFloor, onSelect }: Props) => {
-  const [floorId, setFloorId] = useQueryState('floorId', parseAsUUID);
-
+const FloorSelector = ({ building, currentFloorId }: Props) => {
+  const router = useRouter();
   const sortedFloors = useMemo(
-    () => [...floors].sort((a, b) => a.sortOrder - b.sortOrder),
-    [floors]
+    () => [...building?.floors].sort((a, b) => a.sortOrder - b.sortOrder),
+    [building?.floors]
   );
 
-  const handleFloorSelect = useCallback(
-    (floor: Floor) => {
-      setFloorId(floor.id);
-
-      onSelect(floor);
+  const handleSelectFloor = useCallback(
+    (floorId: string) => {
+      router.replace(PATHS.projects.floorView(building.projectId!, building.id, floorId));
     },
-    [onSelect, setFloorId]
+    [building.projectId, building.id, router]
   );
 
   return (
@@ -32,10 +28,10 @@ const FloorSelector = ({ floors, selectedFloor, onSelect }: Props) => {
       {sortedFloors.map((floor) => (
         <Button
           key={floor.id}
-          variant={selectedFloor?.id === floor.id ? 'default' : 'outline'}
+          variant={currentFloorId === floor.id ? 'default' : 'outline'}
           size="sm"
-          onClick={() => handleFloorSelect(floor)}
-          aria-selected={selectedFloor?.id === floor.id}
+          aria-selected={currentFloorId === floor.id}
+          onClick={() => handleSelectFloor(floor.id)}
         >
           {floor.name}
         </Button>

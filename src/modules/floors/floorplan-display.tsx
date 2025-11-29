@@ -19,4 +19,3 @@ const FloorPlanDisplay = ({ planUrl }: Props) => {
 };
 
 export default FloorPlanDisplay;
- 

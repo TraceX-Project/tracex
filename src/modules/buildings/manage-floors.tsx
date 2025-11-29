@@ -79,10 +79,6 @@ const ManageFloors = ({ buildingId }: Props) => {
     [floors]
   );
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   const handleSaveChanges = async () => {
     try {
       await reorderFloors({ buildingId, floors });
