@@ -30,13 +30,12 @@ const LocationInfoCard = () => {
           variant="ghost"
           className="absolute top-2 right-2 h-6 w-6 rounded-full"
           onClick={handleClearSelection}
-          title="Clear selection"
         >
           <X className="h-3 w-3" />
         </Button>
         <CardContent className="flex items-center gap-4">
           <div className="space-y-2">
-            <h2 className="text-sm font-semibold">{selectedLocation.name}</h2>
+            <h2 className="text-sm font-semibold">{selectedLocation.name ?? 'ไม่มีชื่อสถานที่'}</h2>
             <p className="text-muted-foreground line-clamp-2 text-sm">{selectedLocation.address}</p>
             <Separator className="w-full max-w-[200px]" />
             <p className="text-muted-foreground text-xs">

@@ -95,7 +95,6 @@ const CreateDeviceModal = () => {
             <form.AppForm>
               <form.SubmitButton>Create</form.SubmitButton>
             </form.AppForm>
-            {/* <Button type="submit">Save changes</Button> */}
           </DialogFooter>
         </form>
       </DialogContent>

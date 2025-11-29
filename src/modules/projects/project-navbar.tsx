@@ -9,6 +9,18 @@ import { Project } from './_types/projects';
 import CreateDeviceModal from '../logical-view/create-device-modal';
 import { IconFileExport } from '@tabler/icons-react';
 import { usePathname } from 'next/navigation';
+import { Separator } from '@/shared/components/ui/separator';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/shared/components/ui/breadcrumb';
+import { useQueryStates } from 'nuqs';
+import { parseAsUUID } from '@/shared/utils/parsers';
+import ManageFloors from '../buildings/manage-floors';
+import { useGetBuilding } from '../buildings/_hooks/use-get-building';
 
 type Props = {
   project: Project;
@@ -16,12 +28,18 @@ type Props = {
 
 const ProjectNavbar = ({ project }: Props) => {
   const pathname = usePathname();
-
-  console.log('Current pathname:', pathname);
-  console.log('Project logical path:', PATHS.projects.logical(''));
-  console.log('Project physical path:', PATHS.projects.physical(''));
+  const [query, _] = useQueryStates({
+    buildingId: parseAsUUID,
+    floorId: parseAsUUID,
+    roomId: parseAsUUID,
+  });
+  const { data: building } = useGetBuilding(query.buildingId || '');
 
   const renderButtons = () => {
+    if (query.buildingId) {
+      return <ManageFloors buildingId={query.buildingId} />;
+    }
+
     if (pathname.includes(PATHS.projects.logical(project.id))) {
       return <CreateDeviceModal />;
     }
@@ -32,18 +50,32 @@ const ProjectNavbar = ({ project }: Props) => {
   };
 
   return (
-    <header className="bg-primary-foreground relative flex items-center justify-between border-b px-4 py-2">
-      {/* Left */}
-      <div className="flex items-center">
+    <header className="flex w-full shrink-0 items-center justify-between gap-2 border-b bg-white px-4 py-2">
+      <div className="flex items-center gap-2">
         <Link href={PATHS.projects.root}>
           <Button variant="ghost" size="icon">
             <ChevronLeft />
           </Button>
         </Link>
-        <h2 className="font-semibold">{project.name}</h2>
+        <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbPage>{project.name}</BreadcrumbPage>
+            </BreadcrumbItem>
+            {building && (
+              <>
+                <BreadcrumbSeparator />
+
+                <BreadcrumbItem>
+                  <BreadcrumbPage>{building.name}</BreadcrumbPage>
+                </BreadcrumbItem>
+              </>
+            )}
+          </BreadcrumbList>
+        </Breadcrumb>
       </div>
 
-      {/* Right */}
       <div className="space-x-2.5">
         {renderButtons()}
 

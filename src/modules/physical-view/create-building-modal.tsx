@@ -8,17 +8,17 @@ import {
   DialogTitle,
 } from '@/shared/components/ui/dialog';
 import { useAppForm } from '@/shared/tanstack-form/form';
-import { createBuildingSchema } from './_schema.ts/schema';
 import { FormEvent, useCallback } from 'react';
 import { usePhysicalMapStore } from './_store/physical-map.store';
-import { useCreateBuilding } from './_hooks/use-create-building';
 import { toast } from 'sonner';
+import { useCreateBuilding } from '../buildings/_hooks/use-create-building';
+import { createBuildingSchema } from '../buildings/_schema/schema';
 
 type Props = {
   projectId: string;
 };
 
-const CreateBuildingDialog = ({ projectId }: Props) => {
+const CreateBuildingModal = ({ projectId }: Props) => {
   const isOpen = usePhysicalMapStore((state) => state.isCreateBuildingModalOpen);
   const selectedLocation = usePhysicalMapStore((state) => state.selectedLocation);
   const { setIsCreateBuildingModalOpen, reset } = usePhysicalMapStore((state) => state.actions);
@@ -87,4 +87,4 @@ const CreateBuildingDialog = ({ projectId }: Props) => {
   );
 };
 
-export default CreateBuildingDialog;
+export default CreateBuildingModal;
