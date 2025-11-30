@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useGetBuilding } from '../buildings/_hooks/use-get-building';
 import { useGetFloor } from './_hooks/use-get-floor';
 import EmptyBuilding from '../buildings/empty-building';

@@ -1,6 +1,6 @@
-import { User } from '@/modules/auth/_types/user';
+import { type User } from '@/modules/auth/_types/user';
 import UserAvatar from '@/shared/components/user-avatar';
-import { ColumnDef } from '@tanstack/react-table';
+import { type ColumnDef } from '@tanstack/react-table';
 import UserCellAction from './user-cell-action';
 
 export const userColumns: ColumnDef<User>[] = [
@@ -9,8 +9,8 @@ export const userColumns: ColumnDef<User>[] = [
     header: 'Avatar',
     cell: ({ row }) => {
       const avatarUrl = row.getValue<string>('avatarUrl');
-      const firstName = row.original.firstName;
-      const lastName = row.original.lastName;
+      const {firstName} = row.original;
+      const {lastName} = row.original;
 
       return (
         <UserAvatar

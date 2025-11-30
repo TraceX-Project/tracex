@@ -8,7 +8,7 @@ import {
 } from '@/shared/components/ui/dropdown-menu';
 import { EllipsisVertical } from 'lucide-react';
 import { Button } from '@/shared/components/ui/button';
-import { User } from '@/modules/auth/_types/user';
+import { type User } from '@/modules/auth/_types/user';
 import ChangeRoleDialog from './change-role-dialog';
 import { useBoolean } from '@/shared/hooks/use-boolean';
 

@@ -1,7 +1,7 @@
 'use client';
 
-import { User, UserRole } from '@/modules/auth/_types/user';
-import React, { FormEvent, useCallback } from 'react';
+import { type User, UserRole } from '@/modules/auth/_types/user';
+import React, { type FormEvent, useCallback } from 'react';
 import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,

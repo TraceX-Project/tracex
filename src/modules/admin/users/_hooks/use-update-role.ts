@@ -2,7 +2,7 @@ import { QUERY_KEYS } from '@/shared/constants/query-key';
 import { getQueryClient } from '@/shared/tanstack-query/get-query-client';
 import { useMutation } from '@tanstack/react-query';
 import { updateUserRole } from '../_services/users.service';
-import { UpdateRoleInput } from '../_schema/user';
+import { type UpdateRoleInput } from '../_schema/user';
 
 export const useUpdateRole = () => {
   const queryClient = getQueryClient();

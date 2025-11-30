@@ -1,7 +1,6 @@
 import ChangingViewTabs from '@/modules/logical-view/changing-view-button';
 import { getProject } from '@/modules/projects/_services/projects.service';
 import ProjectNavbar from '@/modules/projects/project-navbar';
-import { uuidSchema } from '@/shared/lib/zod';
 import { notFound } from 'next/navigation';
 
 type Props = {
@@ -11,11 +10,6 @@ type Props = {
 
 export default async function ProjectLayout({ children, params }: Props) {
   const { projectId } = await params;
-
-  const parsedProjectId = uuidSchema.safeParse(projectId);
-  if (!parsedProjectId.success) {
-    notFound();
-  }
 
   const project = await getProject(projectId);
 
