@@ -2,32 +2,34 @@ import { getBuildingById } from '@/modules/buildings/_services/buildings.service
 import EmptyBuilding from '@/modules/buildings/empty-building';
 import { getFloor } from '@/modules/floors/_services/floors.service';
 import FloorSelector from '@/modules/floors/floor-selector';
+import FloorView from '@/modules/floors/floor-view';
 import FloorPlanDisplay from '@/modules/floors/floorplan-display';
+import { QUERY_KEYS } from '@/shared/constants/query-key';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
+import { notFound } from 'next/navigation';
 
 type Props = {
   params: Promise<{ projectId: string; buildingId: string; floorId: string }>;
 };
 
 export default async function FloorPage({ params }: Props) {
-  const { buildingId, floorId } = await params;
-  const building = await getBuildingById(buildingId);
-  const floor = await getFloor(floorId);
+  const { buildingId, floorId, projectId } = await params;
+  const queryClient = new QueryClient();
 
-  if (!building?.floors?.length) {
-    return (
-      <div className="flex h-full w-full items-center justify-center">
-        <EmptyBuilding buildingId={buildingId} />
-      </div>
-    );
-  }
+  await Promise.all([
+    queryClient.prefetchQuery({
+      queryKey: [QUERY_KEYS.buildings, buildingId],
+      queryFn: () => getBuildingById(buildingId),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: [QUERY_KEYS.floors, floorId],
+      queryFn: () => getFloor(floorId),
+    }),
+  ]);
 
   return (
-    <div className="relative h-full max-h-screen w-full max-w-screen">
-      {floor && <FloorPlanDisplay planUrl={floor.planUrl} />}
-
-      <div className="absolute right-4 bottom-4 sm:right-8">
-        <FloorSelector building={building} currentFloorId={floorId} />
-      </div>
-    </div>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <FloorView projectId={projectId} buildingId={buildingId} floorId={floorId} />
+    </HydrationBoundary>
   );
 }

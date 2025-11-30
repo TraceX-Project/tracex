@@ -1,5 +1,5 @@
 import { PATHS } from '@/shared/config/paths';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import EmptyBuilding from '@/modules/buildings/empty-building';
 import { getBuildingById } from '@/modules/buildings/_services/buildings.service';
 
