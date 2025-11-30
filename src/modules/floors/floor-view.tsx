@@ -32,8 +32,7 @@ const FloorView = ({ floorId, buildingId, projectId }: Props) => {
   }
 
   if (!floor || isError) {
-    console.log('Floor not found for floorId:', floorId);
-    notFound();
+    return <div>Floor Not Found</div>;
   }
 
   return (

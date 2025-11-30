@@ -22,10 +22,7 @@ type Props = {
 
 const PhysicalMap = ({ projectId }: Props) => {
   const selectedLocation = usePhysicalMapStore((state) => state.selectedLocation);
-  const isFromSearch = usePhysicalMapStore((state) => state.isFromSearch);
-  const { reset, setSelectedLocation, setIsFromSearch } = usePhysicalMapStore(
-    (state) => state.actions
-  );
+  const { reset, setSelectedLocation } = usePhysicalMapStore((state) => state.actions);
 
   const mapRef = useRef<MapRef | null>(null);
   const [viewState, setViewState] = React.useState(INITIAL_VIEW_STATE);
@@ -44,15 +41,15 @@ const PhysicalMap = ({ projectId }: Props) => {
       mapRef.current.easeTo({
         center: [lng, lat],
         essential: true,
-        zoom: isFromSearch ? 15 : currentZoom,
+        zoom: currentZoom,
         duration: 2000,
       });
     }
   }, [selectedLocation]);
 
-  // useEffect(() => {
-  //   reset();
-  // }, [reset]);
+  useEffect(() => {
+    reset();
+  }, [reset]);
 
   const handleMapClick = useCallback(
     async (event: MapMouseEvent) => {
@@ -72,7 +69,6 @@ const PhysicalMap = ({ projectId }: Props) => {
 
       const feature = result.features[0];
 
-      // setIsFromSearch(false);
       setSelectedLocation({
         address: feature?.properties?.full_address,
         name: feature?.properties?.name,
