@@ -3,26 +3,32 @@
 import React, { useCallback, useMemo } from 'react';
 import { Button } from '@/shared/components/ui/button';
 import { PATHS } from '@/shared/config/paths';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { type Building } from '../buildings/_types/buildings';
+import { Floor } from './_types/floor';
 
 type Props = {
-  building: Building;
+  floors: Floor[];
   currentFloorId: string;
 };
 
-const FloorSelector = ({ building, currentFloorId }: Props) => {
+const FloorSelector = ({ floors, currentFloorId }: Props) => {
+  const { projectId, buildingId } = useParams<{
+    projectId: string;
+    buildingId: string;
+    floorId: string;
+  }>();
   const router = useRouter();
   const sortedFloors = useMemo(
-    () => [...building?.floors].sort((a, b) => a.sortOrder - b.sortOrder),
-    [building?.floors]
+    () => [...floors].sort((a, b) => a.sortOrder - b.sortOrder),
+    [floors]
   );
 
   const handleSelectFloor = useCallback(
     (floorId: string) => {
-      router.replace(PATHS.projects.floorView(building.projectId!, building.id, floorId));
+      router.replace(PATHS.projects.floorView(projectId, buildingId, floorId));
     },
-    [building.projectId, building.id, router]
+    [projectId, buildingId, router]
   );
 
   return (

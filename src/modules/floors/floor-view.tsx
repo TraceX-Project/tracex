@@ -7,23 +7,22 @@ import EmptyBuilding from '../buildings/empty-building';
 import FloorSelector from './floor-selector';
 import FloorPlanDisplay from './floorplan-display';
 import { notFound } from 'next/navigation';
+import { useGetFloors } from './_hooks/use-get-floors';
 
 type Props = {
   buildingId: string;
   floorId: string;
-  projectId: string;
 };
 
-const FloorView = ({ floorId, buildingId, projectId }: Props) => {
-  const { data: building } = useGetBuilding(buildingId);
+const FloorView = ({ floorId, buildingId }: Props) => {
+  const { data: floors, isError: floorsError } = useGetFloors(buildingId);
   const { data: floor, isError } = useGetFloor(floorId);
-  console.log('Rendering FloorView with buildingId:', buildingId, 'and floorId:', floorId);
 
-  if (!building) {
+  if (floorsError) {
     return <div>Building Not Found</div>;
   }
 
-  if (!building?.floors?.length) {
+  if (!floors?.length) {
     return (
       <div className="flex h-full w-full items-center justify-center">
         <EmptyBuilding buildingId={buildingId} />
@@ -40,7 +39,7 @@ const FloorView = ({ floorId, buildingId, projectId }: Props) => {
       {floor && <FloorPlanDisplay planUrl={floor.planUrl} />}
 
       <div className="absolute right-4 bottom-4 sm:right-8">
-        <FloorSelector building={building} currentFloorId={floorId} />
+        <FloorSelector floors={floors} currentFloorId={floorId} />
       </div>
     </div>
   );

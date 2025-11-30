@@ -13,6 +13,9 @@ export const useCreateFloor = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.buildings, buildingId],
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.floors, buildingId],
+      });
     },
   });
 };

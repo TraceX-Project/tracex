@@ -48,8 +48,10 @@ export const ENDPOINTS = {
     createFloor: (buildingId: string) => `${ROOTS.buildings}/${buildingId}/floors`,
     getById: (id: string) => `${ROOTS.buildings}/${id}`,
     reorderFloors: (buildingId: string) => `${ROOTS.buildings}/${buildingId}/floors/reorder`,
+    getFloors: (buildingId: string) => `${ROOTS.buildings}/${buildingId}/floors`,
   },
   floors: {
     getById: (id: string) => `${ROOTS.floors}/${id}`,
+    createRoom: (floorId: string) => `${ROOTS.floors}/${floorId}/rooms`,
   },
 };
