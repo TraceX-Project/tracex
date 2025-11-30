@@ -1,16 +1,11 @@
-'use client';
-
-import dynamic from 'next/dynamic';
-import { use } from 'react';
+import PhysicalMapClient from '@/modules/physical-view/physical-map-client';
 
 type Props = {
   params: Promise<{ projectId: string }>;
 };
 
-const PhysicalMap = dynamic(() => import('@/modules/physical-view/physical-map'), { ssr: false });
+export default async function PhysicalPage({ params }: Props) {
+  const { projectId } = await params;
 
-export default function PhysicalPage({ params }: Props) {
-  const { projectId } = use(params);
-
-  return <PhysicalMap projectId={projectId} />;
+  return <PhysicalMapClient projectId={projectId} />;
 }

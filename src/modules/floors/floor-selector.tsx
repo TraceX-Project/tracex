@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useCallback, useMemo } from 'react';
 import { Button } from '@/shared/components/ui/button';
 import { PATHS } from '@/shared/config/paths';

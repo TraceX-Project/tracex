@@ -16,7 +16,9 @@ export const ENDPOINTS = {
     logout: `${ROOTS.auth}/logout`,
   },
   users: {
+    getAll: `${ROOTS.users}`,
     profile: `${ROOTS.users}/profile`,
+    updateRole: (userId: string) => `${ROOTS.users}/${userId}/role`,
   },
   projects: {
     create: `${ROOTS.projects}`,

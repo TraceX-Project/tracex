@@ -1,11 +1,12 @@
-import LogicalView from '@/modules/logical-view/logical-view';
+import { PATHS } from '@/shared/config/paths';
+import { redirect } from 'next/navigation';
 
 type Props = {
   params: Promise<{ projectId: string }>;
 };
 
-export default async function LogicalViewPage({ params }: Props) {
+export default async function ProjectPage({ params }: Props) {
   const { projectId } = await params;
 
-  return <LogicalView projectId={projectId} />;
+  return redirect(PATHS.projects.logical(projectId));
 }

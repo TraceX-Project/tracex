@@ -1,3 +1,5 @@
+'use client';
+
 import React, { type FormEvent, useCallback } from 'react';
 import { Button, type buttonVariants } from '@/shared/components/ui/button';
 import {
@@ -17,7 +19,6 @@ import { useBoolean } from '@/shared/hooks/use-boolean';
 import { createFloorSchema } from '../floors/_schema/floor';
 import { Plus } from 'lucide-react';
 import { type VariantProps } from 'class-variance-authority';
-
 type Props = {
   buildingId: string;
   title: string;
@@ -47,7 +48,10 @@ const CreateFloorModal = ({ buildingId, title, variant = 'default', size = 'defa
           formData.append('file', value.floorPlan);
         }
 
-        await createFloor({ buildingId: buildingId, data: formData });
+        await createFloor({
+          buildingId,
+          data: formData,
+        });
 
         form.reset();
         setOpen(false);

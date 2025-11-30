@@ -1,31 +1,18 @@
-'use client';
-
-import { useGetBuilding } from '@/modules/buildings/_hooks/use-get-building';
-import EmptyBuilding from '@/modules/buildings/empty-building';
 import { PATHS } from '@/shared/config/paths';
-import { useRouter } from 'next/navigation';
-import { use, useEffect } from 'react';
+import { redirect } from 'next/navigation';
+import EmptyBuilding from '@/modules/buildings/empty-building';
+import { getBuildingById } from '@/modules/buildings/_services/buildings.service';
 
 type Props = {
   params: Promise<{ projectId: string; buildingId: string }>;
 };
 
-export default function BuildingPage({ params }: Props) {
-  const { buildingId, projectId } = use(params);
-  const { data: building, isLoading } = useGetBuilding(buildingId);
-  const router = useRouter();
+export default async function BuildingPage({ params }: Props) {
+  const { buildingId, projectId } = await params;
+  const building = await getBuildingById(buildingId);
 
-  useEffect(() => {
-    if (building?.floors?.length) {
-      const sortedFloors = [...building.floors].sort((a, b) => a.sortOrder - b.sortOrder);
-      const defaultFloor = sortedFloors[sortedFloors.length - 1];
-
-      router.replace(PATHS.projects.floorView(projectId, building.id, defaultFloor.id));
-    }
-  }, [building, router, projectId]);
-
-  if (isLoading || !building) {
-    return <div className="h-full w-full animate-pulse bg-gray-200" />;
+  if (!building) {
+    return <div>Building not found</div>;
   }
 
   if (!building.floors?.length) {
@@ -36,5 +23,8 @@ export default function BuildingPage({ params }: Props) {
     );
   }
 
-  return <div className="h-full w-full animate-pulse bg-gray-200" />;
+  const sortedFloors = [...building.floors].sort((a, b) => a.sortOrder - b.sortOrder);
+  const defaultFloor = sortedFloors[sortedFloors.length - 1];
+
+  redirect(PATHS.projects.floorView(projectId, building.id, defaultFloor.id));
 }

@@ -7,4 +7,5 @@ export const QUERY_KEYS = {
   task: 'task',
   buildings: 'buildings',
   floors: 'floors',
+  users: 'users',
 };
