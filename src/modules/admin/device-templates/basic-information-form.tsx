@@ -1,6 +1,6 @@
 import React from 'react';
 import { DEVICE_VENDORS_OPTIONS, DEVICE_TYPES_OPTIONS } from './_constants/device-template';
-import { useAppForm } from '@/shared/tanstack-form/form';
+import { type useAppForm } from '@/shared/tanstack-form/form';
 
 type Props = {
   form: ReturnType<typeof useAppForm>;

@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Konva from 'konva';
+import type Konva from 'konva';
 import useImage from 'use-image';
 import { Stage, Layer, Image as KImage, Rect, Transformer, Group, Text } from 'react-konva';
 import { Button } from '@/shared/components/ui/button';
-import { useAppForm } from '@/shared/tanstack-form/form'; // ปรับ import path ตามจริง
+import { type useAppForm } from '@/shared/tanstack-form/form'; // ปรับ import path ตามจริง
 import { ArrowDownUp, ArrowLeftRight, Plus, Trash2 } from 'lucide-react';
 import { useCreatePorts } from './_hooks/use-create-ports';
 import { useGetPorts } from './_hooks/use-get-ports';
-import { KonvaEventObject } from 'konva/lib/Node';
+import { type KonvaEventObject } from 'konva/lib/Node';
 import PortTypeConfiguration from './port-range-configuration'; // ปรับ import path ตามจริง
-import { Alignment, boundingBox } from './_types/device-template';
+import { Alignment, type boundingBox } from './_types/device-template';
 
 
 
@@ -130,7 +130,7 @@ const LabelingForm = ({ form }: Props) => {
   // Transformer Attachment
   useEffect(() => {
     if (selectedIndex !== null && trRef.current && rectRefs.current[selectedIndex]) {
-      trRef.current.nodes([rectRefs.current[selectedIndex]!]);
+      trRef.current.nodes([rectRefs.current[selectedIndex]]);
       trRef.current.getLayer()?.batchDraw();
     } else if (trRef.current) {
       trRef.current.nodes([]);

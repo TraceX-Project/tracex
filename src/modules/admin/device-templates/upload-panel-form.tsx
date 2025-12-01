@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useCreatePorts } from './_hooks/use-create-ports';
 import { useGetPorts } from './_hooks/use-get-ports';
-import { useAppForm } from '@/shared/tanstack-form/form';
+import { type useAppForm } from '@/shared/tanstack-form/form';
 import { Label } from '@/shared/components/ui/label';
 
 type Props = {

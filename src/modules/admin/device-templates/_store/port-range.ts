@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { PortRange, PortType } from '../_types/device-template';
+import { type PortRange, PortType } from '../_types/device-template';
 import { v4 as uuidv4 } from 'uuid';
 
 type PortRangeState = {

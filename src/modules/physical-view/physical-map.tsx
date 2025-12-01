@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import Map, { ViewStateChangeEvent, Marker } from 'react-map-gl/mapbox';
+import Map, { type ViewStateChangeEvent, Marker } from 'react-map-gl/mapbox';
 import { ENV } from '@/shared/config/env';
 import { useRef, useEffect } from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';

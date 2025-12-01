@@ -1,5 +1,5 @@
-import { deviceTemplateSchema } from '../_schema/schema';
-import { z } from 'zod';
+import { type deviceTemplateSchema } from '../_schema/schema';
+import { type z } from 'zod';
 
 export enum Vendor {
   CISCO = 'cisco',

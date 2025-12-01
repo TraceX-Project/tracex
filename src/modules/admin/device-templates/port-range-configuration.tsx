@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { DeviceTemplateFormData, PortRange, PortType } from './_types/device-template';
+import { type DeviceTemplateFormData, type PortRange, PortType } from './_types/device-template';
 import { Button } from '@/shared/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/ui/tooltip';
@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { DEVICE_PORT_TYPES_OPTIONS } from './_constants/device-template';
 import { Plus, Trash2 } from 'lucide-react';
 import { useStore } from '@tanstack/react-form';
-import { FormType } from '@/shared/tanstack-form/form';
+import { type FormType } from '@/shared/tanstack-form/form';
 import { Label } from '@/shared/components/ui/label';
 
 type Props = {
