@@ -1,12 +1,10 @@
 'use client';
 
 import React from 'react';
-import { useGetBuilding } from '../buildings/_hooks/use-get-building';
 import { useGetFloor } from './_hooks/use-get-floor';
 import EmptyBuilding from '../buildings/empty-building';
 import FloorSelector from './floor-selector';
 import FloorPlanDisplay from './floorplan-display';
-import { notFound } from 'next/navigation';
 import { useGetFloors } from './_hooks/use-get-floors';
 
 type Props = {
@@ -36,7 +34,7 @@ const FloorView = ({ floorId, buildingId }: Props) => {
 
   return (
     <div className="relative h-full max-h-screen w-full max-w-screen">
-      {floor && <FloorPlanDisplay planUrl={floor.planUrl} />}
+      <FloorPlanDisplay floor={floor} />
 
       <div className="absolute right-4 bottom-4 sm:right-8">
         <FloorSelector floors={floors} currentFloorId={floorId} />

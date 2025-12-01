@@ -53,5 +53,6 @@ export const ENDPOINTS = {
   floors: {
     getById: (id: string) => `${ROOTS.floors}/${id}`,
     createRoom: (floorId: string) => `${ROOTS.floors}/${floorId}/rooms`,
+    getRooms: (floorId: string) => `${ROOTS.floors}/${floorId}/rooms`,
   },
 };

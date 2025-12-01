@@ -1,8 +1,8 @@
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
 import { type Floor } from '../_types/floor';
-import { CreateRoomInput } from '@/modules/rooms/_schema/schema';
-import { Room } from '@/modules/rooms/_types/room';
+import { type CreateRoomInput } from '@/modules/rooms/_schema/schema';
+import { type Room } from '@/modules/rooms/_types/room';
 
 export const createFloor = async (buildingId: string, formData: FormData) => {
   const response = await request<Floor>({
@@ -37,6 +37,15 @@ export const createRoom = async (floorId: string, body: CreateRoomInput) => {
     method: 'POST',
     path: ENDPOINTS.floors.createRoom(floorId),
     body,
+  });
+
+  return response;
+};
+
+export const getRooms = async (floorId: string) => {
+  const response = await request<Room[]>({
+    method: 'GET',
+    path: ENDPOINTS.floors.getRooms(floorId),
   });
 
   return response;

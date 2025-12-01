@@ -7,4 +7,5 @@ export const useGetFloors = (buildingId: string) =>
     queryKey: [QUERY_KEYS.floors, buildingId],
     queryFn: () => getFloors(buildingId),
     enabled: !!buildingId,
+    retry: false,
   });

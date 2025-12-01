@@ -4,8 +4,7 @@ import React, { useCallback, useMemo } from 'react';
 import { Button } from '@/shared/components/ui/button';
 import { PATHS } from '@/shared/config/paths';
 import { useParams, useRouter } from 'next/navigation';
-import { type Building } from '../buildings/_types/buildings';
-import { Floor } from './_types/floor';
+import { type Floor } from './_types/floor';
 
 type Props = {
   floors: Floor[];

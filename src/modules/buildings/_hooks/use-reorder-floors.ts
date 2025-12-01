@@ -17,7 +17,7 @@ export const useReorderFloors = () => {
     }) => reorderFloors(buildingId, floors),
     onSuccess: (_, { buildingId }) => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.buildings, buildingId],
+        queryKey: [QUERY_KEYS.floors, buildingId],
       });
     },
   });
