@@ -26,7 +26,7 @@ const DeviceTemplatesTable = () => {
     );
   }
 
-  return <DataTable table={table}></DataTable>;
+  return <DataTable table={table} />;
 };
 
 export default DeviceTemplatesTable;

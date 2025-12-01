@@ -79,15 +79,11 @@ const ManageFloors = ({ buildingId }: Props) => {
     [floors]
   );
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   const handleSaveChanges = async () => {
     try {
       await reorderFloors({ buildingId, floors });
       toast.success('Floors reordered successfully.');
-    } catch (error) {
+    } catch {
       toast.error('Failed to reorder floors. Please try again.');
     }
   };
@@ -107,7 +103,12 @@ const ManageFloors = ({ buildingId }: Props) => {
         <div>
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold">{building?.name}</h2>
-            <CreateFloorModal variant="outline" size="sm" title="Add Floor" />
+            <CreateFloorModal
+              buildingId={buildingId}
+              variant="outline"
+              size="sm"
+              title="Add Floor"
+            />
           </div>
           <DndContext
             sensors={sensors}

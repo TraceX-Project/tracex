@@ -16,6 +16,12 @@ export const PATHS = {
     logical: (id: string) => `${ROOTS.projects}/${id}/logical`,
     physical: (id: string) => `${ROOTS.projects}/${id}/physical`,
     edit: (id: string) => `${ROOTS.projects}/${id}/edit`,
+    buildingView: (projectId: string, buildingId: string) =>
+      `${ROOTS.projects}/${projectId}/physical/${buildingId}`,
+    floorView: (projectId: string, buildingId: string, floorId: string) =>
+      `${ROOTS.projects}/${projectId}/physical/${buildingId}/${floorId}`,
+    roomView: (projectId: string, buildingId: string, floorId: string, roomId: string) =>
+      `${ROOTS.projects}/${projectId}/physical/${buildingId}/${floorId}/${roomId}`,
   },
   auth: {
     callback: `${ROOTS.auth}/callback`,

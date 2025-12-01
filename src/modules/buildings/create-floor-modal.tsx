@@ -1,3 +1,5 @@
+'use client';
+
 import React, { type FormEvent, useCallback } from 'react';
 import { Button, type buttonVariants } from '@/shared/components/ui/button';
 import {
@@ -11,23 +13,20 @@ import {
 } from '@/shared/components/ui/dialog';
 import { useAppForm } from '@/shared/tanstack-form/form';
 
-import { useQueryState } from 'nuqs';
-import { parseAsUUID } from '@/shared/utils/parsers';
 import { toast } from 'sonner';
 import { useCreateFloor } from '../floors/_hooks/use-create-floor';
 import { useBoolean } from '@/shared/hooks/use-boolean';
-import { createFloorSchema } from '../floors/_schema/schema';
+import { createFloorSchema } from '../floors/_schema/floor';
 import { Plus } from 'lucide-react';
 import { type VariantProps } from 'class-variance-authority';
-
 type Props = {
+  buildingId: string;
   title: string;
   variant?: VariantProps<typeof buttonVariants>['variant'];
   size?: VariantProps<typeof buttonVariants>['size'];
 };
 
-const CreateFloorModal = ({ title, variant = 'default', size = 'default' }: Props) => {
-  const [buildingId, _] = useQueryState('buildingId', parseAsUUID);
+const CreateFloorModal = ({ buildingId, title, variant = 'default', size = 'default' }: Props) => {
   const { mutateAsync: createFloor } = useCreateFloor();
   const { value: open, setValue: setOpen } = useBoolean();
 
@@ -49,14 +48,19 @@ const CreateFloorModal = ({ title, variant = 'default', size = 'default' }: Prop
           formData.append('file', value.floorPlan);
         }
 
-        await createFloor({ buildingId: buildingId!, data: formData });
+        await createFloor({
+          buildingId,
+          data: formData,
+        });
 
         form.reset();
         setOpen(false);
 
         toast.success('Floor created successfully');
       } catch (error) {
-        toast.error('Failed to create floor. Please try again.');
+        toast.error(
+          error instanceof Error ? error.message : 'Failed to create floor. Please try again.'
+        );
       }
     },
   });

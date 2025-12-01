@@ -23,12 +23,16 @@ export const getBuildings = async (projectId: string) => {
 };
 
 export const getBuildingById = async (id: string) => {
-  const response = await request<Building>({
-    method: 'GET',
-    path: ENDPOINTS.buildings.getById(id),
-  });
+  try {
+    const response = await request<Building>({
+      method: 'GET',
+      path: ENDPOINTS.buildings.getById(id),
+    });
 
-  return response;
+    return response;
+  } catch {
+    return null;
+  }
 };
 
 export const reorderFloors = async (

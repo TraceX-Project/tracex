@@ -5,6 +5,7 @@ const ROOTS = {
   deviceTemplates: '/device-templates',
   ports: '/ports',
   buildings: '/buildings',
+  floors: '/floors',
 };
 
 export const ENDPOINTS = {
@@ -15,7 +16,9 @@ export const ENDPOINTS = {
     logout: `${ROOTS.auth}/logout`,
   },
   users: {
+    getAll: `${ROOTS.users}`,
     profile: `${ROOTS.users}/profile`,
+    updateRole: (userId: string) => `${ROOTS.users}/${userId}/role`,
   },
   projects: {
     create: `${ROOTS.projects}`,
@@ -45,5 +48,11 @@ export const ENDPOINTS = {
     createFloor: (buildingId: string) => `${ROOTS.buildings}/${buildingId}/floors`,
     getById: (id: string) => `${ROOTS.buildings}/${id}`,
     reorderFloors: (buildingId: string) => `${ROOTS.buildings}/${buildingId}/floors/reorder`,
+    getFloors: (buildingId: string) => `${ROOTS.buildings}/${buildingId}/floors`,
+  },
+  floors: {
+    getById: (id: string) => `${ROOTS.floors}/${id}`,
+    createRoom: (floorId: string) => `${ROOTS.floors}/${floorId}/rooms`,
+    getRooms: (floorId: string) => `${ROOTS.floors}/${floorId}/rooms`,
   },
 };

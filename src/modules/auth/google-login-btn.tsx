@@ -13,7 +13,7 @@ const GoogleLoginBtn = () => {
       const { url } = await getGoogleLoginUrl();
 
       window.location.replace(url);
-    } catch (error) {
+    } catch {
       toast.error('Failed to get Google login URL. Please try again.');
     }
   }, [getGoogleLoginUrl]);

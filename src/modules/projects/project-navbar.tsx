@@ -8,17 +8,15 @@ import React from 'react';
 import { type Project } from './_types/projects';
 import CreateDeviceModal from '../logical-view/create-device-modal';
 import { IconFileExport } from '@tabler/icons-react';
-import { usePathname } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 import { Separator } from '@/shared/components/ui/separator';
 import {
   Breadcrumb,
   BreadcrumbItem,
+  BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/shared/components/ui/breadcrumb';
-import { useQueryStates } from 'nuqs';
-import { parseAsUUID } from '@/shared/utils/parsers';
 import ManageFloors from '../buildings/manage-floors';
 import { useGetBuilding } from '../buildings/_hooks/use-get-building';
 
@@ -28,16 +26,16 @@ type Props = {
 
 const ProjectNavbar = ({ project }: Props) => {
   const pathname = usePathname();
-  const [query, _] = useQueryStates({
-    buildingId: parseAsUUID,
-    floorId: parseAsUUID,
-    roomId: parseAsUUID,
-  });
-  const { data: building } = useGetBuilding(query.buildingId ?? '');
+  const params = useParams<{
+    projectId: string;
+    buildingId?: string;
+    floorId?: string;
+  }>();
+  const { data: building } = useGetBuilding(params.buildingId ?? '');
 
   const renderButtons = () => {
-    if (query.buildingId) {
-      return <ManageFloors buildingId={query.buildingId} />;
+    if (params.buildingId && params.floorId) {
+      return <ManageFloors buildingId={params.buildingId} />;
     }
 
     if (pathname.includes(PATHS.projects.logical(project.id))) {
@@ -61,14 +59,28 @@ const ProjectNavbar = ({ project }: Props) => {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbPage>{project.name}</BreadcrumbPage>
+              <BreadcrumbLink asChild className="text-foreground">
+                <Link
+                  href={
+                    pathname.includes(PATHS.projects.physical(project.id))
+                      ? PATHS.projects.physical(project.id)
+                      : PATHS.projects.logical(project.id)
+                  }
+                >
+                  {project.name}
+                </Link>
+              </BreadcrumbLink>
             </BreadcrumbItem>
             {building && (
               <>
                 <BreadcrumbSeparator />
 
                 <BreadcrumbItem>
-                  <BreadcrumbPage>{building.name}</BreadcrumbPage>
+                  <BreadcrumbLink asChild className="text-foreground">
+                    <Link href={PATHS.projects.buildingView(project.id, building.id)}>
+                      {building.name}
+                    </Link>
+                  </BreadcrumbLink>
                 </BreadcrumbItem>
               </>
             )}

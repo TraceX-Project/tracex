@@ -18,7 +18,7 @@ import { Separator } from '@/shared/components/ui/separator';
 import { toast } from 'sonner';
 import { v4 as uuidv4 } from 'uuid';
 
-const DeviceTemplateForm = () => {
+const  DeviceTemplateForm = () => {
   const { mutateAsync: createNewDeviceTemplate } = useCreateDeviceTemplate();
   const router = useRouter();
 

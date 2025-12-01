@@ -12,7 +12,7 @@ import { type FormEvent, useCallback } from 'react';
 import { usePhysicalMapStore } from './_store/physical-map.store';
 import { toast } from 'sonner';
 import { useCreateBuilding } from '../buildings/_hooks/use-create-building';
-import { createBuildingSchema } from '../buildings/_schema/schema';
+import { createBuildingSchema } from '../buildings/_schema/building';
 
 type Props = {
   projectId: string;

@@ -1,21 +1,15 @@
 import ChangingViewTabs from '@/modules/logical-view/changing-view-button';
 import { getProject } from '@/modules/projects/_services/projects.service';
 import ProjectNavbar from '@/modules/projects/project-navbar';
-import { uuidSchema } from '@/shared/lib/zod';
 import { notFound } from 'next/navigation';
 
 type Props = {
   children: React.ReactNode;
-  params: Promise<{ id: string }>;
+  params: Promise<{ projectId: string }>;
 };
 
 export default async function ProjectLayout({ children, params }: Props) {
-  const { id: projectId } = await params;
-
-  const parsedProjectId = uuidSchema.safeParse(projectId);
-  if (!parsedProjectId.success) {
-    notFound();
-  }
+  const { projectId } = await params;
 
   const project = await getProject(projectId);
 
