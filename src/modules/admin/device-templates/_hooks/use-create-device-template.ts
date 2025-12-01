@@ -8,7 +8,7 @@ export const useCreateDeviceTemplate = () => {
   const queryClient = getQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreateDeviceTemplateRequest) => createDeviceTemplate(data),
+    mutationFn: (data: FormData) => createDeviceTemplate(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.deviceTemplates] });
     },

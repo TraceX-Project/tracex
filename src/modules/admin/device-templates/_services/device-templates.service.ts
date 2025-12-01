@@ -7,13 +7,11 @@ import {
   type UpdateDeviceTemplateRequest,
 } from '../_types/device-template';
 
-export const createDeviceTemplate = async (payload: CreateDeviceTemplateRequest) => {
-  console.log("endpoints", ENDPOINTS.deviceTemplates.create);
-  console.log("payload",payload);
+export const createDeviceTemplate = async (formData: FormData) => {
   const response = await request<DeviceTemplate>({
     method: 'POST',
     path: ENDPOINTS.deviceTemplates.create,
-    body: payload,
+    body: formData,
   });
   return response;
 };

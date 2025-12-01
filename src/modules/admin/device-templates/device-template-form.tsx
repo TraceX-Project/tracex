@@ -62,7 +62,20 @@ const  DeviceTemplateForm = () => {
     validators: { onChange: deviceTemplateSchema },
     onSubmit: async ({ value }) => {
       try {
-        await createNewDeviceTemplate(value);
+        const formData = new FormData();
+        formData.append('modelName', value.modelName);
+        formData.append('vendor', value.vendor);
+        formData.append('deviceType', value.deviceType);
+        formData.append('rows', value.rows.toString());
+        formData.append('columns', value.columns.toString());
+        formData.append('alignment', value.alignment);
+        formData.append('unitSize', value.unitSize.toString());
+        if (value.frontPanel) {
+          formData.append('frontPanel', value.frontPanel);
+        }
+        formData.append('portRanges', JSON.stringify(value.portRanges));
+        formData.append('boundingBoxes', JSON.stringify(value.boundingBoxes));
+        await createNewDeviceTemplate(formData);
         toast.success("Device Template created successfully");
         router.push(PATHS.admin.deviceTemplates.root);  
       } catch (error) {
