@@ -8,6 +8,8 @@ import {
 } from '../_types/device-template';
 
 export const createDeviceTemplate = async (payload: CreateDeviceTemplateRequest) => {
+  console.log("endpoints", ENDPOINTS.deviceTemplates.create);
+  console.log("payload",payload);
   const response = await request<DeviceTemplate>({
     method: 'POST',
     path: ENDPOINTS.deviceTemplates.create,

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Vendor, DeviceType, Alignment, PortType } from '../_types/device-template';
+import { Vendor, DeviceType, Alignment, PortType} from '../_types/device-template';
 import { PORT_PREFIX_REGEX } from '@/shared/constants/regex';
 
 export const deviceTemplateSchema = z.object({
@@ -39,18 +39,6 @@ export const deviceTemplateSchema = z.object({
     .refine((file) => ['image/jpeg', 'image/png'].includes(file.type), {
       message: 'Only JPEG and PNG files are accepted',
     }),
-  ports: z.array(
-    z.object({
-      x: z.number({ message: 'X coordinate must be a number' }),
-      y: z.number({ message: 'Y coordinate must be a number' }),
-      w: z
-        .number({ message: 'Width must be a number' })
-        .positive({ message: 'Width must be greater than zero' }),
-      h: z
-        .number({ message: 'Height must be a number' })
-        .positive({ message: 'Height must be greater than zero' }),
-    })
-  ),
   portRanges: z.array(
     z
       .object({
@@ -67,19 +55,28 @@ export const deviceTemplateSchema = z.object({
           .number({ message: 'Running number must be a number' })
           .min(1, { message: 'Running number must be greater than zero' }),
         portType: z.enum(PortType, { message: 'Port type must be a valid port type' }),
-        id: z.uuidv4(),
+        id: z.string().uuid()
       })
       .refine((value) => value.start <= value.end, {
         message: 'Start port must be less than or equal to end port',
         path: ['end'],
       })
   ),
+  boundingBoxes: z.array(
+    z.object({
+      x: z.number({ message: 'X coordinate must be a number' }),
+      y: z.number({ message: 'Y coordinate must be a number' }),
+      width: z.number({ message: 'Width must be a number' }),
+      height: z.number({ message: 'Height must be a number' }),
+      portNumber: z.number({ message: 'Port number must be a number' }),
+    })
+  ),
 });
 
 export const stepSchemas = {
   Basic: deviceTemplateSchema.pick({
-    vendor: true,
     modelName: true,
+    vendor: true,
     deviceType: true,
     unitSize: true,
   }),
@@ -89,7 +86,7 @@ export const stepSchemas = {
     columns: true,
   }),
   Labeling: deviceTemplateSchema.pick({
-    ports: true,
+    boundingBoxes: true,
     alignment: true,
     portRanges: true,
   }),
