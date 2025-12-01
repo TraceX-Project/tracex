@@ -109,9 +109,10 @@ const LabelingForm = ({ form }: Props) => {
         height: p.h, // Map h -> height
         portNumber: index + 1
       }));
-      syncForm(mappedBoxes);
+      handleReindex("horizontal", mappedBoxes);
     }
   }, [isPortsLoading, portData]);
+
 
   // Keyboard Shortcuts
   useEffect(() => {
@@ -213,39 +214,46 @@ const LabelingForm = ({ form }: Props) => {
     syncForm(updated);
   };
 
-  const handleConsoleLog = () => {
-    console.log(form.getFieldValue('modelName'),form.getFieldValue('vendor'),form.getFieldValue('deviceType'),form.getFieldValue('rows'),form.getFieldValue('columns'),form.getFieldValue('alignment'),form.getFieldValue('frontPanel'),form.getFieldValue('unitSize'),form.getFieldValue('portRanges'),form.getFieldValue('boundingBoxs'));
-  }
 
-  // Sort & Re-index Port Numbers
-  const handleReindex = (mode: "horizontal" | "vertical") => {
-    // 1. Sort boxes geometry
-    const sorted = [...boxes].sort((a, b) => {
+  // Replace your existing handleReindex with this:
+const handleReindex = (mode: "horizontal" | "vertical", customBoxes?: boundingBox[]) => {
+    // 1. Use customBoxes if provided (for first load), otherwise use current state
+    const sourceData = customBoxes || boxes;
+
+    // 2. Sort boxes geometry
+    const sorted = [...sourceData].sort((a, b) => {
       if (mode === "horizontal") {
         // Sort by X first, then Y (Left -> Right, Top -> Bottom)
-        // ใส่ Threshold เล็กน้อย (เช่น 10px) เพื่อให้แถวเดียวกันแม้ y ต่างกันนิดหน่อยยังนับเป็นแถวเดิม
         const yDiff = Math.abs(a.y - b.y);
-        if (yDiff > (10 / scaleY)) return a.y - b.y;
+        
+        // Calculate dynamic threshold based on image scale
+        // Use a safe fallback if scaleY is 0 or undefined
+        const threshold = scaleY ? (15 / scaleY) : 15; 
+
+        // If Y difference is large, they are different rows -> Sort Top to Bottom
+        if (yDiff > threshold) return a.y - b.y;
+        
+        // If Y difference is small, they are same row -> Sort Left to Right
         return a.x - b.x;
       } else {
-        // Sort by Y first, then X (Top -> Bottom, Left -> Right) - สำหรับตู้ Rack แนวตั้ง
+        // Vertical Logic (Top -> Bottom, Left -> Right)
         const xDiff = Math.abs(a.x - b.x);
-        if (xDiff > (10 / scaleX)) return a.x - b.x;
+        const threshold = scaleX ? (15 / scaleX) : 15;
+
+        if (xDiff > threshold) return a.x - b.x;
         return a.y - b.y;
       }
     });
 
-    // 2. Re-assign port numbers
+    // 3. Re-assign port numbers
     const reindexed = sorted.map((box, idx) => ({
       ...box,
       portNumber: idx + 1
     }));
-
+    // 4. Update Form & State
     syncForm(reindexed);
-    
-    // Update Alignment in Form
     form.setFieldValue('alignment', mode === "horizontal" ? Alignment.HORIZONTAL : Alignment.VERTICAL);
-  };
+};
 
   if (!imageURL && !taskId) {
     return <div className="p-10 text-center text-gray-500">Loading or please upload an image...</div>;
@@ -305,15 +313,15 @@ const LabelingForm = ({ form }: Props) => {
                 <Text
                   text={String(box.portNumber)}
                   x={0}
-                  y={-20} // ลอยอยู่เหนือกล่อง
-                  width={box.width * scaleX} // จัดกึ่งกลาง
+                  y={0} 
+                  width={box.width * scaleX}
                   align="center"
                   fontSize={14}
                   fill="white"
                   fontStyle="bold"
                   shadowColor="black"
                   shadowBlur={3}
-                  listening={false} // ให้คลิกทะลุไปโดนกล่องได้
+                  listening={false} 
                 />
               </Group>
             ))}
@@ -345,7 +353,7 @@ const LabelingForm = ({ form }: Props) => {
         <Button
           type="button"
           variant="outline"
-          onClick={() => handleReindex("horizontal")}
+          onClick={() => handleReindex("horizontal", boxes)}
           title="Sort Left->Right, Top->Bottom"
         >
           <ArrowLeftRight className="mr-2 h-4 w-4" /> Auto Sort (H)
@@ -354,12 +362,11 @@ const LabelingForm = ({ form }: Props) => {
         <Button
           type="button"
           variant="outline"
-          onClick={() => handleReindex("vertical")}
+          onClick={() => handleReindex("vertical", boxes)}
           title="Sort Top->Bottom, Left->Right"
         >
           <ArrowDownUp className="mr-2 h-4 w-4" /> Auto Sort (V)
         </Button>
-        <Button onClick={handleConsoleLog}>console log</Button>
 
         {selectedIndex !== null && (
              <Button

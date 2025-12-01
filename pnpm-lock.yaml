@@ -132,8 +132,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       konva:
-        specifier: ^10.0.2
-        version: 10.0.2
+        specifier: ^10.0.12
+        version: 10.0.12
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -166,7 +166,7 @@ importers:
         version: 14.3.8(react@19.1.0)
       react-konva:
         specifier: ^19.0.10
-        version: 19.0.10(@types/react@19.2.2)(konva@10.0.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 19.0.10(@types/react@19.2.2)(konva@10.0.12)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react-map-gl:
         specifier: ^8.1.0
         version: 8.1.0(mapbox-gl@3.15.0)(maplibre-gl@5.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -2975,8 +2975,8 @@ packages:
       '@types/node': '>=18'
       typescript: '>=5.0.4 <7'
 
-  konva@10.0.2:
-    resolution: {integrity: sha512-NrZED6YG5BX5h3Xu8EZgLqhQ/+ZhxANYXmlIhMOfpBf+0ToExcdwE+Y46LyJOO/JR7FVeR3YTqon3eirnuo44A==}
+  konva@10.0.12:
+    resolution: {integrity: sha512-DHmkeG5FbW6tLCkbMQTi1ihWycfzljrn0V7umUUuewxx7aoINcI71ksgBX9fTPNXhlsK4/JoMgKwI/iCde+BRw==}
 
   language-subtag-registry@0.3.23:
     resolution: {integrity: sha512-0K65Lea881pHotoGEa5gDlMxt3pctLi2RplBb7Ezh4rRdLEOtgi7n4EwK9lamnUCkKBqaeKRVebTq6BAxSkpXQ==}
@@ -6937,7 +6937,7 @@ snapshots:
       typescript: 5.9.3
       zod: 4.1.12
 
-  konva@10.0.2: {}
+  konva@10.0.12: {}
 
   language-subtag-registry@0.3.23: {}
 
@@ -7451,11 +7451,11 @@ snapshots:
 
   react-is@16.13.1: {}
 
-  react-konva@19.0.10(@types/react@19.2.2)(konva@10.0.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  react-konva@19.0.10(@types/react@19.2.2)(konva@10.0.12)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
       '@types/react-reconciler': 0.32.2(@types/react@19.2.2)
       its-fine: 2.0.0(@types/react@19.2.2)(react@19.1.0)
-      konva: 10.0.2
+      konva: 10.0.12
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
       react-reconciler: 0.32.0(react@19.1.0)
