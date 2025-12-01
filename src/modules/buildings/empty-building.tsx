@@ -1,0 +1,36 @@
+import {
+  Empty,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyContent,
+} from '@/shared/components/ui/empty';
+import { FolderCode } from 'lucide-react';
+import React from 'react';
+import CreateFloorModal from './create-floor-modal';
+
+type EmptyBuildingProps = {
+  buildingId: string;
+};
+
+const EmptyBuilding = ({ buildingId }: EmptyBuildingProps) => {
+  return (
+    <Empty>
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <FolderCode />
+        </EmptyMedia>
+        <EmptyTitle>No Floor Yet</EmptyTitle>
+        <EmptyDescription>
+          You haven&apos;t created any floor yet. Get started by creating your first floor.
+        </EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <CreateFloorModal title="Create Floor" buildingId={buildingId} />
+      </EmptyContent>
+    </Empty>
+  );
+};
+
+export default EmptyBuilding;

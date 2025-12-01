@@ -19,7 +19,7 @@ import { toast } from 'sonner';
 import { v4 as uuidv4 } from 'uuid';
 import { Loader2 } from 'lucide-react'; // เพิ่ม icon loading
 
-const DeviceTemplateForm = () => {
+const  DeviceTemplateForm = () => {
   const { mutateAsync: createNewDeviceTemplate } = useCreateDeviceTemplate();
   const router = useRouter();
 

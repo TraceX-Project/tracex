@@ -1,0 +1,16 @@
+import { Marker } from 'react-map-gl/mapbox';
+import { usePhysicalMapStore } from './_store/physical-map.store';
+
+const LocationMarker = () => {
+  const selectedLocation = usePhysicalMapStore((state) => state.selectedLocation);
+
+  if (!selectedLocation) {
+    return null;
+  }
+
+  const { location } = selectedLocation;
+
+  return <Marker longitude={location.lng} latitude={location.lat} anchor="bottom" color="red" />;
+};
+
+export default LocationMarker;

@@ -5,4 +5,8 @@ export const QUERY_KEYS = {
   devices: 'devices',
   ports: 'ports',
   task: 'task',
+  buildings: 'buildings',
+  floors: 'floors',
+  users: 'users',
+  rooms: 'rooms',
 };

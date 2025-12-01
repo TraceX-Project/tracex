@@ -41,21 +41,29 @@ const UploadPanelForm = ({ form }: Props) => {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
           <Label className="text-sm font-semibold">Port Layout:</Label>
           <div className="flex gap-4">
-            <Label className="text-sm font-medium">Row</Label>
             <form.AppField
               name="rows"
               children={(field) => (
-                <field.NumberField className="w-20" placeholder="Enter number of rows" />
+                <field.NumberField
+                  label="Row"
+                  orientation="horizontal"
+                  className="w-20"
+                  placeholder="Enter number of rows"
+                />
               )}
             />
           </div>
 
           <div className="flex gap-4">
-            <Label className="text-sm font-medium">Column</Label>
             <form.AppField
               name="columns"
               children={(field) => (
-                <field.NumberField className="w-20" placeholder="Enter number of columns" />
+                <field.NumberField
+                  label="Column"
+                  orientation="horizontal"
+                  className="w-20"
+                  placeholder="Enter number of columns"
+                />
               )}
             />
           </div>

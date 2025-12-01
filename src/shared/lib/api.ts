@@ -9,6 +9,7 @@ import { ENDPOINTS } from '../config/endpoints';
 import { type Token } from '@/modules/auth/_types/auth';
 import { redirect } from 'next/navigation';
 import { PATHS } from '../config/paths';
+import { ApiError } from './api-error';
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -55,10 +56,10 @@ const apiFetch = async <T>(
       typeof (result as ErrorResponse).error === 'string'
     ) {
       const errorMsg = (result as ErrorResponse).error;
-      throw new Error(errorMsg.charAt(0).toUpperCase() + errorMsg.slice(1));
+      throw new ApiError(errorMsg.charAt(0).toUpperCase() + errorMsg.slice(1), response.status);
     }
 
-    throw new Error('An error occurred while processing your request');
+    throw new ApiError('An error occurred while processing your request', response.status);
   }
 
   return result as SuccessResponse<T>;

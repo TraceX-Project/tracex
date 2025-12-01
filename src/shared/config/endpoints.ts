@@ -3,8 +3,9 @@ const ROOTS = {
   users: '/users',
   projects: '/projects',
   deviceTemplates: '/device-templates',
-  attachments: '/attachments',
   ports: '/ports',
+  buildings: '/buildings',
+  floors: '/floors',
 };
 
 export const ENDPOINTS = {
@@ -15,7 +16,9 @@ export const ENDPOINTS = {
     logout: `${ROOTS.auth}/logout`,
   },
   users: {
+    getAll: `${ROOTS.users}`,
     profile: `${ROOTS.users}/profile`,
+    updateRole: (userId: string) => `${ROOTS.users}/${userId}/role`,
   },
   projects: {
     create: `${ROOTS.projects}`,
@@ -23,6 +26,8 @@ export const ENDPOINTS = {
     getById: (id: string) => `${ROOTS.projects}/${id}`,
     update: (id: string) => `${ROOTS.projects}/${id}`,
     delete: (id: string) => `${ROOTS.projects}/${id}`,
+    createBuilding: (id: string) => `${ROOTS.projects}/${id}/buildings`,
+    getBuildings: (id: string) => `${ROOTS.projects}/${id}/buildings`,
   },
   deviceTemplates: {
     create: `${ROOTS.deviceTemplates}`,
@@ -31,10 +36,6 @@ export const ENDPOINTS = {
     update: (id: string) => `${ROOTS.deviceTemplates}/${id}`,
     delete: (id: string) => `${ROOTS.deviceTemplates}/${id}`,
   },
-  attachments: {
-    upload: `${ROOTS.attachments}/upload`,
-    delete: (id: string) => `${ROOTS.attachments}/${id}`,
-  },
   devices: {
     addDevice: (id: string) => `${ROOTS.projects}/${id}/devices`,
     getDevicesInProject: (id: string) => `${ROOTS.projects}/${id}/devices`,
@@ -42,5 +43,16 @@ export const ENDPOINTS = {
   ports: {
     createPorts: `${ROOTS.ports}/predict`,
     getPortsInDevice: (taskId: string) => `${ROOTS.ports}/result/${taskId}`,
-  }
+  },
+  buildings: {
+    createFloor: (buildingId: string) => `${ROOTS.buildings}/${buildingId}/floors`,
+    getById: (id: string) => `${ROOTS.buildings}/${id}`,
+    reorderFloors: (buildingId: string) => `${ROOTS.buildings}/${buildingId}/floors/reorder`,
+    getFloors: (buildingId: string) => `${ROOTS.buildings}/${buildingId}/floors`,
+  },
+  floors: {
+    getById: (id: string) => `${ROOTS.floors}/${id}`,
+    createRoom: (floorId: string) => `${ROOTS.floors}/${floorId}/rooms`,
+    getRooms: (floorId: string) => `${ROOTS.floors}/${floorId}/rooms`,
+  },
 };

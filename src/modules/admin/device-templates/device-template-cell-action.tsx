@@ -36,7 +36,7 @@ const DeviceTemplateCellAction = ({ deviceTemplate }: Props) => {
   const { mutateAsync: deleteDeviceTemplate } = useDeleteDeviceTemplate();
 
   return (
-    <React.Fragment>
+    <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -53,10 +53,7 @@ const DeviceTemplateCellAction = ({ deviceTemplate }: Props) => {
             <Link href={PATHS.admin.deviceTemplates.edit(deviceTemplate.id)}>Edit</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => setOpen(true)}
-            className="text-red-600 focus:bg-red-50 focus:text-red-600"
-          >
+          <DropdownMenuItem onClick={() => setOpen(true)} variant="destructive">
             Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -84,7 +81,7 @@ const DeviceTemplateCellAction = ({ deviceTemplate }: Props) => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </React.Fragment>
+    </>
   );
 };
 
