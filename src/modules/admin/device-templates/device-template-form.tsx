@@ -110,7 +110,7 @@ const  DeviceTemplateForm = () => {
                 const fieldName = issue.path[0];
                 if (typeof fieldName === 'string') {
                   // Cast type ให้ตรงกับ library
-                  return form.validateField(fieldName as any, 'change');
+                  return form.validateField(fieldName as keyof typeof form.state.values, 'change');
                 }
               });
       

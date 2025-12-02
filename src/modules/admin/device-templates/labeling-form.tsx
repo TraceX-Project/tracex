@@ -9,7 +9,7 @@ import { useCreatePorts } from './_hooks/use-create-ports';
 import { useGetPorts } from './_hooks/use-get-ports';
 import { type KonvaEventObject } from 'konva/lib/Node';
 import PortTypeConfiguration from './port-range-configuration'; // ปรับ import path ตามจริง
-import { Alignment, type boundingBox } from './_types/device-template';
+import { Alignment, type Port, type boundingBox } from './_types/device-template';
 
 
 
@@ -102,7 +102,7 @@ const LabelingForm = ({ form }: Props) => {
   useEffect(() => {
     if (!isPortsLoading && portData?.ports) {
       // Map ข้อมูลจาก AI (w, h) มาเป็น boundingBox (width, height, portNumber)
-      const mappedBoxes: boundingBox[] = portData.ports.map((p: any, index: number) => ({
+      const mappedBoxes: boundingBox[] = portData.ports.map((p: Port, index: number) => ({
         x: p.x,
         y: p.y,
         width: p.w, // Map w -> width
@@ -163,7 +163,7 @@ const LabelingForm = ({ form }: Props) => {
 
   const handleStageMouseDown = (e: KonvaEventObject<MouseEvent>) => {
     const clickedOnEmpty = e.target === e.target.getStage();
-    const clickedOnImage = e.target.attrs.image === image;
+    const clickedOnImage = e.target.attrs.image as HTMLImageElement === image;
     if (clickedOnEmpty || clickedOnImage) {
       setSelectedIndex(null);
     }
@@ -218,7 +218,7 @@ const LabelingForm = ({ form }: Props) => {
   // Replace your existing handleReindex with this:
 const handleReindex = (mode: "horizontal" | "vertical", customBoxes?: boundingBox[]) => {
     // 1. Use customBoxes if provided (for first load), otherwise use current state
-    const sourceData = customBoxes || boxes;
+    const sourceData = customBoxes ?? boxes;
 
     // 2. Sort boxes geometry
     const sorted = [...sourceData].sort((a, b) => {
