@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Vendor, DeviceType, Alignment, PortType} from '../_types/device-template';
+import { Vendor, DeviceType, Alignment, PortType } from '../_types/device-template';
 import { PORT_PREFIX_REGEX } from '@/shared/constants/regex';
 
 export const deviceTemplateSchema = z.object({
@@ -55,7 +55,7 @@ export const deviceTemplateSchema = z.object({
           .number({ message: 'Running number must be a number' })
           .min(1, { message: 'Running number must be greater than zero' }),
         portType: z.enum(PortType, { message: 'Port type must be a valid port type' }),
-        id: z.string().uuid()
+        id: z.uuidv4(),
       })
       .refine((value) => value.start <= value.end, {
         message: 'Start port must be less than or equal to end port',

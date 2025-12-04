@@ -15,21 +15,10 @@ export default async function AdminUsersPage() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="flex h-screen flex-col">
-        <SiteHeader title="Manage Users" />
+      <SiteHeader title="Manage Users" />
 
-        <div className="container mx-auto flex flex-1 flex-col space-y-4 p-5 pt-20">
-          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-            <div>
-              <h2 className="text-3xl font-bold tracking-tight">Users</h2>
-              <p className="text-muted-foreground text-sm">Manage users</p>
-            </div>
-          </div>
-
-          <Separator />
-
-          <UsersTable />
-        </div>
+      <div className="container mx-auto flex flex-1 flex-col space-y-4 p-5 pt-20">
+        <UsersTable />
       </div>
     </HydrationBoundary>
   );
