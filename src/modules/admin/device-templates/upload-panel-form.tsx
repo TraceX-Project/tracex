@@ -33,7 +33,7 @@ const UploadPanelForm = ({ form }: Props) => {
       {/* Front Panel Upload */}
       <form.AppField
         name="frontPanel"
-        children={(field) => <field.FileField label="Front Panel" onUpload={handleUpload} />}
+        children={(field) => <field.FileField label="Front Panel" />}
       />
 
       {/* Row, Column */}

@@ -58,17 +58,32 @@ export type PortInput = {
   w: number;
   h: number;
 };
+export type boundingBox = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  portNumber: number;
+}
 
+export type portRange = {
+  start: number;
+  end: number;
+  runningNumber: number;
+  prefix: string;
+  portType: PortType;
+}
 export type CreateDeviceTemplateRequest = {
   modelName: string;
   vendor: Vendor;
   deviceType: DeviceType;
-  frontPanel: File;
-  unitSize: number;
   rows: number;
   columns: number;
   alignment: Alignment;
-  ports: PortInput[];
+  frontPanel: File;
+  unitSize: number;
+  portRanges: portRange[];
+  boundingBoxes: boundingBox[];
 };
 
 export type UpdateDeviceTemplateRequest = Partial<CreateDeviceTemplateRequest>;

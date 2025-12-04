@@ -1,129 +1,391 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Stage, Layer, Image as KImage, Rect, Transformer } from 'react-konva';
-import useImage from 'use-image';
-import { type PortInput } from './_types/device-template';
-import PortTypeConfiguration from './port-range-configuration';
-import { Button } from '@/shared/components/ui/button';
 import type Konva from 'konva';
-import { type useAppForm } from '@/shared/tanstack-form/form';
+import useImage from 'use-image';
+import { Stage, Layer, Image as KImage, Rect, Transformer, Group, Text } from 'react-konva';
+import { Button } from '@/shared/components/ui/button';
+import { type useAppForm } from '@/shared/tanstack-form/form'; // ปรับ import path ตามจริง
+import { ArrowDownUp, ArrowLeftRight, Plus, Trash2 } from 'lucide-react';
+import { useCreatePorts } from './_hooks/use-create-ports';
+import { useGetPorts } from './_hooks/use-get-ports';
+import { type KonvaEventObject } from 'konva/lib/Node';
+import PortTypeConfiguration from './port-range-configuration'; // ปรับ import path ตามจริง
+import { Alignment, type Port, type boundingBox } from './_types/device-template';
+
+
 
 type Props = {
   form: ReturnType<typeof useAppForm>;
 };
 
 const LabelingForm = ({ form }: Props) => {
-  const [ports, setPorts] = useState<PortInput[]>(
-    (form.getFieldValue('ports') as PortInput[]) || []
+  // --- State Management ---
+  const [boxes, setBoxes] = useState<boundingBox[]>(
+    (form.getFieldValue('boundingBoxes') as boundingBox[]) || []
   );
-  const [imageURL, setImageURL] = useState(() => {
+
+  const [imageURL] = useState(() => {
     const file = form.getFieldValue('frontPanel') as File | undefined;
     return file ? URL.createObjectURL(file) : '';
   });
 
   const [image] = useImage(imageURL);
+  const { mutateAsync: createPorts } = useCreatePorts();
+  
+  // UI State
   const [stageSize, setStageSize] = useState({ width: 800, height: 200 });
-  const rectRef = useRef<Konva.Rect>(null);
+  const [taskId, setTaskId] = useState<string>("");
+  const { data: portData, isLoading: isPortsLoading } = useGetPorts(taskId);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  // Refs
+  const rectRefs = useRef<(Konva.Rect | null)[]>([]);
   const trRef = useRef<Konva.Transformer>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleAddBox = () => {
-    const newBox: PortInput = {
-      x: 100 + ports.length * 25,
-      y: 10,
-      w: 30,
-      h: 30,
-    };
-    const updated = [...ports, newBox];
-    setPorts(updated);
-    form.setFieldValue('ports', updated);
+  // --- Calculations ---
+  const displayWidth = Math.min(stageSize.width - 50, 750);
+  // คำนวณ Aspect Ratio เพื่อไม่ให้รูปเพี้ยน
+  const originalWidth = image?.width ?? displayWidth;
+  const originalHeight = image?.height ?? 1; // กันหารด้วย 0
+  const imageAspectRatio = originalHeight / originalWidth;
+  
+  const displayHeight = displayWidth * imageAspectRatio;
+
+  const scaleX = displayWidth / originalWidth;
+  const scaleY = displayHeight / originalHeight;
+  
+  const offsetX = (stageSize.width - displayWidth) / 2;
+  const offsetY = (stageSize.height - displayHeight) / 2;
+
+  // --- Helpers ---
+  const syncForm = (newBoxes: boundingBox[]) => {
+    setBoxes(newBoxes);
+    form.setFieldValue('boundingBoxes', newBoxes);
   };
 
+  // --- Effects ---
+
+  // Resize Window Handler
   useEffect(() => {
     const updateStageSize = () => {
       const containerWidth = containerRef.current?.offsetWidth ?? 800;
       const maxWidth = Math.min(containerWidth, 1200);
-      const aspectRatio = 60 / 750;
-      const calculatedHeight = Math.max(100, maxWidth * aspectRatio * 1.5);
+      const calculatedHeight = Math.max(200, maxWidth * imageAspectRatio + 100);
 
       setStageSize({
         width: maxWidth,
-        height: Math.min(calculatedHeight, 300),
+        height: Math.min(calculatedHeight, 800),
       });
     };
-
     updateStageSize();
     window.addEventListener('resize', updateStageSize);
     return () => window.removeEventListener('resize', updateStageSize);
-  }, []);
+  }, [image, imageAspectRatio]);
 
-  // Calculate display size
-  const displayWidth = Math.min(stageSize.width - 50, 750);
-  const displayHeight = Math.min(displayWidth * (60 / 750), stageSize.height - 50);
-
-  const originalWidth = image?.width ?? displayWidth;
-  const originalHeight = image?.height ?? displayHeight;
-
-  const scaleX = displayWidth / originalWidth;
-  const scaleY = displayHeight / originalHeight;
-
+  // AI Processing (First Run)
   useEffect(() => {
-    if (rectRef.current) {
-      trRef.current?.nodes([rectRef.current]);
-      trRef.current?.getLayer()?.batchDraw();
+    const run = async () => {
+      const file = form.getFieldValue('frontPanel') as File;
+      if (file && !taskId) {
+        try {
+            const result = await createPorts([file]);
+            setTaskId(result?.taskId || '');
+        } catch (e) {
+            console.error("AI Processing failed", e);
+        }
+      }
+    };
+    run();
+  }, [form, taskId, createPorts]);
+
+  // Sync Data from AI Hook to Form
+  useEffect(() => {
+    if (!isPortsLoading && portData?.ports) {
+      // Map ข้อมูลจาก AI (w, h) มาเป็น boundingBox (width, height, portNumber)
+      const mappedBoxes: boundingBox[] = portData.ports.map((p: Port, index: number) => ({
+        x: p.x,
+        y: p.y,
+        width: p.w, // Map w -> width
+        height: p.h, // Map h -> height
+        portNumber: index + 1
+      }));
+      handleReindex("horizontal", mappedBoxes);
     }
-  }, [image, stageSize]);
+  }, [isPortsLoading, portData]);
+
+
+  // Keyboard Shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedIndex === null) return;
+      if (e.key === "Backspace" || e.key === "Delete") {
+        const updated = boxes.filter((_, i) => i !== selectedIndex);
+        syncForm(updated);
+        setSelectedIndex(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedIndex, boxes]);
+
+  // Transformer Attachment
+  useEffect(() => {
+    if (selectedIndex !== null && trRef.current && rectRefs.current[selectedIndex]) {
+      trRef.current.nodes([rectRefs.current[selectedIndex]]);
+      trRef.current.getLayer()?.batchDraw();
+    } else if (trRef.current) {
+      trRef.current.nodes([]);
+    }
+  }, [selectedIndex, boxes]);
+
+  // --- Handlers ---
+
+  const handleAddBox = () => {
+    const defaultW = 50 / scaleX;
+    const defaultH = 50 / scaleY;
+    const lastBox = boxes.length > 0 ? boxes[boxes.length - 1] : null;
+
+    // หาเลข Port ถัดไปที่ยังไม่ซ้ำ (Max + 1)
+    const maxPortNum = boxes.reduce((max, box) => Math.max(max, box.portNumber), 0);
+
+    const newBox: boundingBox = {
+      x: lastBox ? lastBox.x + (20/scaleX) : (10/scaleX),
+      y: lastBox ? lastBox.y : (10/scaleY),
+      width: lastBox ? lastBox.width : defaultW,
+      height: lastBox ? lastBox.height : defaultH,
+      portNumber: maxPortNum + 1
+    };
+
+    const updated = [...boxes, newBox];
+    syncForm(updated);
+    setSelectedIndex(updated.length - 1);
+  };
+
+  const handleStageMouseDown = (e: KonvaEventObject<MouseEvent>) => {
+    const clickedOnEmpty = e.target === e.target.getStage();
+    const clickedOnImage = e.target.attrs.image as HTMLImageElement === image;
+    if (clickedOnEmpty || clickedOnImage) {
+      setSelectedIndex(null);
+    }
+  };
+
+  // Drag End: Update Position
+  const handleDragEnd = (e: KonvaEventObject<DragEvent>, index: number) => {
+    const newX = (e.target.x() - offsetX) / scaleX;
+    const newY = (e.target.y() - offsetY) / scaleY;
+
+    const updated = [...boxes];
+    updated[index] = { ...updated[index], x: newX, y: newY };
+    syncForm(updated);
+  };
+
+  // Transform End: Update Size & Position
+  const handleTransformEnd = (index: number) => {
+    const node = rectRefs.current[index];
+    if (!node) return;
+
+    const currentScaleX = node.scaleX();
+    const currentScaleY = node.scaleY();
+
+    // Reset scale to 1 to clean up
+    node.scaleX(1);
+    node.scaleY(1);
+
+    // Calculate new dimensions in Screen Pixels -> convert to Original
+    const newWidth = (node.width() * currentScaleX) / scaleX;
+    const newHeight = (node.height() * currentScaleY) / scaleY;
+
+    // Calculate shift in position (if resized from top/left)
+    const shiftX = node.x() / scaleX;
+    const shiftY = node.y() / scaleY;
+
+    // Reset node position inside group
+    node.x(0);
+    node.y(0);
+
+    const updated = [...boxes];
+    updated[index] = {
+      ...updated[index],
+      x: updated[index].x + shiftX,
+      y: updated[index].y + shiftY,
+      width: newWidth,
+      height: newHeight,
+    };
+    syncForm(updated);
+  };
+
+
+  // Replace your existing handleReindex with this:
+const handleReindex = (mode: "horizontal" | "vertical", customBoxes?: boundingBox[]) => {
+    // 1. Use customBoxes if provided (for first load), otherwise use current state
+    const sourceData = customBoxes ?? boxes;
+
+    // 2. Sort boxes geometry
+    const sorted = [...sourceData].sort((a, b) => {
+      if (mode === "horizontal") {
+        // Sort by X first, then Y (Left -> Right, Top -> Bottom)
+        const yDiff = Math.abs(a.y - b.y);
+        
+        // Calculate dynamic threshold based on image scale
+        // Use a safe fallback if scaleY is 0 or undefined
+        const threshold = scaleY ? (15 / scaleY) : 15; 
+
+        // If Y difference is large, they are different rows -> Sort Top to Bottom
+        if (yDiff > threshold) return a.y - b.y;
+        
+        // If Y difference is small, they are same row -> Sort Left to Right
+        return a.x - b.x;
+      } else {
+        // Vertical Logic (Top -> Bottom, Left -> Right)
+        const xDiff = Math.abs(a.x - b.x);
+        const threshold = scaleX ? (15 / scaleX) : 15;
+
+        if (xDiff > threshold) return a.x - b.x;
+        return a.y - b.y;
+      }
+    });
+
+    // 3. Re-assign port numbers
+    const reindexed = sorted.map((box, idx) => ({
+      ...box,
+      portNumber: idx + 1
+    }));
+    // 4. Update Form & State
+    syncForm(reindexed);
+    form.setFieldValue('alignment', mode === "horizontal" ? Alignment.HORIZONTAL : Alignment.VERTICAL);
+};
+
+  if (!imageURL && !taskId) {
+    return <div className="p-10 text-center text-gray-500">Loading or please upload an image...</div>;
+  }
 
   return (
     <div className="space-y-6">
       <div
         ref={containerRef}
-        className="w-full overflow-hidden rounded-lg border border-gray-200 bg-gray-50"
+        className="w-full overflow-hidden rounded-lg border border-gray-200 bg-gray-50 relative select-none"
       >
-        <Stage width={stageSize.width} height={stageSize.height}>
+        <Stage
+          width={stageSize.width}
+          height={stageSize.height}
+          onMouseDown={handleStageMouseDown}
+          onTouchStart={() => handleStageMouseDown}
+        >
           <Layer>
             <KImage
               image={image}
               width={displayWidth}
               height={displayHeight}
-              x={(stageSize.width - displayWidth) / 2}
-              y={(stageSize.height - displayHeight) / 2}
+              x={offsetX}
+              y={offsetY}
             />
-            {ports.map((port, index) => (
-              <React.Fragment key={index}>
+
+            {boxes.map((box, i) => (
+              <Group
+                key={`box-${i}`} // ใช้ index หรือสร้าง id ถาวรถ้ามี
+                x={box.x * scaleX + offsetX}
+                y={box.y * scaleY + offsetY}
+                draggable
+                onDragEnd={(e) => handleDragEnd(e, i)}
+                onClick={(e) => {
+                  e.cancelBubble = true;
+                  setSelectedIndex(i);
+                }}
+              >
+                {/* Hit Box for easier selection */}
+                <Rect 
+                    width={box.width * scaleX}
+                    height={box.height * scaleY}
+                    fill="transparent"
+                />
+                
+                {/* Visible Box */}
                 <Rect
-                  ref={rectRef}
-                  x={port.x * scaleX + (stageSize.width - displayWidth) / 2}
-                  y={port.y * scaleY + (stageSize.height - displayHeight) / 2}
-                  width={port.w * scaleX}
-                  height={port.h * scaleY}
-                  stroke="green"
+                  ref={(el) => { rectRefs.current[i] = el; }}
+                  width={Math.max(5, box.width * scaleX)}
+                  height={Math.max(5, box.height * scaleY)}
+                  stroke={selectedIndex === i ? "red" : "#39FF14"}
                   strokeWidth={2}
-                  draggable
+                  onTransformEnd={() => handleTransformEnd(i)}
                 />
-                <Transformer
-                  ref={trRef}
-                  rotateEnabled={false}
-                  anchorSize={5}
-                  anchorStroke="transparent"
-                  anchorFill="transparent"
-                  boundBoxFunc={(oldBox, newBox) => {
-                    if (newBox.width < 20 || newBox.height < 20) return oldBox;
-                    return newBox;
-                  }}
+
+                {/* Port Number Label */}
+                <Text
+                  text={String(box.portNumber)}
+                  x={0}
+                  y={0} 
+                  width={box.width * scaleX}
+                  align="center"
+                  fontSize={14}
+                  fill="white"
+                  fontStyle="bold"
+                  shadowColor="black"
+                  shadowBlur={3}
+                  listening={false} 
                 />
-              </React.Fragment>
+              </Group>
             ))}
+
+            <Transformer
+              ref={trRef}
+              rotateEnabled={false}
+              keepRatio={false}
+              anchorSize={8}
+              borderStroke="red"
+              anchorStroke="red"
+              anchorFill="white"
+              boundBoxFunc={(oldBox, newBox) => {
+                if (newBox.width < 5 || newBox.height < 5) return oldBox;
+                return newBox;
+              }}
+            />
           </Layer>
         </Stage>
       </div>
 
-      <div className="mt-4 flex gap-4">
-        <Button type="button" onClick={handleAddBox}>
-          ➕ Add Box
+      <div className="flex flex-wrap items-center gap-4">
+        <Button type="button" onClick={handleAddBox} className="gap-2">
+          <Plus size={16} /> Add Box
         </Button>
+        
+        <div className="h-6 w-px bg-gray-300 mx-2" />
+
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => handleReindex("horizontal", boxes)}
+          title="Sort Left->Right, Top->Bottom"
+        >
+          <ArrowLeftRight className="mr-2 h-4 w-4" /> Auto Sort (H)
+        </Button>
+        
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => handleReindex("vertical", boxes)}
+          title="Sort Top->Bottom, Left->Right"
+        >
+          <ArrowDownUp className="mr-2 h-4 w-4" /> Auto Sort (V)
+        </Button>
+
+        {selectedIndex !== null && (
+             <Button
+             type="button"
+             variant="destructive"
+             size="icon"
+             className="ml-auto"
+             onClick={() => {
+                const updated = boxes.filter((_, i) => i !== selectedIndex);
+                syncForm(updated);
+                setSelectedIndex(null);
+             }}
+           >
+             <Trash2 size={16} />
+           </Button>
+        )}
       </div>
 
-      {/* Interface Configuration */}
+      {/* Interface Configuration Component */}
       <PortTypeConfiguration form={form} />
     </div>
   );

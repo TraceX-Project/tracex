@@ -2,16 +2,15 @@ import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
 import { type DevicePorts } from '../_types/device-template';
 import {
-  type CreateDeviceTemplateRequest,
   type DeviceTemplate,
   type UpdateDeviceTemplateRequest,
 } from '../_types/device-template';
 
-export const createDeviceTemplate = async (payload: CreateDeviceTemplateRequest) => {
+export const createDeviceTemplate = async (formData: FormData) => {
   const response = await request<DeviceTemplate>({
     method: 'POST',
     path: ENDPOINTS.deviceTemplates.create,
-    body: payload,
+    body: formData,
   });
   return response;
 };

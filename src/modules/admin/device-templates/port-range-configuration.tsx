@@ -82,7 +82,7 @@ const PortRangeConfiguration = ({ form }: Props) => {
             </CardHeader>
 
             <CardContent>
-              <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2 lg:grid-cols-3 ">
                 {/* Port Type */}
                 <form.AppField
                   name={`portRanges[${index}].portType`}
@@ -133,7 +133,7 @@ const PortRangeConfiguration = ({ form }: Props) => {
                   name={`portRanges[${index}].runningNumber`}
                   children={(field) => (
                     <field.NumberField
-                      label="Starting Number"
+                      label="Running Number"
                       placeholder="Starting from"
                       min={1}
                       className="text-sm"
