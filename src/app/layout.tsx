@@ -38,7 +38,7 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
         <NuqsAdapter>
           <ReactQueryProvider>
             <ScreenGuard>
-              <main>{children}</main>
+              {children}
             </ScreenGuard>
             <Toaster position="top-right" closeButton richColors />
           </ReactQueryProvider>

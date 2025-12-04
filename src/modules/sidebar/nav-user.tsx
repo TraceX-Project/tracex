@@ -1,12 +1,11 @@
 'use client';
 
-import { BadgeCheck, ChevronsUpDown, LogOut } from 'lucide-react';
+import { ChevronsUpDown, LogOut } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu';
@@ -71,28 +70,23 @@ const NavUser = () => {
             align="end"
             sideOffset={4}
           >
-            <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <UserAvatar
-                  firstName={user?.firstName}
-                  lastName={user?.lastName}
-                  avatarUrl={user?.avatarUrl}
-                  alt={`@${user?.firstName}`}
-                  className="rounded-lg"
-                />
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">
-                    {user?.firstName} {user?.lastName}
-                  </span>
-                  <span className="truncate text-xs">{user?.email}</span>
-                </div>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem onClick={() => router.push(PATHS.account)}>
-                <BadgeCheck />
-                Account
+                <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                  <UserAvatar
+                    firstName={user?.firstName}
+                    lastName={user?.lastName}
+                    avatarUrl={user?.avatarUrl}
+                    alt={`@${user?.firstName}`}
+                    className="rounded-lg"
+                  />
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-medium">
+                      {user?.firstName} {user?.lastName}
+                    </span>
+                    <span className="truncate text-xs">{user?.email}</span>
+                  </div>
+                </div>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
