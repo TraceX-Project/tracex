@@ -17,7 +17,7 @@ const NumberField = ({
   orientation = 'vertical',
   ...inputProps
 }: Props) => {
-  const field = useFieldContext<number>();
+  const field = useFieldContext<number | null>();
   const hasErrors = field.state.meta.errors.length > 0;
 
   return (
@@ -41,13 +41,16 @@ const NumberField = ({
           Number.isNaN(field.state.value) || field.state.value == null ? '' : field.state.value
         }
         onChange={(e) => {
-          const raw = e.target.value;
+          const value = e.target.value;
 
-          if (raw === '') {
-            field.handleChange(null as any);
-          } else {
-            field.handleChange(e.target.valueAsNumber);
+          if (value === '') {
+            field.handleChange(null);
+            return;
           }
+
+          const num = e.target.valueAsNumber;
+
+          field.handleChange(Number.isNaN(num) ? null : num);
         }}
         aria-invalid={hasErrors}
         {...inputProps}
