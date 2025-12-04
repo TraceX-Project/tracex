@@ -37,8 +37,18 @@ const NumberField = ({
       <Input
         id={field.name}
         type="number"
-        value={field.state.value}
-        onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+        value={
+          Number.isNaN(field.state.value) || field.state.value == null ? '' : field.state.value
+        }
+        onChange={(e) => {
+          const raw = e.target.value;
+
+          if (raw === '') {
+            field.handleChange(null as any);
+          } else {
+            field.handleChange(e.target.valueAsNumber);
+          }
+        }}
         aria-invalid={hasErrors}
         {...inputProps}
       />

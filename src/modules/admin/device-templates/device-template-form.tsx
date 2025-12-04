@@ -1,7 +1,7 @@
 'use client';
 
 import { type FormType, useAppForm } from '@/shared/tanstack-form/form';
-import React, { FormEvent, useCallback, useMemo } from 'react';
+import React, { type FormEvent, useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { deviceTemplateSchema, stepSchemas } from './_schema/schema';
 import { useCreateDeviceTemplate } from './_hooks/use-create-device-template';

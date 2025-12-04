@@ -9,9 +9,7 @@ import { useCreatePorts } from './_hooks/use-create-ports';
 import { useGetPorts } from './_hooks/use-get-ports';
 import { type KonvaEventObject } from 'konva/lib/Node';
 import PortTypeConfiguration from './port-range-configuration'; // ปรับ import path ตามจริง
-import { Alignment, type Port, type boundingBox } from './_types/device-template';
-
-
+import { Alignment, type Port, type BoundingBox } from './_types/device-template';
 
 type Props = {
   form: ReturnType<typeof useAppForm>;
@@ -19,8 +17,8 @@ type Props = {
 
 const LabelingForm = ({ form }: Props) => {
   // --- State Management ---
-  const [boxes, setBoxes] = useState<boundingBox[]>(
-    (form.getFieldValue('boundingBoxes') as boundingBox[]) || []
+  const [boxes, setBoxes] = useState<BoundingBox[]>(
+    (form.getFieldValue('boundingBoxes') as BoundingBox[]) || []
   );
 
   const [imageURL] = useState(() => {
@@ -30,10 +28,10 @@ const LabelingForm = ({ form }: Props) => {
 
   const [image] = useImage(imageURL);
   const { mutateAsync: createPorts } = useCreatePorts();
-  
+
   // UI State
   const [stageSize, setStageSize] = useState({ width: 800, height: 200 });
-  const [taskId, setTaskId] = useState<string>("");
+  const [taskId, setTaskId] = useState<string>('');
   const { data: portData, isLoading: isPortsLoading } = useGetPorts(taskId);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
@@ -48,17 +46,17 @@ const LabelingForm = ({ form }: Props) => {
   const originalWidth = image?.width ?? displayWidth;
   const originalHeight = image?.height ?? 1; // กันหารด้วย 0
   const imageAspectRatio = originalHeight / originalWidth;
-  
+
   const displayHeight = displayWidth * imageAspectRatio;
 
   const scaleX = displayWidth / originalWidth;
   const scaleY = displayHeight / originalHeight;
-  
+
   const offsetX = (stageSize.width - displayWidth) / 2;
   const offsetY = (stageSize.height - displayHeight) / 2;
 
   // --- Helpers ---
-  const syncForm = (newBoxes: boundingBox[]) => {
+  const syncForm = (newBoxes: BoundingBox[]) => {
     setBoxes(newBoxes);
     form.setFieldValue('boundingBoxes', newBoxes);
   };
@@ -88,10 +86,10 @@ const LabelingForm = ({ form }: Props) => {
       const file = form.getFieldValue('frontPanel') as File;
       if (file && !taskId) {
         try {
-            const result = await createPorts([file]);
-            setTaskId(result?.taskId || '');
+          const result = await createPorts([file]);
+          setTaskId(result?.taskId || '');
         } catch (e) {
-            console.error("AI Processing failed", e);
+          console.error('AI Processing failed', e);
         }
       }
     };
@@ -102,30 +100,29 @@ const LabelingForm = ({ form }: Props) => {
   useEffect(() => {
     if (!isPortsLoading && portData?.ports) {
       // Map ข้อมูลจาก AI (w, h) มาเป็น boundingBox (width, height, portNumber)
-      const mappedBoxes: boundingBox[] = portData.ports.map((p: Port, index: number) => ({
+      const mappedBoxes: BoundingBox[] = portData.ports.map((p: Port, index: number) => ({
         x: p.x,
         y: p.y,
         width: p.w, // Map w -> width
         height: p.h, // Map h -> height
-        portNumber: index + 1
+        portNumber: index + 1,
       }));
-      handleReindex("horizontal", mappedBoxes);
+      handleReindex('horizontal', mappedBoxes);
     }
   }, [isPortsLoading, portData]);
-
 
   // Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (selectedIndex === null) return;
-      if (e.key === "Backspace" || e.key === "Delete") {
+      if (e.key === 'Backspace' || e.key === 'Delete') {
         const updated = boxes.filter((_, i) => i !== selectedIndex);
         syncForm(updated);
         setSelectedIndex(null);
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedIndex, boxes]);
 
   // Transformer Attachment
@@ -148,12 +145,12 @@ const LabelingForm = ({ form }: Props) => {
     // หาเลข Port ถัดไปที่ยังไม่ซ้ำ (Max + 1)
     const maxPortNum = boxes.reduce((max, box) => Math.max(max, box.portNumber), 0);
 
-    const newBox: boundingBox = {
-      x: lastBox ? lastBox.x + (20/scaleX) : (10/scaleX),
-      y: lastBox ? lastBox.y : (10/scaleY),
+    const newBox: BoundingBox = {
+      x: lastBox ? lastBox.x + 20 / scaleX : 10 / scaleX,
+      y: lastBox ? lastBox.y : 10 / scaleY,
       width: lastBox ? lastBox.width : defaultW,
       height: lastBox ? lastBox.height : defaultH,
-      portNumber: maxPortNum + 1
+      portNumber: maxPortNum + 1,
     };
 
     const updated = [...boxes, newBox];
@@ -163,7 +160,7 @@ const LabelingForm = ({ form }: Props) => {
 
   const handleStageMouseDown = (e: KonvaEventObject<MouseEvent>) => {
     const clickedOnEmpty = e.target === e.target.getStage();
-    const clickedOnImage = e.target.attrs.image as HTMLImageElement === image;
+    const clickedOnImage = (e.target.attrs.image as HTMLImageElement) === image;
     if (clickedOnEmpty || clickedOnImage) {
       setSelectedIndex(null);
     }
@@ -214,31 +211,30 @@ const LabelingForm = ({ form }: Props) => {
     syncForm(updated);
   };
 
-
   // Replace your existing handleReindex with this:
-const handleReindex = (mode: "horizontal" | "vertical", customBoxes?: boundingBox[]) => {
+  const handleReindex = (mode: 'horizontal' | 'vertical', customBoxes?: BoundingBox[]) => {
     // 1. Use customBoxes if provided (for first load), otherwise use current state
     const sourceData = customBoxes ?? boxes;
 
     // 2. Sort boxes geometry
     const sorted = [...sourceData].sort((a, b) => {
-      if (mode === "horizontal") {
+      if (mode === 'horizontal') {
         // Sort by X first, then Y (Left -> Right, Top -> Bottom)
         const yDiff = Math.abs(a.y - b.y);
-        
+
         // Calculate dynamic threshold based on image scale
         // Use a safe fallback if scaleY is 0 or undefined
-        const threshold = scaleY ? (15 / scaleY) : 15; 
+        const threshold = scaleY ? 15 / scaleY : 15;
 
         // If Y difference is large, they are different rows -> Sort Top to Bottom
         if (yDiff > threshold) return a.y - b.y;
-        
+
         // If Y difference is small, they are same row -> Sort Left to Right
         return a.x - b.x;
       } else {
         // Vertical Logic (Top -> Bottom, Left -> Right)
         const xDiff = Math.abs(a.x - b.x);
-        const threshold = scaleX ? (15 / scaleX) : 15;
+        const threshold = scaleX ? 15 / scaleX : 15;
 
         if (xDiff > threshold) return a.x - b.x;
         return a.y - b.y;
@@ -248,22 +244,27 @@ const handleReindex = (mode: "horizontal" | "vertical", customBoxes?: boundingBo
     // 3. Re-assign port numbers
     const reindexed = sorted.map((box, idx) => ({
       ...box,
-      portNumber: idx + 1
+      portNumber: idx + 1,
     }));
     // 4. Update Form & State
     syncForm(reindexed);
-    form.setFieldValue('alignment', mode === "horizontal" ? Alignment.HORIZONTAL : Alignment.VERTICAL);
-};
+    form.setFieldValue(
+      'alignment',
+      mode === 'horizontal' ? Alignment.HORIZONTAL : Alignment.VERTICAL
+    );
+  };
 
   if (!imageURL && !taskId) {
-    return <div className="p-10 text-center text-gray-500">Loading or please upload an image...</div>;
+    return (
+      <div className="p-10 text-center text-gray-500">Loading or please upload an image...</div>
+    );
   }
 
   return (
     <div className="space-y-6">
       <div
         ref={containerRef}
-        className="w-full overflow-hidden rounded-lg border border-gray-200 bg-gray-50 relative select-none"
+        className="relative w-full overflow-hidden rounded-lg border border-gray-200 bg-gray-50 select-none"
       >
         <Stage
           width={stageSize.width}
@@ -293,18 +294,16 @@ const handleReindex = (mode: "horizontal" | "vertical", customBoxes?: boundingBo
                 }}
               >
                 {/* Hit Box for easier selection */}
-                <Rect 
-                    width={box.width * scaleX}
-                    height={box.height * scaleY}
-                    fill="transparent"
-                />
-                
+                <Rect width={box.width * scaleX} height={box.height * scaleY} fill="transparent" />
+
                 {/* Visible Box */}
                 <Rect
-                  ref={(el) => { rectRefs.current[i] = el; }}
+                  ref={(el) => {
+                    rectRefs.current[i] = el;
+                  }}
                   width={Math.max(5, box.width * scaleX)}
                   height={Math.max(5, box.height * scaleY)}
-                  stroke={selectedIndex === i ? "red" : "#39FF14"}
+                  stroke={selectedIndex === i ? 'red' : '#39FF14'}
                   strokeWidth={2}
                   onTransformEnd={() => handleTransformEnd(i)}
                 />
@@ -313,7 +312,7 @@ const handleReindex = (mode: "horizontal" | "vertical", customBoxes?: boundingBo
                 <Text
                   text={String(box.portNumber)}
                   x={0}
-                  y={0} 
+                  y={0}
                   width={box.width * scaleX}
                   align="center"
                   fontSize={14}
@@ -321,7 +320,7 @@ const handleReindex = (mode: "horizontal" | "vertical", customBoxes?: boundingBo
                   fontStyle="bold"
                   shadowColor="black"
                   shadowBlur={3}
-                  listening={false} 
+                  listening={false}
                 />
               </Group>
             ))}
@@ -347,41 +346,41 @@ const handleReindex = (mode: "horizontal" | "vertical", customBoxes?: boundingBo
         <Button type="button" onClick={handleAddBox} className="gap-2">
           <Plus size={16} /> Add Box
         </Button>
-        
-        <div className="h-6 w-px bg-gray-300 mx-2" />
+
+        <div className="mx-2 h-6 w-px bg-gray-300" />
 
         <Button
           type="button"
           variant="outline"
-          onClick={() => handleReindex("horizontal", boxes)}
+          onClick={() => handleReindex('horizontal', boxes)}
           title="Sort Left->Right, Top->Bottom"
         >
           <ArrowLeftRight className="mr-2 h-4 w-4" /> Auto Sort (H)
         </Button>
-        
+
         <Button
           type="button"
           variant="outline"
-          onClick={() => handleReindex("vertical", boxes)}
+          onClick={() => handleReindex('vertical', boxes)}
           title="Sort Top->Bottom, Left->Right"
         >
           <ArrowDownUp className="mr-2 h-4 w-4" /> Auto Sort (V)
         </Button>
 
         {selectedIndex !== null && (
-             <Button
-             type="button"
-             variant="destructive"
-             size="icon"
-             className="ml-auto"
-             onClick={() => {
-                const updated = boxes.filter((_, i) => i !== selectedIndex);
-                syncForm(updated);
-                setSelectedIndex(null);
-             }}
-           >
-             <Trash2 size={16} />
-           </Button>
+          <Button
+            type="button"
+            variant="destructive"
+            size="icon"
+            className="ml-auto"
+            onClick={() => {
+              const updated = boxes.filter((_, i) => i !== selectedIndex);
+              syncForm(updated);
+              setSelectedIndex(null);
+            }}
+          >
+            <Trash2 size={16} />
+          </Button>
         )}
       </div>
 

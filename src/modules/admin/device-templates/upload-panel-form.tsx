@@ -1,6 +1,4 @@
-import React, { useEffect } from 'react';
-import { useCreatePorts } from './_hooks/use-create-ports';
-import { useGetPorts } from './_hooks/use-get-ports';
+import React from 'react';
 import { type useAppForm } from '@/shared/tanstack-form/form';
 import { Label } from '@/shared/components/ui/label';
 
@@ -9,25 +7,6 @@ type Props = {
 };
 
 const UploadPanelForm = ({ form }: Props) => {
-  const { mutateAsync: createPorts } = useCreatePorts();
-  const [taskId, setTaskId] = React.useState<string>('');
-
-  const { data: ports, isLoading } = useGetPorts(taskId);
-
-  const handleUpload = async (files: File[]) => {
-    const result = await createPorts(files);
-    if (result?.taskId) {
-      setTaskId(result.taskId);
-      form.setFieldValue('frontPanel', files[0]);
-    }
-  };
-
-  useEffect(() => {
-    if (!isLoading && ports) {
-      form.setFieldValue('ports', ports.ports);
-    }
-  }, [isLoading, ports, form]);
-
   return (
     <div className="space-y-6">
       {/* Front Panel Upload */}
