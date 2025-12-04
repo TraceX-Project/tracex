@@ -18,7 +18,7 @@ export default async function AdminDevicesPage() {
   });
 
   return (
-    <>
+    <HydrationBoundary state={dehydrate(queryClient)}>
       <SiteHeader title="Manage Devices" />
 
       <div className="container mx-auto flex flex-1 flex-col space-y-4 p-5 pt-20">
@@ -30,7 +30,11 @@ export default async function AdminDevicesPage() {
             </Link>
           </Button>
         </div>
+
+        <Separator />
+
+        <DeviceTemplatesTable />
       </div>
-    </>
+    </HydrationBoundary>
   );
 }
