@@ -159,8 +159,14 @@ const LabelingForm = ({ form }: Props) => {
   };
 
   const handleStageMouseDown = (e: KonvaEventObject<MouseEvent>) => {
-    const clickedOnEmpty = e.target === e.target.getStage();
-    const clickedOnImage = (e.target.attrs.image as HTMLImageElement) === image;
+    const target = e.target as Konva.Node;
+
+    const clickedOnEmpty = target === target.getStage();
+
+    const targetImage = target.getAttr('image') as HTMLImageElement | undefined;
+
+    const clickedOnImage = targetImage === image;
+
     if (clickedOnEmpty || clickedOnImage) {
       setSelectedIndex(null);
     }
