@@ -49,6 +49,8 @@ export const ENDPOINTS = {
     getById: (id: string) => `${ROOTS.buildings}/${id}`,
     reorderFloors: (buildingId: string) => `${ROOTS.buildings}/${buildingId}/floors/reorder`,
     getFloors: (buildingId: string) => `${ROOTS.buildings}/${buildingId}/floors`,
+    delete: (id: string) => `${ROOTS.buildings}/${id}`,
+    update: (id: string) => `${ROOTS.buildings}/${id}`,
   },
   floors: {
     getById: (id: string) => `${ROOTS.floors}/${id}`,

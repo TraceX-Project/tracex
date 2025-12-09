@@ -1,9 +1,10 @@
 import { request } from '@/shared/lib/api';
-import { type Building, type CreateBuildingRequest } from '../_types/buildings';
+import { type Building } from '../_types/buildings';
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { type Floor } from '@/modules/floors/_types/floor';
+import { type CreateBuildingSchema, type UpdateBuildingSchema } from '../_schema/building';
 
-export const createBuilding = async (projectId: string, payload: CreateBuildingRequest) => {
+export const createBuilding = async (projectId: string, payload: CreateBuildingSchema) => {
   const response = await request<Building>({
     method: 'POST',
     path: ENDPOINTS.projects.createBuilding(projectId),
@@ -35,6 +36,15 @@ export const getBuildingById = async (id: string) => {
   }
 };
 
+export const deleteBuilding = async (id: string) => {
+  const response = await request<Building>({
+    method: 'DELETE',
+    path: ENDPOINTS.buildings.delete(id),
+  });
+
+  return response;
+};
+
 export const reorderFloors = async (
   buildingId: string,
   floors: Pick<Floor, 'id' | 'sortOrder'>[]
@@ -43,6 +53,16 @@ export const reorderFloors = async (
     method: 'PUT',
     path: ENDPOINTS.buildings.reorderFloors(buildingId),
     body: { floors },
+  });
+
+  return response;
+};
+
+export const updateBuilding = async (id: string, payload: Partial<UpdateBuildingSchema>) => {
+  const response = await request<Building>({
+    method: 'PUT',
+    path: ENDPOINTS.buildings.update(id),
+    body: payload,
   });
 
   return response;
