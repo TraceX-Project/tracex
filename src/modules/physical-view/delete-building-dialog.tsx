@@ -31,8 +31,9 @@ const DeleteBuildingDialog = ({ building, isOpen, onClose }: Props) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the building "{building.name}
-            " and remove all associated data.
+            This action cannot be undone. This will permanently delete the building &quot;
+            {building.name}
+            &quot; and remove all associated data.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
