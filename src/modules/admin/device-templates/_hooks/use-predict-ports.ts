@@ -1,16 +1,18 @@
 import { useMutation } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/shared/constants/query-key';
 import { getQueryClient } from '@/shared/tanstack-query/get-query-client';
-import { createPorts } from '../_services/device-templates.service';
+import { predictPorts } from '../_services/device-templates.service';
 
-export const useCreatePorts = () => {
+export const usePredictPorts = () => {
   const queryClient = getQueryClient();
 
   return useMutation({
-    mutationFn: (file: File[]) => {
+    mutationFn: (file: File) => {
       const formData = new FormData();
-      formData.append('file', file[0]);
-      return createPorts(formData);
+
+      formData.append('file', file);
+
+      return predictPorts(formData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ports] });

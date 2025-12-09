@@ -16,7 +16,6 @@ import { useRouter } from 'next/navigation';
 import { PATHS } from '@/shared/config/paths';
 import { Label } from '@radix-ui/react-label';
 import { Button } from '@/shared/components/ui/button';
-import LabelingForm from './labeling-form';
 import BasicInformationForm from './basic-information-form';
 import UploadPanelForm from './upload-panel-form';
 import { defineStepper } from '@stepperize/react';
@@ -24,6 +23,7 @@ import { Separator } from '@/shared/components/ui/separator';
 import { toast } from 'sonner';
 import { v4 as uuidv4 } from 'uuid';
 import { Loader2 } from 'lucide-react';
+import PortConfigForm from './port-config-form';
 
 const DeviceTemplateForm = () => {
   const { mutateAsync: createNewDeviceTemplate } = useCreateDeviceTemplate();
@@ -216,7 +216,8 @@ const DeviceTemplateForm = () => {
             {stepper.switch({
               Basic: () => <BasicInformationForm form={form as unknown as FormType} />,
               Upload: () => <UploadPanelForm form={form as unknown as FormType} />,
-              Labeling: () => <LabelingForm form={form as unknown as FormType} />,
+              Labeling: () => <PortConfigForm form={form as unknown as FormType} />,
+              // Labeling: () => <LabelingForm form={form as unknown as FormType} />,
             })}
           </div>
 

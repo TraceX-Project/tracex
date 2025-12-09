@@ -1,18 +1,28 @@
 import React from 'react';
 import { type useAppForm } from '@/shared/tanstack-form/form';
 import { Label } from '@/shared/components/ui/label';
+import { usePortBoundingBoxStore } from './_store/port-boundingbox';
 
 type Props = {
   form: ReturnType<typeof useAppForm>;
 };
 
 const UploadPanelForm = ({ form }: Props) => {
+  const { setBoxes } = usePortBoundingBoxStore((state) => state.actions);
+
+  const handleFrontPanelChange = () => {
+    setBoxes([]);
+    form.setFieldValue('boundingBoxes', []);
+  };
+
   return (
     <div className="space-y-6">
       {/* Front Panel Upload */}
       <form.AppField
         name="frontPanel"
-        children={(field) => <field.FileField label="Front Panel" />}
+        children={(field) => (
+          <field.FileField onValueChange={handleFrontPanelChange} label="Front Panel" />
+        )}
       />
 
       {/* Row, Column */}

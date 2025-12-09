@@ -41,8 +41,8 @@ export const ENDPOINTS = {
     getDevicesInProject: (id: string) => `${ROOTS.projects}/${id}/devices`,
   },
   ports: {
-    createPorts: `${ROOTS.ports}/predict`,
-    getPortsInDevice: (taskId: string) => `${ROOTS.ports}/result/${taskId}`,
+    predict: `${ROOTS.ports}/predict`,
+    result: (taskId: string) => `${ROOTS.ports}/result/${taskId}`,
   },
   buildings: {
     createFloor: (buildingId: string) => `${ROOTS.buildings}/${buildingId}/floors`,
