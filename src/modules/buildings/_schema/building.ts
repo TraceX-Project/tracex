@@ -23,3 +23,7 @@ export const createBuildingSchema = z.object({
 });
 
 export type CreateBuildingSchema = z.infer<typeof createBuildingSchema>;
+
+export const updateBuildingSchema = createBuildingSchema.partial();
+
+export type UpdateBuildingSchema = z.infer<typeof updateBuildingSchema>;
