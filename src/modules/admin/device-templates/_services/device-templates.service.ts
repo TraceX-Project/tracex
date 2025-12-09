@@ -1,10 +1,7 @@
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
 import { type DevicePorts } from '../_types/device-template';
-import {
-  type DeviceTemplate,
-  type UpdateDeviceTemplateRequest,
-} from '../_types/device-template';
+import { type DeviceTemplate, type UpdateDeviceTemplateRequest } from '../_types/device-template';
 
 export const createDeviceTemplate = async (formData: FormData) => {
   const response = await request<DeviceTemplate>({
@@ -12,6 +9,7 @@ export const createDeviceTemplate = async (formData: FormData) => {
     path: ENDPOINTS.deviceTemplates.create,
     body: formData,
   });
+
   return response;
 };
 
@@ -20,6 +18,7 @@ export const getDeviceTemplates = async () => {
     method: 'GET',
     path: ENDPOINTS.deviceTemplates.getAll,
   });
+
   return response;
 };
 
@@ -28,6 +27,7 @@ export const getDeviceTemplate = async (id: string) => {
     method: 'GET',
     path: ENDPOINTS.deviceTemplates.getById(id),
   });
+
   return response;
 };
 
@@ -36,6 +36,7 @@ export const deleteDeviceTemplate = async (id: string) => {
     method: 'DELETE',
     path: ENDPOINTS.deviceTemplates.delete(id),
   });
+
   return response;
 };
 
@@ -45,22 +46,25 @@ export const updateDeviceTemplate = async (id: string, payload: UpdateDeviceTemp
     path: ENDPOINTS.deviceTemplates.update(id),
     body: payload,
   });
+
   return response;
 };
 
-export const createPorts = async (formData: FormData) => {
+export const predictPorts = async (formData: FormData) => {
   const response = await request<{ taskId: string; status: string }>({
     method: 'POST',
-    path: ENDPOINTS.ports.createPorts,
+    path: ENDPOINTS.ports.predict,
     body: formData,
   });
+
   return response;
 };
 
-export const getPorts = async (taskId: string) => {
+export const getPredictResults = async (taskId: string) => {
   const response = await request<DevicePorts>({
     method: 'GET',
-    path: ENDPOINTS.ports.getPortsInDevice(taskId),
+    path: ENDPOINTS.ports.result(taskId),
   });
+
   return response;
 };

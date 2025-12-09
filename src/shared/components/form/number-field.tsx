@@ -17,7 +17,7 @@ const NumberField = ({
   orientation = 'vertical',
   ...inputProps
 }: Props) => {
-  const field = useFieldContext<number>();
+  const field = useFieldContext<number | null>();
   const hasErrors = field.state.meta.errors.length > 0;
 
   return (
@@ -37,8 +37,21 @@ const NumberField = ({
       <Input
         id={field.name}
         type="number"
-        value={field.state.value}
-        onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+        value={
+          Number.isNaN(field.state.value) || field.state.value == null ? '' : field.state.value
+        }
+        onChange={(e) => {
+          const {value} = e.target;
+
+          if (value === '') {
+            field.handleChange(null);
+            return;
+          }
+
+          const num = e.target.valueAsNumber;
+
+          field.handleChange(Number.isNaN(num) ? null : num);
+        }}
         aria-invalid={hasErrors}
         {...inputProps}
       />

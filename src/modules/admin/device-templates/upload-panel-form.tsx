@@ -1,39 +1,28 @@
-import React, { useEffect } from 'react';
-import { useCreatePorts } from './_hooks/use-create-ports';
-import { useGetPorts } from './_hooks/use-get-ports';
+import React from 'react';
 import { type useAppForm } from '@/shared/tanstack-form/form';
 import { Label } from '@/shared/components/ui/label';
+import { usePortBoundingBoxStore } from './_store/port-boundingbox';
 
 type Props = {
   form: ReturnType<typeof useAppForm>;
 };
 
 const UploadPanelForm = ({ form }: Props) => {
-  const { mutateAsync: createPorts } = useCreatePorts();
-  const [taskId, setTaskId] = React.useState<string>('');
+  const { setBoxes } = usePortBoundingBoxStore((state) => state.actions);
 
-  const { data: ports, isLoading } = useGetPorts(taskId);
-
-  const handleUpload = async (files: File[]) => {
-    const result = await createPorts(files);
-    if (result?.taskId) {
-      setTaskId(result.taskId);
-      form.setFieldValue('frontPanel', files[0]);
-    }
+  const handleFrontPanelChange = () => {
+    setBoxes([]);
+    form.setFieldValue('boundingBoxes', []);
   };
-
-  useEffect(() => {
-    if (!isLoading && ports) {
-      form.setFieldValue('ports', ports.ports);
-    }
-  }, [isLoading, ports, form]);
 
   return (
     <div className="space-y-6">
       {/* Front Panel Upload */}
       <form.AppField
         name="frontPanel"
-        children={(field) => <field.FileField label="Front Panel" />}
+        children={(field) => (
+          <field.FileField onValueChange={handleFrontPanelChange} label="Front Panel" />
+        )}
       />
 
       {/* Row, Column */}

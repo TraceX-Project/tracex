@@ -30,6 +30,14 @@ export type Port = {
   h: number;
 };
 
+export type UpdateDeviceTemplateRequest = Partial<CreateDeviceTemplateRequest>;
+
+export type DeviceTemplateFormData = z.infer<typeof deviceTemplateSchema>;
+
+export type PortRange = z.infer<typeof deviceTemplateSchema.shape.portRanges>[0];
+
+export type BoundingBox = z.infer<typeof deviceTemplateSchema.shape.boundingBoxes>[0];
+
 export type DeviceTemplate = {
   id: string;
   modelName: string;
@@ -52,27 +60,14 @@ export type DevicePorts = {
   status: string;
   ports: Port[];
 };
+
 export type PortInput = {
   x: number;
   y: number;
   w: number;
   h: number;
 };
-export type boundingBox = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  portNumber: number;
-}
 
-export type portRange = {
-  start: number;
-  end: number;
-  runningNumber: number;
-  prefix: string;
-  portType: PortType;
-}
 export type CreateDeviceTemplateRequest = {
   modelName: string;
   vendor: Vendor;
@@ -82,12 +77,6 @@ export type CreateDeviceTemplateRequest = {
   alignment: Alignment;
   frontPanel: File;
   unitSize: number;
-  portRanges: portRange[];
-  boundingBoxes: boundingBox[];
+  portRanges: Omit<PortRange, 'id'>[];
+  boundingBoxes: BoundingBox[];
 };
-
-export type UpdateDeviceTemplateRequest = Partial<CreateDeviceTemplateRequest>;
-
-export type DeviceTemplateFormData = z.infer<typeof deviceTemplateSchema>;
-
-export type PortRange = z.infer<typeof deviceTemplateSchema.shape.portRanges>[0];
