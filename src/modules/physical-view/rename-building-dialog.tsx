@@ -37,6 +37,7 @@ const RenameBuildingDialog = ({ building, isOpen, onClose }: Props) => {
           payload: {
             name: value.name,
           },
+          projectId: building.projectId!,
         });
 
         onClose();

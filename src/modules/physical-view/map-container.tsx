@@ -3,6 +3,8 @@ import Map, { type ViewStateChangeEvent, type MapRef, type ViewState } from 'rea
 import { ENV } from '@/shared/config/env';
 import { useCallback } from 'react';
 import { type MapMouseEvent } from 'mapbox-gl';
+import { useBuildingDragStore } from './_store/building-drag.store';
+import { MapDragControls } from './map-drag-controls';
 
 type Props = {
   onMapRef: (ref: MapRef | null) => void;
@@ -13,6 +15,9 @@ type Props = {
 };
 
 const MapContainer = ({ onMapRef, viewState, onViewStateChange, children, onMapClick }: Props) => {
+  const editBuilding = useBuildingDragStore((state) => state.editBuilding);
+  const { setTempLocation } = useBuildingDragStore((state) => state.actions);
+
   const onMove = useCallback(
     (evt: ViewStateChangeEvent) => {
       onViewStateChange(evt.viewState);
@@ -20,24 +25,42 @@ const MapContainer = ({ onMapRef, viewState, onViewStateChange, children, onMapC
     [onViewStateChange]
   );
 
+  const handleMapClick = useCallback(
+    (evt: MapMouseEvent) => {
+      if (editBuilding) {
+        const { lng, lat } = evt.lngLat;
+        setTempLocation({ lng, lat });
+
+        return;
+      }
+
+      onMapClick(evt);
+    },
+    [onMapClick, editBuilding, setTempLocation]
+  );
+
   return (
-    <Map
-      ref={onMapRef}
-      mapboxAccessToken={ENV.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
-      {...viewState}
-      onMove={onMove}
-      onClick={onMapClick}
-      mapStyle="mapbox://styles/mapbox/streets-v12"
-      style={{ width: '100%', height: '100%' }}
-      minZoom={6}
-      maxZoom={18}
-      dragRotate={false}
-      touchZoomRotate={false}
-      keyboard={false}
-      touchPitch={false}
-    >
-      {children}
-    </Map>
+    <>
+      <Map
+        ref={onMapRef}
+        mapboxAccessToken={ENV.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+        {...viewState}
+        onMove={onMove}
+        onClick={handleMapClick}
+        mapStyle="mapbox://styles/mapbox/streets-v12"
+        style={{ width: '100%', height: '100%' }}
+        minZoom={6}
+        maxZoom={18}
+        dragRotate={false}
+        touchZoomRotate={false}
+        keyboard={false}
+        touchPitch={false}
+      >
+        {children}
+      </Map>
+
+      {editBuilding && <MapDragControls />}
+    </>
   );
 };
 
