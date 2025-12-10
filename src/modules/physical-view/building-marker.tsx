@@ -71,11 +71,9 @@ const BuildingMarker = ({ building }: Props) => {
       <ContextMenu>
         <ContextMenuTrigger asChild>
           <div className="relative">
-            {isEditing && (
-              <div className="absolute -top-8 left-1/2 -translate-x-1/2 rounded-md bg-black px-2 py-1 text-center text-xs font-medium text-white shadow-md">
-                Drag me
-              </div>
-            )}
+            <div className="absolute -top-6 left-1/2 -translate-x-1/2 rounded bg-white px-2 py-1 text-xs font-medium whitespace-nowrap text-gray-800 shadow-md">
+              {building.name}
+            </div>
 
             <Link
               href={PATHS.projects.buildingView(building.projectId!, building.id)}
