@@ -11,6 +11,7 @@ import {
 import { type Building } from '../buildings/_types/buildings';
 import { useDeleteBuilding } from '../buildings/_hooks/use-delete-building';
 import { useCallback } from 'react';
+import { useBuildingDragStore } from './_store/building-drag.store';
 
 type Props = {
   building: Building;
@@ -20,9 +21,11 @@ type Props = {
 
 const DeleteBuildingDialog = ({ building, isOpen, onClose }: Props) => {
   const { mutateAsync: deleteBuilding } = useDeleteBuilding();
+  const { cancelDragMode } = useBuildingDragStore((state) => state.actions);
 
   const handleDelete = useCallback(async () => {
     await deleteBuilding(building.id);
+    cancelDragMode();
   }, [building, deleteBuilding]);
 
   return (

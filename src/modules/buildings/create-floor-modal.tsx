@@ -19,6 +19,9 @@ import { useBoolean } from '@/shared/hooks/use-boolean';
 import { createFloorSchema } from '../floors/_schema/floor';
 import { Plus } from 'lucide-react';
 import { type VariantProps } from 'class-variance-authority';
+import { useParams, useRouter } from 'next/navigation';
+import { PATHS } from '@/shared/config/paths';
+
 type Props = {
   buildingId: string;
   title: string;
@@ -29,6 +32,11 @@ type Props = {
 const CreateFloorModal = ({ buildingId, title, variant = 'default', size = 'default' }: Props) => {
   const { mutateAsync: createFloor } = useCreateFloor();
   const { value: open, setValue: setOpen } = useBoolean();
+  const params = useParams();
+  const router = useRouter();
+
+  const projectId = params.projectId;
+  const floorId = params.floorId;
 
   const form = useAppForm({
     defaultValues: {
@@ -48,13 +56,17 @@ const CreateFloorModal = ({ buildingId, title, variant = 'default', size = 'defa
           formData.append('file', value.floorPlan);
         }
 
-        await createFloor({
+        const result = await createFloor({
           buildingId,
           data: formData,
         });
 
         form.reset();
         setOpen(false);
+
+        if (!floorId) {
+          router.replace(PATHS.projects.floorView(String(projectId), buildingId, result.id));
+        }
 
         toast.success('Floor created successfully');
       } catch (error) {
