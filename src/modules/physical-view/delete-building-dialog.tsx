@@ -11,7 +11,6 @@ import {
 import { type Building } from '../buildings/_types/buildings';
 import { useDeleteBuilding } from '../buildings/_hooks/use-delete-building';
 import { useCallback } from 'react';
-import { useBuildingDragStore } from './_store/building-drag.store';
 
 type Props = {
   building: Building;

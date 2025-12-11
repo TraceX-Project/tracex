@@ -35,8 +35,8 @@ const CreateFloorModal = ({ buildingId, title, variant = 'default', size = 'defa
   const params = useParams();
   const router = useRouter();
 
-  const projectId = params.projectId;
-  const floorId = params.floorId;
+  const {projectId} = params;
+  const {floorId} = params;
 
   const form = useAppForm({
     defaultValues: {
