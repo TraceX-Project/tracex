@@ -1,4 +1,5 @@
 import { getProjects } from '@/modules/projects/_services/projects.service';
+import CreateProjectModal from '@/modules/projects/create-project-modal';
 import ProjectList from '@/modules/projects/projects-list';
 import SiteHeader from '@/modules/sidebar/site-header';
 import { QUERY_KEYS } from '@/shared/constants/query-key';
@@ -22,12 +23,15 @@ export default async function ProjectsPage() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="flex min-h-screen flex-col">
-        <SiteHeader title="My Projects" />
-        <div className="container mx-auto flex h-full flex-1 flex-col space-y-4 p-5 pt-20">
-          <ProjectList />
+      <>
+        <div className="flex min-h-screen flex-col">
+          <SiteHeader title="My Projects" />
+          <div className="container mx-auto flex h-full flex-1 flex-col space-y-4 p-5 pt-20">
+            <ProjectList />
+          </div>
         </div>
-      </div>
+        <CreateProjectModal />
+      </>
     </HydrationBoundary>
   );
 }

@@ -9,13 +9,24 @@ import {
 } from '@/shared/components/ui/sidebar';
 import { navMain } from './_constants/constants';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/shared/lib/cn';
 import { FilePlus } from 'lucide-react';
+import { useProjectModalStore } from '../projects/_store/project-modal.store';
 import { PATHS } from '@/shared/config/paths';
 
 const NavMain = () => {
   const pathname = usePathname();
+  const router = useRouter();
+  const { setIsOpen } = useProjectModalStore((state) => state.actions);
+
+  const handleNewProjectClick = () => {
+    if (!pathname.startsWith('/projects')) {
+      router.push(PATHS.projects.root);
+    }
+
+    setIsOpen(true);
+  };
 
   return (
     <SidebarGroup>
@@ -25,12 +36,10 @@ const NavMain = () => {
             <SidebarMenuButton
               tooltip="Create a new project"
               className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
-              asChild
+              onClick={handleNewProjectClick}
             >
-              <Link href={PATHS.projects.new}>
-                <FilePlus className="size-4" />
-                <span>New Project</span>
-              </Link>
+              <FilePlus className="size-4" />
+              <span>New Project</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
