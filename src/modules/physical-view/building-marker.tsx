@@ -91,7 +91,7 @@ const BuildingMarker = ({ building }: Props) => {
                   isEditing
                     ? 'scale-110 animate-pulse text-orange-500'
                     : 'text-blue-500 hover:scale-105 hover:text-blue-600'
-                )} 
+                )}
               />
             </Link>
           </div>

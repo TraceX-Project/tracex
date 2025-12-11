@@ -85,6 +85,10 @@ const PhysicalMap = ({ projectId }: Props) => {
     <div className="relative h-full w-full">
       <MapboxSearchBox />
 
+      <LocationInfoCard />
+
+      <CreateBuildingModal projectId={projectId} />
+
       <MapContainer
         onMapRef={(ref) => (mapRef.current = ref)}
         viewState={viewState}
@@ -96,10 +100,6 @@ const PhysicalMap = ({ projectId }: Props) => {
           <BuildingMarker key={building.id} building={building} />
         ))}
       </MapContainer>
-
-      <LocationInfoCard />
-
-      <CreateBuildingModal projectId={projectId} />
     </div>
   );
 };
