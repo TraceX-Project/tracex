@@ -8,15 +8,20 @@ import { projectSchema } from './_schema/schema';
 import { PATHS } from '@/shared/config/paths';
 import { toast } from 'sonner';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/shared/components/ui/card';
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/shared/components/ui/dialog';
+import { useProjectModalStore } from './_store/project-modal.store';
+import { Button } from '@/shared/components/ui/button';
 
 const CreateProjectForm = () => {
   const { mutateAsync: createNewProject } = useCreateProject();
+  const isOpen = useProjectModalStore((state) => state.isOpen);
+  const { setIsOpen } = useProjectModalStore((state) => state.actions);
   const router = useRouter();
 
   const form = useAppForm({
@@ -24,7 +29,7 @@ const CreateProjectForm = () => {
       name: '',
     },
     validators: {
-      onChange: projectSchema,
+      onSubmit: projectSchema,
     },
     onSubmit: async ({ value }) => {
       try {
@@ -35,6 +40,8 @@ const CreateProjectForm = () => {
         router.push(PATHS.projects.logical(createdProject.id));
 
         form.reset();
+
+        setIsOpen(false);
 
         toast.success('Project created successfully!');
       } catch (error) {
@@ -56,16 +63,12 @@ const CreateProjectForm = () => {
   );
 
   return (
-    <Card className="mx-auto w-full max-w-2xl">
-      <CardHeader>
-        <CardTitle className="text-left text-2xl font-bold">Create New Project</CardTitle>
-        <CardDescription>
-          Fill in the project details below to get started. Once created, you’ll be redirected to
-          the project page.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+    <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
+      <DialogContent className="max-w-xl">
         <form onSubmit={handleSubmit} className="space-y-4">
+          <DialogHeader>
+            <DialogTitle>Create New Project</DialogTitle>
+          </DialogHeader>
           {/* Name */}
           <form.AppField
             name="name"
@@ -73,12 +76,17 @@ const CreateProjectForm = () => {
           />
 
           {/* Submit Button */}
-          <form.AppForm>
-            <form.SubmitButton>Create</form.SubmitButton>
-          </form.AppForm>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogClose>
+            <form.AppForm>
+              <form.SubmitButton>Create</form.SubmitButton>
+            </form.AppForm>
+          </DialogFooter>
         </form>
-      </CardContent>
-    </Card>
+      </DialogContent>
+    </Dialog>
   );
 };
 

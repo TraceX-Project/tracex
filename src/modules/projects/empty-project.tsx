@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@/shared/components/ui/button';
 import {
   Empty,
@@ -7,12 +9,13 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/shared/components/ui/empty';
-import { PATHS } from '@/shared/config/paths';
 import { FolderCode } from 'lucide-react';
-import Link from 'next/link';
 import React from 'react';
+import { useProjectModalStore } from './_store/project-modal.store';
 
 const EmptyProject = () => {
+  const { setIsOpen } = useProjectModalStore((state) => state.actions);
+
   return (
     <Empty>
       <EmptyHeader>
@@ -25,9 +28,7 @@ const EmptyProject = () => {
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
-        <Button>
-          <Link href={PATHS.projects.new}>Create Project</Link>
-        </Button>
+        <Button onClick={() => setIsOpen(true)}>Create Project</Button>
       </EmptyContent>
     </Empty>
   );
