@@ -21,11 +21,9 @@ type Props = {
 
 const DeleteBuildingDialog = ({ building, isOpen, onClose }: Props) => {
   const { mutateAsync: deleteBuilding } = useDeleteBuilding();
-  const { cancelDragMode } = useBuildingDragStore((state) => state.actions);
 
   const handleDelete = useCallback(async () => {
     await deleteBuilding(building.id);
-    cancelDragMode();
   }, [building, deleteBuilding]);
 
   return (
