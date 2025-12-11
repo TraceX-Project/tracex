@@ -3,7 +3,7 @@ import { type UpdateBuildingSchema } from '../_schema/building';
 import { updateBuilding } from '../_services/buildings.service';
 import { useMutation } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/shared/constants/query-key';
-import { Building } from '../_types/buildings';
+import { type Building } from '../_types/buildings';
 
 export const useUpdateBuilding = () => {
   const queryClient = getQueryClient();

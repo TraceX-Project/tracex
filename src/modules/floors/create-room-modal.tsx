@@ -68,7 +68,7 @@ const CreateRoomModal = ({ floorId }: Props) => {
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit} className="space-y-4">
           <DialogHeader>
-            <DialogTitle>New Floor</DialogTitle>
+            <DialogTitle>New Room</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4">
             {/* Name */}

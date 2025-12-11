@@ -104,7 +104,7 @@ const BuildingMarker = ({ building }: Props) => {
           </ContextMenuItem>
 
           {isEditing ? (
-            <ContextMenuItem onClick={cancelDragMode} className="text-destructive">
+            <ContextMenuItem onClick={cancelDragMode} variant="destructive">
               <IconX className="mr-2 h-4 w-4" />
               Cancel Drag Mode
             </ContextMenuItem>
@@ -117,7 +117,7 @@ const BuildingMarker = ({ building }: Props) => {
 
           <ContextMenuSeparator />
 
-          <ContextMenuItem onClick={() => setIsDeleteDialogOpen(true)} className="text-destructive">
+          <ContextMenuItem onClick={() => setIsDeleteDialogOpen(true)} variant="destructive">
             <IconTrash className="mr-2 h-4 w-4" />
             Delete
           </ContextMenuItem>
