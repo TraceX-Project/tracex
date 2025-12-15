@@ -30,6 +30,7 @@ export const ENDPOINTS = {
     getBuildings: (id: string) => `${ROOTS.projects}/${id}/buildings`,
     upload: (id: string) => `${ROOTS.projects}/${id}/upload`,
     topology: (id: string) => `${ROOTS.projects}/${id}/topology`,
+    thumbnail: (id: string) => `${ROOTS.projects}/${id}/thumbnail`,
   },
   deviceTemplates: {
     create: `${ROOTS.deviceTemplates}`,
