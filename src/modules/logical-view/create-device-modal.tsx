@@ -16,9 +16,16 @@ import { Plus } from 'lucide-react';
 import { type FormEvent, useCallback, useMemo } from 'react';
 import { createDeviceSchema } from './_schema/schema';
 import { useGetDeviceTemplates } from '../admin/device-templates/_hooks/use-get-device-templates';
+import { useAddDevice } from './_hooks/use-add-device';
+import { toast } from 'sonner';
 
-const CreateDeviceModal = () => {
+type Props = {
+  projectId: string;
+};
+
+const CreateDeviceModal = ({ projectId }: Props) => {
   const { data: deviceTemplates } = useGetDeviceTemplates();
+  const { mutateAsync: addDevice } = useAddDevice();
 
   const transformedDeviceTemplates = useMemo(
     () =>
@@ -38,7 +45,18 @@ const CreateDeviceModal = () => {
       onSubmit: createDeviceSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
+      try {
+        const formData = new FormData();
+
+        formData.append('deviceTemplateId', value.deviceTemplateId);
+        value.files.forEach((file) => {
+          formData.append('files', file);
+        });
+
+        await addDevice({ projectId, formData });
+      } catch (error) {
+        toast.error('Failed to add device. Please try again.');
+      }
     },
   });
 
@@ -82,7 +100,15 @@ const CreateDeviceModal = () => {
             {/* Configuration Files */}
             <form.AppField
               name="files"
-              children={(field) => <field.FileField label="Configuration Files" maxFiles={10} />}
+              children={(field) => (
+                <field.FileField
+                  label="Configuration Files"
+                  maxFiles={10}
+                  accept={{
+                    'text/plain': ['.txt'],
+                  }}
+                />
+              )}
             />
           </div>
           <DialogFooter>

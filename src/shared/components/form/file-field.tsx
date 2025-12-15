@@ -16,7 +16,7 @@ import { Progress } from '@/shared/components/ui/progress';
 import { ScrollArea } from '@/shared/components/ui/scroll-area';
 import { useControllableState } from '@/shared/hooks/use-controllable-state';
 import { cn } from '@/shared/lib/cn';
-import { Upload, X } from 'lucide-react';
+import { FileArchive, FileCode, FileIcon, FileText, Upload, X } from 'lucide-react';
 import { formatBytes } from '@/shared/utils/file';
 import { useFieldContext } from '@/shared/tanstack-form/form';
 import { Field, FieldContent, FieldDescription, FieldError, FieldLabel } from '../ui/field';
@@ -27,11 +27,33 @@ interface FileCardProps {
   progress?: number;
 }
 
-function FileCard({ file, progress, onRemove }: FileCardProps) {
+const getFileIcon = (file: File) => {
+  const { type, name } = file;
+
+  if (type === 'text/plain' || name.endsWith('.txt'))
+    return <FileText className="text-muted-foreground size-6" />;
+
+  if (type === 'application/zip' || name.endsWith('.zip'))
+    return <FileArchive className="text-muted-foreground size-6" />;
+
+  if (
+    type === 'application/json' ||
+    name.endsWith('.json') ||
+    name.endsWith('.yaml') ||
+    name.endsWith('.yml')
+  )
+    return <FileCode className="text-muted-foreground size-6" />;
+
+  return <FileIcon className="text-muted-foreground size-6" />;
+};
+
+const FileCard = ({ file, progress, onRemove }: FileCardProps) => {
+  const isImage = file.type.startsWith('image/') && isFileWithPreview(file);
+
   return (
     <div className="relative flex items-center space-x-4">
       <div className="flex flex-1 space-x-4">
-        {isFileWithPreview(file) ? (
+        {isImage ? (
           <Image
             src={file.preview}
             alt={file.name}
@@ -40,7 +62,11 @@ function FileCard({ file, progress, onRemove }: FileCardProps) {
             loading="lazy"
             className="aspect-square shrink-0 rounded-md object-cover"
           />
-        ) : null}
+        ) : (
+          <div className="bg-muted flex items-center justify-center rounded-md p-2">
+            {getFileIcon(file)}
+          </div>
+        )}
         <div className="flex w-full flex-col gap-2">
           <div className="space-y-px">
             <p className="text-foreground/80 line-clamp-1 text-sm font-medium">{file.name}</p>
@@ -57,11 +83,11 @@ function FileCard({ file, progress, onRemove }: FileCardProps) {
       </div>
     </div>
   );
-}
+};
 
-function isFileWithPreview(file: File): file is File & { preview: string } {
+const isFileWithPreview = (file: File): file is File & { preview: string } => {
   return 'preview' in file && typeof file.preview === 'string';
-}
+};
 
 interface FileFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   value?: File[];

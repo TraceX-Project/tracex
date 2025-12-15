@@ -1,3 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-<svg width="800px" height="800px" viewBox="0 0 1024 1024" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M77 403.4v228.5c1.5 93.7 195.7 183.5 435 183.5s433.4-89.8 435-183.5V403.4H77z" fill="#1B9BDB" /><path d="M947 402.7c0 99.4-194.8 194-435 194s-435-94.6-435-194 194.8-180 435-180 435 80.5 435 180z" fill="#3ED6FF" /><path d="M474.1 311.4H503l0.1 63.2h29.5l-0.7-63.2h28.9l-43.7-75.1zM533 417.2h-29.9l0.1 73.9h-30.6l46.2 75.2 45.5-75.2h-30.6zM654.5 380.9l-1.4-30-72.1 45 76.4 45.1-1.4-30h126.2l-2.6-30.1zM381.1 380.9h-125l-2.3 30.1H380l-1.1 30 75.9-45.1-72.5-45z" fill="#FFFFFF" /></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37.19 25.18">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #026c9b;
+        stroke: #fff;
+        stroke-width: .4px;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <path class="cls-1" d="M36.99,7.35c0,3.95-8.23,7.15-18.39,7.15S.2,11.3.2,7.35v10.48c0,3.95,8.23,7.15,18.39,7.15s18.39-3.2,18.39-7.15V7.35Z"/>
+  <ellipse class="cls-1" cx="18.59" cy="7.35" rx="18.39" ry="7.15"/>
+  <polygon class="cls-2" points="14.39 4.56 15.91 6.83 10.17 8.16 11.42 7.12 2.55 5.6 4.78 3.93 13.34 5.38 14.39 4.56"/>
+  <polygon class="cls-2" points="22.47 10.08 21.44 7.73 26.62 6.7 25.72 7.5 34.35 8.98 32.28 10.63 23.7 9.02 22.47 10.08"/>
+  <polygon class="cls-2" points="19.64 3.31 25.44 1.72 25.51 4.21 24.06 3.93 21.23 6.28 18.53 5.89 21.45 3.59 19.64 3.31"/>
+  <polygon class="cls-2" points="17.15 12.22 11.63 13.26 11.42 10.7 13.01 11.05 16.05 8.45 18.74 8.91 15.5 11.74 17.15 12.22"/>
+</svg>

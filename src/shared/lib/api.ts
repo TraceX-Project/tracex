@@ -55,8 +55,14 @@ const apiFetch = async <T>(
       'error' in result &&
       typeof (result as ErrorResponse).error === 'string'
     ) {
-      const errorMsg = (result as ErrorResponse).message;
-      throw new ApiError(errorMsg.charAt(0).toUpperCase() + errorMsg.slice(1), response.status);
+      console.log('API Error Details:', result);
+      const message = (result as ErrorResponse).message;
+
+      if (typeof message === 'string' && message.length > 0) {
+        throw new ApiError(message.charAt(0).toUpperCase() + message.slice(1), response.status);
+      }
+
+      throw new ApiError('An error occurred while processing your request', response.status);
     }
 
     throw new ApiError('An error occurred while processing your request', response.status);

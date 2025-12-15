@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useEffect, useMemo } from 'react';
 import '@xyflow/react/dist/style.css';
 import {
@@ -11,10 +12,10 @@ import {
   type Node,
   type Edge,
 } from '@xyflow/react';
-import { useGetDevicesInProject } from './_hooks/use-get-devices';
 import { NODE_TYPES } from './_constants/logical-view';
 import { mapDevicesToReactFlow } from './_utils/react-flow';
 import { getLayoutedElements } from './_utils/graph';
+import { useGetTopology } from './_hooks/use-get-topology';
 
 type Props = {
   projectId: string;
@@ -23,7 +24,7 @@ type Props = {
 const LogicalView = ({ projectId }: Props) => {
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
-  const { data: devices } = useGetDevicesInProject(projectId);
+  const { data: devices } = useGetTopology(projectId);
 
   const { nodes: layoutedNodes, edges: layoutedEdges } = useMemo(() => {
     const mappedDevices = mapDevicesToReactFlow(devices!);

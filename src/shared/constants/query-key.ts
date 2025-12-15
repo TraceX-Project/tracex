@@ -9,4 +9,5 @@ export const QUERY_KEYS = {
   floors: 'floors',
   users: 'users',
   rooms: 'rooms',
+  topology: 'topology',
 };
