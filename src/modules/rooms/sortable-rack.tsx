@@ -1,5 +1,5 @@
 'use client';
-import { arrayMove, horizontalListSortingStrategy, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import React, { useCallback, useState } from 'react';
 import { CSS } from '@dnd-kit/utilities';
 import { Plus } from 'lucide-react';

@@ -14,9 +14,7 @@ import {
 import { Button, buttonVariants } from '@/shared/components/ui/button';
 import { toast } from 'sonner';
 import { useCreateRack } from './_hooks/use-create-rack';
-import { Plus } from 'lucide-react';
 import { VariantProps } from 'class-variance-authority';
-import { useParams } from 'next/navigation';
 import { useBoolean } from '@/shared/hooks/use-boolean';
 
 type Props = {

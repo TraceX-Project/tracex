@@ -1,6 +1,6 @@
 'use client';
 import { useSortable } from '@dnd-kit/sortable';
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import { CSS } from '@dnd-kit/utilities';;
 import { cn } from '@/shared/lib/cn';
 import Image from 'next/image';
