@@ -11,7 +11,7 @@ const ChangingViewTabs = () => {
   const tabs = [
     {
       label: 'Logical View',
-      href: pathname.replace('physical', 'logical'),
+      href: pathname.replace(/\/physical.*/, '/logical'),
       active: isLogical,
     },
     {

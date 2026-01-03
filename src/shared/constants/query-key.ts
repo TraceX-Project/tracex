@@ -11,4 +11,5 @@ export const QUERY_KEYS = {
   rooms: 'rooms',
   topology: 'topology',
   logicalDevices: 'logicalDevices',
+  racks: 'racks',
 };

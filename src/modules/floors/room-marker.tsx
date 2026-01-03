@@ -20,6 +20,8 @@ import DeleteRoomDialog from './delete-room-dialog';
 
 type Props = {
   room: Room;
+  projectId?: string;
+  buildingId?: string;
 };
 
 const RoomMarker = ({ room }: Props) => {

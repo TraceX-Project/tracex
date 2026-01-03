@@ -3,6 +3,7 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   /* config options here */
   output: 'standalone',
+  reactStrictMode: false,
   transpilePackages: ['@t3-oss/env-nextjs', '@t3-oss/env-core'],
   async redirects() {
     return [
@@ -21,6 +22,12 @@ const nextConfig: NextConfig = {
       // For mock up images
       new URL('https://media.router-switch.com/**'),
       new URL('https://www.cisco.com/**'),
+      {
+        protocol: 'https',
+        hostname: 'nc.agogfox.cc',
+        port: '',
+        pathname: '/**', // This allows all paths from this domain
+      },
       // For minio (local)
       {
         protocol: 'http',

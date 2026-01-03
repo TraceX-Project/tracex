@@ -2,7 +2,7 @@
 
 import { Button } from '@/shared/components/ui/button';
 import { PATHS } from '@/shared/config/paths';
-import { ChevronLeft, Share2 } from 'lucide-react';
+import { ChevronLeft, Plus, Server, Share2 } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 import { type Project } from './_types/projects';
@@ -18,7 +18,10 @@ import {
   BreadcrumbSeparator,
 } from '@/shared/components/ui/breadcrumb';
 import ManageFloors from '../buildings/manage-floors';
-import { useGetBuildingById } from '../buildings/_hooks/use-get-building';
+import { useGetBuilding } from '../buildings/_hooks/use-get-building';
+import { useRouter } from 'next/navigation';
+import CreateRackModal from '../rooms/create-rack-modal';
+import { useGetFloor } from '../floors/_hooks/use-get-floor';
 
 type Props = {
   project: Project;
@@ -26,14 +29,20 @@ type Props = {
 
 const ProjectNavbar = ({ project }: Props) => {
   const pathname = usePathname();
+  const router = useRouter();
   const params = useParams<{
     projectId: string;
     buildingId?: string;
     floorId?: string;
+    roomId?: string;
   }>();
-  const { data: building } = useGetBuildingById(params.buildingId ?? '');
+  const { data: building } = useGetBuilding(params.buildingId ?? '');
+  const { data: floor } = useGetFloor(params.floorId ?? '');
 
   const renderButtons = () => {
+    if (params.buildingId && params.floorId && params.roomId) {
+      return <CreateRackModal roomId={params.roomId} title={'Manage Racks'} variant={'outline'} icon={<Server />} />;
+    }
     if (params.buildingId && params.floorId) {
       return <ManageFloors buildingId={params.buildingId} />;
     }
@@ -50,11 +59,9 @@ const ProjectNavbar = ({ project }: Props) => {
   return (
     <header className="flex w-full shrink-0 items-center justify-between gap-2 border-b bg-white px-4 py-2">
       <div className="flex items-center gap-2">
-        <Link href={PATHS.projects.root}>
-          <Button variant="ghost" size="icon">
-            <ChevronLeft />
-          </Button>
-        </Link>
+        <Button variant="ghost" size="icon" onClick={() => router.back()}>
+          <ChevronLeft />
+        </Button>
         <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
         <Breadcrumb>
           <BreadcrumbList>
@@ -84,6 +91,20 @@ const ProjectNavbar = ({ project }: Props) => {
                 </BreadcrumbItem>
               </>
             )}
+            {floor && building && (
+              <>
+                <BreadcrumbSeparator />
+
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild className="text-foreground">
+                    <Link href={PATHS.projects.floorView(project.id, building.id, floor.id)}>
+                      {floor.name}
+                    </Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+              </>
+            )}
+            {}
           </BreadcrumbList>
         </Breadcrumb>
       </div>

@@ -8,6 +8,7 @@ const ROOTS = {
   floors: '/floors',
   logicalDevices: '/logical-devices',
   rooms: '/rooms',
+  rooms: '/rooms',
 };
 
 export const ENDPOINTS = {
@@ -67,7 +68,8 @@ export const ENDPOINTS = {
   rooms: {
     deleteById: (id: string) => `${ROOTS.rooms}/${id}`,
     update: (id: string) => `${ROOTS.rooms}/${id}`,
-  }
+    getRacks: (roomId: string) => `${ROOTS.rooms}/${roomId}/racks`,
+  },
 };
 
 export const PROTON_API_URL = 'https://photon.komoot.io'
