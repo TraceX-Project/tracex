@@ -6,7 +6,7 @@ import StackSwitchNode from '../stack-switch-node';
 export const NODE_TYPES = {
   [`${DeviceType.ROUTER}`]: RouterNode,
   [`${DeviceType.SWITCH}`]: SwitchNode,
-  [`${DeviceType.STACK}`]: StackSwitchNode,
+  [`${DeviceType.SWITCH_STACK}`]: StackSwitchNode,
 };
 
 export const DEFAULT_NODE_WIDTH = 172;
