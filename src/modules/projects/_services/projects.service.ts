@@ -55,8 +55,18 @@ export const getProject = async (projectId: string) => {
 export const updateProject = async (projectId: string, payload: UpdateProjectRequest) => {
   const response = await request<Project>({
     method: 'PATCH',
-    path: `${ENDPOINTS.projects.update(projectId)}`,
+    path: ENDPOINTS.projects.update(projectId),
     body: payload,
+  });
+
+  return response;
+};
+
+export const updateThumbnail = async (projectId: string, body: FormData) => {
+  const response = await request<Project>({
+    method: 'PATCH',
+    path: ENDPOINTS.projects.thumbnail(projectId),
+    body,
   });
 
   return response;

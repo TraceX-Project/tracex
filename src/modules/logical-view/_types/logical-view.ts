@@ -1,6 +1,6 @@
 import { type DeviceType } from '@/modules/admin/device-templates/_types/device-template';
 
-export type DevicesResponse = {
+export type Topology = {
   nodes: Node[];
   edges: Edge[];
 };
@@ -20,4 +20,17 @@ export type Node = {
 export type Edge = {
   source: string;
   target: string;
+};
+
+export type Device = {
+  id: string;
+  name: string;
+  projectId: string;
+  sortOrder: number;
+  rackId: string;
+  deviceTemplateId: string;
+  deviceStackId: string;
+  stackMemberNumber: number;
+  createdAt: string;
+  updatedAt: string;
 };

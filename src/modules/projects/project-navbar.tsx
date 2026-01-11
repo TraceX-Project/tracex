@@ -39,7 +39,7 @@ const ProjectNavbar = ({ project }: Props) => {
     }
 
     if (pathname.includes(PATHS.projects.logical(project.id))) {
-      return <CreateDeviceModal />;
+      return <CreateDeviceModal projectId={params.projectId} />;
     }
 
     if (pathname.includes(PATHS.projects.physical(project.id))) {

@@ -10,6 +10,7 @@ export enum Vendor {
 export enum DeviceType {
   ROUTER = 'router',
   SWITCH = 'switch',
+  SWITCH_STACK = 'switch_stack',
 }
 
 export enum Alignment {

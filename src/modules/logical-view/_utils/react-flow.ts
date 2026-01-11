@@ -1,9 +1,9 @@
-import { type DevicesResponse, type Node, type Edge } from '../_types/logical-view';
+import { type Topology, type Node, type Edge } from '../_types/logical-view';
 
-export const mapDevicesToReactFlow = (devices: DevicesResponse) => {
+export const mapDevicesToReactFlow = (devices: Topology) => {
   const nodes = devices?.nodes?.map((node: Node) => ({
     id: node.id,
-    position: node.position ?? { x: 0, y: 0 },
+    position: node?.position ?? { x: 0, y: 0 },
     data: { label: node.name },
     type: node.type,
   }));

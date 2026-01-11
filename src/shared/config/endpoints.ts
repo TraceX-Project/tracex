@@ -28,6 +28,9 @@ export const ENDPOINTS = {
     delete: (id: string) => `${ROOTS.projects}/${id}`,
     createBuilding: (id: string) => `${ROOTS.projects}/${id}/buildings`,
     getBuildings: (id: string) => `${ROOTS.projects}/${id}/buildings`,
+    upload: (id: string) => `${ROOTS.projects}/${id}/upload`,
+    topology: (id: string) => `${ROOTS.projects}/${id}/topology`,
+    thumbnail: (id: string) => `${ROOTS.projects}/${id}/thumbnail`,
   },
   deviceTemplates: {
     create: `${ROOTS.deviceTemplates}`,
@@ -35,10 +38,6 @@ export const ENDPOINTS = {
     getById: (id: string) => `${ROOTS.deviceTemplates}/${id}`,
     update: (id: string) => `${ROOTS.deviceTemplates}/${id}`,
     delete: (id: string) => `${ROOTS.deviceTemplates}/${id}`,
-  },
-  devices: {
-    addDevice: (id: string) => `${ROOTS.projects}/${id}/devices`,
-    getDevicesInProject: (id: string) => `${ROOTS.projects}/${id}/devices`,
   },
   ports: {
     predict: `${ROOTS.ports}/predict`,

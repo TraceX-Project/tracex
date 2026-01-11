@@ -41,7 +41,7 @@ const MapContainer = ({ onMapRef, viewState, onViewStateChange, children, onMapC
 
   return (
     <>
-      <div className="mapbox-container" style={{ width: '100%', height: '100%' }}>
+      <div className="mapbox-container h-full w-full">
         <Map
           ref={onMapRef}
           mapboxAccessToken={ENV.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}

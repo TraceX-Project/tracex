@@ -65,7 +65,7 @@ const DeviceTemplateForm = () => {
       ],
       boundingBoxes: [] as BoundingBox[],
     },
-    validators: { onChange: deviceTemplateSchema },
+    validators: { onSubmit: deviceTemplateSchema },
     onSubmit: async ({ value }) => {
       try {
         const formData = new FormData();
@@ -86,7 +86,7 @@ const DeviceTemplateForm = () => {
         toast.success('Device Template created successfully');
         router.push(PATHS.admin.deviceTemplates.root);
       } catch (error) {
-        toast.error('Failed to create template');
+        toast.error(error instanceof Error ? error.message : 'An unexpected error occurred.');
       }
     },
   });
@@ -112,7 +112,7 @@ const DeviceTemplateForm = () => {
           const validationPromises = validationResult.error.issues.map(async (issue) => {
             const fieldName = issue.path[0];
             if (typeof fieldName === 'string') {
-              return form.validateField(fieldName as keyof typeof form.state.values, 'change');
+              return form.validateField(fieldName as keyof typeof form.state.values, 'submit');
             }
           });
 
@@ -132,7 +132,6 @@ const DeviceTemplateForm = () => {
     const isValid = await validateStep(stepper.current.id);
 
     if (!isValid) {
-      toast.error('Please fill in all required fields correctly.');
       return;
     }
 
@@ -165,7 +164,7 @@ const DeviceTemplateForm = () => {
   );
 
   const handleSubmit = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
+    (event: FormEvent<HTMLButtonElement>) => {
       event.preventDefault();
       form.handleSubmit();
     },
@@ -181,7 +180,7 @@ const DeviceTemplateForm = () => {
         </Label>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form className="space-y-6">
           <div className="group my-4">
             <ol className="flex items-center justify-between gap-2" aria-orientation="horizontal">
               {stepper.all.map((step, idx, arr) => (
@@ -217,7 +216,6 @@ const DeviceTemplateForm = () => {
               Basic: () => <BasicInformationForm form={form as unknown as FormType} />,
               Upload: () => <UploadPanelForm form={form as unknown as FormType} />,
               Labeling: () => <PortConfigForm form={form as unknown as FormType} />,
-              // Labeling: () => <LabelingForm form={form as unknown as FormType} />,
             })}
           </div>
 
@@ -249,7 +247,7 @@ const DeviceTemplateForm = () => {
                   Next
                 </Button>
               ) : (
-                <Button type="submit" disabled={form.state.isSubmitting}>
+                <Button type="button" onClick={handleSubmit} disabled={form.state.isSubmitting}>
                   {form.state.isSubmitting ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
