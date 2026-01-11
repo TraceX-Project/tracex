@@ -34,3 +34,9 @@ export type Device = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type NodeContextMenuState = {
+  id: string;
+  x: number;
+  y: number;
+};

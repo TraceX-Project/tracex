@@ -99,18 +99,18 @@ const BuildingMarker = ({ building }: Props) => {
 
         <ContextMenuContent>
           <ContextMenuItem onClick={() => setIsRenameDialogOpen(true)}>
-            <IconEdit className="mr-2 h-4 w-4" />
+            <IconEdit className="size-4" />
             Rename
           </ContextMenuItem>
 
           {isEditing ? (
             <ContextMenuItem onClick={cancelDragMode} variant="destructive">
-              <IconX className="mr-2 h-4 w-4" />
+              <IconX className="size-4" />
               Cancel Drag Mode
             </ContextMenuItem>
           ) : (
             <ContextMenuItem onClick={handleChangeLocation}>
-              <IconMapSearch className="mr-2 h-4 w-4" />
+              <IconMapSearch className="size-4" />
               Change Location
             </ContextMenuItem>
           )}
@@ -118,7 +118,7 @@ const BuildingMarker = ({ building }: Props) => {
           <ContextMenuSeparator />
 
           <ContextMenuItem onClick={() => setIsDeleteDialogOpen(true)} variant="destructive">
-            <IconTrash className="mr-2 h-4 w-4" />
+            <IconTrash className="size-4" />
             Delete
           </ContextMenuItem>
         </ContextMenuContent>
