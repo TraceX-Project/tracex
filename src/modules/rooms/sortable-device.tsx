@@ -33,13 +33,13 @@ const SortableDevice = ({ frontURL, id }: Props) => {
                 isDragging && 'shadow-lg z-50'
             )}
         >
-             <Image
+            <Image
                 src={frontURL}
                 alt={frontURL}
                 className=""
                 style={{ objectFit: 'contain', width: '100%', height: '100%' }}
-                width={200}
-                height={25}
+                width={300}
+                height={1}
             />
         </div>
     );

@@ -1,15 +1,15 @@
 import { QUERY_KEYS } from '@/shared/constants/query-key';
 import { getQueryClient } from '@/shared/tanstack-query/get-query-client';
 import { useMutation } from '@tanstack/react-query';
-import { createRack } from '../_services/room.service';
-import { CreateRackRequest } from '../_types/room';
+import { AddDeviceRequest } from '../_types/room';
+import { addDevice } from '../_services/room.service';
 
-export const useCreateRack = () => {
+export const useAddDevices = () => {
   const queryClient = getQueryClient();
 
   return useMutation({
-    mutationFn: async ({ roomId, data }: { roomId: string; data: CreateRackRequest }) =>
-      createRack(roomId, data),
+    mutationFn: async ({ rackId, data }: { rackId: string; data: AddDeviceRequest }) =>
+      addDevice(data),
     onSuccess: ({ roomId }) => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.rooms, roomId] });
     },

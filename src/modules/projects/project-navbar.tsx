@@ -22,6 +22,7 @@ import { useGetBuilding } from '../buildings/_hooks/use-get-building';
 import { useRouter } from 'next/navigation';
 import CreateRackModal from '../rooms/create-rack-modal';
 import { useGetFloor } from '../floors/_hooks/use-get-floor';
+import { useGetRoom } from '../floors/_hooks/use-get-room';
 
 type Props = {
   project: Project;
@@ -38,6 +39,7 @@ const ProjectNavbar = ({ project }: Props) => {
   }>();
   const { data: building } = useGetBuilding(params.buildingId ?? '');
   const { data: floor } = useGetFloor(params.floorId ?? '');
+  const { data: room} = useGetRoom(params.roomId ?? '')
 
   const renderButtons = () => {
     if (params.buildingId && params.floorId && params.roomId) {
@@ -94,7 +96,6 @@ const ProjectNavbar = ({ project }: Props) => {
             {floor && building && (
               <>
                 <BreadcrumbSeparator />
-
                 <BreadcrumbItem>
                   <BreadcrumbLink asChild className="text-foreground">
                     <Link href={PATHS.projects.floorView(project.id, building.id, floor.id)}>
@@ -104,7 +105,25 @@ const ProjectNavbar = ({ project }: Props) => {
                 </BreadcrumbItem>
               </>
             )}
-            {}
+            {floor && building && room && (
+              <>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild className="text-foreground">
+                    <Link
+                      href={PATHS.projects.roomView(
+                        project.id,
+                        building.id,
+                        floor.id,
+                        room.id
+                      )}
+                    >
+                      {room.name}
+                    </Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+              </>
+            )}
           </BreadcrumbList>
         </Breadcrumb>
       </div>

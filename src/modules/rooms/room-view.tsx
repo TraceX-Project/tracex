@@ -34,7 +34,9 @@ const RoomView = ({ roomId }: Props) => {
     )
   }
   return (
-    <div>{roomId}</div>
+    <div className='w-full h-full'>
+      <ManageRacks roomId={roomId} />
+    </div>
   )
 }
 

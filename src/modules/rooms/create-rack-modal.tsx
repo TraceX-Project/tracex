@@ -1,7 +1,7 @@
 'use client';
 import { useAppForm } from '@/shared/tanstack-form/form';
 import React, { type FormEvent, useCallback } from 'react';
-import { createRackSchema} from '../rooms/_schema/schema';
+import { createRackSchema } from '../rooms/_schema/schema';
 import {
   Dialog,
   DialogClose,
@@ -32,12 +32,10 @@ const CreateRackModal = ({ roomId, title, variant = 'default', size = 'default',
   const { mutateAsync: createRack } = useCreateRack();
   const { value: open, setValue: setOpen } = useBoolean();
 
-
   const form = useAppForm({
     defaultValues: {
       name: '',
       unitSize: 0,
-      sortOrder: 0,
     },
     validators: {
       onSubmit: createRackSchema,
@@ -49,8 +47,6 @@ const CreateRackModal = ({ roomId, title, variant = 'default', size = 'default',
           data: {
             name: value.name,
             unitSize: value.unitSize,
-            sortOrder: value.sortOrder,
-            roomId: roomId,
           },
         });
 
@@ -59,9 +55,9 @@ const CreateRackModal = ({ roomId, title, variant = 'default', size = 'default',
         form.reset();
         setOpen(false);
 
-        toast.success('Room created successfully.');
+        toast.success('Rack created successfully.');
       } catch {
-        toast.error('Failed to create room. Please try again.');
+        toast.error('Failed to create rack. Please try again.');
       }
     },
   });
@@ -91,7 +87,9 @@ const CreateRackModal = ({ roomId, title, variant = 'default', size = 'default',
             {/* Name */}
             <form.AppField
               name="name"
-              children={(field) => <field.TextField label="Rack Name" placeholder="Enter rack name" />}
+              children={(field) => (
+                <field.TextField label="Rack Name" placeholder="Enter rack name" />
+              )}
             />
 
             {/* Floor Plan */}
@@ -99,12 +97,6 @@ const CreateRackModal = ({ roomId, title, variant = 'default', size = 'default',
               name="unitSize"
               children={(field) => <field.NumberField label="Unit Size" />}
             />
-
-            <form.AppField
-              name="sortOrder"
-              children={(field) => <field.NumberField label="Sort Order" />}
-            />
-
           </div>
           <DialogFooter>
             <DialogClose asChild>

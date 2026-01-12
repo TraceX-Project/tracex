@@ -14,11 +14,26 @@ export type Rack = {
   sortOrder: number;
   roomId: string;
   unitSize: number;
-}
+};
 
 export type CreateRackRequest = {
   name: string;
   unitSize: number;
-  sortOrder: number;
-  roomId: string;
-}
+};
+
+export type Device = {
+  id: string;
+  name: string;
+  type: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export const DEVICE_OPTIONS = [
+  { value: 'test', label: 'Cisco Switch' },
+  { value: 'test2', label: 'Dell Router' },
+];
+
+export type AddDeviceRequest = {
+  devices: string[];
+};

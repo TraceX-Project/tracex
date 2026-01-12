@@ -24,17 +24,17 @@ export const createRackSchema = z.object({
     })
     .min(1, 'Unit size must be at least 1')
     .max(100, 'Unit size must be at most 100'),
-  sortOrder: z
-    .number({
-      message: 'Sort order must be a number', 
-    })
-    .min(1, 'Sort order must be at least 1')
-    .max(1000, 'Sort order must be at most 1000'),
-    roomId: z.uuidv4({ message: 'Invalid room ID'  }),
+});
+
+export const addDeviceSchema = z.object({
+  devices: z
+    .array(z.uuid({ message: 'Invalid device ID' }))
+    .min(1, 'At least one device must be added'),
 });
 
 export type CreateRoomInput = z.infer<typeof createRoomSchema>;
 export type CreateRackInput = z.infer<typeof createRackSchema>;
+export type AddDeviceInput = z.infer<typeof addDeviceSchema>;
 
 export const updateRoomSchema = createRoomSchema.partial();
 

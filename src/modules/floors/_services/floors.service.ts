@@ -50,3 +50,12 @@ export const getRooms = async (floorId: string) => {
 
   return response;
 };
+
+export const getRoom = async (roomId: string) => {
+  const response = await request<Room>({
+    method: 'GET',
+    path: ENDPOINTS.rooms.getById(roomId),
+  });
+
+  return response;
+};

@@ -68,7 +68,10 @@ export const ENDPOINTS = {
   rooms: {
     deleteById: (id: string) => `${ROOTS.rooms}/${id}`,
     update: (id: string) => `${ROOTS.rooms}/${id}`,
+    getById: (id: string) => `${ROOTS.rooms}/${id}`,
     getRacks: (roomId: string) => `${ROOTS.rooms}/${roomId}/racks`,
+    createRack: (roomId: string) => `${ROOTS.rooms}/${roomId}/racks`,
+    addDevice: (rackId: string) => `${ROOTS.rooms}/racks/${rackId}/devices`,
   },
 };
 
