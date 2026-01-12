@@ -27,7 +27,7 @@ export async function setTokenCookies(token: Token) {
   });
 }
 
-export const isTokenExpired = async (token: string): Promise<boolean> => {
+export async function isTokenExpired(token: string): Promise<boolean> {
   try {
     const { exp } = jwtDecode<JwtPayload>(token);
 
@@ -35,7 +35,7 @@ export const isTokenExpired = async (token: string): Promise<boolean> => {
   } catch {
     return true;
   }
-};
+}
 
 export async function clearTokenCookies() {
   const cookieStore = await cookies();
