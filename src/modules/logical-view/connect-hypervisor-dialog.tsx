@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
@@ -11,42 +13,112 @@ import {
 } from '@/shared/components/ui/dialog';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
-import React from 'react';
+import { useAppForm } from '@/shared/tanstack-form/form';
+import React, { FormEvent, useCallback } from 'react';
+import { toast } from 'sonner';
+import { connectHypervisorSchema } from './_schema/schema';
+
+import { HypervisorVendor } from './_types/logical-view';
+import { useParams } from 'next/navigation';
+import { useGetLogicalDevices } from './_hooks/use-get-logical-devices';
 
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  deviceId: string;
 };
 
-const ConnectHypervisorDialog = ({ open, onOpenChange }: Props) => {
+const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
+  const { projectId } = useParams<{ projectId: string }>()
+  const { data: devices } = useGetLogicalDevices(projectId)
+
+  const form = useAppForm({
+    defaultValues: {
+      name: '',
+      apiKey: '',
+      vendor: '' as HypervisorVendor,
+      apiUrl: '',
+      connectPortIds: [] as string[],
+    },
+    validators: {
+      onSubmit: connectHypervisorSchema,
+    },
+    onSubmit: ({ value }) => {
+      try {
+        console.log(value)
+      } catch (error) {
+        toast.error('Failed to connect hypervisor. Please try again.');
+      }
+    },
+  })
+
+  const handleSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      form.handleSubmit();
+    },
+    [form]
+  );
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <form>
-        <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px]">
+        <form onAbort={handleSubmit} className='space-y-4'>
           <DialogHeader>
-            <DialogTitle>Edit profile</DialogTitle>
+            <DialogTitle>Connect to a hypervisor</DialogTitle>
             <DialogDescription>
-              Make changes to your profile here. Click save when you&apos;re done.
+              Once connect, the system will pull VMs information using the API key given.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4">
-            <div className="grid gap-3">
-              <Label htmlFor="name-1">Name</Label>
-              <Input id="name-1" name="name" defaultValue="Pedro Duarte" />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="username-1">Username</Label>
-              <Input id="username-1" name="username" defaultValue="@peduarte" />
-            </div>
+            {/* Name  */}
+            <form.AppField
+              name="name"
+              children={(field) => (
+                <field.TextField
+                  label="Name"
+                  placeholder="Enter name"
+                />
+              )}
+            />
+
+            {/* API URL */}
+            <form.AppField
+              name="apiUrl"
+              children={(field) => (
+                <field.TextField
+                  label="API URL"
+                  placeholder="Enter API URL"
+                  type="url"
+                />
+              )}
+            />
+
+            {/* API Key */}
+            <form.AppField
+              name="apiKey"
+              children={(field) => (
+                <field.TextField
+                  label="API Key"
+                  placeholder="Enter API Key"
+                  type="password"
+                />
+              )}
+            />
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline" onClick={() => form.reset()}>
+                Cancel
+              </Button>
             </DialogClose>
-            <Button type="submit">Save changes</Button>
+
+            <form.AppForm>
+              <form.SubmitButton>Connect</form.SubmitButton>
+            </form.AppForm>
           </DialogFooter>
-        </DialogContent>
-      </form>
+        </form>
+      </DialogContent>
     </Dialog>
   );
 };

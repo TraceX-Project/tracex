@@ -14,12 +14,12 @@ import { cn } from '@/shared/lib/cn';
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  nodeId: string | null;
+  deviceId: string | null;
 };
 
-const DeleteNodeDialog = ({ open, onOpenChange, nodeId }: Props) => {
+const DeleteNodeDialog = ({ open, onOpenChange, deviceId }: Props) => {
   const handleDelete = () => {
-    console.log('Delete node:', nodeId);
+    console.log('Delete node:', deviceId);
     onOpenChange(false);
   };
 

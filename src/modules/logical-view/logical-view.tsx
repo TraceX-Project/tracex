@@ -32,7 +32,7 @@ const LogicalView = ({ projectId }: Props) => {
   const [menu, setMenu] = useState<NodeContextMenuState | null>(null);
   const [isConnectDialogOpen, setConnectDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [nodeToDelete, setNodeToDelete] = useState<string | null>(null);
+  const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement | null>(null);
 
   const { nodes: layoutedNodes, edges: layoutedEdges } = useMemo(() => {
@@ -68,17 +68,18 @@ const LogicalView = ({ projectId }: Props) => {
   const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
 
   const onOpenConnectDialog = useCallback(() => {
-    setConnectDialogOpen(true);
-    setMenu(null);
+    if (menu) {
+      setConnectDialogOpen(true);
+      setSelectedDeviceId(menu.id);
+    }
   }, []);
 
   const onOpenDeleteDialog = useCallback(() => {
     if (menu) {
-      setNodeToDelete(menu.id);
       setDeleteDialogOpen(true);
-      setMenu(null);
+      setSelectedDeviceId(menu.id);
     }
-  }, [menu]);
+  }, []);
 
 
 
@@ -111,11 +112,15 @@ const LogicalView = ({ projectId }: Props) => {
         />
       )}
 
-      <ConnectHypervisorDialog open={isConnectDialogOpen} onOpenChange={setConnectDialogOpen} />
+      <ConnectHypervisorDialog
+        deviceId={selectedDeviceId as string}
+        open={isConnectDialogOpen}
+        onOpenChange={setConnectDialogOpen}
+      />
       <DeleteNodeDialog
+        deviceId={selectedDeviceId as string}
         open={isDeleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
-        nodeId={nodeToDelete}
       />
     </div>
   );
