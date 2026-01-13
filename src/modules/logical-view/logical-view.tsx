@@ -18,6 +18,8 @@ import { getLayoutedElements } from './_utils/graph';
 import { useGetTopology } from './_hooks/use-get-topology';
 import { NodeContextMenuState } from './_types/logical-view';
 import NodeContextMenu from './node-context-menu';
+import ConnectHypervisorDialog from './connect-hypervisor-dialog';
+import DeleteNodeDialog from './delete-node-dialog';
 
 type Props = {
   projectId: string;
@@ -28,6 +30,9 @@ const LogicalView = ({ projectId }: Props) => {
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const { data: devices } = useGetTopology(projectId);
   const [menu, setMenu] = useState<NodeContextMenuState | null>(null);
+  const [isConnectDialogOpen, setConnectDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [nodeToDelete, setNodeToDelete] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement | null>(null);
 
   const { nodes: layoutedNodes, edges: layoutedEdges } = useMemo(() => {
@@ -59,7 +64,23 @@ const LogicalView = ({ projectId }: Props) => {
     [setMenu]
   );
 
+
   const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
+
+  const onOpenConnectDialog = useCallback(() => {
+    setConnectDialogOpen(true);
+    setMenu(null);
+  }, []);
+
+  const onOpenDeleteDialog = useCallback(() => {
+    if (menu) {
+      setNodeToDelete(menu.id);
+      setDeleteDialogOpen(true);
+      setMenu(null);
+    }
+  }, [menu]);
+
+
 
   return (
     <div className="relative h-full w-full">
@@ -79,7 +100,23 @@ const LogicalView = ({ projectId }: Props) => {
         <Controls />
       </ReactFlow>
 
-      {menu && <NodeContextMenu x={menu.x} y={menu.y} onClose={onPaneClick} />}
+      {menu && (
+        <NodeContextMenu
+          open={!!menu}
+          x={menu.x}
+          y={menu.y}
+          onClose={onPaneClick}
+          onConnect={onOpenConnectDialog}
+          onDelete={onOpenDeleteDialog}
+        />
+      )}
+
+      <ConnectHypervisorDialog open={isConnectDialogOpen} onOpenChange={setConnectDialogOpen} />
+      <DeleteNodeDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        nodeId={nodeToDelete}
+      />
     </div>
   );
 };
