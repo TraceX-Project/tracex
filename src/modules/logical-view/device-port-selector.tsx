@@ -46,7 +46,7 @@ const DevicePortSelector = ({ initDeviceId }: Props) => {
     return device?.deviceInterfaces?.filter(intf => !intf.name.toLowerCase().includes("vlan")).map(intf => ({
       value: intf.id,
       label: intf.name
-    })) || []
+    })) ?? []
   }
 
   const handleAddRow = useCallback(() => {
