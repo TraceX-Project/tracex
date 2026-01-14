@@ -10,17 +10,29 @@ import {
 } from '@/shared/components/ui/alert-dialog';
 import { buttonVariants } from '@/shared/components/ui/button';
 import { cn } from '@/shared/lib/cn';
+import { useDeleteLogicalDevice } from './_hooks/use-delete-logical-device';
+import { toast } from 'sonner';
 
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  deviceId: string | null;
+  deviceId: string;
+  projectId: string;
 };
 
-const DeleteNodeDialog = ({ open, onOpenChange, deviceId }: Props) => {
+const DeleteNodeDialog = ({ open, onOpenChange, deviceId, projectId }: Props) => {
+  const { mutateAsync: deleteLogicalDevices } = useDeleteLogicalDevice(projectId);
+
   const handleDelete = () => {
-    console.log('Delete node:', deviceId);
-    onOpenChange(false);
+    try {
+      deleteLogicalDevices(deviceId);
+      onOpenChange(false);
+
+      toast.success('Node deleted successfully.');
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to delete node. Please try again.');
+    }
   };
 
   return (
