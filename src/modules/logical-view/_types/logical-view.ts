@@ -1,4 +1,4 @@
-import { DeviceTemplate, type DeviceType } from '@/modules/admin/device-templates/_types/device-template';
+import { type DeviceTemplate, type DeviceType } from '@/modules/admin/device-templates/_types/device-template';
 
 export type Topology = {
   nodes: Node[];

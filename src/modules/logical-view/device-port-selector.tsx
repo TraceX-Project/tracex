@@ -3,9 +3,9 @@
 import { useParams } from "next/navigation";
 import { useGetLogicalDevices } from "./_hooks/use-get-logical-devices";
 import { Label } from "@/shared/components/ui/label";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFieldContext } from "@/shared/tanstack-form/form";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
 import { Button } from "@/shared/components/ui/button";
 import { PlusIcon, TrashIcon } from "lucide-react";
 import { MultiSelect, MultiSelectContent, MultiSelectGroup, MultiSelectItem, MultiSelectTrigger, MultiSelectValue } from "@/shared/components/ui/multi-select";

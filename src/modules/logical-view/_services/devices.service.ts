@@ -1,5 +1,5 @@
 import { request } from "@/shared/lib/api";
-import { LogicalDevice } from "../_types/logical-view";
+import { type LogicalDevice } from "../_types/logical-view";
 import { ENDPOINTS } from "@/shared/config/endpoints";
 
 export const getLogicalDevices = async (projectId: string) => {

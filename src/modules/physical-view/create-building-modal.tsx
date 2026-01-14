@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from '@/shared/components/ui/dialog';
 import { useAppForm } from '@/shared/tanstack-form/form';
-import { FormEvent, useCallback } from 'react';
+import { type FormEvent, useCallback } from 'react';
 import { usePhysicalMapStore } from './_store/physical-map.store';
 import { toast } from 'sonner';
 import { useCreateBuilding } from '../buildings/_hooks/use-create-building';

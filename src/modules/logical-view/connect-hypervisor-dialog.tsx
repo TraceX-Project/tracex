@@ -11,11 +11,11 @@ import {
   DialogTitle,
 } from '@/shared/components/ui/dialog';
 import { useAppForm } from '@/shared/tanstack-form/form';
-import React, { FormEvent, useCallback } from 'react';
+import React, { type FormEvent, useCallback } from 'react';
 import { toast } from 'sonner';
 import { connectHypervisorSchema } from './_schema/schema';
 
-import { HypervisorVendor } from './_types/logical-view';
+import { type HypervisorVendor } from './_types/logical-view';
 import { useParams } from 'next/navigation';
 import { useGetLogicalDevices } from './_hooks/use-get-logical-devices';
 import { HYPERVISOR_VENDORS_OPTIONS } from './_constants/logical-view';
@@ -59,8 +59,16 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
     [form]
   );
 
+  const handleOpenChange = useCallback((newOpen: boolean) => {
+    if (!newOpen) {
+      form.reset();
+    }
+
+    onOpenChange(newOpen);
+  }, [form, onOpenChange]);
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-xl w-full">
         <form onSubmit={handleSubmit} className='space-y-4'>
           <DialogHeader>

@@ -2,7 +2,7 @@ import { ENDPOINTS } from '@/shared/config/endpoints';
 
 import { request } from '@/shared/lib/api';
 
-import { Device, Topology } from '../_types/logical-view';
+import { type Device, type Topology } from '../_types/logical-view';
 
 export const addDeviceToProject = async (projectId: string, formData: FormData) => {
   const response = await request<Device[]>({

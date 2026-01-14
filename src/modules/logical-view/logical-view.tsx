@@ -16,7 +16,7 @@ import { NODE_TYPES } from './_constants/logical-view';
 import { mapDevicesToReactFlow } from './_utils/react-flow';
 import { getLayoutedElements } from './_utils/graph';
 import { useGetTopology } from './_hooks/use-get-topology';
-import { NodeContextMenuState } from './_types/logical-view';
+import { type NodeContextMenuState } from './_types/logical-view';
 import NodeContextMenu from './node-context-menu';
 import ConnectHypervisorDialog from './connect-hypervisor-dialog';
 import DeleteNodeDialog from './delete-node-dialog';
@@ -113,12 +113,12 @@ const LogicalView = ({ projectId }: Props) => {
       )}
 
       <ConnectHypervisorDialog
-        deviceId={selectedDeviceId as string}
+        deviceId={selectedDeviceId!}
         open={isConnectDialogOpen}
         onOpenChange={setConnectDialogOpen}
       />
       <DeleteNodeDialog
-        deviceId={selectedDeviceId as string}
+        deviceId={selectedDeviceId}
         open={isDeleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
       />

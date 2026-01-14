@@ -167,7 +167,7 @@ export function MultiSelectValue({
     items.forEach(child => child.style.removeProperty("display"))
     let amount = 0
     for (let i = items.length - 1; i >= 0; i--) {
-      const child = items[i]!
+      const child = items[i]
       if (containerElement.scrollWidth <= containerElement.clientWidth) {
         break
       }
