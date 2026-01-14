@@ -20,6 +20,7 @@ import { type NodeContextMenuState } from './_types/logical-view';
 import NodeContextMenu from './node-context-menu';
 import ConnectHypervisorDialog from './connect-hypervisor-dialog';
 import DeleteNodeDialog from './delete-node-dialog';
+import { DeviceType } from '../admin/device-templates/_types/device-template';
 
 type Props = {
   projectId: string;
@@ -54,11 +55,13 @@ const LogicalView = ({ projectId }: Props) => {
 
       if (!ref.current) return;
 
+
       const pane = ref.current.getBoundingClientRect();
       setMenu({
         id: node.id,
         x: event.clientX,
         y: event.clientY,
+        type: node.type as DeviceType,
       });
     },
     [setMenu]
@@ -104,8 +107,7 @@ const LogicalView = ({ projectId }: Props) => {
       {menu && (
         <NodeContextMenu
           open={!!menu}
-          x={menu.x}
-          y={menu.y}
+          menu={menu}
           onClose={onPaneClick}
           onConnect={onOpenConnectDialog}
           onDelete={onOpenDeleteDialog}
