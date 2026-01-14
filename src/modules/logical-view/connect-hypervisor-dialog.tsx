@@ -9,10 +9,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/shared/components/ui/dialog';
-import { Input } from '@/shared/components/ui/input';
-import { Label } from '@/shared/components/ui/label';
 import { useAppForm } from '@/shared/tanstack-form/form';
 import React, { FormEvent, useCallback } from 'react';
 import { toast } from 'sonner';
@@ -21,6 +18,8 @@ import { connectHypervisorSchema } from './_schema/schema';
 import { HypervisorVendor } from './_types/logical-view';
 import { useParams } from 'next/navigation';
 import { useGetLogicalDevices } from './_hooks/use-get-logical-devices';
+import { HYPERVISOR_VENDORS_OPTIONS } from './_constants/logical-view';
+import DevicePortSelector from './device-port-selector';
 
 type Props = {
   open: boolean;
@@ -43,7 +42,7 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
     validators: {
       onSubmit: connectHypervisorSchema,
     },
-    onSubmit: ({ value }) => {
+    onSubmit: async ({ value }) => {
       try {
         console.log(value)
       } catch (error) {
@@ -62,8 +61,8 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
-        <form onAbort={handleSubmit} className='space-y-4'>
+      <DialogContent className="sm:max-w-xl w-full">
+        <form onSubmit={handleSubmit} className='space-y-4'>
           <DialogHeader>
             <DialogTitle>Connect to a hypervisor</DialogTitle>
             <DialogDescription>
@@ -72,15 +71,29 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
           </DialogHeader>
           <div className="grid gap-4">
             {/* Name  */}
-            <form.AppField
-              name="name"
-              children={(field) => (
-                <field.TextField
-                  label="Name"
-                  placeholder="Enter name"
-                />
-              )}
-            />
+            <div className='flex gap-4'>
+              <form.AppField
+                name="name"
+                children={(field) => (
+                  <field.TextField
+                    label="Name"
+                    placeholder="Enter name"
+                  />
+                )}
+              />
+
+              {/* Vendor */}
+              <form.AppField
+                name="vendor"
+                children={(field) => (
+                  <field.SelectField
+                    label="Vendor"
+                    options={HYPERVISOR_VENDORS_OPTIONS}
+                    placeholder="Select a vendor"
+                  />
+                )}
+              />
+            </div>
 
             {/* API URL */}
             <form.AppField
@@ -103,6 +116,14 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
                   placeholder="Enter API Key"
                   type="password"
                 />
+              )}
+            />
+
+            {/* Connect Ports */}
+            <form.AppField
+              name="connectPortIds"
+              children={(field) => (
+                <DevicePortSelector initDeviceId={deviceId} />
               )}
             />
           </div>

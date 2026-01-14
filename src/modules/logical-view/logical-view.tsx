@@ -72,14 +72,14 @@ const LogicalView = ({ projectId }: Props) => {
       setConnectDialogOpen(true);
       setSelectedDeviceId(menu.id);
     }
-  }, []);
+  }, [menu]);
 
   const onOpenDeleteDialog = useCallback(() => {
     if (menu) {
       setDeleteDialogOpen(true);
       setSelectedDeviceId(menu.id);
     }
-  }, []);
+  }, [menu]);
 
 
 

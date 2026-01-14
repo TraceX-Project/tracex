@@ -2,6 +2,7 @@ import { DeviceType } from '@/modules/admin/device-templates/_types/device-templ
 import RouterNode from '../router-node';
 import SwitchNode from '../switch-node';
 import StackSwitchNode from '../stack-switch-node';
+import { HypervisorVendor } from '../_types/logical-view';
 
 export const NODE_TYPES = {
   [`${DeviceType.ROUTER}`]: RouterNode,
@@ -11,3 +12,8 @@ export const NODE_TYPES = {
 
 export const DEFAULT_NODE_WIDTH = 172;
 export const DEFAULT_NODE_HEIGHT = 36;
+
+export const HYPERVISOR_VENDORS_OPTIONS = [
+  { value: HypervisorVendor.ESXI, label: "EXSI" },
+  { value: HypervisorVendor.PROXMOX, label: "PROXMOX" }
+]

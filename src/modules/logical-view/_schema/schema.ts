@@ -17,10 +17,10 @@ export const connectHypervisorSchema = z.object({
   apiKey: z.string().min(1, {
     message: 'API key is required',
   }),
-  vendor: z.enum(HypervisorVendor),
-  apiUrl: z.url().min(1, {
-    message: 'API URL is required',
+  vendor: z.enum(HypervisorVendor, {
+    message: "Vendor is required"
   }),
+  apiUrl: z.url(),
   connectPortIds: z.array(z.uuidv4()).min(1, {
     message: 'At least one port ID must be provided',
   }),
