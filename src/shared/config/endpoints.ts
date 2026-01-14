@@ -61,5 +61,6 @@ export const ENDPOINTS = {
   },
   logicalDevices: {
     delete: (id: string) => `${ROOTS.logicalDevices}/${id}`,
+    getById: (id: string) => `${ROOTS.logicalDevices}/${id}`,
   }
 };

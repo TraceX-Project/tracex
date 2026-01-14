@@ -6,6 +6,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/shared/components/ui/sheet';
+import { useGetLogicalDevice } from './_hooks/use-get-logical-device';
 
 type Props = {
   open: boolean;
@@ -14,6 +15,8 @@ type Props = {
 };
 
 const NodeDetailsSheet = ({ open, onOpenChange, deviceId }: Props) => {
+  const { data: device } = useGetLogicalDevice(deviceId);
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-[400px] sm:w-[540px]">
@@ -27,6 +30,7 @@ const NodeDetailsSheet = ({ open, onOpenChange, deviceId }: Props) => {
           <div className="text-sm text-muted-foreground">
             Details for device ID: <span className="font-mono text-foreground">{deviceId}</span>
           </div>
+          {JSON.stringify(device)}
           {/* Table will go here */}
         </div>
       </SheetContent>
