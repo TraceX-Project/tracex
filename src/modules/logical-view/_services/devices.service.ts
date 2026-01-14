@@ -1,0 +1,22 @@
+import { request } from "@/shared/lib/api";
+import { type LogicalDevice, type CreateServerRequest } from "../_types/logical-view";
+import { ENDPOINTS } from "@/shared/config/endpoints";
+
+export const getLogicalDevices = async (projectId: string) => {
+  const response = await request<LogicalDevice[]>({
+    method: 'GET',
+    path: ENDPOINTS.projects.logicalDevices(projectId),
+  });
+
+  return response;
+};
+
+export const createServer = async (projectId: string, data: CreateServerRequest) => {
+  const response = await request({
+    method: "POST",
+    path: ENDPOINTS.projects.createServer(projectId),
+    body: data
+  })
+
+  return response;
+}

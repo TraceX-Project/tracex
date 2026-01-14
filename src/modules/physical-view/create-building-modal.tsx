@@ -18,7 +18,7 @@ type Props = {
   projectId: string;
 };
 
-const CreateBuildingModal = ({ projectId }: Props) => {
+const CreateBuildingDialog = ({ projectId }: Props) => {
   const isOpen = usePhysicalMapStore((state) => state.isCreateBuildingModalOpen);
   const selectedLocation = usePhysicalMapStore((state) => state.selectedLocation);
   const { setIsCreateBuildingModalOpen, reset } = usePhysicalMapStore((state) => state.actions);
@@ -87,4 +87,4 @@ const CreateBuildingModal = ({ projectId }: Props) => {
   );
 };
 
-export default CreateBuildingModal;
+export default CreateBuildingDialog;

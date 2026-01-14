@@ -4,6 +4,7 @@ import SubmitButton from '../components/form/submit-button';
 import TextField from '../components/form/text-field';
 import SelectField from '../components/form/select-field';
 import NumberField from '../components/form/number-field';
+import MultipleSelectField from '../components/form/multiple-select-field';
 
 export const { fieldContext, formContext, useFieldContext, useFormContext } =
   createFormHookContexts();
@@ -16,6 +17,7 @@ export const { useAppForm } = createFormHook({
     SelectField,
     NumberField,
     FileField,
+    MultipleSelectField,
   },
   formComponents: {
     SubmitButton,
