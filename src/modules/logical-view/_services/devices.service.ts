@@ -20,3 +20,12 @@ export const createServer = async (projectId: string, data: CreateServerRequest)
 
   return response;
 }
+
+export const deleteLogicalDevices = async (id: string) => {
+  const response = await request({
+    method: "DELETE",
+    path: ENDPOINTS.logicalDevices.delete(id),
+  })
+
+  return response;
+}

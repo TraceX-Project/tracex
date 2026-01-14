@@ -6,6 +6,7 @@ const ROOTS = {
   ports: '/ports',
   buildings: '/buildings',
   floors: '/floors',
+  logicalDevices: '/logical-devices',
 };
 
 export const ENDPOINTS = {
@@ -58,4 +59,7 @@ export const ENDPOINTS = {
     createRoom: (floorId: string) => `${ROOTS.floors}/${floorId}/rooms`,
     getRooms: (floorId: string) => `${ROOTS.floors}/${floorId}/rooms`,
   },
+  logicalDevices: {
+    delete: (id: string) => `${ROOTS.logicalDevices}/${id}`,
+  }
 };

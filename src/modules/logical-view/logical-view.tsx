@@ -120,9 +120,10 @@ const LogicalView = ({ projectId }: Props) => {
         onOpenChange={setConnectDialogOpen}
       />
       <DeleteNodeDialog
-        deviceId={selectedDeviceId}
+        deviceId={selectedDeviceId!}
         open={isDeleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
+        projectId={projectId}
       />
     </div>
   );
