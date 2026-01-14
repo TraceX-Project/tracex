@@ -20,6 +20,7 @@ import { useParams } from 'next/navigation';
 import { useGetLogicalDevices } from './_hooks/use-get-logical-devices';
 import { HYPERVISOR_VENDORS_OPTIONS } from './_constants/logical-view';
 import DevicePortSelector from './device-port-selector';
+import { useCreateServer } from './_hooks/use-create-server';
 
 type Props = {
   open: boolean;
@@ -29,6 +30,7 @@ type Props = {
 
 const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
   const { projectId } = useParams<{ projectId: string }>()
+  const { mutateAsync: createServer } = useCreateServer()
   const { data: devices } = useGetLogicalDevices(projectId)
 
   const form = useAppForm({
@@ -45,6 +47,13 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
     onSubmit: async ({ value }) => {
       try {
         console.log(value)
+        await createServer({
+          projectId,
+          data: value,
+        })
+
+        toast.success('Hypervisor connected successfully.');
+        onOpenChange(false);
       } catch (error) {
         toast.error('Failed to connect hypervisor. Please try again.');
       }

@@ -1,4 +1,6 @@
 import { type DeviceTemplate, type DeviceType } from '@/modules/admin/device-templates/_types/device-template';
+import z from 'zod';
+import { connectHypervisorSchema } from '../_schema/schema';
 
 export type Topology = {
   nodes: Node[];
@@ -74,3 +76,5 @@ export type DeviceInterface = {
   "updatedAt": string,
   "isConnected": boolean
 }
+
+export type CreateServerRequest = z.infer<typeof connectHypervisorSchema>

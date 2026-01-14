@@ -45,7 +45,8 @@ const DevicePortSelector = ({ initDeviceId }: Props) => {
     const device = devices.find(device => device.id === deviceId)
     return device?.deviceInterfaces?.filter(intf => !intf.name.toLowerCase().includes("vlan")).map(intf => ({
       value: intf.id,
-      label: intf.name
+      label: intf.name,
+      disabled: intf.isConnected
     })) ?? []
   }
 
@@ -127,7 +128,7 @@ const DevicePortSelector = ({ initDeviceId }: Props) => {
                   <MultiSelectContent>
                     <MultiSelectGroup>
                       {interfaceOptions.map((intfOption) => (
-                        <MultiSelectItem key={intfOption.value} value={intfOption.value}>
+                        <MultiSelectItem key={intfOption.value} value={intfOption.value} disabled={intfOption.disabled}>
                           {intfOption.label}
                         </MultiSelectItem>
                       ))}
