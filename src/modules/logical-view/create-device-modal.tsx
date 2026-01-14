@@ -18,6 +18,7 @@ import { createDeviceSchema } from './_schema/schema';
 import { useGetDeviceTemplates } from '../admin/device-templates/_hooks/use-get-device-templates';
 import { useAddDevice } from './_hooks/use-add-device';
 import { toast } from 'sonner';
+import { useBoolean } from '@/shared/hooks/use-boolean';
 
 type Props = {
   projectId: string;
@@ -26,6 +27,7 @@ type Props = {
 const CreateDeviceModal = ({ projectId }: Props) => {
   const { data: deviceTemplates } = useGetDeviceTemplates();
   const { mutateAsync: addDevice } = useAddDevice();
+  const { value: open, setValue: setOpen } = useBoolean();
 
   const transformedDeviceTemplates = useMemo(
     () =>
@@ -54,6 +56,7 @@ const CreateDeviceModal = ({ projectId }: Props) => {
         });
 
         await addDevice({ projectId, formData });
+        setOpen(false);
       } catch (error) {
         toast.error('Failed to add device. Please try again.');
       }
@@ -69,7 +72,7 @@ const CreateDeviceModal = ({ projectId }: Props) => {
   );
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button size="sm" variant="outline">
           <Plus />
