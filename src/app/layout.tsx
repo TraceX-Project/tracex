@@ -37,10 +37,8 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
       <body className={cn(geistSans.variable, geistMono.variable, 'antialiased')}>
         <NuqsAdapter>
           <ReactQueryProvider>
-            <ScreenGuard>
-              {children}
-            </ScreenGuard>
-            <Toaster position="top-right" closeButton richColors />
+            <ScreenGuard>{children}</ScreenGuard>
+            <Toaster position="top-right" theme="light" closeButton richColors />
           </ReactQueryProvider>
         </NuqsAdapter>
       </body>
