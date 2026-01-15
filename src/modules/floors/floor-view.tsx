@@ -14,10 +14,10 @@ type Props = {
 
 const FloorView = ({ floorId, buildingId }: Props) => {
   const { data: floors, isError: floorsError } = useGetFloors(buildingId);
-  const { data: floor, isError } = useGetFloor(floorId);
+  const { data: floor, isError } = useGetFloorById(floorId);
 
   if (floorsError) {
-    return <div>Building Not Found</div>;
+    return notFound();
   }
 
   if (!floors?.length) {
@@ -29,7 +29,7 @@ const FloorView = ({ floorId, buildingId }: Props) => {
   }
 
   if (!floor || isError) {
-    return <div>Floor Not Found</div>;
+    return notFound();
   }
 
   return (

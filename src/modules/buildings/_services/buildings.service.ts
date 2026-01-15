@@ -3,6 +3,7 @@ import { type Building } from '../_types/buildings';
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { type Floor } from '@/modules/floors/_types/floor';
 import { type CreateBuildingSchema, type UpdateBuildingSchema } from '../_schema/building';
+import { ApiError } from '@/shared/lib/api-error';
 
 export const createBuilding = async (projectId: string, payload: CreateBuildingSchema) => {
   const response = await request<Building>({
@@ -25,14 +26,14 @@ export const getBuildings = async (projectId: string) => {
 
 export const getBuildingById = async (id: string) => {
   try {
-    const response = await request<Building>({
+    const response = await request<Building | ApiError>({
       method: 'GET',
       path: ENDPOINTS.buildings.getById(id),
     });
-
     return response;
-  } catch {
-    return null;
+  } catch (error) {
+    if (error instanceof ApiError) return error;
+    return new ApiError('An unexpected error occurred', 500);
   }
 };
 
