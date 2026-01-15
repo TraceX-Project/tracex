@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import { useGetFloor } from './_hooks/use-get-floor';
+import { notFound } from 'next/navigation';
 import EmptyBuilding from '../buildings/empty-building';
 import FloorSelector from './floor-selector';
 import FloorPlanDisplay from './floorplan-display';
-import { useGetFloors } from './_hooks/use-get-floors';
+import { useGetFloorById, useGetFloors } from './_hooks/use-floor';
 
 type Props = {
   buildingId: string;
