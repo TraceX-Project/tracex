@@ -14,7 +14,7 @@ export default async function AdminDevicesPage() {
 
   await queryClient.prefetchQuery({
     queryKey: [QUERY_KEYS.deviceTemplates],
-    queryFn: getDeviceTemplates,
+    queryFn: () => getDeviceTemplates(),
   });
 
   return (
