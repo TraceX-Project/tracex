@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import { deleteLogicalDevices } from "../_services/devices.service"
 import { QUERY_KEYS } from "@/shared/constants/query-key"
 import { getQueryClient } from "@/shared/tanstack-query/get-query-client";

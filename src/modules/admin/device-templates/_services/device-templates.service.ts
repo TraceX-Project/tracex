@@ -1,6 +1,6 @@
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
-import { GetDeviceTemplatesParams, type DevicePorts } from '../_types/device-template';
+import { type GetDeviceTemplatesParams, type DevicePorts } from '../_types/device-template';
 import { type DeviceTemplate, type UpdateDeviceTemplateRequest } from '../_types/device-template';
 import { buildQueryString } from '@/shared/utils/query';
 

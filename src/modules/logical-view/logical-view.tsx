@@ -21,7 +21,7 @@ import NodeContextMenu from './node-context-menu';
 import ConnectHypervisorDialog from './connect-hypervisor-dialog';
 import DeleteNodeDialog from './delete-node-dialog';
 import NodeDetailsSheet from './node-details-sheet';
-import { DeviceType } from '../admin/device-templates/_types/device-template';
+import { type DeviceType } from '../admin/device-templates/_types/device-template';
 
 type Props = {
   projectId: string;
