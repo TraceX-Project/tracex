@@ -19,13 +19,16 @@ import { useGetDeviceTemplates } from '../admin/device-templates/_hooks/use-get-
 import { useAddDevice } from './_hooks/use-add-device';
 import { toast } from 'sonner';
 import { useBoolean } from '@/shared/hooks/use-boolean';
+import { DeviceType } from '../admin/device-templates/_types/device-template';
 
 type Props = {
   projectId: string;
 };
 
 const CreateDeviceModal = ({ projectId }: Props) => {
-  const { data: deviceTemplates } = useGetDeviceTemplates();
+  const { data: deviceTemplates } = useGetDeviceTemplates({
+    type: [DeviceType.ROUTER, DeviceType.SWITCH]
+  });
   const { mutateAsync: addDevice } = useAddDevice();
   const { value: open, setValue: setOpen } = useBoolean();
 

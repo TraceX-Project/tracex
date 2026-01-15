@@ -24,4 +24,7 @@ export const connectHypervisorSchema = z.object({
   connectPortIds: z.array(z.uuidv4()).min(1, {
     message: 'At least one port ID must be provided',
   }),
+  deviceTemplateId: z.uuidv4({
+    message: 'Invalid device template ID',
+  })
 });

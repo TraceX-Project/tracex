@@ -14,6 +14,10 @@ export enum DeviceType {
   SERVER = 'server'
 }
 
+export type GetDeviceTemplatesParams = {
+  type?: Exclude<DeviceType, DeviceType.SWITCH_STACK>[]
+}
+
 export enum Alignment {
   HORIZONTAL = 'horizontal',
   VERTICAL = 'vertical',
