@@ -29,3 +29,12 @@ export const deleteLogicalDevices = async (id: string) => {
 
   return response;
 }
+
+export const getLogicalDeviceById = async (id: string) => {
+  const response = await request<LogicalDevice>({
+    method: 'GET',
+    path: ENDPOINTS.logicalDevices.getById(id),
+  });
+
+  return response;
+}

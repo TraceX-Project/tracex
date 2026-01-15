@@ -11,16 +11,17 @@ import {
   DialogTitle,
 } from '@/shared/components/ui/dialog';
 import { useAppForm } from '@/shared/tanstack-form/form';
-import React, { type FormEvent, useCallback } from 'react';
+import React, { type FormEvent, useCallback, useMemo } from 'react';
 import { toast } from 'sonner';
 import { connectHypervisorSchema } from './_schema/schema';
 
 import { type HypervisorVendor } from './_types/logical-view';
 import { useParams } from 'next/navigation';
-import { useGetLogicalDevices } from './_hooks/use-get-logical-devices';
 import { HYPERVISOR_VENDORS_OPTIONS } from './_constants/logical-view';
 import DevicePortSelector from './device-port-selector';
 import { useCreateServer } from './_hooks/use-create-server';
+import { useGetDeviceTemplates } from '../admin/device-templates/_hooks/use-get-device-templates';
+import { DeviceType } from '../admin/device-templates/_types/device-template';
 
 type Props = {
   open: boolean;
@@ -31,7 +32,19 @@ type Props = {
 const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
   const { projectId } = useParams<{ projectId: string }>()
   const { mutateAsync: createServer } = useCreateServer()
-  const { data: devices } = useGetLogicalDevices(projectId)
+  const { data: deviceTemplates } = useGetDeviceTemplates({
+    type: [DeviceType.SERVER]
+  })
+
+  const deviceTemplateOptions = useMemo(
+    () =>
+      deviceTemplates?.map((template) => ({
+        label: template.modelName,
+        value: template.id,
+      })) ?? [],
+    [deviceTemplates]
+  );
+
 
   const form = useAppForm({
     defaultValues: {
@@ -40,6 +53,7 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
       vendor: '' as HypervisorVendor,
       apiUrl: '',
       connectPortIds: [] as string[],
+      deviceTemplateId: '',
     },
     validators: {
       onSubmit: connectHypervisorSchema,
@@ -111,6 +125,18 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
                 )}
               />
             </div>
+
+            {/* Device Template */}
+            <form.AppField
+              name="deviceTemplateId"
+              children={(field) => (
+                <field.SelectField
+                  label="Device Template"
+                  placeholder="Select a device template"
+                  options={deviceTemplateOptions}
+                />
+              )}
+            />
 
             {/* API URL */}
             <form.AppField

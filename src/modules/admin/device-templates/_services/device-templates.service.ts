@@ -1,7 +1,8 @@
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
-import { type DevicePorts } from '../_types/device-template';
+import { type GetDeviceTemplatesParams, type DevicePorts } from '../_types/device-template';
 import { type DeviceTemplate, type UpdateDeviceTemplateRequest } from '../_types/device-template';
+import { buildQueryString } from '@/shared/utils/query';
 
 export const createDeviceTemplate = async (formData: FormData) => {
   const response = await request<DeviceTemplate>({
@@ -13,10 +14,14 @@ export const createDeviceTemplate = async (formData: FormData) => {
   return response;
 };
 
-export const getDeviceTemplates = async () => {
+export const getDeviceTemplates = async (params?: GetDeviceTemplatesParams) => {
+  const query = buildQueryString({
+    type: params?.type
+  })
+
   const response = await request<DeviceTemplate[]>({
     method: 'GET',
-    path: ENDPOINTS.deviceTemplates.getAll,
+    path: `${ENDPOINTS.deviceTemplates.getAll}${query}`,
   });
 
   return response;

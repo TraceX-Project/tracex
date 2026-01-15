@@ -20,7 +20,8 @@ import { type NodeContextMenuState } from './_types/logical-view';
 import NodeContextMenu from './node-context-menu';
 import ConnectHypervisorDialog from './connect-hypervisor-dialog';
 import DeleteNodeDialog from './delete-node-dialog';
-import { DeviceType } from '../admin/device-templates/_types/device-template';
+import NodeDetailsSheet from './node-details-sheet';
+import { type DeviceType } from '../admin/device-templates/_types/device-template';
 
 type Props = {
   projectId: string;
@@ -33,6 +34,7 @@ const LogicalView = ({ projectId }: Props) => {
   const [menu, setMenu] = useState<NodeContextMenuState | null>(null);
   const [isConnectDialogOpen, setConnectDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [isDetailsValuesOpen, setDetailsValuesOpen] = useState(false);
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -86,6 +88,14 @@ const LogicalView = ({ projectId }: Props) => {
 
 
 
+  const onNodeClick = useCallback(
+    (_: React.MouseEvent, node: Node) => {
+      setSelectedDeviceId(node.id);
+      setDetailsValuesOpen(true);
+    },
+    []
+  );
+
   return (
     <div className="relative h-full w-full">
       <ReactFlow
@@ -98,6 +108,7 @@ const LogicalView = ({ projectId }: Props) => {
         onEdgesChange={onEdgesChange}
         onPaneClick={onPaneClick}
         onNodeContextMenu={onNodeContextMenu}
+        onNodeClick={onNodeClick}
         fitView
       >
         <Background variant={BackgroundVariant.Dots} />
@@ -124,6 +135,12 @@ const LogicalView = ({ projectId }: Props) => {
         open={isDeleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
         projectId={projectId}
+      />
+
+      <NodeDetailsSheet
+        deviceId={selectedDeviceId!}
+        open={isDetailsValuesOpen}
+        onOpenChange={setDetailsValuesOpen}
       />
     </div>
   );

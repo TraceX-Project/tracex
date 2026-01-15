@@ -5,7 +5,7 @@ import {
   DropdownMenuSeparator,
 } from '@/shared/components/ui/dropdown-menu';
 import { IconPlugConnected, IconTrash } from '@tabler/icons-react';
-import { NodeContextMenuState } from './_types/logical-view';
+import { type NodeContextMenuState } from './_types/logical-view';
 import { DeviceType } from '../admin/device-templates/_types/device-template';
 
 type Props = {
