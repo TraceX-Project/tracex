@@ -8,7 +8,7 @@ const ROOTS = {
   floors: '/floors',
   logicalDevices: '/logical-devices',
   rooms: '/rooms',
-  rooms: '/rooms',
+  racks: '/racks',
 };
 
 export const ENDPOINTS = {
@@ -36,6 +36,7 @@ export const ENDPOINTS = {
     thumbnail: (id: string) => `${ROOTS.projects}/${id}/thumbnail`,
     logicalDevices: (id: string) => `${ROOTS.projects}/${id}/logical-devices`,
     createServer: (id: string) => `${ROOTS.projects}/${id}/servers`,
+    getDevicesByProjectId: (projectId: string) => `${ROOTS.projects}/${projectId}/devices`,
   },
   deviceTemplates: {
     create: `${ROOTS.deviceTemplates}`,
@@ -71,8 +72,11 @@ export const ENDPOINTS = {
     getById: (id: string) => `${ROOTS.rooms}/${id}`,
     getRacks: (roomId: string) => `${ROOTS.rooms}/${roomId}/racks`,
     createRack: (roomId: string) => `${ROOTS.rooms}/${roomId}/racks`,
-    addDevice: (rackId: string) => `${ROOTS.rooms}/racks/${rackId}/devices`,
   },
+  racks:{
+    addDeviceToRack: (rackId: string) => `${ROOTS.racks}/${rackId}/devices`,
+    getDevicesByRackId: (rackId: string) => `${ROOTS.racks}/${rackId}/devices`,
+  }
 };
 
 export const PROTON_API_URL = 'https://photon.komoot.io'

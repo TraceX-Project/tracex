@@ -29,11 +29,16 @@ export type Device = {
   updatedAt: Date;
 };
 
+export type DEVICE_OPTIONS = {
+  value: string;
+  label: string;
+}
+
 export const DEVICE_OPTIONS = [
   { value: 'test', label: 'Cisco Switch' },
   { value: 'test2', label: 'Dell Router' },
 ];
 
 export type AddDeviceRequest = {
-  devices: string[];
+  deviceIds: string[];
 };

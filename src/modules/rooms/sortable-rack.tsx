@@ -5,7 +5,7 @@ import { cn } from '@/shared/lib/cn';
 import { CSS } from '@dnd-kit/utilities';
 import { useDroppable } from '@dnd-kit/core';
 import { useSortable, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { GripVertical, EllipsisVertical } from 'lucide-react';
+import { GripVertical } from 'lucide-react';
 import SortableDevice from './sortable-device';
 import AddDevicesModal from './add-devices-modal';
 

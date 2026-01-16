@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { type FormEvent, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useAppForm } from '@/shared/tanstack-form/form';
 import { addDeviceSchema } from '../rooms/_schema/schema';
@@ -14,8 +14,8 @@ import {
 } from '@/shared/components/ui/dialog';
 import { Button } from '@/shared/components/ui/button';
 import { toast } from 'sonner';
-import { useAddDevices } from './_hooks/use-add-devices';
-import { DEVICE_OPTIONS } from './_types/room';
+import { useAddDevicesToRack } from './_hooks/use-add-devices';
+import { type DEVICE_OPTIONS } from './_types/room';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,8 +25,6 @@ import {
   DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu';
 import { EllipsisVertical } from 'lucide-react';
-import { Select, SelectContent, SelectItem, SelectLabel } from '@/shared/components/ui/select';
-import { SelectItemText } from '@radix-ui/react-select';
 import { useGetDevices } from './_hooks/use-get-devices';
 
 type Props = {
@@ -35,28 +33,28 @@ type Props = {
 
 const AddDevicesModal = ({ rackId }: Props) => {
   const { projectId } = useParams<{ projectId: string }>();
-  const { mutateAsync: addDevices } = useAddDevices();
-  const { data: devices } = useGetDevices(projectId);
+  const { mutateAsync: addDevicesToRack } = useAddDevicesToRack();
+  const { data: devices,isLoading } = useGetDevices(projectId);
+  const [deviceOptions, setDeviceOptions] = useState<DEVICE_OPTIONS[]>([]);
   const [addDevicesOpen, setAddDevicesOpen] = useState(false);
 
   const form = useAppForm({
     defaultValues: {
-      devices: [] as string[],
+      deviceIds: [] as string[],
     },
     validators: {
       onSubmit: addDeviceSchema,
     },
     onSubmit: async ({ value }) => {
       try {
-        await addDevices({
+        await addDevicesToRack({
           rackId: rackId,
           data: {
-            devices: value.devices,
+            deviceIds: value.deviceIds,
           },
         });
-
         form.reset();
-        setAddDevicesOpen(false); // Close modal on success
+        setAddDevicesOpen(false);
         toast.success('Devices added successfully.');
       } catch {
         toast.error('Failed to add devices. Please try again.');
@@ -71,8 +69,14 @@ const AddDevicesModal = ({ rackId }: Props) => {
   };
 
   useEffect(() => {
-    console.log('devices', devices);
-  }, []);
+    if (devices) {
+      const options = devices.map((device) => ({
+        value: device.id,
+        label: device.name,
+      }));
+      setDeviceOptions(options);
+    }
+  }, [devices]);
 
   return (
     <>
@@ -101,29 +105,18 @@ const AddDevicesModal = ({ rackId }: Props) => {
               <DialogTitle>Add Devices to Rack</DialogTitle>
             </DialogHeader>
             {}
-            {/*<div className="grid gap-4">
+            <div className="grid gap-4">
               <form.AppField
-                name="devices" // Binds to a STRING
+                name="deviceIds" // Binds to a STRING
                 children={(field) => (
-                )
-            </div>*/}
-
-            {form.getFieldValue('devices').length > 0 && (
-              <Select>
-                <SelectLabel>Devices to be added:</SelectLabel>
-                <SelectContent>
-                  {form.getFieldValue('devices').map((deviceId: string) => {
-                    const device = DEVICE_OPTIONS.find((d) => d.value === deviceId);
-                    if (!device) return null;
-                    return (
-                      <SelectItem key={deviceId} value={deviceId}>
-                        <SelectItemText>{device.label}</SelectItemText>
-                      </SelectItem>
-                    );
-                  })}
-                </SelectContent>
-              </Select>
-            )}
+                  <field.MultiSelectField
+                    label="Select Devices"
+                    options={deviceOptions}
+                    placeholder={isLoading ? 'Loading devices...' : 'Select devices'}
+                  />
+                )}
+              />
+            </div>
 
             <DialogFooter className="gap-2">
               <DialogClose asChild>

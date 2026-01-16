@@ -6,9 +6,9 @@ import {
   useSensor,
   PointerSensor,
   KeyboardSensor,
-  DragEndEvent,
+  type DragEndEvent,
   DndContext,
-  DragOverEvent,
+  type DragOverEvent,
   closestCorners,
 } from '@dnd-kit/core';
 import {

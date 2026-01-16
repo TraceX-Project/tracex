@@ -1,8 +1,8 @@
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
-import { Rack } from '../_types/room';
-import { AddDeviceInput, CreateRackInput } from '../_schema/schema';
-import { Device } from '../_types/room';
+import { type Rack } from '../_types/room';
+import { type AddDeviceInput, type CreateRackInput } from '../_schema/schema';
+import { type Device } from '../_types/room';
 
 export const getRacks = async (roomId: string) => {
   const response = await request<Rack[]>({
@@ -21,10 +21,10 @@ export const createRack = async (roomId: string, body: CreateRackInput) => {
   return response;
 };
 
-export const addDevice = async (body: AddDeviceInput) => {
-  const response = await request<Rack>({
+export const addDevicesToRack = async (rackId:string, body: AddDeviceInput) => {
+  const response = await request<any>({
     method: 'POST',
-    path: ENDPOINTS.rooms.addDevice(body.devices[0]),
+    path: ENDPOINTS.racks.addDeviceToRack(rackId),
     body,
   });
   return response;
@@ -33,7 +33,7 @@ export const addDevice = async (body: AddDeviceInput) => {
 export const getDevicesInProject = async (projectId: string) => {
   const response = await request<Device[]>({
     method: 'GET',
-    path: ENDPOINTS.devices.getDevicesInProject(projectId),
+    path: ENDPOINTS.projects.getDevicesByProjectId(projectId),
   });
   return response;
 };

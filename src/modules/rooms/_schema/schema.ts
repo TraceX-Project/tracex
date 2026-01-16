@@ -27,7 +27,7 @@ export const createRackSchema = z.object({
 });
 
 export const addDeviceSchema = z.object({
-  devices: z
+  deviceIds: z
     .array(z.uuid({ message: 'Invalid device ID' }))
     .min(1, 'At least one device must be added'),
 });
