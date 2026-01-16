@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { notFound } from 'next/navigation';
 import EmptyBuilding from '../buildings/empty-building';
 import FloorSelector from './floor-selector';
 import FloorPlanDisplay from './floorplan-display';
