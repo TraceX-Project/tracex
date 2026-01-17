@@ -1,4 +1,4 @@
-import { FormType } from "@/shared/tanstack-form/form"
+import { type FormType } from "@/shared/tanstack-form/form"
 import { DEVICE_TYPES_OPTIONS, DEVICE_VENDORS_OPTIONS } from "./_constants/device-template"
 
 type Props = {

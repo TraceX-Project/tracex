@@ -1,6 +1,6 @@
 
 import { Stage, Layer, Image as KonvaImage, Rect } from 'react-konva';
-import { BoundingBox } from './_types/device-template';
+import { type BoundingBox } from './_types/device-template';
 import { forwardRef } from 'react';
 
 type Props = {

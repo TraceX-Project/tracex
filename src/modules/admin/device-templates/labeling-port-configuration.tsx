@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { type DeviceTemplateFormData, type PortRange, PortType } from './_types/device-template';
+import { type DeviceTemplateFormData, type PortRange, type PortType } from './_types/device-template';
 import { Button } from '@/shared/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/ui/tooltip';

@@ -1,15 +1,15 @@
 "use client"
 
-import { FormType, useAppForm } from "@/shared/tanstack-form/form"
+import { type FormType, useAppForm } from "@/shared/tanstack-form/form"
 import { deviceTemplateSchema, stepSchemas } from "./_schema/schema"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
-import { FormEvent, useCallback, useMemo } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
+import { type FormEvent, useCallback, useMemo } from "react"
 import { defineStepper } from "@stepperize/react"
 import { Button } from "@/shared/components/ui/button"
 import Link from "next/link"
 import { PATHS } from "@/shared/config/paths"
 
-import { DeviceType, DeviceTemplateFormData, Alignment, PortType } from "./_types/device-template"
+import { DeviceType, type DeviceTemplateFormData, Alignment, type PortType } from "./_types/device-template"
 import { useStore } from "@tanstack/react-form"
 import BasicInfoForm from "./basic-info-form"
 import LabelingForm from "./labeling-form"
@@ -58,7 +58,7 @@ const DeviceTemplateForm = () => {
 
   const deviceType = useStore(
     form.store,
-    (state) => (state.values as DeviceTemplateFormData).deviceType
+    (state) => (state.values).deviceType
   )
   const isServer = deviceType === DeviceType.SERVER
 

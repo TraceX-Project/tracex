@@ -1,6 +1,6 @@
-import { FormType } from "@/shared/tanstack-form/form"
+import { type FormType } from "@/shared/tanstack-form/form"
 import { useStore } from "@tanstack/react-form"
-import { Alignment, BoundingBox, DeviceTemplateFormData } from "./_types/device-template"
+import { Alignment, type BoundingBox, type DeviceTemplateFormData } from "./_types/device-template"
 
 import { useRef, useState, useEffect, useMemo } from 'react';
 import useImage from 'use-image';
