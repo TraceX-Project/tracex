@@ -24,7 +24,7 @@ import { PATHS } from '@/shared/config/paths';
 import { cn } from '@/shared/lib/cn';
 import { EllipsisVertical } from 'lucide-react';
 import { useBoolean } from '@/shared/hooks/use-boolean';
-import { useDeleteDeviceTemplate } from './_hooks/use-delete-device-templates';
+import { useDeleteDeviceTemplate } from './_hooks/use-delete-device-template';
 import Link from 'next/link';
 import { toast } from 'sonner';
 

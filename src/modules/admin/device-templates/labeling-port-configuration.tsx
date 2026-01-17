@@ -14,7 +14,7 @@ type Props = {
   form: FormType;
 };
 
-const PortRangeConfiguration = ({ form }: Props) => {
+const LabelingPortConfiguration = ({ form }: Props) => {
   const portRanges = useStore(
     form.store,
     (state) => (state.values as DeviceTemplateFormData).portRanges || []
@@ -23,11 +23,11 @@ const PortRangeConfiguration = ({ form }: Props) => {
   const addPortRange = useCallback(() => {
     const newPortRange: PortRange = {
       id: uuidv4(),
-      portType: PortType.FAST_ETHERNET,
-      start: 1,
-      end: 1,
+      portType: undefined as unknown as PortType,
+      start: undefined as unknown as number,
+      end: undefined as unknown as number,
       prefix: '',
-      runningNumber: 1,
+      runningNumber: undefined as unknown as number,
     };
 
     form.setFieldValue('portRanges', [...portRanges, newPortRange]);
@@ -159,4 +159,4 @@ const PortRangeConfiguration = ({ form }: Props) => {
   );
 };
 
-export default PortRangeConfiguration;
+export default LabelingPortConfiguration;

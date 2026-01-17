@@ -15,10 +15,10 @@ import { useAppForm } from '@/shared/tanstack-form/form';
 import { Plus } from 'lucide-react';
 import { type FormEvent, useCallback, useMemo } from 'react';
 import { createDeviceSchema } from './_schema/schema';
-import { useGetDeviceTemplates } from '../admin/device-templates/_hooks/use-get-device-templates';
 import { useAddDevice } from './_hooks/use-add-device';
 import { toast } from 'sonner';
 import { useBoolean } from '@/shared/hooks/use-boolean';
+import { useGetDeviceTemplates } from '../admin/device-templates/_hooks/use-get-device-templates';
 import { DeviceType } from '../admin/device-templates/_types/device-template';
 
 type Props = {

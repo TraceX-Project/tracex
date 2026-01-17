@@ -1,4 +1,4 @@
-import { type deviceTemplateSchema } from '../_schema/schema';
+import { type deviceTemplateSchema } from "../_schema/schema";
 import { type z } from 'zod';
 
 export enum Vendor {
@@ -40,9 +40,9 @@ export type UpdateDeviceTemplateRequest = Partial<CreateDeviceTemplateRequest>;
 
 export type DeviceTemplateFormData = z.infer<typeof deviceTemplateSchema>;
 
-export type PortRange = z.infer<typeof deviceTemplateSchema.shape.portRanges>[0];
+export type PortRange = NonNullable<z.infer<typeof deviceTemplateSchema.shape.portRanges>>[number];
 
-export type BoundingBox = z.infer<typeof deviceTemplateSchema.shape.boundingBoxes>[0];
+export type BoundingBox = NonNullable<z.infer<typeof deviceTemplateSchema.shape.boundingBoxes>>[number];
 
 export type DeviceTemplate = {
   id: string;

@@ -1,132 +1,108 @@
-'use client';
+"use client"
 
-import { type FormType, useAppForm } from '@/shared/tanstack-form/form';
-import React, { type FormEvent, useCallback, useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
-import { deviceTemplateSchema, stepSchemas } from './_schema/schema';
-import { useCreateDeviceTemplate } from './_hooks/use-create-device-template';
-import {
-  Vendor,
-  DeviceType,
-  Alignment,
-  PortType,
-  type BoundingBox,
-} from './_types/device-template';
-import { useRouter } from 'next/navigation';
-import { PATHS } from '@/shared/config/paths';
-import { Label } from '@radix-ui/react-label';
-import { Button } from '@/shared/components/ui/button';
-import BasicInformationForm from './basic-information-form';
-import UploadPanelForm from './upload-panel-form';
-import { defineStepper } from '@stepperize/react';
-import { Separator } from '@/shared/components/ui/separator';
-import { toast } from 'sonner';
+import { FormType, useAppForm } from "@/shared/tanstack-form/form"
+import { deviceTemplateSchema, stepSchemas } from "./_schema/schema"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
+import { FormEvent, useCallback, useMemo } from "react"
+import { defineStepper } from "@stepperize/react"
+import { Button } from "@/shared/components/ui/button"
+import Link from "next/link"
+import { PATHS } from "@/shared/config/paths"
+
+import { DeviceType, DeviceTemplateFormData, Alignment, PortType } from "./_types/device-template"
+import { useStore } from "@tanstack/react-form"
+import BasicInfoForm from "./basic-info-form"
+import LabelingForm from "./labeling-form"
 import { v4 as uuidv4 } from 'uuid';
-import { Loader2 } from 'lucide-react';
-import PortConfigForm from './port-config-form';
+
+
+const { useStepper: useStandardStepper, steps: standardSteps, utils: standardUtils } = defineStepper(
+  { id: "info", title: "Information" },
+  { id: 'labeling', title: 'Labeling' }
+)
+
+const { useStepper: useServerStepper, steps: serverSteps, utils: serverUtils } = defineStepper(
+  { id: "info", title: "Information" }
+)
+
+type StepId = (typeof standardSteps)[number]['id']
 
 const DeviceTemplateForm = () => {
-  const { mutateAsync: createNewDeviceTemplate } = useCreateDeviceTemplate();
-  const router = useRouter();
-
-  const { useStepper, steps, utils } = defineStepper(
-    { id: 'Basic', title: 'Basic Information' },
-    { id: 'Upload', title: 'Upload Panel Image' },
-    { id: 'Labeling', title: 'Labeling' }
-  );
-
-  type StepId = (typeof steps)[number]['id'];
-
-  const stepper = useStepper();
-  const currentIndex = useMemo(
-    () => utils.getIndex(stepper.current.id),
-    [stepper.current.id, utils]
-  );
-
   const form = useAppForm({
     defaultValues: {
-      modelName: '',
-      vendor: Vendor.CISCO,
-      deviceType: DeviceType.ROUTER,
-      rows: 1,
-      columns: 1,
+      modelName: "",
+      vendor: undefined,
+      deviceType: undefined,
+      unitSize: undefined,
+      frontPanel: undefined,
       alignment: Alignment.HORIZONTAL,
-      frontPanel: null as unknown as File,
-      unitSize: 1,
       portRanges: [
         {
-          start: 1,
-          end: 1,
-          runningNumber: 1,
+          start: undefined as unknown as number,
+          end: undefined as unknown as number,
+          runningNumber: undefined as unknown as number,
           prefix: '',
-          portType: PortType.FAST_ETHERNET,
+          portType: undefined as unknown as PortType,
           id: uuidv4(),
         },
       ],
-      boundingBoxes: [] as BoundingBox[],
+      boundingBoxes: [],
+    } as unknown as DeviceTemplateFormData,
+    validators: {
+      onSubmit: deviceTemplateSchema
     },
-    validators: { onSubmit: deviceTemplateSchema },
     onSubmit: async ({ value }) => {
-      try {
-        const formData = new FormData();
+      console.log(value)
+    }
+  })
 
-        formData.append('modelName', value.modelName);
-        formData.append('vendor', value.vendor);
-        formData.append('deviceType', value.deviceType);
-        formData.append('rows', value.rows.toString());
-        formData.append('columns', value.columns.toString());
-        formData.append('alignment', value.alignment);
-        formData.append('unitSize', value.unitSize.toString());
-        formData.append('frontPanel', value.frontPanel);
-        formData.append('portRanges', JSON.stringify(value.portRanges));
-        formData.append('boundingBoxes', JSON.stringify(value.boundingBoxes));
+  const deviceType = useStore(
+    form.store,
+    (state) => (state.values as DeviceTemplateFormData).deviceType
+  )
+  const isServer = deviceType === DeviceType.SERVER
 
-        await createNewDeviceTemplate(formData);
+  const standardStepper = useStandardStepper()
+  const serverStepper = useServerStepper()
 
-        toast.success('Device Template created successfully');
-        router.push(PATHS.admin.deviceTemplates.root);
-      } catch (error) {
-        toast.error(error instanceof Error ? error.message : 'An unexpected error occurred.');
+  const stepper = isServer ? serverStepper : standardStepper
+  const steps = isServer ? serverSteps : standardSteps
+
+  const currentIndex = useMemo(() => {
+    return isServer ? serverUtils.getIndex(serverStepper.current.id) : standardUtils.getIndex(standardStepper.current.id)
+  }, [isServer, serverStepper, standardStepper, serverUtils, standardUtils])
+
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    form.handleSubmit()
+  }
+
+  const validateStep = async (stepId: StepId): Promise<boolean> => {
+    try {
+      const schema = stepSchemas[stepId];
+      const formValues = form.state.values as Record<string, unknown>
+      const validationResult = schema.safeParse(formValues)
+
+      if (validationResult.success) {
+        return true
       }
-    },
-  });
 
-  const validateStep = useCallback(
-    async (stepId: StepId): Promise<boolean> => {
-      try {
-        const schema = stepSchemas[stepId];
-        const formValues = form.state.values as Record<string, unknown>;
-
-        const stepFields: Record<string, unknown> = {};
-        if (schema && 'shape' in schema) {
-          for (const fieldName of Object.keys(schema.shape)) {
-            stepFields[fieldName] = formValues[fieldName];
-          }
-
-          const validationResult = schema.safeParse(stepFields);
-
-          if (validationResult.success) {
-            return true;
-          }
-
-          const validationPromises = validationResult.error.issues.map(async (issue) => {
-            const fieldName = issue.path[0];
-            if (typeof fieldName === 'string') {
-              return form.validateField(fieldName as keyof typeof form.state.values, 'submit');
-            }
-          });
-
-          await Promise.allSettled(validationPromises);
-          return false;
+      const validationPromises = validationResult.error.issues.map(async (issue) => {
+        const fieldName = issue.path[0]
+        if (typeof fieldName === 'string') {
+          return form.validateField(fieldName as keyof typeof form.state.values, 'submit')
         }
-        return true;
-      } catch (error) {
-        console.error('Error during step validation:', error);
-        return false;
-      }
-    },
-    [form]
-  );
+      })
+
+      await Promise.allSettled(validationPromises)
+
+      return false
+    } catch (error) {
+      return false
+    }
+  }
 
   const handleNext = useCallback(async () => {
     const isValid = await validateStep(stepper.current.id);
@@ -138,132 +114,49 @@ const DeviceTemplateForm = () => {
     stepper.next();
   }, [stepper, validateStep]);
 
-  const handleGoToStep = useCallback(
-    async (targetStepId: StepId) => {
-      const currentIdx = stepper.all.findIndex((s) => s.id === stepper.current.id);
-      const targetIdx = stepper.all.findIndex((s) => s.id === targetStepId);
-
-      if (targetIdx < currentIdx) {
-        stepper.goTo(targetStepId);
-        return;
-      }
-
-      for (let i = currentIdx; i < targetIdx; i++) {
-        const stepId = stepper.all[i].id;
-        const valid = await validateStep(stepId);
-        if (!valid) {
-          stepper.goTo(stepper.all[i].id);
-          toast.error(`Please complete step: ${stepper.all[i].title}`);
-          return;
-        }
-      }
-
-      stepper.goTo(targetStepId);
-    },
-    [stepper, validateStep]
-  );
-
-  const handleSubmit = useCallback(
-    (event: FormEvent<HTMLButtonElement>) => {
-      event.preventDefault();
-      form.handleSubmit();
-    },
-    [form]
-  );
-
   return (
     <Card className="mx-auto w-full max-w-3xl">
       <CardHeader className="flex items-center justify-between">
         <CardTitle>Create Device Template</CardTitle>
-        <Label>
-          Step {currentIndex + 1} of {steps.length}
-        </Label>
+        <p>Step {currentIndex + 1} of {steps.length}</p>
       </CardHeader>
       <CardContent>
-        <form className="space-y-6">
-          <div className="group my-4">
-            <ol className="flex items-center justify-between gap-2" aria-orientation="horizontal">
-              {stepper.all.map((step, idx, arr) => (
-                <React.Fragment key={step.id}>
-                  <li className="flex flex-shrink-0 items-center gap-4">
-                    <Button
-                      type="button"
-                      role="tab"
-                      variant={idx <= currentIndex ? 'default' : 'secondary'}
-                      className="flex size-10 items-center justify-center rounded-full"
-                      onClick={() => handleGoToStep(step.id)}
-                      disabled={form.state.isSubmitting}
-                    >
-                      {idx + 1}
-                    </Button>
-
-                    <Label className="hidden text-sm font-medium lg:block">{step.title}</Label>
-                  </li>
-
-                  {idx < arr.length - 1 && (
-                    <Separator
-                      className={`flex-1 ${idx < currentIndex ? 'bg-primary' : 'bg-muted'}`}
-                    />
-                  )}
-                </React.Fragment>
-              ))}
-            </ol>
-          </div>
-
-          {/* Step Content */}
-          <div className="min-h-[300px]">
+        <form onSubmit={handleSubmit} >
+          <div className="space-y-6">
             {stepper.switch({
-              Basic: () => <BasicInformationForm form={form as unknown as FormType} />,
-              Upload: () => <UploadPanelForm form={form as unknown as FormType} />,
-              Labeling: () => <PortConfigForm form={form as unknown as FormType} />,
+              info: () => <BasicInfoForm form={form as unknown as FormType} />,
+              labeling: () => <LabelingForm form={form as unknown as FormType} />,
             })}
-          </div>
 
-          {/* Navigation Buttons Footer */}
-          <div className="flex items-center justify-between border-t pt-4">
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => router.push(PATHS.admin.deviceTemplates.root)}
-              disabled={form.state.isSubmitting}
-            >
-              Cancel
-            </Button>
+            <div className="flex justify-between gap-4">
+              <Button type="button" variant="secondary" asChild>
+                <Link href={PATHS.admin.deviceTemplates.root}>Cancel</Link>
+              </Button>
 
-            <div className="flex gap-4">
-              {!stepper.isFirst && (
+              <div className="flex gap-4">
                 <Button
                   type="button"
                   variant="secondary"
+                  disabled={stepper.isFirst}
                   onClick={stepper.prev}
-                  disabled={form.state.isSubmitting}
                 >
                   Back
                 </Button>
-              )}
 
-              {!stepper.isLast ? (
-                <Button type="button" onClick={handleNext} disabled={form.state.isSubmitting}>
-                  Next
-                </Button>
-              ) : (
-                <Button type="button" onClick={handleSubmit} disabled={form.state.isSubmitting}>
-                  {form.state.isSubmitting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Creating...
-                    </>
-                  ) : (
-                    'Create'
-                  )}
-                </Button>
-              )}
+                {stepper.isLast ? (
+                  <Button type="submit" key="submit">Submit</Button>
+                ) : (
+                  <Button type="button" onClick={handleNext} key="next">
+                    Next
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </form>
       </CardContent>
     </Card>
-  );
-};
+  )
+}
 
-export default DeviceTemplateForm;
+export default DeviceTemplateForm
