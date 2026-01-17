@@ -56,6 +56,7 @@ const PortToolbar = ({ onReindex }: Props) => {
         size="icon"
         variant={alignment === Alignment.HORIZONTAL ? 'default' : 'outline'}
         onClick={() => onReindex(Alignment.HORIZONTAL)}
+        type='button'
       >
         <ArrowLeftRight className="size-4" />
       </Button>
@@ -64,6 +65,7 @@ const PortToolbar = ({ onReindex }: Props) => {
         size="icon"
         variant={alignment === Alignment.VERTICAL ? 'default' : 'outline'}
         onClick={() => onReindex(Alignment.VERTICAL)}
+        type='button'
       >
         <ArrowDownUp className="size-4" />
       </Button>

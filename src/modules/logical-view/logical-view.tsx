@@ -45,7 +45,7 @@ const LogicalView = ({ projectId }: Props) => {
   }, [devices]);
 
   useEffect(() => {
-    if (layoutedNodes?.length || layoutedEdges?.length) {
+    if (layoutedNodes && layoutedEdges) {
       setNodes(layoutedNodes);
       setEdges(layoutedEdges);
     }
