@@ -93,9 +93,9 @@ function extractSize(
   }
 
   if (Array.isArray(entry[box])) {
-    return entry[box][0][sizeType]
+    return (entry[box] as readonly ResizeObserverSize[])[0][sizeType]
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  return (entry[box] as any)[sizeType] as number
+  // Support Firefox's non-standard behavior where it returns the size object directly
+  return (entry[box] as unknown as ResizeObserverSize)[sizeType]
 }
