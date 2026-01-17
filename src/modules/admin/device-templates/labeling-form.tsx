@@ -89,11 +89,11 @@ const LabelingForm = ({ form }: Props) => {
     return Math.min(...items);
   }, [image, width, height]);
 
-  const handleAdd = () => { }
+  const handleAdd = () => undefined
 
-  const handleDelete = () => { }
+  const handleDelete = () => undefined
 
-  const handleReindex = (alignment: Alignment) => { }
+  const handleReindex = (alignment: Alignment) => undefined
 
   return (
     <div className="flex h-full flex-col gap-4">

@@ -92,8 +92,10 @@ function extractSize(
     return undefined
   }
 
-  return Array.isArray(entry[box])
-    ? entry[box][0][sizeType]
-    : // @ts-ignore Support Firefox's non-standard behavior
-    (entry[box][sizeType] as number)
+  if (Array.isArray(entry[box])) {
+    return entry[box][0][sizeType]
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  return (entry[box] as any)[sizeType] as number
 }

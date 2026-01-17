@@ -17,7 +17,7 @@ type Props = {
 const LabelingPortConfiguration = ({ form }: Props) => {
   const portRanges = useStore(
     form.store,
-    (state) => (state.values as DeviceTemplateFormData).portRanges || []
+    (state) => (state.values as DeviceTemplateFormData).portRanges ?? []
   );
 
   const addPortRange = useCallback(() => {
