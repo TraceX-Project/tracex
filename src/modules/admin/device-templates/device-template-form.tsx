@@ -14,6 +14,9 @@ import { useStore } from "@tanstack/react-form"
 import BasicInfoForm from "./basic-info-form"
 import LabelingForm from "./labeling-form"
 import { v4 as uuidv4 } from 'uuid';
+import { useCreateDeviceTemplate } from "./_hooks/use-create-device-template"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 
 const { useStepper: useStandardStepper, steps: standardSteps, utils: standardUtils } = defineStepper(
@@ -28,6 +31,8 @@ const { useStepper: useServerStepper, steps: serverSteps, utils: serverUtils } =
 type StepId = (typeof standardSteps)[number]['id']
 
 const DeviceTemplateForm = () => {
+  const router = useRouter()
+  const { mutateAsync: createDeviceTemplate } = useCreateDeviceTemplate()
   const form = useAppForm({
     defaultValues: {
       modelName: "",
@@ -36,23 +41,23 @@ const DeviceTemplateForm = () => {
       unitSize: undefined,
       frontPanel: undefined,
       alignment: Alignment.HORIZONTAL,
-      portRanges: [
-        {
-          start: undefined as unknown as number,
-          end: undefined as unknown as number,
-          runningNumber: undefined as unknown as number,
-          prefix: '',
-          portType: undefined as unknown as PortType,
-          id: uuidv4(),
-        },
-      ],
+      portRanges: [],
       boundingBoxes: [],
     } as unknown as DeviceTemplateFormData,
     validators: {
       onSubmit: deviceTemplateSchema
     },
     onSubmit: async ({ value }) => {
-      console.log(value)
+      try {
+        await createDeviceTemplate(value)
+
+        toast.success("Device template created successfully");
+
+        router.push(PATHS.admin.deviceTemplates.root);
+      } catch (error) {
+        toast.error("Failed to create device template");
+        console.error(error);
+      }
     }
   })
 
@@ -73,11 +78,11 @@ const DeviceTemplateForm = () => {
   }, [isServer, serverStepper, standardStepper, serverUtils, standardUtils])
 
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = useCallback((e: FormEvent) => {
     e.preventDefault()
     e.stopPropagation()
     form.handleSubmit()
-  }
+  }, [form])
 
   const validateStep = async (stepId: StepId): Promise<boolean> => {
     try {

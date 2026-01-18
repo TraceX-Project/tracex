@@ -20,6 +20,20 @@ const LabelingPortConfiguration = ({ form }: Props) => {
     (state) => (state.values as DeviceTemplateFormData).portRanges ?? []
   );
 
+  React.useEffect(() => {
+    if (portRanges.length === 0) {
+      const newPortRange: PortRange = {
+        id: uuidv4(),
+        portType: undefined as unknown as PortType,
+        start: undefined as unknown as number,
+        end: undefined as unknown as number,
+        prefix: '',
+        runningNumber: undefined as unknown as number,
+      };
+      form.setFieldValue('portRanges', [newPortRange]);
+    }
+  }, [])
+
   const addPortRange = useCallback(() => {
     const newPortRange: PortRange = {
       id: uuidv4(),

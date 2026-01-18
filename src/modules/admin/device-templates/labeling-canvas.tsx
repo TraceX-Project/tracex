@@ -1,7 +1,7 @@
 
 import { Stage, Layer, Image as KonvaImage, Rect, Group, Text, Transformer } from 'react-konva';
 import { type BoundingBox } from './_types/device-template';
-import { forwardRef, useRef, useEffect } from 'react';
+import { forwardRef, useRef, useEffect, useCallback } from 'react';
 import Konva from 'konva';
 
 type Props = {
@@ -32,7 +32,7 @@ const LabelingCanvas = forwardRef<HTMLDivElement, Props>(({ width, height, image
     }
   }, [selectedIndex, boxes]);
 
-  const handleStageMouseDown = (e: Konva.KonvaEventObject<MouseEvent>) => {
+  const handleStageMouseDown = useCallback((e: Konva.KonvaEventObject<MouseEvent>) => {
     const clickedOnEmpty = e.target === e.target.getStage();
     const isTransformer = e.target.getParent()?.className === 'Transformer';
     const isBox = e.target.name()?.startsWith('box-') || e.target.getParent()?.name()?.startsWith('box-');
@@ -41,9 +41,9 @@ const LabelingCanvas = forwardRef<HTMLDivElement, Props>(({ width, height, image
       onSelect(null);
       trRef.current?.nodes([]);
     }
-  };
+  }, [onSelect]);
 
-  const handleDragEnd = (e: Konva.KonvaEventObject<DragEvent>, index: number, box: BoundingBox) => {
+  const handleDragEnd = useCallback((e: Konva.KonvaEventObject<DragEvent>, index: number, box: BoundingBox) => {
     if (!image) return;
     const node = e.target;
     const imageOffsetX = (width - image.width * scale) / 2;
@@ -57,9 +57,9 @@ const LabelingCanvas = forwardRef<HTMLDivElement, Props>(({ width, height, image
       x: newX,
       y: newY,
     });
-  };
+  }, [image, width, height, scale, onChange]);
 
-  const handleTransformEnd = (e: Konva.KonvaEventObject<Event>) => {
+  const handleTransformEnd = useCallback((e: Konva.KonvaEventObject<Event>) => {
     if (!image || selectedIndex === null) return;
 
     const node = e.target;
@@ -83,7 +83,7 @@ const LabelingCanvas = forwardRef<HTMLDivElement, Props>(({ width, height, image
       width: currentBox.width * scaleX,
       height: currentBox.height * scaleY,
     });
-  };
+  }, [image, selectedIndex, width, height, scale, boxes, onChange]);
 
   return (
     <div className="relative min-h-[200px] w-full border rounded-md overflow-hidden bg-slate-100" ref={ref}>

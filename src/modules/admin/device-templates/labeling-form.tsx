@@ -2,7 +2,7 @@ import { type FormType } from "@/shared/tanstack-form/form"
 import { useStore } from "@tanstack/react-form"
 import { Alignment, type BoundingBox, type DeviceTemplateFormData } from "./_types/device-template"
 
-import { useRef, useState, useEffect, useMemo } from 'react';
+import { useRef, useState, useEffect, useMemo, useCallback } from 'react';
 import useImage from 'use-image';
 import { useResizeObserver } from '@/shared/hooks/use-resize-observer';
 import { usePredictPorts } from './_hooks/use-predict-ports';
@@ -103,7 +103,7 @@ const LabelingForm = ({ form }: Props) => {
     form.setFieldValue('boundingBoxes', boxes)
   }, [boxes, form])
 
-  const handleAdd = () => {
+  const handleAdd = useCallback(() => {
     const newBox: BoundingBox = {
       x: 100,
       y: 100,
@@ -113,27 +113,29 @@ const LabelingForm = ({ form }: Props) => {
     }
     setBoxes([...boxes, newBox])
     setSelectedBoxIndex(boxes.length)
-  }
+  }, [boxes])
 
-  const handleDelete = () => {
+  const handleDelete = useCallback(() => {
     if (selectedBoxIndex === null) return
 
     const newBoxes = boxes.filter((_, i) => i !== selectedBoxIndex)
 
     setBoxes(reindexBoxes(newBoxes, alignment as Alignment))
     setSelectedBoxIndex(null)
-  }
+  }, [boxes, selectedBoxIndex, alignment])
 
-  const handleReindex = (newAlignment: Alignment) => {
+  const handleReindex = useCallback((newAlignment: Alignment) => {
     form.setFieldValue('alignment', newAlignment)
     setBoxes(prev => reindexBoxes(prev, newAlignment))
-  }
+  }, [form])
 
-  const handleChange = (index: number, newBox: BoundingBox) => {
-    const newBoxes = [...boxes]
-    newBoxes[index] = newBox
-    setBoxes(newBoxes)
-  }
+  const handleChange = useCallback((index: number, newBox: BoundingBox) => {
+    setBoxes(prev => {
+      const newBoxes = [...prev]
+      newBoxes[index] = newBox
+      return newBoxes
+    })
+  }, [])
 
   return (
     <div className="flex h-full flex-col gap-4">
