@@ -23,7 +23,7 @@ const LocationInfoCard = () => {
   };
 
   return (
-    <div className="absolute bottom-4 left-1/2 z-10 -translate-x-1/2 transform">
+    <div className="absolute bottom-4 left-1/2 z-60 -translate-x-1/2 transform">
       <Card className="relative mx-auto w-full max-w-md shadow-lg backdrop-blur-sm">
         <Button
           size="icon"

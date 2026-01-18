@@ -22,11 +22,11 @@ export default async function ProjectLayout({ children, params }: Props) {
       <ProjectNavbar project={project} />
 
       <div className="relative flex flex-1 flex-col">
-        <div className="absolute top-4 left-1/2 z-50 -translate-x-1/2 transform">
+        <div className="relative z-0 flex-1">{children}</div>
+
+        <div className="absolute top-4 left-1/2 z-[2000] -translate-x-1/2 transform">
           <ChangingViewTabs />
         </div>
-
-        <div className="flex-1">{children}</div>
       </div>
     </div>
   );

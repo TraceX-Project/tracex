@@ -20,8 +20,6 @@ type PhysicalMapStoreState = {
 
 export const usePhysicalMapStore = create<PhysicalMapStoreState>((set, get) => ({
   selectedLocation: null,
-  clearTrigger: 0,
-  isFromSearch: false,
   isCreateBuildingModalOpen: false,
   actions: {
     setSelectedLocation: (location) => set({ selectedLocation: location }),
