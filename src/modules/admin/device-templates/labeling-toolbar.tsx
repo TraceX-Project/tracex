@@ -9,9 +9,10 @@ type Props = {
   onAdd: () => void
   onDelete: () => void
   onReindex: (alignment: Alignment) => void
+  selectedBoxIndex: number | null
 }
 
-export const LabelingToolbar = ({ alignment, onAdd, onDelete, onReindex }: Props) => {
+export const LabelingToolbar = ({ alignment, onAdd, onDelete, onReindex, selectedBoxIndex }: Props) => {
   return (
     <div className="flex flex-wrap items-center gap-4">
       <Button type='button' size="icon" onClick={onAdd}>
@@ -38,9 +39,11 @@ export const LabelingToolbar = ({ alignment, onAdd, onDelete, onReindex }: Props
         <ArrowDownUp className="size-4" />
       </Button>
 
-      <Button type="button" size="icon" variant="destructive" className="ml-auto" onClick={onDelete}>
-        <Trash2 className="size-4" />
-      </Button>
+      {selectedBoxIndex !== null && (
+        <Button type="button" size="icon" variant="destructive" className="ml-auto" onClick={onDelete}>
+          <Trash2 className="size-4" />
+        </Button>
+      )}
     </div>
   )
 }

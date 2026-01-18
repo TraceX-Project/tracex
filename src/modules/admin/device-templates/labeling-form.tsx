@@ -8,8 +8,9 @@ import { useResizeObserver } from '@/shared/hooks/use-resize-observer';
 import { usePredictPorts } from './_hooks/use-predict-ports';
 import { useGetPredictResults } from './_hooks/use-get-predict-results';
 import LabelingPortConfiguration from "./labeling-port-configuration";
-import { LabelingCanvas } from "./labeling-canvas";
+import LabelingCanvas from "./labeling-canvas";
 import { LabelingToolbar } from "./labeling-toolbar";
+import { reindexBoxes } from "./utils/bounding-box";
 
 type Props = {
   form: FormType
@@ -26,13 +27,21 @@ const LabelingForm = ({ form }: Props) => {
     (state) => (state.values as DeviceTemplateFormData).alignment
   )
 
+  const storedBoxes = useStore(
+    form.store,
+    (state) => (state.values as DeviceTemplateFormData).boundingBoxes
+  )
+
   const [taskId, setTaskId] = useState<string | null>(null)
   const { mutateAsync: predictPorts } = usePredictPorts();
   const { data: predictBoxes } = useGetPredictResults(taskId ?? '');
-  const [boxes, setBoxes] = useState<BoundingBox[]>([])
+  const [boxes, setBoxes] = useState<BoundingBox[]>(storedBoxes || [])
+  const [selectedBoxIndex, setSelectedBoxIndex] = useState<number | null>(null)
 
   useEffect(() => {
     const handlePredictPorts = async () => {
+      if (storedBoxes && storedBoxes.length > 0) return;
+
       if (frontPanelFile instanceof File) {
         const data = await predictPorts(frontPanelFile)
         setTaskId(data.taskId)
@@ -45,7 +54,7 @@ const LabelingForm = ({ form }: Props) => {
   useEffect(() => {
     if (!predictBoxes?.ports) return;
 
-    const newBoxes = predictBoxes.ports.map((p, i) => ({
+    const rawBoxes = predictBoxes.ports.map((p, i) => ({
       x: p.x,
       y: p.y,
       width: p.w,
@@ -53,10 +62,10 @@ const LabelingForm = ({ form }: Props) => {
       portNumber: i + 1,
     }));
 
-    setBoxes(newBoxes);
-  }, [predictBoxes?.ports])
+    const currentAlignment = alignment ?? Alignment.HORIZONTAL;
 
-
+    setBoxes(reindexBoxes(rawBoxes, currentAlignment))
+  }, [predictBoxes?.ports, alignment])
 
   /* ---------- image url ---------- */
   const [imageUrl, setImageUrl] = useState<string | null>(null)
@@ -89,11 +98,42 @@ const LabelingForm = ({ form }: Props) => {
     return Math.min(...items);
   }, [image, width, height]);
 
-  const handleAdd = () => undefined
 
-  const handleDelete = () => undefined
+  useEffect(() => {
+    form.setFieldValue('boundingBoxes', boxes)
+  }, [boxes, form])
 
-  const handleReindex = (alignment: Alignment) => undefined
+  const handleAdd = () => {
+    const newBox: BoundingBox = {
+      x: 100,
+      y: 100,
+      width: 50,
+      height: 50,
+      portNumber: boxes.length + 1,
+    }
+    setBoxes([...boxes, newBox])
+    setSelectedBoxIndex(boxes.length)
+  }
+
+  const handleDelete = () => {
+    if (selectedBoxIndex === null) return
+
+    const newBoxes = boxes.filter((_, i) => i !== selectedBoxIndex)
+
+    setBoxes(reindexBoxes(newBoxes, alignment as Alignment))
+    setSelectedBoxIndex(null)
+  }
+
+  const handleReindex = (newAlignment: Alignment) => {
+    form.setFieldValue('alignment', newAlignment)
+    setBoxes(prev => reindexBoxes(prev, newAlignment))
+  }
+
+  const handleChange = (index: number, newBox: BoundingBox) => {
+    const newBoxes = [...boxes]
+    newBoxes[index] = newBox
+    setBoxes(newBoxes)
+  }
 
   return (
     <div className="flex h-full flex-col gap-4">
@@ -104,6 +144,9 @@ const LabelingForm = ({ form }: Props) => {
         image={image}
         scale={scale}
         boxes={boxes}
+        selectedIndex={selectedBoxIndex}
+        onSelect={setSelectedBoxIndex}
+        onChange={handleChange}
       />
 
       <LabelingToolbar
@@ -111,6 +154,7 @@ const LabelingForm = ({ form }: Props) => {
         onAdd={handleAdd}
         onDelete={handleDelete}
         onReindex={handleReindex}
+        selectedBoxIndex={selectedBoxIndex}
       />
 
       <LabelingPortConfiguration form={form} />
