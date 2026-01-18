@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { type DeviceTemplateFormData, type PortRange, PortType } from './_types/device-template';
+import { type DeviceTemplateFormData, type PortRange, type PortType } from './_types/device-template';
 import { Button } from '@/shared/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/ui/tooltip';
@@ -14,20 +14,34 @@ type Props = {
   form: FormType;
 };
 
-const PortRangeConfiguration = ({ form }: Props) => {
+const LabelingPortConfiguration = ({ form }: Props) => {
   const portRanges = useStore(
     form.store,
-    (state) => (state.values as DeviceTemplateFormData).portRanges || []
+    (state) => (state.values as DeviceTemplateFormData).portRanges ?? []
   );
+
+  React.useEffect(() => {
+    if (portRanges.length === 0) {
+      const newPortRange: PortRange = {
+        id: uuidv4(),
+        portType: undefined as unknown as PortType,
+        start: undefined as unknown as number,
+        end: undefined as unknown as number,
+        prefix: '',
+        runningNumber: undefined as unknown as number,
+      };
+      form.setFieldValue('portRanges', [newPortRange]);
+    }
+  }, [])
 
   const addPortRange = useCallback(() => {
     const newPortRange: PortRange = {
       id: uuidv4(),
-      portType: PortType.FAST_ETHERNET,
-      start: 1,
-      end: 1,
+      portType: undefined as unknown as PortType,
+      start: undefined as unknown as number,
+      end: undefined as unknown as number,
       prefix: '',
-      runningNumber: 1,
+      runningNumber: undefined as unknown as number,
     };
 
     form.setFieldValue('portRanges', [...portRanges, newPortRange]);
@@ -159,4 +173,4 @@ const PortRangeConfiguration = ({ form }: Props) => {
   );
 };
 
-export default PortRangeConfiguration;
+export default LabelingPortConfiguration;

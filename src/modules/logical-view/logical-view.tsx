@@ -23,6 +23,7 @@ import DeleteNodeDialog from './delete-node-dialog';
 import NodeDetailsSheet from './node-details-sheet';
 import { type DeviceType } from '../admin/device-templates/_types/device-template';
 
+
 type Props = {
   projectId: string;
 };
@@ -45,7 +46,7 @@ const LogicalView = ({ projectId }: Props) => {
   }, [devices]);
 
   useEffect(() => {
-    if (layoutedNodes?.length || layoutedEdges?.length) {
+    if (layoutedNodes && layoutedEdges) {
       setNodes(layoutedNodes);
       setEdges(layoutedEdges);
     }

@@ -24,7 +24,7 @@ const TextField = ({
   const handleOnBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     field.handleBlur();
 
-    const {value} = e.target;
+    const { value } = e.target;
     const trimmedValue = typeof value === 'string' ? value.trim() : value;
 
     e.target.value = trimmedValue;
@@ -47,7 +47,7 @@ const TextField = ({
 
       <Input
         id={field.name}
-        value={field.state.value}
+        value={field.state.value ?? ''}
         onChange={(e) => field.handleChange(e.target.value)}
         onBlur={handleOnBlur}
         aria-invalid={hasErrors}

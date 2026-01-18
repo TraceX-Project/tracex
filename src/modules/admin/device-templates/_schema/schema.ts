@@ -17,15 +17,6 @@ export const deviceTemplateSchema = z.object({
   deviceType: z.enum(DeviceType, {
     message: 'Type is required',
   }),
-  rows: z
-    .number({ message: 'Rows must be a number' })
-    .int({ message: 'Rows must be an integer' })
-    .positive({ message: 'Rows must be greater than zero' }),
-  columns: z
-    .number({ message: 'Columns must be a number' })
-    .int({ message: 'Columns must be an integer' })
-    .positive({ message: 'Columns must be greater than zero' }),
-  alignment: z.enum(Alignment, { message: 'Alignment is required' }),
   unitSize: z
     .number({ message: 'Unit size must be a number' })
     .int({ message: 'Unit size must be an integer' })
@@ -39,6 +30,7 @@ export const deviceTemplateSchema = z.object({
     .refine((file) => ['image/jpeg', 'image/png'].includes(file.type), {
       message: 'Only JPEG and PNG files are accepted',
     }),
+  alignment: z.enum(Alignment).optional(),
   portRanges: z.array(
     z
       .object({
@@ -61,7 +53,7 @@ export const deviceTemplateSchema = z.object({
         message: 'Start port must be less than or equal to end port',
         path: ['end'],
       })
-  ),
+  ).optional(),
   boundingBoxes: z.array(
     z.object({
       x: z.number({ message: 'X coordinate must be a number' }),
@@ -70,22 +62,45 @@ export const deviceTemplateSchema = z.object({
       height: z.number({ message: 'Height must be a number' }),
       portNumber: z.number({ message: 'Port number must be a number' }),
     })
-  ),
-});
+  ).optional(),
+}).check(ctx => {
+  if (ctx.value.deviceType !== DeviceType.SERVER) {
+    if (!ctx.value.alignment) {
+      ctx.issues.push({
+        code: 'custom',
+        message: 'Alignment is required',
+        input: ctx.value
+      })
+    }
+
+    if (!ctx.value.portRanges || ctx.value.portRanges.length === 0) {
+      ctx.issues.push({
+        code: 'custom',
+        message: 'Port ranges is required',
+        input: ctx.value
+      })
+    }
+
+    if (!ctx.value.boundingBoxes || ctx.value.boundingBoxes.length === 0) {
+      ctx.issues.push({
+        code: 'custom',
+        message: 'Bounding boxes is required',
+        input: ctx.value
+      })
+    }
+  }
+})
+
 
 export const stepSchemas = {
-  Basic: deviceTemplateSchema.pick({
+  info: deviceTemplateSchema.pick({
     modelName: true,
     vendor: true,
     deviceType: true,
     unitSize: true,
-  }),
-  Upload: deviceTemplateSchema.pick({
     frontPanel: true,
-    rows: true,
-    columns: true,
   }),
-  Labeling: deviceTemplateSchema.pick({
+  labeling: deviceTemplateSchema.pick({
     boundingBoxes: true,
     alignment: true,
     portRanges: true,

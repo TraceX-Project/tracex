@@ -23,9 +23,9 @@ type Props = {
 const DeleteNodeDialog = ({ open, onOpenChange, deviceId, projectId }: Props) => {
   const { mutateAsync: deleteLogicalDevices } = useDeleteLogicalDevice(projectId);
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     try {
-      deleteLogicalDevices(deviceId);
+      await deleteLogicalDevices(deviceId);
       onOpenChange(false);
 
       toast.success('Node deleted successfully.');

@@ -17,6 +17,7 @@ export const useCreateServer = () => {
     }) => createServer(projectId, data),
     onSuccess: (_, { projectId }) => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.topology, projectId] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.logicalDevices, projectId] });
     },
   });
 };

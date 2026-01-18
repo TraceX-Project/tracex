@@ -14,6 +14,7 @@ export const DEVICE_PORT_ALIGNMENT_OPTIONS = [
 export const DEVICE_TYPES_OPTIONS = [
   { value: DeviceType.ROUTER, label: 'Router' },
   { value: DeviceType.SWITCH, label: 'Switch' },
+  { value: DeviceType.SERVER, label: 'Server' }
 ];
 
 export const DEVICE_PORT_TYPES_OPTIONS = [
