@@ -9,11 +9,10 @@ import { Button } from "@/shared/components/ui/button"
 import Link from "next/link"
 import { PATHS } from "@/shared/config/paths"
 
-import { DeviceType, type DeviceTemplateFormData, Alignment, type PortType } from "./_types/device-template"
+import { DeviceType, type DeviceTemplateFormData, Alignment } from "./_types/device-template"
 import { useStore } from "@tanstack/react-form"
 import BasicInfoForm from "./basic-info-form"
 import LabelingForm from "./labeling-form"
-import { v4 as uuidv4 } from 'uuid';
 import { useCreateDeviceTemplate } from "./_hooks/use-create-device-template"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"

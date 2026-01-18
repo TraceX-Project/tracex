@@ -2,7 +2,7 @@
 import { Stage, Layer, Image as KonvaImage, Rect, Group, Text, Transformer } from 'react-konva';
 import { type BoundingBox } from './_types/device-template';
 import { forwardRef, useRef, useEffect, useCallback } from 'react';
-import Konva from 'konva';
+import type Konva from 'konva';
 
 type Props = {
   width: number
@@ -159,5 +159,7 @@ const LabelingCanvas = forwardRef<HTMLDivElement, Props>(({ width, height, image
     </div>
   )
 })
+
+LabelingCanvas.displayName = "LabelingCanvas"
 
 export default LabelingCanvas

@@ -35,7 +35,7 @@ const LabelingForm = ({ form }: Props) => {
   const [taskId, setTaskId] = useState<string | null>(null)
   const { mutateAsync: predictPorts } = usePredictPorts();
   const { data: predictBoxes } = useGetPredictResults(taskId ?? '');
-  const [boxes, setBoxes] = useState<BoundingBox[]>(storedBoxes || [])
+  const [boxes, setBoxes] = useState<BoundingBox[]>(storedBoxes ?? [])
   const [selectedBoxIndex, setSelectedBoxIndex] = useState<number | null>(null)
 
   useEffect(() => {
@@ -120,7 +120,7 @@ const LabelingForm = ({ form }: Props) => {
 
     const newBoxes = boxes.filter((_, i) => i !== selectedBoxIndex)
 
-    setBoxes(reindexBoxes(newBoxes, alignment as Alignment))
+    setBoxes(reindexBoxes(newBoxes, alignment!))
     setSelectedBoxIndex(null)
   }, [boxes, selectedBoxIndex, alignment])
 
