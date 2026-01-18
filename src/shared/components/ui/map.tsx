@@ -487,7 +487,7 @@ function MapLayersControl({
                 <Button
                     type="button"
                     variant="secondary"
-                    size="icon-sm"
+                    size="sm"
                     aria-label="Select layers"
                     title="Select layers"
                     className={cn(
@@ -769,7 +769,7 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
                 {...props}>
                 <Button
                     type="button"
-                    size="icon-sm"
+                    size="sm"
                     variant="secondary"
                     aria-label="Zoom in"
                     title="Zoom in"
@@ -780,7 +780,7 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
                 </Button>
                 <Button
                     type="button"
-                    size="icon-sm"
+                    size="sm"
                     variant="secondary"
                     aria-label="Zoom out"
                     title="Zoom out"
@@ -831,7 +831,7 @@ function MapFullscreenControl({
         <MapControlContainer className={cn("top-1 right-1", className)}>
             <Button
                 type="button"
-                size="icon-sm"
+                size="sm"
                 variant="secondary"
                 onClick={() => map.toggleFullscreen()}
                 aria-label={
@@ -899,7 +899,7 @@ function MapLocateControl({
         <MapControlContainer className={cn("right-1 bottom-1", className)}>
             <Button
                 type="button"
-                size="icon-sm"
+                size="sm"
                 variant={position ? "default" : "secondary"}
                 onClick={position ? stopLocating : startLocating}
                 disabled={isLocating}
@@ -1064,7 +1064,7 @@ function MapDrawShapeButton<T extends Draw.Feature>({
     return (
         <Button
             type="button"
-            size="icon-sm"
+            size="sm"
             aria-label={`Draw ${drawMode}`}
             title={`Draw ${drawMode}`}
             className={cn("border", className)}
@@ -1263,7 +1263,7 @@ function MapDrawActionButton<T extends EditToolbar.Edit | EditToolbar.Delete>({
     return (
         <Button
             type="button"
-            size="icon-sm"
+            size="sm"
             aria-label={`${drawAction === "edit" ? "Edit" : "Remove"} shapes`}
             title={`${drawAction === "edit" ? "Edit" : "Remove"} shapes`}
             variant={isActive ? "default" : "secondary"}
@@ -1373,7 +1373,7 @@ function MapDrawUndo({ className, ...props }: React.ComponentProps<"button">) {
     return (
         <Button
             type="button"
-            size="icon-sm"
+            size="sm"
             variant="secondary"
             aria-label={`Undo ${activeMode}`}
             title={`Undo ${activeMode}`}
