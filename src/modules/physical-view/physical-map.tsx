@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { DEFAULT_MAP_CENTER, DEFAULT_ZOOM_LEVEL } from './_constants/constants';
 import { useGetBuildings } from '../buildings/_hooks/use-get-buildings';
-import { Map, MapMarker, MapMarkerClusterGroup, MapSearchControl, MapTileLayer } from "@/shared/components/ui/map"
+import { Map, MapLocateControl, MapMarker, MapMarkerClusterGroup, MapSearchControl, MapTileLayer } from "@/shared/components/ui/map"
 import "leaflet/dist/leaflet.css";
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
@@ -12,7 +12,8 @@ import LocationInfoCard from './location-info-card';
 import { type PlaceFeature } from '@/shared/components/ui/place-autocomplete';
 import { formatAddress } from './utils/leaflet';
 import { usePhysicalMapStore } from './_store/physical-map.store';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
+import CreateBuildingDialog from './create-building-modal';
 
 type Props = {
   projectId: string;
@@ -20,8 +21,13 @@ type Props = {
 
 const PhysicalMap = ({ projectId }: Props) => {
   const { data: buildings } = useGetBuildings(projectId)
-  const { setSelectedLocation } = usePhysicalMapStore(state => state.actions)
+  const { setSelectedLocation, reset } = usePhysicalMapStore(state => state.actions)
   const selectedLocation = usePhysicalMapStore(state => state.selectedLocation)
+
+  useEffect(() => {
+    reset();
+  }, [reset]);
+
 
   const handlePlaceSelect = useCallback((feature: PlaceFeature) => {
     const position = feature.geometry.coordinates.toReversed()
@@ -45,6 +51,8 @@ const PhysicalMap = ({ projectId }: Props) => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
+        <MapLocateControl />
+
         <MapMarkerClusterGroup>
           {buildings?.map((building, i) => (
             <MapMarker
@@ -56,6 +64,7 @@ const PhysicalMap = ({ projectId }: Props) => {
         </MapMarkerClusterGroup>
 
         <MapSearchControl
+          lang='en'
           onPlaceSelect={handlePlaceSelect}
         />
 
@@ -65,6 +74,7 @@ const PhysicalMap = ({ projectId }: Props) => {
       </Map>
 
       <LocationInfoCard />
+      <CreateBuildingDialog projectId={projectId} />
     </div>
   );
 };

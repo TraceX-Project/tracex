@@ -74,7 +74,7 @@ interface PlaceSearchOptions {
 
 interface PlaceAutocompleteProps
     extends Omit<PlaceSearchOptions, "query">,
-        Omit<React.ComponentProps<"input">, "value" | "onChange"> {
+    Omit<React.ComponentProps<"input">, "value" | "onChange"> {
     debounceMs?: number
     value?: string
     defaultValue?: string
@@ -283,7 +283,8 @@ function PlaceAutocomplete({
 
     const hasNoResults =
         hasSearched && !isLoading && !error && results.length === 0
-    const showCommandList = error ?? hasNoResults ?? results.length > 0
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+    const showCommandList = error || hasNoResults || results.length > 0
 
     return (
         <Command

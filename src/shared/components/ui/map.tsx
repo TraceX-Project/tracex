@@ -46,7 +46,7 @@ import type {
 } from "leaflet"
 import "leaflet-draw/dist/leaflet.draw.css"
 import "leaflet.fullscreen/dist/Control.FullScreen.css"
-import type {} from "leaflet.markercluster"
+import type { } from "leaflet.markercluster"
 import "leaflet.markercluster/dist/MarkerCluster.css"
 import "leaflet.markercluster/dist/MarkerCluster.Default.css"
 import "leaflet/dist/leaflet.css"
@@ -98,12 +98,13 @@ import {
 } from "react-leaflet"
 import type { MarkerClusterGroupProps } from "react-leaflet-markercluster"
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function createLazyComponent<T extends ComponentType<any>>(
     factory: () => Promise<{ default: T }>
 ) {
     const LazyComponent = lazy(factory)
 
-    return (props: React.ComponentProps<T>) => {
+    const LazyWrapper = (props: React.ComponentProps<T>) => {
         const [isMounted, setIsMounted] = useState(false)
 
         useEffect(() => {
@@ -120,6 +121,9 @@ function createLazyComponent<T extends ComponentType<any>>(
             </Suspense>
         )
     }
+    LazyWrapper.displayName = "LazyWrapper"
+
+    return LazyWrapper
 }
 
 const LeafletMapContainer = createLazyComponent(() =>
@@ -273,7 +277,7 @@ function MapTileLayer({
         resolvedTheme === "dark" && darkAttribution
             ? darkAttribution
             : (attribution ??
-              '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>')
+                '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>')
 
     useEffect(() => {
         if (context) {
@@ -354,7 +358,7 @@ function MapLayers({
 }) {
     const [tileLayers, setTileLayers] = useState<MapTileLayerOption[]>([])
     const [selectedTileLayer, setSelectedTileLayer] = useState<string>(
-        defaultTileLayer || ""
+        defaultTileLayer ?? ""
     )
     const [layerGroups, setLayerGroups] = useState<MapLayerGroupOption[]>([])
     const [activeLayerGroups, setActiveLayerGroups] =
@@ -396,7 +400,7 @@ function MapLayers({
         if (tileLayers.length > 0 && !selectedTileLayer) {
             const validDefaultValue =
                 defaultTileLayer &&
-                tileLayers.some((layer) => layer.name === defaultTileLayer)
+                    tileLayers.some((layer) => layer.name === defaultTileLayer)
                     ? defaultTileLayer
                     : tileLayers[0].name
             setSelectedTileLayer(validDefaultValue)
@@ -597,12 +601,12 @@ function MapMarkerClusterGroup({
 
     const iconCreateFunction = icon
         ? (cluster: MarkerCluster) => {
-              const markerCount = cluster.getChildCount()
-              const iconNode = icon(markerCount)
-              return L.divIcon({
-                  html: renderToString(iconNode),
-              })
-          }
+            const markerCount = cluster.getChildCount()
+            const iconNode = icon(markerCount)
+            return L.divIcon({
+                html: renderToString(iconNode),
+            })
+        }
         : undefined
 
     return (
@@ -907,15 +911,15 @@ function MapLocateControl({
                     isLocating
                         ? "Locating..."
                         : position
-                          ? "Stop tracking"
-                          : "Track location"
+                            ? "Stop tracking"
+                            : "Track location"
                 }
                 aria-label={
                     isLocating
                         ? "Locating..."
                         : position
-                          ? "Stop location tracking"
-                          : "Start location tracking"
+                            ? "Stop location tracking"
+                            : "Start location tracking"
                 }
                 className="border"
                 {...props}>
@@ -1116,9 +1120,9 @@ function MapDrawPolyline({
                 new L.Draw.Polyline(map, {
                     ...(mapDrawHandleIcon
                         ? {
-                              icon: mapDrawHandleIcon,
-                              touchIcon: mapDrawHandleIcon,
-                          }
+                            icon: mapDrawHandleIcon,
+                            touchIcon: mapDrawHandleIcon,
+                        }
                         : {}),
                     showLength,
                     drawError,
@@ -1199,9 +1203,9 @@ function MapDrawPolygon({
                 new L.Draw.Polygon(map, {
                     ...(mapDrawHandleIcon
                         ? {
-                              icon: mapDrawHandleIcon,
-                              touchIcon: mapDrawHandleIcon,
-                          }
+                            icon: mapDrawHandleIcon,
+                            touchIcon: mapDrawHandleIcon,
+                        }
                         : {}),
                     drawError,
                     shapeOptions,
