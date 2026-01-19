@@ -34,7 +34,7 @@ export const BuildingMarkerContextMenu = ({ building }: Props) => {
   };
 
   const handleMove = () => {
-    setTimeout(() => { 
+    setTimeout(() => {
       setMovingBuildingId(building.id);
     }, 100);
   };
@@ -63,17 +63,10 @@ export const BuildingMarkerContextMenu = ({ building }: Props) => {
             Rename
           </ContextMenuItem>
 
-          {false ? (
-            <ContextMenuItem variant="destructive">
-              <IconX className="size-4" />
-              Cancel Drag Mode
-            </ContextMenuItem>
-          ) : (
-            <ContextMenuItem onClick={handleMove}>
-              <IconMapSearch className="size-4" />
-              Change Location
-            </ContextMenuItem>
-          )}
+          <ContextMenuItem onClick={handleMove}>
+            <IconMapSearch className="size-4" />
+            Change Location
+          </ContextMenuItem>
 
           <ContextMenuSeparator />
 
