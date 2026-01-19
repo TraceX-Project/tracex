@@ -48,7 +48,7 @@ const PhysicalMap = ({ projectId }: Props) => {
   }, [setSelectedLocation])
 
   return (
-    <div className="relative h-full w-full">
+    <div className="relative h-full w-full z-0">
       <Map center={DEFAULT_MAP_CENTER} zoom={DEFAULT_ZOOM_LEVEL} attributionControl={true}>
         <MapTileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
