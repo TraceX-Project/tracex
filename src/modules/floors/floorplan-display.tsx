@@ -13,24 +13,11 @@ type Props = {
 };
 
 const FloorPlanDisplay = ({ floor }: Props) => {
-  const { setClickedPosition, setIsCreateRoomModalOpen } = useRoomStore((state) => state.actions);
   const { data: rooms } = useGetRooms(floor.id);
-
-  const handleImageClick = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      const rect = event.currentTarget.getBoundingClientRect();
-      const x = ((event.clientX - rect.left) / rect.width) * 100;
-      const y = ((event.clientY - rect.top) / rect.height) * 100;
-
-      setClickedPosition({ x, y });
-      setIsCreateRoomModalOpen(true);
-    },
-    [floor.id, setClickedPosition, setIsCreateRoomModalOpen]
-  );
 
   return (
     <>
-      <div className="relative h-full w-full cursor-crosshair" onClick={handleImageClick}>
+      <div className="relative h-full w-full cursor-crosshair" >
         <Image
           src={floor.planUrl}
           alt="Floor Plan"
