@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { DEFAULT_MAP_CENTER, DEFAULT_ZOOM_LEVEL } from './_constants/constants';
 import { useGetBuildings } from '../buildings/_hooks/use-get-buildings';
-import { Map, MapLocateControl, MapMarker, MapMarkerClusterGroup, MapSearchControl, MapTileLayer } from "@/shared/components/ui/map"
+import { Map, MapLocateControl, MapMarker, MapMarkerClusterGroup, MapSearchControl, MapTileLayer, MapTooltip } from "@/shared/components/ui/map"
 import "leaflet/dist/leaflet.css";
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
@@ -14,6 +14,7 @@ import { formatAddress } from './utils/leaflet';
 import { usePhysicalMapStore } from './_store/physical-map.store';
 import { useCallback, useEffect } from 'react';
 import CreateBuildingDialog from './create-building-modal';
+import BuildingMarker from './building-marker';
 
 type Props = {
   projectId: string;
@@ -55,10 +56,18 @@ const PhysicalMap = ({ projectId }: Props) => {
 
         <MapMarkerClusterGroup>
           {buildings?.map((building, i) => (
-            <MapMarker
+            // <MapMarker
+            //   key={i}
+            //   position={building.location}
+            //   icon={<IconMapPinFilled className='text-orange-600 w-8 h-8 hover:scale-105 hover:text-orange-700' />}
+            // >
+            //   <MapTooltip side="bottom">
+            //     {building.name}
+            //   </MapTooltip>
+            // </MapMarker>
+            <BuildingMarker
               key={i}
-              position={building.location}
-              icon={<IconMapPinFilled className='text-orange-600 w-8 h-8 hover:scale-105 hover:text-orange-700' />}
+              building={building}
             />
           ))}
         </MapMarkerClusterGroup>
@@ -73,6 +82,7 @@ const PhysicalMap = ({ projectId }: Props) => {
         )}
       </Map>
 
+      <LocationInfoCard />
       <LocationInfoCard />
       <CreateBuildingDialog projectId={projectId} />
     </div>
