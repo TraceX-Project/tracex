@@ -5,6 +5,7 @@ import EmptyBuilding from '../buildings/empty-building';
 import FloorSelector from './floor-selector';
 import FloorPlanDisplay from './floorplan-display';
 import { useGetFloorById, useGetFloors } from './_hooks/use-floor';
+import { notFound } from 'next/navigation';
 
 type Props = {
   buildingId: string;

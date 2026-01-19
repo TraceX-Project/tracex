@@ -5,7 +5,6 @@ import {
 } from '../_types/projects';
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
-import { ApiError } from '@/shared/lib/api-error';
 
 export const createProject = async (payload: CreateProjectRequest) => {
   const response = await request<Project>({
@@ -35,21 +34,13 @@ export const deleteProject = async (projectId: string) => {
   return response;
 };
 
-export const getProject = async (projectId: string) => {
-  try {
-    const response = await request<Project>({
-      method: 'GET',
-      path: `${ENDPOINTS.projects.getById(projectId)}`,
-    });
+export const getProjectById = async (projectId: string) => {
+  const response = await request<Project>({
+    method: 'GET',
+    path: `${ENDPOINTS.projects.getById(projectId)}`,
+  });
 
-    return response;
-  } catch (error: unknown) {
-    if (error instanceof ApiError && error.status === 404) {
-      return null;
-    }
-
-    throw error;
-  }
+  return response;
 };
 
 export const updateProject = async (projectId: string, payload: UpdateProjectRequest) => {
