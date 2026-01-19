@@ -25,30 +25,32 @@ const MapClickHandler = () => {
         abortControllerRef.current.abort()
       }
 
-      debounceTimerRef.current = setTimeout(async () => {
-        const controller = new AbortController()
-        abortControllerRef.current = controller
+      debounceTimerRef.current = setTimeout(() => {
+        void (async () => {
+          const controller = new AbortController()
+          abortControllerRef.current = controller
 
-        try {
-          const response = await reverseGeocode(e.latlng.lat, e.latlng.lng, controller.signal)
+          try {
+            const response = await reverseGeocode(e.latlng.lat, e.latlng.lng, controller.signal)
 
-          setSelectedLocation({
-            name: response.features[0].properties.name ?? 'Unknown Location',
-            address: formatAddress(response.features[0].properties),
-            location: e.latlng
-          })
-        } catch (error) {
-          if (error instanceof DOMException && error.name === 'AbortError') {
-            return
+            setSelectedLocation({
+              name: response.features[0].properties.name ?? 'Unknown Location',
+              address: formatAddress(response.features[0].properties),
+              location: e.latlng
+            })
+          } catch (error) {
+            if (error instanceof DOMException && error.name === 'AbortError') {
+              return
+            }
+
+            console.error("Reverse geocoding failed", error)
+            setSelectedLocation({
+              name: 'Unknown Location',
+              address: 'Address not found',
+              location: e.latlng
+            })
           }
-
-          console.error("Reverse geocoding failed", error)
-          setSelectedLocation({
-            name: 'Unknown Location',
-            address: 'Address not found',
-            location: e.latlng
-          })
-        }
+        })()
       }, 300)
     },
   })

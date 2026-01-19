@@ -13,10 +13,8 @@ import { type PlaceFeature } from '@/shared/components/ui/place-autocomplete';
 import { formatAddress } from './utils/leaflet';
 import { usePhysicalMapStore } from './_store/physical-map.store';
 import { useCallback, useEffect } from 'react';
-import { useMapEvents } from 'react-leaflet';
 import CreateBuildingDialog from './create-building-modal';
 import BuildingMarker from './building-marker';
-import { reverseGeocode } from './_services/map.service';
 import MapClickHandler from './map-click-handler';
 
 type Props = {
