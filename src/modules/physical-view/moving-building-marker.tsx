@@ -25,23 +25,27 @@ const MovingBuildingMarker = ({ projectId }: Props) => {
         setPosition(e.latlng);
       }
     },
-    click: async (e) => {
+    click: (e) => {
       if (movingBuildingId) {
-        await updateBuilding({
-          id: movingBuildingId,
-          projectId,
-          payload: {
-            location: {
-              lat: e.latlng.lat,
-              lng: e.latlng.lng,
+        const updateBuildingFn = async () => {
+          await updateBuilding({
+            id: movingBuildingId,
+            projectId,
+            payload: {
+              location: {
+                lat: e.latlng.lat,
+                lng: e.latlng.lng,
+              }
             }
-          }
-        });
+          });
 
-        setMovingBuildingId(null);
-        setPosition(null);
+          setMovingBuildingId(null);
+          setPosition(null);
 
-        map.dragging.enable();
+          map.dragging.enable();
+        }
+
+        updateBuildingFn()
       }
     },
   });
