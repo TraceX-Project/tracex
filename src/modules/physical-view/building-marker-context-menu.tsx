@@ -10,6 +10,7 @@ import DeleteBuildingDialog from './delete-building-dialog';
 import { type Building } from '../buildings/_types/buildings';
 import { useBoolean } from '@/shared/hooks/use-boolean';
 import RenameBuildingDialog from './rename-building-dialog';
+import { usePhysicalMapStore } from './_store/physical-map.store';
 
 type Props = {
   building: Building;
@@ -18,6 +19,7 @@ type Props = {
 export const BuildingMarkerContextMenu = ({ building }: Props) => {
   const { value: isDeleteDialogOpen, setValue: setIsDeleteDialogOpen } = useBoolean(false);
   const { value: isRenameDialogOpen, setValue: setIsRenameDialogOpen } = useBoolean(false);
+  const { setMovingBuildingId } = usePhysicalMapStore(state => state.actions);
 
   const handleDelete = () => {
     setTimeout(() => {
@@ -28,6 +30,12 @@ export const BuildingMarkerContextMenu = ({ building }: Props) => {
   const handleRename = () => {
     setTimeout(() => {
       setIsRenameDialogOpen(true);
+    }, 100);
+  };
+
+  const handleMove = () => {
+    setTimeout(() => { 
+      setMovingBuildingId(building.id);
     }, 100);
   };
 
@@ -61,7 +69,7 @@ export const BuildingMarkerContextMenu = ({ building }: Props) => {
               Cancel Drag Mode
             </ContextMenuItem>
           ) : (
-            <ContextMenuItem>
+            <ContextMenuItem onClick={handleMove}>
               <IconMapSearch className="size-4" />
               Change Location
             </ContextMenuItem>

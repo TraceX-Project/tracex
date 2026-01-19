@@ -16,6 +16,7 @@ import { useCallback, useEffect } from 'react';
 import CreateBuildingDialog from './create-building-modal';
 import BuildingMarker from './building-marker';
 import MapClickHandler from './map-click-handler';
+import MovingBuildingMarker from './moving-building-marker';
 
 type Props = {
   projectId: string;
@@ -25,6 +26,7 @@ const PhysicalMap = ({ projectId }: Props) => {
   const { data: buildings } = useGetBuildings(projectId)
   const { setSelectedLocation, reset } = usePhysicalMapStore(state => state.actions)
   const selectedLocation = usePhysicalMapStore(state => state.selectedLocation)
+  const movingBuildingId = usePhysicalMapStore(state => state.movingBuildingId)
 
   useEffect(() => {
     reset();
@@ -57,13 +59,15 @@ const PhysicalMap = ({ projectId }: Props) => {
 
         <MapZoomControl className="top-auto right-1 bottom-13 left-auto" />
 
-        <MapMarkerClusterGroup disableClusteringAtZoom={DEFAULT_ZOOM_LEVEL}>
-          {buildings?.map((building, i) => (
-            <BuildingMarker
-              key={i}
-              building={building}
-            />
-          ))}
+        <MapMarkerClusterGroup>
+          {buildings
+            ?.filter(b => b.id !== movingBuildingId)
+            .map((building, i) => (
+              <BuildingMarker
+                key={i}
+                building={building}
+              />
+            ))}
         </MapMarkerClusterGroup>
 
         <MapSearchControl
@@ -77,6 +81,8 @@ const PhysicalMap = ({ projectId }: Props) => {
         )}
 
         <MapClickHandler />
+        
+        <MovingBuildingMarker projectId={projectId} />
       </Map>
 
       <LocationInfoCard />

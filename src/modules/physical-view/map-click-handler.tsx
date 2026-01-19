@@ -6,11 +6,15 @@ import { formatAddress } from "./utils/leaflet"
 
 const MapClickHandler = () => {
   const { setSelectedLocation } = usePhysicalMapStore(state => state.actions)
+  const movingBuildingId = usePhysicalMapStore(state => state.movingBuildingId)
+
   const abortControllerRef = useRef<AbortController | null>(null)
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
 
   useMapEvents({
     click: (e) => {
+      if (movingBuildingId) return;
+
       setSelectedLocation({
         name: 'Loading...',
         address: 'Fetching address...',
