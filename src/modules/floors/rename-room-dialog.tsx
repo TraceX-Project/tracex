@@ -7,9 +7,9 @@ import {
   DialogTitle,
 } from '@/shared/components/ui/dialog';
 import { useAppForm } from '@/shared/tanstack-form/form';
-import { Room } from '../rooms/_types/room';
+import { type Room } from '../rooms/_types/room';
 import { createFloorSchema } from './_schema/floor';
-import { FormEvent, useCallback } from 'react';
+import { type FormEvent, useCallback } from 'react';
 import { Button } from '@/shared/components/ui/button';
 
 type Props = {

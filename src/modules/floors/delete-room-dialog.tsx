@@ -8,8 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/shared/components/ui/alert-dialog';
-import { useBoolean } from '@/shared/hooks/use-boolean';
-import { Room } from '../rooms/_types/room';
+import { type Room } from '../rooms/_types/room';
 import { useCallback } from 'react';
 
 type Props = {

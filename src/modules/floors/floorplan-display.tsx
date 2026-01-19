@@ -2,8 +2,7 @@
 
 import Image from 'next/image';
 import { type Floor } from './_types/floor';
-import React, { useCallback } from 'react';
-import { useRoomStore } from './_store/room.store';
+import React from 'react';
 import CreateRoomModal from './create-room-modal';
 import { useGetRooms } from './_hooks/use-get-rooms';
 import RoomMarker from './room-marker';

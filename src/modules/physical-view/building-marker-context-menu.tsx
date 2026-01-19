@@ -5,7 +5,7 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from '@/shared/components/ui/context-menu';
-import { IconEdit, IconMapPinFilled, IconMapSearch, IconTrash, IconX } from "@tabler/icons-react"
+import { IconEdit, IconMapPinFilled, IconMapSearch, IconTrash } from "@tabler/icons-react"
 import DeleteBuildingDialog from './delete-building-dialog';
 import { type Building } from '../buildings/_types/buildings';
 import { useBoolean } from '@/shared/hooks/use-boolean';
