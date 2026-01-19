@@ -9,30 +9,32 @@ type Props = {
   params: Promise<{ projectId: string }>;
 };
 
+const loadProject = async (projectId: string) => {
+  try {
+    return await getProjectById(projectId);
+  } catch (error) {
+    if (error instanceof ApiError && (error.status === 404 || error.status === 400)) {
+      return notFound();
+    }
+    throw error;
+  }
+};
+
 export default async function ProjectLayout({ children, params }: Props) {
   const { projectId } = await params;
+  const project = await loadProject(projectId);
 
-  try {
-    const project = await getProjectById(projectId);
-    return (
-      <div className="flex h-screen w-full flex-col overflow-hidden">
-        <ProjectNavbar project={project} />
+  return (
+    <div className="flex h-screen w-full flex-col overflow-hidden">
+      <ProjectNavbar project={project} />
 
-        <div className="relative flex flex-1 flex-col">
-          <div className="absolute top-4 left-1/2 z-50 -translate-x-1/2 transform">
-            <ChangingViewTabs />
-          </div>
-
-          <div className="flex-1">{children}</div>
+      <div className="relative flex flex-1 flex-col">
+        <div className="absolute top-4 left-1/2 z-[1001] -translate-x-1/2 transform">
+          <ChangingViewTabs />
         </div>
+
+        <div className="flex-1">{children}</div>
       </div>
-    );
-  } catch (error) {
-    if (error instanceof ApiError) {
-      if (error.status === 404 || error.status === 400) {
-        notFound();
-      }
-      throw error;
-    }
-  }
+    </div>
+  );
 }

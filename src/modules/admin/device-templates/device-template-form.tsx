@@ -103,7 +103,7 @@ const DeviceTemplateForm = () => {
       await Promise.allSettled(validationPromises)
 
       return false
-    } catch (error) {
+    } catch {
       return false
     }
   }

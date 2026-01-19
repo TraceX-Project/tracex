@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
@@ -8,7 +9,7 @@ import {
   DialogTitle,
 } from '@/shared/components/ui/dialog';
 import { useAppForm } from '@/shared/tanstack-form/form';
-import { type FormEvent, useCallback } from 'react';
+import { type FormEvent, useCallback, useEffect } from 'react';
 import { usePhysicalMapStore } from './_store/physical-map.store';
 import { toast } from 'sonner';
 import { useCreateBuilding } from '../buildings/_hooks/use-create-building';
@@ -37,9 +38,15 @@ const CreateBuildingDialog = ({ projectId }: Props) => {
     },
     onSubmit: async ({ value }) => {
       try {
+        console.log("create building", value)
+        console.log("selectedLocation", selectedLocation)
+
         const payload = {
           ...value,
-          location: selectedLocation!.location,
+          location: {
+            lat: selectedLocation!.location.lat,
+            lng: selectedLocation!.location.lng
+          },
         };
 
         await createBuilding({ projectId, payload });
@@ -61,6 +68,15 @@ const CreateBuildingDialog = ({ projectId }: Props) => {
     },
     [form]
   );
+
+  useEffect(() => {
+    if (isOpen && selectedLocation) {
+      form.reset({
+        name: selectedLocation.name ?? '',
+        location: selectedLocation.location
+      })
+    }
+  }, [isOpen, selectedLocation, form])
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => setIsCreateBuildingModalOpen(open)}>
