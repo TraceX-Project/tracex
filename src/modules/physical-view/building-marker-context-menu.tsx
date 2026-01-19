@@ -7,7 +7,6 @@ import {
 } from '@/shared/components/ui/context-menu';
 import { IconEdit, IconMapPinFilled, IconMapSearch, IconTrash, IconX } from "@tabler/icons-react"
 import DeleteBuildingDialog from './delete-building-dialog';
-import { useState } from 'react';
 import { type Building } from '../buildings/_types/buildings';
 import { useBoolean } from '@/shared/hooks/use-boolean';
 import RenameBuildingDialog from './rename-building-dialog';

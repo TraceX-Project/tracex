@@ -1,7 +1,6 @@
 import { MapTooltip } from "@/shared/components/ui/map"
 import { MapCustomMarker } from "@/shared/components/ui/map-custom-marker"
 import { type Building } from "../buildings/_types/buildings"
-import { IconMapPinFilled } from "@tabler/icons-react"
 import { BuildingMarkerContextMenu } from "./building-marker-context-menu"
 
 type Props = {

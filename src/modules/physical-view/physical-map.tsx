@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { DEFAULT_MAP_CENTER, DEFAULT_ZOOM_LEVEL } from './_constants/constants';
 import { useGetBuildings } from '../buildings/_hooks/use-get-buildings';
-import { Map, MapLocateControl, MapMarker, MapMarkerClusterGroup, MapSearchControl, MapTileLayer, MapTooltip } from "@/shared/components/ui/map"
+import { Map, MapLocateControl, MapMarker, MapMarkerClusterGroup, MapSearchControl, MapTileLayer } from "@/shared/components/ui/map"
 import "leaflet/dist/leaflet.css";
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
