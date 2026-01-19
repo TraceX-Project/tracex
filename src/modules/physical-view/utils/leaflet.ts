@@ -1,8 +1,7 @@
-import { type PlaceFeature } from "@/shared/components/ui/place-autocomplete";
+import { type PhotonProperties } from "../_types/map";
 
-type Properties = PlaceFeature["properties"];
 
-export const formatAddress = (properties?: Properties): string => {
+export const formatAddress = (properties?: PhotonProperties): string => {
   if (!properties) return "";
 
   const {

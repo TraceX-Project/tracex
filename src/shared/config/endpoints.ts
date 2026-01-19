@@ -64,3 +64,5 @@ export const ENDPOINTS = {
     getById: (id: string) => `${ROOTS.logicalDevices}/${id}`,
   }
 };
+
+export const PROTON_API_URL = 'https://photon.komoot.io'

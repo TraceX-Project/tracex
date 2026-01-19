@@ -13,8 +13,11 @@ import { type PlaceFeature } from '@/shared/components/ui/place-autocomplete';
 import { formatAddress } from './utils/leaflet';
 import { usePhysicalMapStore } from './_store/physical-map.store';
 import { useCallback, useEffect } from 'react';
+import { useMapEvents } from 'react-leaflet';
 import CreateBuildingDialog from './create-building-modal';
 import BuildingMarker from './building-marker';
+import { reverseGeocode } from './_services/map.service';
+import MapClickHandler from './map-click-handler';
 
 type Props = {
   projectId: string;
@@ -56,15 +59,6 @@ const PhysicalMap = ({ projectId }: Props) => {
 
         <MapMarkerClusterGroup>
           {buildings?.map((building, i) => (
-            // <MapMarker
-            //   key={i}
-            //   position={building.location}
-            //   icon={<IconMapPinFilled className='text-orange-600 w-8 h-8 hover:scale-105 hover:text-orange-700' />}
-            // >
-            //   <MapTooltip side="bottom">
-            //     {building.name}
-            //   </MapTooltip>
-            // </MapMarker>
             <BuildingMarker
               key={i}
               building={building}
@@ -77,9 +71,12 @@ const PhysicalMap = ({ projectId }: Props) => {
           onPlaceSelect={handlePlaceSelect}
         />
 
+
         {selectedLocation && (
           <MapMarker position={selectedLocation.location} icon={<IconMapPinFilled className='text-red-600 w-8 h-8 hover:scale-105 hover:text-red-700' />} />
         )}
+
+        <MapClickHandler />
       </Map>
 
       <LocationInfoCard />
@@ -90,3 +87,4 @@ const PhysicalMap = ({ projectId }: Props) => {
 };
 
 export default PhysicalMap;
+
