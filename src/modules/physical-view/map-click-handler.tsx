@@ -47,7 +47,10 @@ const MapClickHandler = () => {
             setSelectedLocation({
               name: 'Unknown Location',
               address: 'Address not found',
-              location: e.latlng
+              location: {
+                lat: e.latlng.lat,
+                lng: e.latlng.lng
+              }
             })
           }
         })()

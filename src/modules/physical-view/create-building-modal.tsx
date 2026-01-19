@@ -38,9 +38,15 @@ const CreateBuildingDialog = ({ projectId }: Props) => {
     },
     onSubmit: async ({ value }) => {
       try {
+        console.log("create building", value)
+        console.log("selectedLocation", selectedLocation)
+
         const payload = {
           ...value,
-          location: selectedLocation!.location,
+          location: {
+            lat: selectedLocation!.location.lat,
+            lng: selectedLocation!.location.lng
+          },
         };
 
         await createBuilding({ projectId, payload });
