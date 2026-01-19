@@ -41,8 +41,6 @@ const MovingBuildingMarker = ({ projectId }: Props) => {
 
           setMovingBuildingId(null);
           setPosition(null);
-
-          map.dragging.enable();
         }
 
         updateBuildingFn()
@@ -52,13 +50,10 @@ const MovingBuildingMarker = ({ projectId }: Props) => {
 
   useEffect(() => {
     if (movingBuildingId) {
-      map.dragging.disable();
-
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Escape') {
           setMovingBuildingId(null);
           setPosition(null);
-          map.dragging.enable();
         }
       };
 
@@ -66,12 +61,9 @@ const MovingBuildingMarker = ({ projectId }: Props) => {
 
       return () => {
         window.removeEventListener('keydown', handleKeyDown);
-        map.dragging.enable();
       };
-    } else {
-      map.dragging.enable();
     }
-  }, [movingBuildingId, map.dragging, setMovingBuildingId]);
+  }, [movingBuildingId, setMovingBuildingId]);
 
 
   if (!movingBuildingId || !position) return null;

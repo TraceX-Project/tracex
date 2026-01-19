@@ -65,6 +65,7 @@ const PhysicalMap = ({ projectId }: Props) => {
             .map((building, i) => (
               <BuildingMarker
                 key={i}
+                projectId={projectId}
                 building={building}
               />
             ))}
@@ -81,7 +82,7 @@ const PhysicalMap = ({ projectId }: Props) => {
         )}
 
         <MapClickHandler />
-        
+
         <MovingBuildingMarker projectId={projectId} />
       </Map>
 

@@ -30,7 +30,7 @@ const MapClickHandler = () => {
       }
 
       debounceTimerRef.current = setTimeout(() => {
-        void (async () => {
+        const fetchLocationDetails = async () => {
           const controller = new AbortController()
           abortControllerRef.current = controller
 
@@ -38,8 +38,8 @@ const MapClickHandler = () => {
             const response = await reverseGeocode(e.latlng.lat, e.latlng.lng, controller.signal)
 
             setSelectedLocation({
-              name: response.features[0].properties.name ?? 'Unknown Location',
-              address: formatAddress(response.features[0].properties),
+              name: response.features[0]?.properties?.name ?? 'Unknown Location',
+              address: formatAddress(response.features[0]?.properties),
               location: e.latlng
             })
           } catch (error) {
@@ -57,7 +57,9 @@ const MapClickHandler = () => {
               }
             })
           }
-        })()
+        }
+
+        fetchLocationDetails()
       }, 300)
     },
   })
