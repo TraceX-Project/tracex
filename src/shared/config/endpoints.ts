@@ -34,6 +34,7 @@ export const ENDPOINTS = {
     upload: (id: string) => `${ROOTS.projects}/${id}/upload`,
     topology: (id: string) => `${ROOTS.projects}/${id}/topology`,
     thumbnail: (id: string) => `${ROOTS.projects}/${id}/thumbnail`,
+    getDevicesByProjectId: (projectId: string) => `${ROOTS.projects}/${projectId}/physical-devices?inRack=false`,
     logicalDevices: (id: string) => `${ROOTS.projects}/${id}/logical-devices`,
     createServer: (id: string) => `${ROOTS.projects}/${id}/servers`,
     getDevicesByProjectId: (projectId: string) => `${ROOTS.projects}/${projectId}/devices`,

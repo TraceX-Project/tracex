@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { cn } from '@/shared/lib/cn';
 import { CSS } from '@dnd-kit/utilities';
 import { useDroppable } from '@dnd-kit/core';
@@ -8,8 +8,9 @@ import { useSortable, SortableContext, verticalListSortingStrategy } from '@dnd-
 import { GripVertical } from 'lucide-react';
 import SortableDevice from './sortable-device';
 import AddDevicesModal from './add-devices-modal';
+import { Device } from './_types/room';
 
-const SortableRack = ({ name, id, devices }: any) => {
+const SortableRack = ({ name, id, devices }: { name: string; id: string; devices: Device[] }) => {
   const {
     attributes,
     listeners,
@@ -19,7 +20,6 @@ const SortableRack = ({ name, id, devices }: any) => {
     isDragging,
   } = useSortable({ id });
 
-  const [addDevicesOpen, setAddDevicesOpen] = useState(false);
 
   const { setNodeRef: setDroppableRef } = useDroppable({ id });
   const setNodeRef = (node: HTMLElement | null) => {
@@ -57,11 +57,11 @@ const SortableRack = ({ name, id, devices }: any) => {
       {/* Device sorting area - No DndContext here! */}
       <div className="flex flex-1 flex-col">
         <SortableContext
-          items={devices.map((d: any) => d.id)}
+          items={devices.map((d: Device) => d.id)}
           strategy={verticalListSortingStrategy}
         >
-          {devices.map((device: any) => (
-            <SortableDevice key={device.id} id={device.id} frontURL={device.frontPanelURL} />
+          {devices.map((device: Device) => (
+            <SortableDevice key={device.id} device={device} />
           ))}
         </SortableContext>
       </div>

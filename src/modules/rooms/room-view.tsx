@@ -23,7 +23,7 @@ const RoomView = ({ roomId }: Props) => {
   if (isError) {
     return (
     <div className='w-full h-full'>
-      <ManageRacks roomId={roomId} />
+      {/* <ManageRacks roomId={roomId} /> */}
     </div>);
   }
   else if (!racks?.length) {

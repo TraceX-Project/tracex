@@ -25,7 +25,7 @@ import {
   DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu';
 import { EllipsisVertical } from 'lucide-react';
-import { useGetDevices } from './_hooks/use-get-devices';
+import { useGetDevicesInProject } from './_hooks/use-get-devices';
 
 type Props = {
   rackId: string;
@@ -34,7 +34,7 @@ type Props = {
 const AddDevicesModal = ({ rackId }: Props) => {
   const { projectId } = useParams<{ projectId: string }>();
   const { mutateAsync: addDevicesToRack } = useAddDevicesToRack();
-  const { data: devices,isLoading } = useGetDevices(projectId);
+  const { data: devices,isLoading } = useGetDevicesInProject(projectId);
   const [deviceOptions, setDeviceOptions] = useState<DEVICE_OPTIONS[]>([]);
   const [addDevicesOpen, setAddDevicesOpen] = useState(false);
 
@@ -70,6 +70,7 @@ const AddDevicesModal = ({ rackId }: Props) => {
 
   useEffect(() => {
     if (devices) {
+      console.log(devices);
       const options = devices.map((device) => ({
         value: device.id,
         label: device.name,
@@ -88,7 +89,15 @@ const AddDevicesModal = ({ rackId }: Props) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-40" align="end">
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => setAddDevicesOpen(true)}>Add Devices</DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() => {
+                setTimeout(() => {
+                  setAddDevicesOpen(true);
+                }, 100);
+              }}
+            >
+              Add Devices
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Edit Rack</DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -100,16 +109,19 @@ const AddDevicesModal = ({ rackId }: Props) => {
       </DropdownMenu>
       <Dialog open={addDevicesOpen} onOpenChange={setAddDevicesOpen}>
         <DialogContent className="sm:max-w-[425px]">
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4"
+          >
             <DialogHeader>
               <DialogTitle>Add Devices to Rack</DialogTitle>
             </DialogHeader>
-            {}
             <div className="grid gap-4">
               <form.AppField
-                name="deviceIds" // Binds to a STRING
+                name="deviceIds" 
                 children={(field) => (
                   <field.MultiSelectField
+                    overflowBehavior="cutoff"
                     label="Select Devices"
                     options={deviceOptions}
                     placeholder={isLoading ? 'Loading devices...' : 'Select devices'}

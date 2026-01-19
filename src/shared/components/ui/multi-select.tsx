@@ -60,6 +60,12 @@ export function MultiSelect({
   const selectedValues = values ? new Set(values) : internalValues
   const [items, setItems] = useState<Map<string, ReactNode>>(new Map())
 
+  useEffect(() => {
+    if (values) {
+      setInternalValues(new Set(values))
+    }
+  }, [values])
+
   function toggleValue(value: string) {
     const getNewSet = (prev: Set<string>) => {
       if (single) {
@@ -243,6 +249,14 @@ export function MultiSelectValue({
                   }
                 : undefined
             }
+            onMouseDown={e => {
+              e.preventDefault()
+              e.stopPropagation()
+            }}
+            onPointerDown={e => {
+              e.preventDefault()
+              e.stopPropagation()
+            }}
           >
             {items.get(value)}
             {clickToRemove && (

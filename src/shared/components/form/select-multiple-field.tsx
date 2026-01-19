@@ -1,11 +1,12 @@
+'use client';
 import React from 'react';
 import { useFieldContext } from '@/shared/tanstack-form/form';
-import { 
-  MultiSelect, 
-  MultiSelectTrigger, 
-  MultiSelectValue, 
-  MultiSelectContent, 
-  MultiSelectItem 
+import {
+  MultiSelect,
+  MultiSelectTrigger,
+  MultiSelectValue,
+  MultiSelectContent,
+  MultiSelectItem,
 } from '@/shared/components/ui/multi-select'; // Adjust path to where you saved the code above
 import { Field, FieldLabel, FieldError, FieldDescription } from '../ui/field';
 
@@ -21,6 +22,7 @@ interface Props {
   description?: string;
   showErrorMessage?: boolean;
   orientation?: 'vertical' | 'horizontal' | 'responsive';
+  overflowBehavior?: 'wrap' | 'wrap-when-open' | 'cutoff';
   disabled?: boolean;
 }
 
@@ -31,11 +33,13 @@ const MultiSelectField = ({
   description,
   showErrorMessage = true,
   orientation = 'vertical',
+  overflowBehavior = 'wrap-when-open',
   disabled,
 }: Props) => {
   const field = useFieldContext<string[]>();
   const hasErrors = field.state.meta.errors.length > 0;
-  
+  console.log('overflow', overflowBehavior);
+
   // TanStack Form uses an array; MultiSelect handles the Set conversion internally
   const selectedValues = Array.isArray(field.state.value) ? field.state.value : [];
 
@@ -46,22 +50,24 @@ const MultiSelectField = ({
         {description && <FieldDescription>{description}</FieldDescription>}
       </div>
 
-      <MultiSelect 
-        values={selectedValues} 
+      <MultiSelect
+        values={selectedValues}
         onValuesChange={(newValues) => field.handleChange(newValues)}
       >
-        <MultiSelectTrigger 
+        <MultiSelectTrigger
           disabled={disabled}
-          className={hasErrors ? "border-destructive ring-destructive/20" : ""}
+          className={hasErrors ? 'border-destructive ring-destructive/20 w-full' : 'w-full'}
         >
-          <MultiSelectValue placeholder={placeholder} />
+          <MultiSelectValue
+            placeholder={placeholder}
+            overflowBehavior={overflowBehavior}
+            className="min-w-0"
+          />
         </MultiSelectTrigger>
-        
-        <MultiSelectContent search={{ placeholder: "Search options..." }}>
+
+        <MultiSelectContent search={{ placeholder: 'Search options...' }}>
           {options.length === 0 ? (
-            <div className="p-4 text-center text-sm text-muted-foreground">
-              No results found.
-            </div>
+            <div className="text-muted-foreground p-4 text-center text-sm">No results found.</div>
           ) : (
             options.map((option) => (
               <MultiSelectItem key={option.value} value={option.value}>
@@ -72,9 +78,7 @@ const MultiSelectField = ({
         </MultiSelectContent>
       </MultiSelect>
 
-      {showErrorMessage && hasErrors && (
-        <FieldError errors={field.state.meta.errors} />
-      )}
+      {showErrorMessage && hasErrors && <FieldError errors={field.state.meta.errors} />}
     </Field>
   );
 };

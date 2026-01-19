@@ -26,9 +26,6 @@ type Props = {
 };
 
 const CreateRackModal = ({ roomId, title, variant = 'default', size = 'default', icon }: Props) => {
-  // const { setIsCreateRoomModalOpen, setClickedPosition } = useRoomStore((state) => state.actions);
-  // const isCreateRoomModalOpen = useRoomStore((state) => state.isCreateRoomModalOpen);
-  // const clickedPosition = useRoomStore((state) => state.clickedPosition);
   const { mutateAsync: createRack } = useCreateRack();
   const { value: open, setValue: setOpen } = useBoolean();
 
@@ -50,8 +47,6 @@ const CreateRackModal = ({ roomId, title, variant = 'default', size = 'default',
           },
         });
 
-        // setIsCreateRoomModalOpen(false);
-        // setClickedPosition(null);
         form.reset();
         setOpen(false);
 

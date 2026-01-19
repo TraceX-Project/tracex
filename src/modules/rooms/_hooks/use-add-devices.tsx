@@ -10,8 +10,8 @@ export const useAddDevicesToRack = () => {
   return useMutation({
     mutationFn: async ({ rackId, data }: { rackId: string; data: AddDeviceRequest }) =>
       addDevicesToRack(rackId, data),
-    onSuccess: ({ roomId }) => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.rooms, roomId] });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.racks] });
     },
   });
 };
