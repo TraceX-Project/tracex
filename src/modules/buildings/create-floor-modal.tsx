@@ -14,7 +14,7 @@ import {
 import { useAppForm } from '@/shared/tanstack-form/form';
 
 import { toast } from 'sonner';
-import { useCreateFloor } from '../floors/_hooks/use-create-floor';
+import { useCreateFloor } from '../floors/_hooks/use-floor';
 import { useBoolean } from '@/shared/hooks/use-boolean';
 import { createFloorSchema } from '../floors/_schema/floor';
 import { Plus } from 'lucide-react';
@@ -35,8 +35,8 @@ const CreateFloorModal = ({ buildingId, title, variant = 'default', size = 'defa
   const params = useParams();
   const router = useRouter();
 
-  const {projectId} = params;
-  const {floorId} = params;
+  const { projectId } = params;
+  const { floorId } = params;
 
   const form = useAppForm({
     defaultValues: {

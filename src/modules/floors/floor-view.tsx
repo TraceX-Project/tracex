@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import { useGetFloor } from './_hooks/use-get-floor';
 import EmptyBuilding from '../buildings/empty-building';
 import FloorSelector from './floor-selector';
 import FloorPlanDisplay from './floorplan-display';
-import { useGetFloors } from './_hooks/use-get-floors';
+import { useGetFloorById, useGetFloors } from './_hooks/use-floor';
+import { notFound } from 'next/navigation';
 
 type Props = {
   buildingId: string;
@@ -14,10 +14,10 @@ type Props = {
 
 const FloorView = ({ floorId, buildingId }: Props) => {
   const { data: floors, isError: floorsError } = useGetFloors(buildingId);
-  const { data: floor, isError } = useGetFloor(floorId);
+  const { data: floor, isError } = useGetFloorById(floorId);
 
   if (floorsError) {
-    return <div>Building Not Found</div>;
+    return notFound();
   }
 
   if (!floors?.length) {
@@ -29,7 +29,7 @@ const FloorView = ({ floorId, buildingId }: Props) => {
   }
 
   if (!floor || isError) {
-    return <div>Floor Not Found</div>;
+    return notFound();
   }
 
   return (

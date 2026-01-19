@@ -18,7 +18,7 @@ import {
   BreadcrumbSeparator,
 } from '@/shared/components/ui/breadcrumb';
 import ManageFloors from '../buildings/manage-floors';
-import { useGetBuilding } from '../buildings/_hooks/use-get-building';
+import { useGetBuildingById } from '../buildings/_hooks/use-get-building';
 
 type Props = {
   project: Project;
@@ -31,7 +31,7 @@ const ProjectNavbar = ({ project }: Props) => {
     buildingId?: string;
     floorId?: string;
   }>();
-  const { data: building } = useGetBuilding(params.buildingId ?? '');
+  const { data: building } = useGetBuildingById(params.buildingId ?? '');
 
   const renderButtons = () => {
     if (params.buildingId && params.floorId) {
