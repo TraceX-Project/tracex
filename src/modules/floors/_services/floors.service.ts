@@ -14,7 +14,7 @@ export const createFloor = async (buildingId: string, formData: FormData) => {
   return response;
 };
 
-export const getFloor = async (floorId: string) => {
+export const getFloorById = async (floorId: string) => {
   const response = await request<Floor>({
     method: 'GET',
     path: ENDPOINTS.floors.getById(floorId),

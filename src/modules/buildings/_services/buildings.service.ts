@@ -24,16 +24,11 @@ export const getBuildings = async (projectId: string) => {
 };
 
 export const getBuildingById = async (id: string) => {
-  try {
-    const response = await request<Building>({
-      method: 'GET',
-      path: ENDPOINTS.buildings.getById(id),
-    });
-
-    return response;
-  } catch {
-    return null;
-  }
+  const response = await request<Building>({
+    method: 'GET',
+    path: ENDPOINTS.buildings.getById(id),
+  });
+  return response;
 };
 
 export const deleteBuilding = async (id: string) => {

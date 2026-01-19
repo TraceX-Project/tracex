@@ -19,7 +19,7 @@ import {
 } from '@dnd-kit/core';
 import { Layers } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useGetBuilding } from './_hooks/use-get-building';
+import { useGetBuildingById } from './_hooks/use-get-building';
 import {
   arrayMove,
   SortableContext,
@@ -36,7 +36,7 @@ type Props = {
 };
 
 const ManageFloors = ({ buildingId }: Props) => {
-  const { data: building, isLoading } = useGetBuilding(buildingId);
+  const { data: building, isLoading } = useGetBuildingById(buildingId);
   const { mutateAsync: reorderFloors } = useReorderFloors();
   const [floors, setFloors] = useState(building?.floors ?? []);
   const sensors = useSensors(

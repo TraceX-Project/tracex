@@ -4,6 +4,15 @@ const nextConfig: NextConfig = {
   /* config options here */
   output: 'standalone',
   transpilePackages: ['@t3-oss/env-nextjs', '@t3-oss/env-core'],
+  async redirects() {
+    return [
+      {
+        source: '/projects/:projectId',
+        destination: '/projects/:projectId/logical',
+        permanent: false,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       // For Google profile images
