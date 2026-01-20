@@ -8,31 +8,31 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/shared/components/ui/alert-dialog';
-import { type Building } from '../buildings/_types/buildings';
-import { useDeleteBuilding } from '../buildings/_hooks/use-delete-building';
+import { type Room } from '../rooms/_types/room';
 import { useCallback } from 'react';
+import { useDeleteRoom } from './_hooks/use-delete-room';
 import { toast } from 'sonner';
 
 type Props = {
-  building: Building;
+  room: Room
   isOpen: boolean;
   onClose: () => void;
-};
+}
 
-const DeleteBuildingDialog = ({ building, isOpen, onClose }: Props) => {
-  const { mutateAsync: deleteBuilding } = useDeleteBuilding();
+const DeleteRoomDialog = ({ room, isOpen, onClose }: Props) => {
+  const { mutateAsync: deleteRoom } = useDeleteRoom()
 
   const handleDelete = useCallback(async () => {
     try {
-      await deleteBuilding(building.id);
-      onClose();
+      await deleteRoom(room.id)
+      onClose()
 
-      toast.success('Building deleted successfully');
+      toast.success('Room deleted successfully');
     } catch (error) {
-      console.log(error);
-      toast.error('Failed to delete building');
+      console.log(error)
+      toast.error('Failed to delete room');
     }
-  }, [building, deleteBuilding]);
+  }, [room, onClose]);
 
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
@@ -40,8 +40,8 @@ const DeleteBuildingDialog = ({ building, isOpen, onClose }: Props) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the building &quot;
-            {building.name}
+            This action cannot be undone. This will permanently delete the room &quot;
+            {room.name}
             &quot; and remove all associated data.
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -53,7 +53,7 @@ const DeleteBuildingDialog = ({ building, isOpen, onClose }: Props) => {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  );
-};
+  )
+}
 
-export default DeleteBuildingDialog;
+export default DeleteRoomDialog

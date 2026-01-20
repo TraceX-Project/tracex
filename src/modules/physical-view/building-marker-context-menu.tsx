@@ -5,7 +5,7 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from '@/shared/components/ui/context-menu';
-import { IconEdit, IconMapPinFilled, IconMapSearch, IconTrash, IconX } from "@tabler/icons-react"
+import { IconEdit, IconMapPinFilled, IconMapSearch, IconTrash } from "@tabler/icons-react"
 import DeleteBuildingDialog from './delete-building-dialog';
 import { type Building } from '../buildings/_types/buildings';
 import { useBoolean } from '@/shared/hooks/use-boolean';
@@ -34,7 +34,7 @@ export const BuildingMarkerContextMenu = ({ building }: Props) => {
   };
 
   const handleMove = () => {
-    setTimeout(() => { 
+    setTimeout(() => {
       setMovingBuildingId(building.id);
     }, 100);
   };
@@ -63,17 +63,10 @@ export const BuildingMarkerContextMenu = ({ building }: Props) => {
             Rename
           </ContextMenuItem>
 
-          {false ? (
-            <ContextMenuItem variant="destructive">
-              <IconX className="size-4" />
-              Cancel Drag Mode
-            </ContextMenuItem>
-          ) : (
-            <ContextMenuItem onClick={handleMove}>
-              <IconMapSearch className="size-4" />
-              Change Location
-            </ContextMenuItem>
-          )}
+          <ContextMenuItem onClick={handleMove}>
+            <IconMapSearch className="size-4" />
+            Change Location
+          </ContextMenuItem>
 
           <ContextMenuSeparator />
 
