@@ -61,14 +61,14 @@ const RenameRoomDialog = ({ room, isOpen, onClose }: Props) => {
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit} className="space-y-4">
           <DialogHeader>
-            <DialogTitle>Rename Building</DialogTitle>
+            <DialogTitle>Rename Room</DialogTitle>
           </DialogHeader>
 
           <div className="grid gap-4">
             <form.AppField
               name="name"
               children={(field) => (
-                <field.TextField label="Building Name" placeholder="Enter building name" />
+                <field.TextField label="Room Name" placeholder="Enter room name" />
               )}
             />
           </div>

@@ -25,6 +25,18 @@ const RoomMarker = ({ room }: Props) => {
   const { value: isRenameDialogOpen, setValue: setIsRenameDialogOpen } = useBoolean(false);
   const { value: isDeleteDialogOpen, setValue: setIsDeleteDialogOpen } = useBoolean(false);
 
+  const handleRename = () => {
+    setTimeout(() => {
+      setIsRenameDialogOpen(true);
+    }, 100);
+  };
+
+  const handleDelete = () => {
+    setTimeout(() => {
+      setIsDeleteDialogOpen(true);
+    }, 100);
+  };
+
   return (
     <>
       <div
@@ -47,7 +59,7 @@ const RoomMarker = ({ room }: Props) => {
 
           </ContextMenuTrigger>
           <ContextMenuContent>
-            <ContextMenuItem onClick={() => setIsRenameDialogOpen(true)}>
+            <ContextMenuItem onClick={handleRename}>
               <IconEdit className="size-4" />
               Rename
             </ContextMenuItem>
@@ -59,7 +71,7 @@ const RoomMarker = ({ room }: Props) => {
 
             <ContextMenuSeparator />
 
-            <ContextMenuItem variant="destructive" onClick={() => setIsDeleteDialogOpen(true)}>
+            <ContextMenuItem variant="destructive" onClick={handleDelete}>
               <IconTrash className="size-4" />
               Delete
             </ContextMenuItem>
