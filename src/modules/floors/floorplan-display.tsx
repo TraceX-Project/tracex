@@ -20,6 +20,9 @@ const FloorPlanDisplay = ({ floor }: Props) => {
 
   const handleMapClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
+      // Prevent triggering if click comes from outside the container (e.g. context menu portals)
+      if (!event.currentTarget.contains(event.target as Node)) return;
+
       // Prevent triggering if clicking on existing rooms
       if ((event.target as HTMLElement).closest('.room-marker')) return;
 
