@@ -64,7 +64,8 @@ const FloorPlanDisplay = ({ floor }: Props) => {
         try {
           await updateRoom({
             roomId: movingRoomId,
-            payload: { x, y }
+            payload: { x, y },
+            floorId: floor.id,
           });
         } catch (error) {
           console.error(error);
