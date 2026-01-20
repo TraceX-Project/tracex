@@ -14,6 +14,7 @@ import {
   TooltipTrigger,
 } from "@/shared/components/ui/tooltip"
 import { useBoolean } from '@/shared/hooks/use-boolean';
+import { useRoomStore } from './_store/room.store';
 import RenameRoomDialog from './rename-room-dialog';
 import DeleteRoomDialog from './delete-room-dialog';
 
@@ -24,6 +25,7 @@ type Props = {
 const RoomMarker = ({ room }: Props) => {
   const { value: isRenameDialogOpen, setValue: setIsRenameDialogOpen } = useBoolean(false);
   const { value: isDeleteDialogOpen, setValue: setIsDeleteDialogOpen } = useBoolean(false);
+  const { setMovingRoomId, setCursorPosition } = useRoomStore((state) => state.actions);
 
   const handleRename = () => {
     setTimeout(() => {
@@ -34,6 +36,20 @@ const RoomMarker = ({ room }: Props) => {
   const handleDelete = () => {
     setTimeout(() => {
       setIsDeleteDialogOpen(true);
+    }, 100);
+  };
+
+  const handleChangeLocation = (e: React.MouseEvent) => {
+    const mapElement = document.getElementById('floor-plan-map');
+    if (!mapElement) return;
+
+    const rect = mapElement.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+    setTimeout(() => {
+      setMovingRoomId(room.id);
+      setCursorPosition({ x, y });
     }, 100);
   };
 
@@ -64,7 +80,7 @@ const RoomMarker = ({ room }: Props) => {
               Rename
             </ContextMenuItem>
 
-            <ContextMenuItem>
+            <ContextMenuItem onClick={handleChangeLocation}>
               <IconMapSearch className="size-4" />
               Change Location
             </ContextMenuItem>
