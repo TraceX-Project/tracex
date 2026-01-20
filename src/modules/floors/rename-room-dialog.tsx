@@ -11,6 +11,8 @@ import { type Room } from '../rooms/_types/room';
 import { createFloorSchema } from './_schema/floor';
 import { type FormEvent, useCallback } from 'react';
 import { Button } from '@/shared/components/ui/button';
+import { useUpdateRoom } from './_hooks/use-update-room';
+import { toast } from 'sonner';
 
 type Props = {
   room: Room;
@@ -19,6 +21,8 @@ type Props = {
 }
 
 const RenameRoomDialog = ({ room, isOpen, onClose }: Props) => {
+  const { mutateAsync: updateRoom } = useUpdateRoom()
+
   const form = useAppForm({
     defaultValues: {
       name: room.name
@@ -27,7 +31,20 @@ const RenameRoomDialog = ({ room, isOpen, onClose }: Props) => {
       onSubmit: createFloorSchema.pick({ name: true }).required(),
     },
     onSubmit: async ({ value }) => {
-      console.log('Rename room', value)
+      try {
+        await updateRoom({
+          roomId: room.id,
+          payload: {
+            name: value.name
+          }
+        })
+        onClose()
+
+        toast.success('Room renamed successfully');
+      } catch (error) {
+        console.log(error)
+        toast.error('Failed to rename room');
+      }
     }
   })
 

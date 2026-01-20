@@ -11,6 +11,7 @@ import {
 import { type Building } from '../buildings/_types/buildings';
 import { useDeleteBuilding } from '../buildings/_hooks/use-delete-building';
 import { useCallback } from 'react';
+import { toast } from 'sonner';
 
 type Props = {
   building: Building;
@@ -22,7 +23,15 @@ const DeleteBuildingDialog = ({ building, isOpen, onClose }: Props) => {
   const { mutateAsync: deleteBuilding } = useDeleteBuilding();
 
   const handleDelete = useCallback(async () => {
-    await deleteBuilding(building.id);
+    try {
+      await deleteBuilding(building.id);
+      onClose();
+
+      toast.success('Building deleted successfully');
+    } catch (error) {
+      console.log(error);
+      toast.error('Failed to delete building');
+    }
   }, [building, deleteBuilding]);
 
   return (

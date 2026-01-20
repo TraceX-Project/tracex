@@ -10,6 +10,8 @@ import {
 } from '@/shared/components/ui/alert-dialog';
 import { type Room } from '../rooms/_types/room';
 import { useCallback } from 'react';
+import { useDeleteRoom } from './_hooks/use-delete-room';
+import { toast } from 'sonner';
 
 type Props = {
   room: Room
@@ -18,9 +20,19 @@ type Props = {
 }
 
 const DeleteRoomDialog = ({ room, isOpen, onClose }: Props) => {
+  const { mutateAsync: deleteRoom } = useDeleteRoom()
+
   const handleDelete = useCallback(async () => {
-    console.log('Delete room', room);
-  }, [room]);
+    try {
+      await deleteRoom(room.id)
+      onClose()
+
+      toast.success('Room deleted successfully');
+    } catch (error) {
+      console.log(error)
+      toast.error('Failed to delete room');
+    }
+  }, [room, onClose]);
 
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
