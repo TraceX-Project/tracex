@@ -36,7 +36,8 @@ const RenameRoomDialog = ({ room, isOpen, onClose }: Props) => {
           roomId: room.id,
           payload: {
             name: value.name
-          }
+          },
+          floorId: room.floorId
         })
         onClose()
 

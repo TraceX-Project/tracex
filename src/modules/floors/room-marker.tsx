@@ -65,10 +65,10 @@ const RoomMarker = ({ room }: Props) => {
         <ContextMenu>
           <ContextMenuTrigger>
             <Tooltip>
-              <TooltipTrigger>
-                <IconMapPinFilled className="size-8 text-blue-500 transition-colors hover:text-blue-600" />
+              <TooltipTrigger asChild>
+                <IconMapPinFilled className="size-7 text-blue-500 transition-colors hover:text-blue-600" />
               </TooltipTrigger>
-              <TooltipContent side='bottom'>
+              <TooltipContent side='bottom' sideOffset={-6}>
                 <p>{room.name}</p>
               </TooltipContent>
             </Tooltip>

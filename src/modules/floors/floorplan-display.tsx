@@ -1,8 +1,9 @@
 'use client';
 
+import { useResizeObserver } from '@/shared/hooks/use-resize-observer';
 import Image from 'next/image';
 import { type Floor } from './_types/floor';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import CreateRoomModal from './create-room-modal';
 import { useGetRooms } from './_hooks/use-get-rooms';
 import { useUpdateRoom } from './_hooks/use-update-room';
@@ -22,6 +23,29 @@ const FloorPlanDisplay = ({ floor }: Props) => {
 
   const { mutateAsync: updateRoom } = useUpdateRoom();
   const containerRef = useRef<HTMLDivElement>(null);
+  const { width: containerWidth = 0, height: containerHeight = 0 } = useResizeObserver({ ref: containerRef as React.RefObject<HTMLElement> });
+  const [naturalSize, setNaturalSize] = useState({ width: 0, height: 0 });
+
+  const displaySize = useMemo(() => {
+    if (!naturalSize.width || !naturalSize.height || !containerWidth || !containerHeight) {
+      return { width: 0, height: 0 };
+    }
+
+    const imageRatio = naturalSize.width / naturalSize.height;
+    const containerRatio = containerWidth / containerHeight;
+
+    let width, height;
+
+    if (containerRatio > imageRatio) {
+      height = containerHeight;
+      width = height * imageRatio;
+    } else {
+      width = containerWidth;
+      height = width / imageRatio;
+    }
+
+    return { width, height };
+  }, [containerWidth, containerHeight, naturalSize]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -64,7 +88,8 @@ const FloorPlanDisplay = ({ floor }: Props) => {
         try {
           await updateRoom({
             roomId: movingRoomId,
-            payload: { x, y }
+            payload: { x, y },
+            floorId: floor.id,
           });
         } catch (error) {
           console.error(error);
@@ -85,32 +110,46 @@ const FloorPlanDisplay = ({ floor }: Props) => {
   return (
     <>
       <div
-        id="floor-plan-map"
         ref={containerRef}
-        className={cn('relative h-full w-full cursor-crosshair', movingRoomId && 'cursor-none')}
-        onClick={handleMapClick}
-        onMouseMove={handleMouseMove}
+        className={cn('relative flex h-full w-full items-center justify-center overflow-hidden', movingRoomId && 'cursor-none')}
         onMouseLeave={() => setCursorPosition(null)}
       >
-        <Image
-          src={floor.planUrl}
-          alt="Floor Plan"
-          fill
-          style={{ objectFit: 'contain' }}
-          priority
-        />
+        <div
+          id="floor-plan-map"
+          className="relative cursor-crosshair"
+          style={{
+            width: displaySize.width,
+            height: displaySize.height,
+          }}
+          onClick={handleMapClick}
+          onMouseMove={handleMouseMove}
+        >
+          <Image
+            src={floor.planUrl}
+            alt="Floor Plan"
+            fill
+            className="object-contain"
+            onLoadingComplete={(img) => {
+              setNaturalSize({
+                width: img.naturalWidth,
+                height: img.naturalHeight,
+              });
+            }}
+            priority
+          />
 
-        <GhostMarker />
+          <GhostMarker />
 
-        {rooms && (
-          <div className="pointer-events-none absolute inset-0">
-            {rooms?.filter((room) => movingRoomId !== room.id).map((room) => (
-              <div key={room.id} className='pointer-events-auto room-marker'>
-                <RoomMarker room={room} />
-              </div>
-            ))}
-          </div>
-        )}
+          {rooms && (
+            <div className="pointer-events-none absolute inset-0">
+              {rooms?.filter((room) => movingRoomId !== room.id).map((room) => (
+                <div key={room.id} className='pointer-events-auto room-marker'>
+                  <RoomMarker room={room} />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <CreateRoomModal floorId={floor.id} />

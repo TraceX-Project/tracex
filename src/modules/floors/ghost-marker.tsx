@@ -33,7 +33,7 @@ const GhostMarker = () => {
           */}
           <TooltipPrimitive.Content
             side="right"
-            sideOffset={5}
+            sideOffset={-6}
             avoidCollisions={false}
             className={cn(
               'bg-primary text-primary-foreground animate-in fade-in-0 zoom-in-95 z-50 w-fit rounded-md px-3 py-1.5 text-xs'
