@@ -1,7 +1,7 @@
-import { Room } from "@/modules/rooms/_types/room";
+import { type Room } from "@/modules/rooms/_types/room";
 import { ENDPOINTS } from "@/shared/config/endpoints";
 import { request } from "@/shared/lib/api";
-import { UpdateRoomInput } from "@/modules/rooms/_schema/schema";
+import { type UpdateRoomInput } from "@/modules/rooms/_schema/schema";
 
 export const deleteRoom = async (roomId: string) => {
   const response = await request<Room>({

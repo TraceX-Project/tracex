@@ -2,7 +2,7 @@ import { getQueryClient } from "@/shared/tanstack-query/get-query-client"
 import { useMutation } from "@tanstack/react-query"
 import { updateRoom } from "../_services/rooms.service"
 import { QUERY_KEYS } from "@/shared/constants/query-key"
-import { UpdateRoomInput } from "@/modules/rooms/_schema/schema"
+import { type UpdateRoomInput } from "@/modules/rooms/_schema/schema"
 
 export const useUpdateRoom = () => {
   const queryClient = getQueryClient()
