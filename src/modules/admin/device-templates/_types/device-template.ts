@@ -11,7 +11,8 @@ export enum DeviceType {
   ROUTER = 'router',
   SWITCH = 'switch',
   SWITCH_STACK = 'switch_stack',
-  SERVER = 'server'
+  SERVER = 'server',
+  VIRTUAL_MACHINE = 'virtual_machine'
 }
 
 export type GetDeviceTemplatesParams = {
