@@ -68,4 +68,6 @@ const PortItem = memo(
   }
 );
 
+PortItem.displayName = 'PortItem';
+
 export default PortItem;

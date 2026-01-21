@@ -1,6 +1,6 @@
 'use client';
 import { useSortable } from '@dnd-kit/sortable';
-import React, { useMemo, useState } from 'react'; // Removed useRef
+import React, { useState } from 'react'; // Removed useRef
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/shared/lib/cn';
 import { Dialog } from '@/shared/components/ui/dialog';
@@ -13,7 +13,6 @@ import {
 import { Device, DeviceInterface, DevicePort } from './_types/room';
 import LabelingCanvas from './labeling-canvas';
 import useImage from 'use-image';
-import Image from 'next/image';
 import DeviceTemplate from './device-template';
 
 type Props = {

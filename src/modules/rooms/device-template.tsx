@@ -1,5 +1,5 @@
-import { Stage, Layer, Image as KonvaImage, Rect } from 'react-konva';
-import { useRef, useMemo, useState } from 'react';
+import { Stage, Layer, Image as KonvaImage } from 'react-konva';
+import { useRef, useMemo } from 'react';
 import { useResizeObserver } from '@/shared/hooks/use-resize-observer';
 import useImage from 'use-image';
 import { DevicePort } from '@/modules/rooms/_types/room';

@@ -2,8 +2,6 @@ import {
   Stage,
   Layer,
   Image as KonvaImage,
-  Image,
-  Group,
   Text,
   Label,
   Tag,
