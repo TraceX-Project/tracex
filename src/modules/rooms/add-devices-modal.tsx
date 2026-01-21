@@ -120,7 +120,7 @@ const AddDevicesModal = ({ rackId }: Props) => {
               <form.AppField
                 name="deviceIds" 
                 children={(field) => (
-                  <field.MultiSelectField
+                  <field.MultipleSelectField
                     overflowBehavior="cutoff"
                     label="Select Devices"
                     options={deviceOptions}
