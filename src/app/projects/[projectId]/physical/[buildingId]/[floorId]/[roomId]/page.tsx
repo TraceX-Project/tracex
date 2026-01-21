@@ -1,4 +1,4 @@
-import { getFloors, getFloor, getRooms } from '@/modules/floors/_services/floors.service';
+import { getFloors, getFloorById, getRooms } from '@/modules/floors/_services/floors.service';
 import RoomView from '@/modules/rooms/room-view';
 import { QUERY_KEYS } from '@/shared/constants/query-key';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
@@ -18,7 +18,7 @@ export default async function RoomPage({ params }: Props) {
       }),
       queryClient.prefetchQuery({
         queryKey: [QUERY_KEYS.floors, floorId],
-        queryFn: () => getFloor(floorId),
+        queryFn: () => getFloorById(floorId),
       }),
       queryClient.prefetchQuery({
         queryKey: [QUERY_KEYS.rooms, floorId],

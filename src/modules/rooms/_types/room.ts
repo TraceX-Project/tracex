@@ -38,15 +38,14 @@ export type Device = {
   updatedAt:Date,
   type: string,
   deviceTemplate:deviceTemplate,
-  deviceInterfaces?:deviceInterface[] 
+  deviceInterfaces?:DeviceInterface[] 
 };
 
 export type Message = {
   message:string
 }
 
-
-export type deviceInterface = {
+export type DeviceInterface = {
   id:string,
   name:string,
   x: number,
@@ -54,6 +53,16 @@ export type deviceInterface = {
   width: number,
   height: number,
   status:string,
+}
+
+export type DevicePort = {
+  id:string,
+  name:string,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  portNumber: number;
 }
 
 export type deviceTemplate = {
@@ -71,15 +80,6 @@ export type DEVICE_OPTIONS = {
   label: string;
 }
 
-export type BoundingBox = {
-  id: string,
-  name: string,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  status: string
-}
 
 export type getRacksResponse = {
   id: string;

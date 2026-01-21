@@ -1,64 +1,71 @@
-import { Group, Image, Label, Tag, Text } from 'react-konva';
-import type Konva from 'konva';
-import { useEffect, useRef, useState } from 'react';
-import { type BoundingBox } from '@/modules/rooms/_types/room';
-import useImage from 'use-image';
+import { memo } from 'react';
+import { Rect, Group, Image } from 'react-konva';
+import { DevicePort } from './_types/room';
 
-type Props = {
-  box: BoundingBox;
+export type TooltipData = {
   x: number;
   y: number;
-  scaleX: number;
-  scaleY: number;
-};
+  strokeWidth: number;
+  width: number;
+  height: number;
+  text: string;
+} | null;
 
-const PortBoxItem = ({ box, x, y, scaleX, scaleY }: Props) => {
-  const groupRef = useRef<Konva.Group>(null);
-  const rectRef = useRef<Konva.Image>(null);
-  const trRef = useRef<Konva.Transformer>(null);
-  const textRef = useRef<Konva.Text>(null);
+const PortItem = memo(
+  ({
+    box,
+    scale,
+    imgX,
+    imgY,
+    strokeWidth,
+    portHeaderImage,
+    onHover,
+  }: {
+    box: DevicePort;
+    scale: number;
+    imgX: number;
+    imgY: number;
+    strokeWidth: number;
+    portHeaderImage: HTMLImageElement | undefined;
+    onHover?: (data: TooltipData) => void;
+  }) => {
+    const absX = imgX + box.x * scale;
+    const absY = imgY + box.y * scale;
+    const absWidth = box.width * scale ;
+    const absHeight = box.height * scale ;
+    // const strokeWidth = Math.max(1, 2 / scale);
 
-  const posX = box.x * scaleX + x;
-  const posY = box.y * scaleY + y;
-
-  useEffect(() => {
-    if (!rectRef.current || !textRef.current) return;
-
-    const rect = rectRef.current;
-    const text = textRef.current;
-
-    text.width(rect.width());
-    text.height(rect.height());
-
-    text.x(rect.x());
-    text.y(rect.y());
-  }, [box.width, box.height, posX, posY]);
-
-  const [image] = useImage('/assets/icons/gRealCopperST_HeadDown.png');
-  const [isHovered, setIsHovered] = useState(false);
-
-  return (
-    <Group
-        ref={groupRef}
-        x={posX}
-        y={posY}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+    return (
+      <Group
+        x={absX}
+        y={absY}
+        onMouseEnter={() => {
+          onHover?.({
+            x: absX,
+            y: absY,
+            width: absWidth,
+            height: absHeight,
+            strokeWidth,
+            text: box.name,
+          });
+        }}
+        onMouseLeave={() => {
+          onHover?.(null);
+        }}
       >
-        <Image
-          image={image}
-          width={box.width * scaleX}
-          height={box.height * scaleY}
-          ref={rectRef} // Keeping the ref name even though it's an Image now to avoid breaking other logic if generic
-        />
-        {isHovered && (
-          <Label y={-30}>
-            <Tag fill="black" opacity={0.8} pointerEvents="none" cornerRadius={4} />
-            <Text text={box.name} padding={5} fill="white" fontSize={12} align="center" />
-          </Label>
-        )}
-      </Group>
-  );
-};
+        <Image image={portHeaderImage} width={absWidth} height={absHeight} listening={false} />
 
-export default PortBoxItem;
+        <Rect
+          width={absWidth}
+          height={absHeight}
+          fill="transparent"
+          stroke="#39FF14"
+          strokeWidth={strokeWidth}
+          hitStrokeWidth={10}
+        />
+      </Group>
+    );
+  }
+);
+
+export default PortItem;

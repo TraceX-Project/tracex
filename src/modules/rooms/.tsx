@@ -1,7 +1,7 @@
 'use client';
 import { Stage, Layer, Image as KonvaImage } from 'react-konva';
 import PortBoxItem from './port-box-item';
-import { type BoundingBox } from './_types/room';
+import { type DeviceInterface } from './_types/room';
 
 type Props = {
   image: HTMLImageElement | undefined;
@@ -13,7 +13,7 @@ type Props = {
   scaleY: number;
   containerRef: React.RefObject<HTMLDivElement | null>;
   stageSize: { width: number; height: number };
-  boxes: BoundingBox[];
+  boxes: DeviceInterface[];
 };
 
 const PortCanvas = ({
