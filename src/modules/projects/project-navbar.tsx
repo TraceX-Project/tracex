@@ -18,11 +18,11 @@ import {
   BreadcrumbSeparator,
 } from '@/shared/components/ui/breadcrumb';
 import ManageFloors from '../buildings/manage-floors';
-import { useGetBuilding } from '../buildings/_hooks/use-get-building';
+import { useGetBuildingById } from '../buildings/_hooks/use-get-building';
 import { useRouter } from 'next/navigation';
 import CreateRackModal from '../rooms/create-rack-modal';
-import { useGetFloor } from '../floors/_hooks/use-get-floor';
 import { useGetRoom } from '../floors/_hooks/use-get-room';
+import { useGetFloorById } from '../floors/_hooks/use-floor';
 
 type Props = {
   project: Project;
@@ -37,8 +37,8 @@ const ProjectNavbar = ({ project }: Props) => {
     floorId?: string;
     roomId?: string;
   }>();
-  const { data: building } = useGetBuilding(params.buildingId ?? '');
-  const { data: floor } = useGetFloor(params.floorId ?? '');
+  const { data: building } = useGetBuildingById(params.buildingId ?? '');
+  const { data: floor } = useGetFloorById(params.floorId ?? '');
   const { data: room} = useGetRoom(params.roomId ?? '')
 
   const renderButtons = () => {
