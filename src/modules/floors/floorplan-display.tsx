@@ -140,7 +140,7 @@ const FloorPlanDisplay = ({ floor }: Props) => {
 
           <GhostMarker />
 
-          {rooms && (
+          {rooms && naturalSize.width > 0 && naturalSize.height > 0 && (
             <div className="pointer-events-none absolute inset-0">
               {rooms?.filter((room) => movingRoomId !== room.id).map((room) => (
                 <div key={room.id} className='pointer-events-auto room-marker'>
