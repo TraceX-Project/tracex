@@ -16,6 +16,8 @@ const FloorView = ({ floorId, buildingId }: Props) => {
   const { data: floors, isError: floorsError } = useGetFloors(buildingId);
   const { data: floor, isError } = useGetFloorById(floorId);
 
+  console.log('floor', floor);
+
   if (floorsError) {
     return notFound();
   }
