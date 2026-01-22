@@ -2,7 +2,7 @@ import { Stage, Layer, Image as KonvaImage } from 'react-konva';
 import { useRef, useMemo } from 'react';
 import { useResizeObserver } from '@/shared/hooks/use-resize-observer';
 import useImage from 'use-image';
-import { DevicePort } from '@/modules/rooms/_types/room';
+import { type DevicePort } from '@/modules/rooms/_types/room';
 import PortItem from './port-box-item';
 
 type Props = {

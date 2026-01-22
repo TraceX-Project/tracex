@@ -1,6 +1,6 @@
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
-import { Device, getRacksResponse, Message, type Rack } from '../_types/room';
+import { type Device, type getRacksResponse, type Message, type Rack } from '../_types/room';
 import { type AddDeviceInput, type CreateRackInput } from '../_schema/schema';
 
 export const getRacks = async (roomId: string) => {

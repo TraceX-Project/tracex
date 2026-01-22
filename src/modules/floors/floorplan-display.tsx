@@ -13,8 +13,6 @@ import { cn } from '@/shared/lib/cn';
 import GhostMarker from './ghost-marker';
 
 type Props = {
-  projectId: string;
-  buildingId: string;
   floor: Floor;
 };
 

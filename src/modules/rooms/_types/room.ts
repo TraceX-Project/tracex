@@ -1,4 +1,4 @@
-import { Alignment, DeviceType, Vendor } from "@/modules/admin/device-templates/_types/device-template";
+import { type Alignment, type DeviceType, type Vendor } from "@/modules/admin/device-templates/_types/device-template";
 
 export type Room = {
   id: string;

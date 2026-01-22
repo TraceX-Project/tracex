@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/components/ui/dialog';
-import { Device, DeviceInterface, DevicePort } from './_types/room';
+import { type Device, type DeviceInterface, type DevicePort } from './_types/room';
 import LabelingCanvas from './labeling-canvas';
 import useImage from 'use-image';
 import DeviceTemplate from './device-template';

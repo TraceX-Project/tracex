@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Rect, Group, Image } from 'react-konva';
-import { DevicePort } from './_types/room';
+import { type DevicePort } from './_types/room';
 
 export type TooltipData = {
   x: number;

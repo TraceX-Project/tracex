@@ -10,8 +10,8 @@ import {
 import { useRef, useMemo, useState } from 'react';
 import { useResizeObserver } from '@/shared/hooks/use-resize-observer';
 import useImage from 'use-image';
-import { DevicePort } from '@/modules/rooms/_types/room';
-import PortItem, { TooltipData } from './port-box-item';
+import { type DevicePort } from '@/modules/rooms/_types/room';
+import PortItem, { type TooltipData } from './port-box-item';
 
 type Props = {
   image: HTMLImageElement | undefined;

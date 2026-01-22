@@ -20,7 +20,7 @@ import {
 } from '@dnd-kit/sortable';
 import SortableRack from './sortable-rack';
 import { useGetRacks } from './_hooks/use-get-racks';
-import { Device, getRacksResponse } from './_types/room';
+import { type Device, type getRacksResponse } from './_types/room';
 
 const ManageRacks = ({ roomId }: { roomId: string }) => {
   const { data: allRacks } = useGetRacks(roomId);
