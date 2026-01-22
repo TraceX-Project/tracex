@@ -1,4 +1,4 @@
-import { LogicalDevice } from "../../_types/logical-view";
+import { type LogicalDevice } from "../../_types/logical-view";
 
 type Props = {
   device: LogicalDevice;
