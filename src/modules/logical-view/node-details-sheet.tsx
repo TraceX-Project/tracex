@@ -6,12 +6,6 @@ import {
   SheetTitle,
 } from '@/shared/components/ui/sheet';
 import { useGetLogicalDevice } from './_hooks/use-get-logical-device';
-import { DeviceType } from '@/modules/admin/device-templates/_types/device-template';
-import { ServerDetails } from './components/node-details/server-details';
-import { VirtualMachineDetails } from './components/node-details/virtual-machine-details';
-import { RouterDetails } from './components/node-details/router-details';
-import { SwitchDetails } from './components/node-details/switch-details';
-import { CommonDetails } from './components/node-details/common-details';
 
 type Props = {
   open: boolean;
