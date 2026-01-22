@@ -37,7 +37,6 @@ export const ENDPOINTS = {
     getDevicesByProjectId: (projectId: string) => `${ROOTS.projects}/${projectId}/physical-devices?inRack=false`,
     logicalDevices: (id: string) => `${ROOTS.projects}/${id}/logical-devices`,
     createServer: (id: string) => `${ROOTS.projects}/${id}/servers`,
-    getDevicesByProjectId: (projectId: string) => `${ROOTS.projects}/${projectId}/devices`,
   },
   deviceTemplates: {
     create: `${ROOTS.deviceTemplates}`,
@@ -74,7 +73,7 @@ export const ENDPOINTS = {
     getRacks: (roomId: string) => `${ROOTS.rooms}/${roomId}/racks`,
     createRack: (roomId: string) => `${ROOTS.rooms}/${roomId}/racks`,
   },
-  racks:{
+  racks: {
     addDeviceToRack: (rackId: string) => `${ROOTS.racks}/${rackId}/devices`,
     getDevicesByRackId: (rackId: string) => `${ROOTS.racks}/${rackId}/devices`,
   }
