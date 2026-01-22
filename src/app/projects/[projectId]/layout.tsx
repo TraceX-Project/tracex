@@ -29,7 +29,7 @@ export default async function ProjectLayout({ children, params }: Props) {
       <ProjectNavbar project={project} />
 
       <div className="relative flex flex-1 flex-col">
-        <div className="absolute top-4 left-1/2 z-[1001] -translate-x-1/2 transform">
+        <div className="absolute top-4 left-1/2 z-1 -translate-x-1/2 transform">
           <ChangingViewTabs />
         </div>
 

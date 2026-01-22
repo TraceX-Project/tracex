@@ -8,7 +8,7 @@ type Props = {
 };
 
 export default async function FloorPage({ params }: Props) {
-  const { buildingId, floorId } = await params;
+  const { buildingId, floorId,projectId } = await params;
   const queryClient = new QueryClient();
 
   await Promise.all([
@@ -28,7 +28,7 @@ export default async function FloorPage({ params }: Props) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <FloorView buildingId={buildingId} floorId={floorId} />
+      <FloorView projectId={projectId} buildingId={buildingId} floorId={floorId} />
     </HydrationBoundary>
   );
 }

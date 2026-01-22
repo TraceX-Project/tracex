@@ -8,6 +8,7 @@ const ROOTS = {
   floors: '/floors',
   logicalDevices: '/logical-devices',
   rooms: '/rooms',
+  racks: '/racks',
 };
 
 export const ENDPOINTS = {
@@ -33,6 +34,7 @@ export const ENDPOINTS = {
     upload: (id: string) => `${ROOTS.projects}/${id}/upload`,
     topology: (id: string) => `${ROOTS.projects}/${id}/topology`,
     thumbnail: (id: string) => `${ROOTS.projects}/${id}/thumbnail`,
+    getDevicesByProjectId: (projectId: string) => `${ROOTS.projects}/${projectId}/physical-devices?inRack=false`,
     logicalDevices: (id: string) => `${ROOTS.projects}/${id}/logical-devices`,
     createServer: (id: string) => `${ROOTS.projects}/${id}/servers`,
   },
@@ -67,6 +69,13 @@ export const ENDPOINTS = {
   rooms: {
     deleteById: (id: string) => `${ROOTS.rooms}/${id}`,
     update: (id: string) => `${ROOTS.rooms}/${id}`,
+    getById: (id: string) => `${ROOTS.rooms}/${id}`,
+    getRacks: (roomId: string) => `${ROOTS.rooms}/${roomId}/racks`,
+    createRack: (roomId: string) => `${ROOTS.rooms}/${roomId}/racks`,
+  },
+  racks: {
+    addDeviceToRack: (rackId: string) => `${ROOTS.racks}/${rackId}/devices`,
+    getDevicesByRackId: (rackId: string) => `${ROOTS.racks}/${rackId}/devices`,
   }
 };
 

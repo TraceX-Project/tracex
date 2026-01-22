@@ -17,15 +17,27 @@ import { useBoolean } from '@/shared/hooks/use-boolean';
 import { useRoomStore } from './_store/room.store';
 import RenameRoomDialog from './rename-room-dialog';
 import DeleteRoomDialog from './delete-room-dialog';
+import { useParams, useRouter } from 'next/navigation';
+import { PATHS } from '@/shared/config/paths';
 
 type Props = {
   room: Room;
 };
 
 const RoomMarker = ({ room }: Props) => {
+  const router = useRouter()
+  const { projectId, buildingId, floorId } = useParams<{
+    projectId: string;
+    buildingId: string;
+    floorId: string;
+  }>()
   const { value: isRenameDialogOpen, setValue: setIsRenameDialogOpen } = useBoolean(false);
   const { value: isDeleteDialogOpen, setValue: setIsDeleteDialogOpen } = useBoolean(false);
   const { setMovingRoomId, setCursorPosition } = useRoomStore((state) => state.actions);
+
+  const handleNavigate = () => {
+    router.push(PATHS.projects.roomView(projectId, buildingId, floorId, room.id));
+  };
 
   const handleRename = () => {
     setTimeout(() => {
@@ -61,6 +73,7 @@ const RoomMarker = ({ room }: Props) => {
           left: `${room.x}%`,
           top: `${room.y}%`,
         }}
+        onClick={handleNavigate}
       >
         <ContextMenu>
           <ContextMenuTrigger>

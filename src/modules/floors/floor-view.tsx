@@ -8,13 +8,14 @@ import { useGetFloorById, useGetFloors } from './_hooks/use-floor';
 import { notFound } from 'next/navigation';
 
 type Props = {
+  projectId: string;
   buildingId: string;
   floorId: string;
 };
 
-const FloorView = ({ floorId, buildingId }: Props) => {
+const FloorView = ({ projectId, floorId, buildingId }: Props) => {
   const { data: floors, isError: floorsError } = useGetFloors(buildingId);
-  const { data: floor, isError } = useGetFloorById(floorId);
+  const { data: floor, isError, isLoading } = useGetFloorById(floorId);
 
   if (floorsError) {
     return notFound();
@@ -28,13 +29,13 @@ const FloorView = ({ floorId, buildingId }: Props) => {
     );
   }
 
-  if (!floor || isError) {
+  if (!floor && !isLoading && isError) {
     return notFound();
   }
 
   return (
     <div className="relative h-full max-h-screen w-full max-w-screen">
-      <FloorPlanDisplay floor={floor} />
+      {floor && (<FloorPlanDisplay floor={floor} />)}
 
       <div className="absolute right-4 bottom-4 sm:right-8">
         <FloorSelector floors={floors} currentFloorId={floorId} />
