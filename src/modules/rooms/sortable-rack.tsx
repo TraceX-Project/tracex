@@ -8,9 +8,9 @@ import { useSortable, SortableContext, verticalListSortingStrategy } from '@dnd-
 import { GripVertical } from 'lucide-react';
 import SortableDevice from './sortable-device';
 import AddDevicesModal from './add-devices-modal';
-import { type Device } from './_types/room';
+import { type Device, type getRacksResponse } from './_types/room';
 
-const SortableRack = ({ name, id, devices }: { name: string; id: string; devices: Device[] }) => {
+const SortableRack = ({ rack }: { rack: getRacksResponse }) => {
   const {
     attributes,
     listeners,
@@ -18,10 +18,9 @@ const SortableRack = ({ name, id, devices }: { name: string; id: string; devices
     transform,
     transition,
     isDragging,
-  } = useSortable({ id });
+  } = useSortable({ id: rack.id });
 
-
-  const { setNodeRef: setDroppableRef } = useDroppable({ id });
+  const { setNodeRef: setDroppableRef } = useDroppable({ id: rack.id });
   const setNodeRef = (node: HTMLElement | null) => {
     setSortableRef(node);
     setDroppableRef(node);
@@ -48,19 +47,19 @@ const SortableRack = ({ name, id, devices }: { name: string; id: string; devices
         className="flex h-12 w-full flex-shrink-0 cursor-grab items-center justify-between border-b-2 border-black bg-slate-50 px-2 active:cursor-grabbing"
       >
         <GripVertical className="h-4 w-4 text-slate-400" />
-        <span className="text-sm font-bold uppercase">{name}</span>
-        <div onPointerDown={(e) => e.stopPropagation()}>
-          <AddDevicesModal rackId={id} />
+        <span className="text-sm font-bold uppercase">{rack.name}</span>
+        <div onPointerDown={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
+          <AddDevicesModal rack={rack} />
         </div>
       </div>
 
       {/* Device sorting area - No DndContext here! */}
       <div className="flex flex-1 flex-col">
         <SortableContext
-          items={devices.map((d: Device) => d.id)}
+          items={rack.devices.map((d: Device) => d.id)}
           strategy={verticalListSortingStrategy}
         >
-          {devices.map((device: Device) => (
+          {rack.devices.map((device: Device) => (
             <SortableDevice key={device.id} device={device} />
           ))}
         </SortableContext>

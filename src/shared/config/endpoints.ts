@@ -76,6 +76,7 @@ export const ENDPOINTS = {
   racks: {
     addDeviceToRack: (rackId: string) => `${ROOTS.racks}/${rackId}/devices`,
     getDevicesByRackId: (rackId: string) => `${ROOTS.racks}/${rackId}/devices`,
+    updateRack: (rackId: string) => `${ROOTS.racks}/${rackId}`,
   }
 };
 
