@@ -22,10 +22,10 @@ interface Props extends Omit<React.ComponentProps<typeof MultiSelectTrigger>, 'f
   description?: string;
   showErrorMessage?: boolean;
   orientation?: 'vertical' | 'horizontal' | 'responsive';
-  overflowBehavior: "wrap-when-open" | "wrap" | "cutoff"
+  overflowBehavior: 'wrap-when-open' | 'wrap' | 'cutoff';
   single?: boolean;
   emptyMessage?: string;
-  search?: boolean | { placeholder?: string; emptyMessage?: string }
+  search?: boolean | { placeholder?: string; emptyMessage?: string };
 }
 
 const MultipleSelectField = ({

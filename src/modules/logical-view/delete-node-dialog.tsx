@@ -41,8 +41,7 @@ const DeleteNodeDialog = ({ open, onOpenChange, deviceId, projectId }: Props) =>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the
-            selected node.
+            This action cannot be undone. This will permanently delete the selected node.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

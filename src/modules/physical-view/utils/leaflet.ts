@@ -1,17 +1,9 @@
-import { type PhotonProperties } from "../_types/map";
-
+import { type PhotonProperties } from '../_types/map';
 
 export const formatAddress = (properties?: PhotonProperties): string => {
-  if (!properties) return "";
+  if (!properties) return '';
 
-  const {
-    housenumber,
-    street,
-    city,
-    locality,
-    state,
-    country,
-  } = properties;
+  const { housenumber, street, city, locality, state, country } = properties;
 
   const parts = [
     formatStreet(housenumber, street),
@@ -20,14 +12,10 @@ export const formatAddress = (properties?: PhotonProperties): string => {
     country,
   ];
 
-  return parts.filter(Boolean).join(", ");
+  return parts.filter(Boolean).join(', ');
 };
 
-
-const formatStreet = (
-  housenumber?: string,
-  street?: string
-): string | undefined => {
+const formatStreet = (housenumber?: string, street?: string): string | undefined => {
   if (!street) return undefined;
 
   return housenumber ? `${housenumber} ${street}` : street;

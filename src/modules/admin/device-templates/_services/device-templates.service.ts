@@ -16,8 +16,8 @@ export const createDeviceTemplate = async (formData: FormData) => {
 
 export const getDeviceTemplates = async (params?: GetDeviceTemplatesParams) => {
   const query = buildQueryString({
-    type: params?.type
-  })
+    type: params?.type,
+  });
 
   const response = await request<DeviceTemplate[]>({
     method: 'GET',

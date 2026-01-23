@@ -1,11 +1,11 @@
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
-import { type getRacksResponse, type Message, type Rack } from '../_types/room';
+import { type GetRacksResponse, type Message, type Rack } from '../_types/room';
 import { type AddDeviceInput, type CreateRackInput } from '../_schema/schema';
 import { type Device } from '@/modules/logical-view/_types/logical-view';
 
 export const getRacks = async (roomId: string) => {
-  const response = await request<getRacksResponse[]>({
+  const response = await request<GetRacksResponse[]>({
     method: 'GET',
     path: ENDPOINTS.rooms.getRacks(roomId),
   });

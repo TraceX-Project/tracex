@@ -1,5 +1,5 @@
-import { type Project } from "@/modules/projects/_types/projects";
-import { type Device } from "./logical-view";
+import { type Project } from '@/modules/projects/_types/projects';
+import { type Device } from './logical-view';
 
 export type DeviceStack = {
   id: string;
@@ -9,6 +9,6 @@ export type DeviceStack = {
   projectId: string;
   createdAt: string;
   updatedAt: string;
-  project: Project
-  devices: Device[]
-}
+  project: Project;
+  devices: Device[];
+};

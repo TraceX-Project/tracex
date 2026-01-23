@@ -39,11 +39,18 @@ const ProjectNavbar = ({ project }: Props) => {
   }>();
   const { data: building } = useGetBuildingById(params.buildingId ?? '');
   const { data: floor } = useGetFloorById(params.floorId ?? '');
-  const { data: room} = useGetRoom(params.roomId ?? '')
+  const { data: room } = useGetRoom(params.roomId ?? '');
 
   const renderButtons = () => {
     if (params.buildingId && params.floorId && params.roomId) {
-      return <CreateRackModal roomId={params.roomId} title={'Manage Racks'} variant={'outline'} icon={<Server />} />;
+      return (
+        <CreateRackModal
+          roomId={params.roomId}
+          title={'Manage Racks'}
+          variant={'outline'}
+          icon={<Server />}
+        />
+      );
     }
     if (params.buildingId && params.floorId) {
       return <ManageFloors buildingId={params.buildingId} />;
@@ -111,12 +118,7 @@ const ProjectNavbar = ({ project }: Props) => {
                 <BreadcrumbItem>
                   <BreadcrumbLink asChild className="text-foreground">
                     <Link
-                      href={PATHS.projects.roomView(
-                        project.id,
-                        building.id,
-                        floor.id,
-                        room.id
-                      )}
+                      href={PATHS.projects.roomView(project.id, building.id, floor.id, room.id)}
                     >
                       {room.name}
                     </Link>

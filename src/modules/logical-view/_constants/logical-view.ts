@@ -11,13 +11,13 @@ export const NODE_TYPES = {
   [`${DeviceType.SWITCH}`]: SwitchNode,
   [`${DeviceType.SWITCH_STACK}`]: StackSwitchNode,
   [`${DeviceType.SERVER}`]: ServerNode,
-  [`${DeviceType.VIRTUAL_MACHINE}`]: VMNode
+  [`${DeviceType.VIRTUAL_MACHINE}`]: VMNode,
 };
 
 export const DEFAULT_NODE_WIDTH = 172;
 export const DEFAULT_NODE_HEIGHT = 36;
 
 export const HYPERVISOR_VENDORS_OPTIONS = [
-  { value: HypervisorVendor.ESXI, label: "EXSI" },
-  { value: HypervisorVendor.PROXMOX, label: "PROXMOX" }
-]
+  { value: HypervisorVendor.ESXI, label: 'EXSI' },
+  { value: HypervisorVendor.PROXMOX, label: 'PROXMOX' },
+];

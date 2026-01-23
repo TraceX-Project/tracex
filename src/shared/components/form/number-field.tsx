@@ -41,7 +41,7 @@ const NumberField = ({
           Number.isNaN(field.state.value) || field.state.value == null ? '' : field.state.value
         }
         onChange={(e) => {
-          const {value} = e.target;
+          const { value } = e.target;
 
           if (value === '') {
             field.handleChange(null);

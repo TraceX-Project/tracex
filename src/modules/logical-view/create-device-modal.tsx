@@ -27,7 +27,7 @@ type Props = {
 
 const CreateDeviceModal = ({ projectId }: Props) => {
   const { data: deviceTemplates } = useGetDeviceTemplates({
-    type: [DeviceType.ROUTER, DeviceType.SWITCH]
+    type: [DeviceType.ROUTER, DeviceType.SWITCH],
   });
   const { mutateAsync: addDevice } = useAddDevice();
   const { value: open, setValue: setOpen } = useBoolean();

@@ -60,10 +60,8 @@ const NodeDetailsSheet = ({ open, onOpenChange, deviceId }: Props) => {
             {!device && 'View detailed information about this device.'}
           </SheetDescription>
         </SheetHeader>
-        <ScrollArea className="flex-1 min-h-0">
-          <div className="px-4 pb-6">
-            {renderContent()}
-          </div>
+        <ScrollArea className="min-h-0 flex-1">
+          <div className="px-4 pb-6">{renderContent()}</div>
         </ScrollArea>
       </SheetContent>
     </Sheet>

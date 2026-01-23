@@ -1,5 +1,9 @@
-import { type Alignment, type DeviceType, type Vendor } from "@/modules/admin/device-templates/_types/device-template";
-import { type Device } from "@/modules/logical-view/_types/logical-view";
+import {
+  type Alignment,
+  type DeviceType,
+  type Vendor,
+} from '@/modules/admin/device-templates/_types/device-template';
+import { type Device } from '@/modules/logical-view/_types/logical-view';
 
 export type Room = {
   id: string;
@@ -25,46 +29,45 @@ export type CreateRackRequest = {
 };
 
 export type Message = {
-  message: string
-}
+  message: string;
+};
 
 export type DeviceInterface = {
-  id: string,
-  name: string,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  status: string,
-}
+  id: string;
+  name: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  status: string;
+};
 
 export type DevicePort = {
-  id: string,
-  name: string,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
+  id: string;
+  name: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
   portNumber: number;
-}
+};
 
 export type deviceTemplate = {
-  id: string,
-  modelName: string,
-  vendor: Vendor,
-  deviceType: DeviceType,
-  unitSize: number,
-  frontPanelUrl: string,
-  alignment: Alignment
-}
+  id: string;
+  modelName: string;
+  vendor: Vendor;
+  deviceType: DeviceType;
+  unitSize: number;
+  frontPanelUrl: string;
+  alignment: Alignment;
+};
 
 export type DEVICE_OPTIONS = {
   value: string;
   label: string;
-}
+};
 
-
-export type getRacksResponse = {
+export type GetRacksResponse = {
   id: string;
   roomId: string;
   name: string;
@@ -73,8 +76,7 @@ export type getRacksResponse = {
   createdAt: Date;
   updatedAt: Date;
   devices: Device[];
-}
-
+};
 
 export const DEVICE_OPTIONS = [
   { value: 'test', label: 'Cisco Switch' },

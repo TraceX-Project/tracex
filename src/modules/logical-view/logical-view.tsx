@@ -23,7 +23,6 @@ import DeleteNodeDialog from './delete-node-dialog';
 import NodeDetailsSheet from './node-details-sheet';
 import { type DeviceType } from '../admin/device-templates/_types/device-template';
 
-
 type Props = {
   projectId: string;
 };
@@ -58,7 +57,6 @@ const LogicalView = ({ projectId }: Props) => {
 
       if (!ref.current) return;
 
-
       const pane = ref.current.getBoundingClientRect();
       setMenu({
         id: node.id,
@@ -69,7 +67,6 @@ const LogicalView = ({ projectId }: Props) => {
     },
     [setMenu]
   );
-
 
   const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
 
@@ -87,15 +84,10 @@ const LogicalView = ({ projectId }: Props) => {
     }
   }, [menu]);
 
-
-
-  const onNodeClick = useCallback(
-    (_: React.MouseEvent, node: Node) => {
-      setSelectedDeviceId(node.id);
-      setDetailsValuesOpen(true);
-    },
-    []
-  );
+  const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
+    setSelectedDeviceId(node.id);
+    setDetailsValuesOpen(true);
+  }, []);
 
   return (
     <div className="relative h-full w-full">

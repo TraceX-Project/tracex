@@ -9,7 +9,7 @@ import { type NodeContextMenuState } from './_types/logical-view';
 import { DeviceType } from '../admin/device-templates/_types/device-template';
 
 type Props = {
-  menu: NodeContextMenuState
+  menu: NodeContextMenuState;
   open: boolean;
   onClose: () => void;
   onConnect: () => void;
@@ -29,19 +29,14 @@ const NodeContextMenu = ({ menu, open, onClose, onConnect, onDelete }: Props) =>
       >
         {menu.type !== DeviceType.SERVER && (
           <>
-            <DropdownMenuItem
-              onClick={onConnect}
-            >
+            <DropdownMenuItem onClick={onConnect}>
               <IconPlugConnected className="size-4" />
               <span>Connect a hypervisor</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
           </>
         )}
-        <DropdownMenuItem
-          variant="destructive"
-          onClick={onDelete}
-        >
+        <DropdownMenuItem variant="destructive" onClick={onDelete}>
           <IconTrash className="size-4" />
           <span>Delete</span>
         </DropdownMenuItem>

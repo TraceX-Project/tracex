@@ -1,4 +1,4 @@
-import { type LogicalDevice } from "../../_types/logical-view";
+import { type LogicalDevice } from '../../_types/logical-view';
 
 type Props = {
   device: LogicalDevice;
@@ -14,7 +14,9 @@ export const CommonDetails = ({ device }: Props) => {
         </div>
         <div>
           <div className="text-muted-foreground">Type</div>
-          <div className="font-medium capitalize">{device.deviceTemplate.deviceType.replace('_', ' ')}</div>
+          <div className="font-medium capitalize">
+            {device.deviceTemplate.deviceType.replace('_', ' ')}
+          </div>
         </div>
         <div>
           <div className="text-muted-foreground">Model</div>

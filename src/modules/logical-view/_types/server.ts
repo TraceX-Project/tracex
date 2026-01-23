@@ -1,4 +1,7 @@
-import { type DeviceTemplate, type Vendor } from '@/modules/admin/device-templates/_types/device-template';
+import {
+  type DeviceTemplate,
+  type Vendor,
+} from '@/modules/admin/device-templates/_types/device-template';
 
 export type Server = {
   id: string;

@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useMapEvents } from 'react-leaflet';
 import { usePhysicalMapStore } from './_store/physical-map.store';
@@ -35,15 +34,15 @@ const MovingBuildingMarker = ({ projectId }: Props) => {
               location: {
                 lat: e.latlng.lat,
                 lng: e.latlng.lng,
-              }
-            }
+              },
+            },
           });
 
           setMovingBuildingId(null);
           setPosition(null);
-        }
+        };
 
-        updateBuildingFn()
+        updateBuildingFn();
       }
     },
   });
@@ -65,13 +64,12 @@ const MovingBuildingMarker = ({ projectId }: Props) => {
     }
   }, [movingBuildingId, setMovingBuildingId]);
 
-
   if (!movingBuildingId || !position) return null;
 
   return (
     <MapCustomMarker
       position={position}
-      icon={<IconMapPinFilled className="text-orange-600 w-8 h-8 opacity-70" />}
+      icon={<IconMapPinFilled className="h-8 w-8 text-orange-600 opacity-70" />}
       zIndexOffset={1000}
       interactive={false}
     >

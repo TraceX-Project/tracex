@@ -20,7 +20,7 @@ import {
 } from '@dnd-kit/sortable';
 import SortableRack from './sortable-rack';
 import { useGetRacks } from './_hooks/use-get-racks';
-import { type getRacksResponse } from './_types/room';
+import { type GetRacksResponse } from './_types/room';
 import { type Device } from '../logical-view/_types/logical-view';
 
 const ManageRacks = ({ roomId }: { roomId: string }) => {
@@ -34,12 +34,13 @@ const ManageRacks = ({ roomId }: { roomId: string }) => {
   );
 
   const findContainer = (id: string) => {
-    if (racks.find((r: getRacksResponse) => r.id === id)) return id;
-    return racks.find((rack: getRacksResponse) => rack.devices.some((d: Device) => d.id === id))?.id;
+    if (racks.find((r: GetRacksResponse) => r.id === id)) return id;
+    return racks.find((rack: GetRacksResponse) => rack.devices.some((d: Device) => d.id === id))
+      ?.id;
   };
 
   const findRackByDeviceId = (deviceId: string) =>
-    racks.find((r: getRacksResponse) => r.devices.some((d: Device) => d.id === deviceId));
+    racks.find((r: GetRacksResponse) => r.devices.some((d: Device) => d.id === deviceId));
 
   const handleDragOver = ({ active, over }: DragOverEvent) => {
     if (!over) return;
@@ -49,7 +50,7 @@ const ManageRacks = ({ roomId }: { roomId: string }) => {
 
     const activeRack = findRackByDeviceId(activeId);
     const overRack =
-      racks.find((r: getRacksResponse) => r.id === overId) ?? // hovering rack
+      racks.find((r: GetRacksResponse) => r.id === overId) ?? // hovering rack
       findRackByDeviceId(overId); // hovering device
 
     if (!activeRack || !overRack) return;
@@ -58,7 +59,7 @@ const ManageRacks = ({ roomId }: { roomId: string }) => {
     setRacks((prev) => {
       const activeDevice = activeRack.devices.find((d: Device) => d.id === activeId)!;
 
-      return prev.map((rack: getRacksResponse) => {
+      return prev.map((rack: GetRacksResponse) => {
         if (rack.id === activeRack.id) {
           return {
             ...rack,
@@ -84,9 +85,9 @@ const ManageRacks = ({ roomId }: { roomId: string }) => {
     const overId = over.id.toString();
 
     // CASE 1: Reordering Racks
-    if (racks.some((r: getRacksResponse) => r.id === activeId)) {
-      const oldIndex = racks.findIndex((r: getRacksResponse) => r.id === activeId);
-      const newIndex = racks.findIndex((r: getRacksResponse) => r.id === overId);
+    if (racks.some((r: GetRacksResponse) => r.id === activeId)) {
+      const oldIndex = racks.findIndex((r: GetRacksResponse) => r.id === activeId);
+      const newIndex = racks.findIndex((r: GetRacksResponse) => r.id === overId);
       if (oldIndex !== newIndex) {
         setRacks((prev) => arrayMove(prev, oldIndex, newIndex));
       }
@@ -96,7 +97,7 @@ const ManageRacks = ({ roomId }: { roomId: string }) => {
     // CASE 2: Finalizing Device Position (within the same rack)
     const container = findContainer(activeId);
     if (container) {
-      const rackIndex = racks.findIndex((r: getRacksResponse) => r.id === container);
+      const rackIndex = racks.findIndex((r: GetRacksResponse) => r.id === container);
       const rackDevices = racks[rackIndex].devices;
       const oldIndex = rackDevices.findIndex((d: Device) => d.id === activeId);
       const newIndex = rackDevices.findIndex((d: Device) => d.id === overId);
@@ -128,10 +129,7 @@ const ManageRacks = ({ roomId }: { roomId: string }) => {
         <div className="flex h-full w-full flex-nowrap gap-8 overflow-x-auto px-10 pb-4">
           <SortableContext items={racks.map((r) => r.id)} strategy={horizontalListSortingStrategy}>
             {racks.map((rack) => (
-              <SortableRack
-                key={rack.id}
-                rack={rack}
-              />
+              <SortableRack key={rack.id} rack={rack} />
             ))}
           </SortableContext>
         </div>

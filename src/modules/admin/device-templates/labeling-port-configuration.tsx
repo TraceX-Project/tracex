@@ -1,5 +1,9 @@
 import React, { useCallback } from 'react';
-import { type DeviceTemplateFormData, type PortRange, type PortType } from './_types/device-template';
+import {
+  type DeviceTemplateFormData,
+  type PortRange,
+  type PortType,
+} from './_types/device-template';
 import { Button } from '@/shared/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/ui/tooltip';
@@ -32,7 +36,7 @@ const LabelingPortConfiguration = ({ form }: Props) => {
       };
       form.setFieldValue('portRanges', [newPortRange]);
     }
-  }, [])
+  }, []);
 
   const addPortRange = useCallback(() => {
     const newPortRange: PortRange = {
@@ -96,7 +100,7 @@ const LabelingPortConfiguration = ({ form }: Props) => {
             </CardHeader>
 
             <CardContent>
-              <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2 lg:grid-cols-3 ">
+              <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {/* Port Type */}
                 <form.AppField
                   name={`portRanges[${index}].portType`}

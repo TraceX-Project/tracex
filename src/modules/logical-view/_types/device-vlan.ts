@@ -5,4 +5,4 @@ export type DeviceVlan = {
   deviceId: string;
   createdAt: string;
   updatedAt: string;
-}
+};

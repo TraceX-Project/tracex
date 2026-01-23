@@ -1,5 +1,5 @@
-import { type LogicalDevice } from "../../_types/logical-view";
-import { CommonDetails } from "./common-details";
+import { type LogicalDevice } from '../../_types/logical-view';
+import { CommonDetails } from './common-details';
 
 type Props = {
   device: LogicalDevice;
@@ -15,7 +15,10 @@ export const RouterDetails = ({ device }: Props) => {
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
             <span>Interfaces Used:</span>
-            <span>{device.deviceInterfaces.filter(i => i.isConnected).length} / {device.deviceInterfaces.length}</span>
+            <span>
+              {device.deviceInterfaces.filter((i) => i.isConnected).length} /{' '}
+              {device.deviceInterfaces.length}
+            </span>
           </div>
         </div>
       </div>

@@ -56,7 +56,7 @@ const apiFetch = async <T>(
       typeof (result as ErrorResponse).error === 'string'
     ) {
       console.log('API Error Details:', result);
-      const {message} = (result as ErrorResponse);
+      const { message } = result as ErrorResponse;
 
       if (typeof message === 'string' && message.length > 0) {
         throw new ApiError(message.charAt(0).toUpperCase() + message.slice(1), response.status);

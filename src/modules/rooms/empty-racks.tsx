@@ -1,15 +1,22 @@
 'use client';
-  
-import React from 'react'
-import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription, EmptyContent } from '@/shared/components/ui/empty';
+
+import React from 'react';
+import {
+  Empty,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyContent,
+} from '@/shared/components/ui/empty';
 import { Server } from 'lucide-react';
 import CreateRackModal from './create-rack-modal';
 
 type Props = {
-    roomId: string
-}
+  roomId: string;
+};
 
-const EmptyRacks = ({roomId}:Props) => {
+const EmptyRacks = ({ roomId }: Props) => {
   return (
     <Empty>
       <EmptyHeader>
@@ -25,7 +32,7 @@ const EmptyRacks = ({roomId}:Props) => {
         <CreateRackModal title="Create Rack" roomId={roomId} />
       </EmptyContent>
     </Empty>
-  )
-}
+  );
+};
 
-export default EmptyRacks
+export default EmptyRacks;

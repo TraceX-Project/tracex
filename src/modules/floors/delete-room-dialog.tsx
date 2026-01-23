@@ -14,22 +14,22 @@ import { useDeleteRoom } from './_hooks/use-delete-room';
 import { toast } from 'sonner';
 
 type Props = {
-  room: Room
+  room: Room;
   isOpen: boolean;
   onClose: () => void;
-}
+};
 
 const DeleteRoomDialog = ({ room, isOpen, onClose }: Props) => {
-  const { mutateAsync: deleteRoom } = useDeleteRoom()
+  const { mutateAsync: deleteRoom } = useDeleteRoom();
 
   const handleDelete = useCallback(async () => {
     try {
-      await deleteRoom(room.id)
-      onClose()
+      await deleteRoom(room.id);
+      onClose();
 
       toast.success('Room deleted successfully');
     } catch (error) {
-      console.log(error)
+      console.log(error);
       toast.error('Failed to delete room');
     }
   }, [room, onClose]);
@@ -53,7 +53,7 @@ const DeleteRoomDialog = ({ room, isOpen, onClose }: Props) => {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
-}
+  );
+};
 
-export default DeleteRoomDialog
+export default DeleteRoomDialog;

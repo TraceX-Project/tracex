@@ -38,14 +38,14 @@ const CreateBuildingDialog = ({ projectId }: Props) => {
     },
     onSubmit: async ({ value }) => {
       try {
-        console.log("create building", value)
-        console.log("selectedLocation", selectedLocation)
+        console.log('create building', value);
+        console.log('selectedLocation', selectedLocation);
 
         const payload = {
           ...value,
           location: {
             lat: selectedLocation!.location.lat,
-            lng: selectedLocation!.location.lng
+            lng: selectedLocation!.location.lng,
           },
         };
 
@@ -73,10 +73,10 @@ const CreateBuildingDialog = ({ projectId }: Props) => {
     if (isOpen && selectedLocation) {
       form.reset({
         name: selectedLocation.name ?? '',
-        location: selectedLocation.location
-      })
+        location: selectedLocation.location,
+      });
     }
-  }, [isOpen, selectedLocation, form])
+  }, [isOpen, selectedLocation, form]);
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => setIsCreateBuildingModalOpen(open)}>

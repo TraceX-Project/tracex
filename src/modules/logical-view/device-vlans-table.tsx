@@ -1,8 +1,8 @@
-import { type DeviceVlan } from "./_types/device-vlan";
-import { type ColumnDef } from "@tanstack/react-table";
-import { useDataTable } from "@/shared/hooks/use-data-table";
-import DataTable from "@/shared/components/table/data-table";
-import { Separator } from "@/shared/components/ui/separator";
+import { type DeviceVlan } from './_types/device-vlan';
+import { type ColumnDef } from '@tanstack/react-table';
+import { useDataTable } from '@/shared/hooks/use-data-table';
+import DataTable from '@/shared/components/table/data-table';
+import { Separator } from '@/shared/components/ui/separator';
 
 type Props = {
   vlans: DeviceVlan[];
@@ -31,9 +31,7 @@ export const DeviceVlansTable = ({ vlans }: Props) => {
   return (
     <div className="space-y-2">
       <div className="space-y-2">
-        <div className="text-sm font-medium leading-none">
-          Vlans
-        </div>
+        <div className="text-sm leading-none font-medium">Vlans</div>
         <Separator />
       </div>
 

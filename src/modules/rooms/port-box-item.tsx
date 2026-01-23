@@ -31,8 +31,8 @@ const PortItem = memo(
   }) => {
     const absX = imgX + box.x * scale;
     const absY = imgY + box.y * scale;
-    const absWidth = box.width * scale ;
-    const absHeight = box.height * scale ;
+    const absWidth = box.width * scale;
+    const absHeight = box.height * scale;
     // const strokeWidth = Math.max(1, 2 / scale);
 
     return (

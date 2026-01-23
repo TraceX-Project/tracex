@@ -7,12 +7,8 @@ import {
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
-} from "@/shared/components/ui/context-menu"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/shared/components/ui/tooltip"
+} from '@/shared/components/ui/context-menu';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/ui/tooltip';
 import { useBoolean } from '@/shared/hooks/use-boolean';
 import { useRoomStore } from './_store/room.store';
 import RenameRoomDialog from './rename-room-dialog';
@@ -25,12 +21,12 @@ type Props = {
 };
 
 const RoomMarker = ({ room }: Props) => {
-  const router = useRouter()
+  const router = useRouter();
   const { projectId, buildingId, floorId } = useParams<{
     projectId: string;
     buildingId: string;
     floorId: string;
-  }>()
+  }>();
   const { value: isRenameDialogOpen, setValue: setIsRenameDialogOpen } = useBoolean(false);
   const { value: isDeleteDialogOpen, setValue: setIsDeleteDialogOpen } = useBoolean(false);
   const { setMovingRoomId, setCursorPosition } = useRoomStore((state) => state.actions);
@@ -81,11 +77,10 @@ const RoomMarker = ({ room }: Props) => {
               <TooltipTrigger asChild>
                 <IconMapPinFilled className="size-7 text-blue-500 transition-colors hover:text-blue-600" />
               </TooltipTrigger>
-              <TooltipContent side='bottom' sideOffset={-6}>
+              <TooltipContent side="bottom" sideOffset={-6}>
                 <p>{room.name}</p>
               </TooltipContent>
             </Tooltip>
-
           </ContextMenuTrigger>
           <ContextMenuContent>
             <ContextMenuItem onClick={handleRename}>

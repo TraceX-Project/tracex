@@ -9,8 +9,8 @@ export const userColumns: ColumnDef<User>[] = [
     header: 'Avatar',
     cell: ({ row }) => {
       const avatarUrl = row.getValue<string>('avatarUrl');
-      const {firstName} = row.original;
-      const {lastName} = row.original;
+      const { firstName } = row.original;
+      const { lastName } = row.original;
 
       return (
         <UserAvatar

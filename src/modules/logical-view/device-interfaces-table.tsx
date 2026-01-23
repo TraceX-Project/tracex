@@ -1,8 +1,8 @@
-import { type DeviceInterface } from "./_types/logical-view";
-import { type ColumnDef } from "@tanstack/react-table";
-import { useDataTable } from "@/shared/hooks/use-data-table";
-import DataTable from "@/shared/components/table/data-table";
-import { Separator } from "@/shared/components/ui/separator";
+import { type DeviceInterface } from './_types/logical-view';
+import { type ColumnDef } from '@tanstack/react-table';
+import { useDataTable } from '@/shared/hooks/use-data-table';
+import DataTable from '@/shared/components/table/data-table';
+import { Separator } from '@/shared/components/ui/separator';
 
 type Props = {
   interfaces: DeviceInterface[];
@@ -41,7 +41,7 @@ export const DeviceInterfacesTable = ({ interfaces }: Props) => {
   return (
     <div className="space-y-2">
       <div className="space-y-2">
-        <div className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+        <div className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
           Interfaces
         </div>
         <Separator />
