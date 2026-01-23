@@ -1,4 +1,3 @@
-
 import {
   Sheet,
   SheetContent,
@@ -6,7 +5,13 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/shared/components/ui/sheet';
+import { ScrollArea } from '@/shared/components/ui/scroll-area';
 import { useGetLogicalDevice } from './_hooks/use-get-logical-device';
+import { DeviceType } from '../admin/device-templates/_types/device-template';
+import { ServerDetails } from './server-details';
+import { VirtualMachineDetails } from './virtual-machine-details';
+import DeviceStackDetails from './device-stack-details';
+import DeviceDetails from './device-details';
 
 type Props = {
   open: boolean;
@@ -17,22 +22,49 @@ type Props = {
 const NodeDetailsSheet = ({ open, onOpenChange, deviceId }: Props) => {
   const { data: device } = useGetLogicalDevice(deviceId);
 
+  const renderContent = () => {
+    if (!device) return null;
+
+    switch (device.type) {
+      case DeviceType.SERVER:
+        return <ServerDetails device={device.data} />;
+      case DeviceType.VIRTUAL_MACHINE:
+        return <VirtualMachineDetails device={device.data} />;
+      case DeviceType.SWITCH_STACK:
+        return <DeviceStackDetails device={device.data} />;
+      case DeviceType.ROUTER:
+        return <DeviceDetails device={device.data} />;
+      case DeviceType.SWITCH:
+        return <DeviceDetails device={device.data} />;
+      default:
+        return <div>Common Details {JSON.stringify(device)}</div>;
+    }
+  };
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-[400px] sm:w-[540px]">
         <SheetHeader>
-          <SheetTitle>Node Details</SheetTitle>
+          <SheetTitle className="flex items-center gap-2">
+            {device?.data.name ?? 'Details'}
+          </SheetTitle>
           <SheetDescription>
-            View detailed information about this device.
+            {device?.type === DeviceType.VIRTUAL_MACHINE && (
+              <span className="flex items-center gap-1">
+                Virtual Machine on {device.data.details?.node ?? 'Unknown Node'}
+              </span>
+            )}
+            {device?.type === DeviceType.SERVER && (
+              <span className="capitalize">{device.data.vendor} Server</span>
+            )}
+            {!device && 'View detailed information about this device.'}
           </SheetDescription>
         </SheetHeader>
-        <div className="mt-6">
-          <div className="text-sm text-muted-foreground">
-            Details for device ID: <span className="font-mono text-foreground">{deviceId}</span>
+        <ScrollArea className="flex-1 min-h-0">
+          <div className="px-4 pb-6">
+            {renderContent()}
           </div>
-          {JSON.stringify(device)}
-          {/* Table will go here */}
-        </div>
+        </ScrollArea>
       </SheetContent>
     </Sheet>
   );

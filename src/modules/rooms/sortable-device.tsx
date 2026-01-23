@@ -10,7 +10,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/components/ui/dialog';
-import { type Device, type DeviceInterface, type DevicePort } from './_types/room';
+import { type DeviceInterface, type DevicePort } from './_types/room';
+import { type Device } from '../logical-view/_types/logical-view';
 import LabelingCanvas from './labeling-canvas';
 import useImage from 'use-image';
 import DeviceTemplate from './device-template';
@@ -123,14 +124,14 @@ const SortableDevice = ({ device }: Props) => {
     >
       <Dialog>
         <DialogTrigger asChild>
-          <div 
+          <div
             role="button"
             className={cn(
               "w-full bg-transparent border-none p-0 focus:outline-none text-left",
               isDragging ? "cursor-grabbing shadow-lg" : "cursor-grab"
             )}
           >
-             <DeviceTemplate image={image} boxes={boxes} />
+            <DeviceTemplate image={image} boxes={boxes} />
           </div>
         </DialogTrigger>
         <DialogContent className="min-w-5xl w-fit">

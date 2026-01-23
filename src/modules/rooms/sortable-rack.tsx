@@ -8,7 +8,7 @@ import { useSortable, SortableContext, verticalListSortingStrategy } from '@dnd-
 import { GripVertical } from 'lucide-react';
 import SortableDevice from './sortable-device';
 import AddDevicesModal from './add-devices-modal';
-import { type Device, type getRacksResponse } from './_types/room';
+import { Device } from '../logical-view/_types/logical-view';
 
 const SortableRack = ({ rack }: { rack: getRacksResponse }) => {
   const {
