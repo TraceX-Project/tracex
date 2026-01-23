@@ -1,9 +1,8 @@
 import { type Server } from './_types/server';
 import Image from 'next/image';
-import { Badge } from '@/shared/components/ui/badge';
 import { Box, Globe, Server as ServerIcon, ShieldCheck } from 'lucide-react';
 import { Separator } from '@/shared/components/ui/separator';
-import { detailColumns, DetailRow } from './details-table-config';
+import { detailColumns, type DetailRow } from './details-table-config';
 import { useMemo } from 'react';
 import { useDataTable } from '@/shared/hooks/use-data-table';
 import DataTable from '@/shared/components/table/data-table';

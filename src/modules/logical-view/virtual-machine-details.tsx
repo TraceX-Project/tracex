@@ -2,7 +2,6 @@ import { type VirtualMachine } from './_types/virtual-machine';
 import { formatBytes } from '@/shared/utils/file';
 import { Activity, Cpu, MemoryStick, HardDrive, Server } from 'lucide-react';
 import { Separator } from '@/shared/components/ui/separator';
-import { type ColumnDef } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 import { useDataTable } from '@/shared/hooks/use-data-table';
 import DataTable from '@/shared/components/table/data-table';
