@@ -59,11 +59,7 @@ export const ServerDetails = ({ device }: Props) => {
     <div className="space-y-4">
       <DeviceDetailsTable data={data} />
 
-      <DeviceFrontPanel
-        src={device.deviceTemplate.frontPanelUrl}
-        alt={device.name}
-      />
+      <DeviceFrontPanel src={device.deviceTemplate.frontPanelUrl} alt={device.name} />
     </div>
   );
 };
-

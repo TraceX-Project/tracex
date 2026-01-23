@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import { Button } from '@/shared/components/ui/button';
 import {
@@ -30,11 +30,11 @@ type Props = {
 };
 
 const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
-  const { projectId } = useParams<{ projectId: string }>()
-  const { mutateAsync: createServer } = useCreateServer()
+  const { projectId } = useParams<{ projectId: string }>();
+  const { mutateAsync: createServer } = useCreateServer();
   const { data: deviceTemplates } = useGetDeviceTemplates({
-    type: [DeviceType.SERVER]
-  })
+    type: [DeviceType.SERVER],
+  });
 
   const deviceTemplateOptions = useMemo(
     () =>
@@ -44,7 +44,6 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
       })) ?? [],
     [deviceTemplates]
   );
-
 
   const form = useAppForm({
     defaultValues: {
@@ -60,11 +59,11 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
     },
     onSubmit: async ({ value }) => {
       try {
-        console.log(value)
+        console.log(value);
         await createServer({
           projectId,
           data: value,
-        })
+        });
 
         toast.success('Hypervisor connected successfully.');
         onOpenChange(false);
@@ -72,7 +71,7 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
         toast.error('Failed to connect hypervisor. Please try again.');
       }
     },
-  })
+  });
 
   const handleSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
@@ -82,18 +81,21 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
     [form]
   );
 
-  const handleOpenChange = useCallback((newOpen: boolean) => {
-    if (!newOpen) {
-      form.reset();
-    }
+  const handleOpenChange = useCallback(
+    (newOpen: boolean) => {
+      if (!newOpen) {
+        form.reset();
+      }
 
-    onOpenChange(newOpen);
-  }, [form, onOpenChange]);
+      onOpenChange(newOpen);
+    },
+    [form, onOpenChange]
+  );
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-xl w-full">
-        <form onSubmit={handleSubmit} className='space-y-4'>
+      <DialogContent className="w-full sm:max-w-xl">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <DialogHeader>
             <DialogTitle>Connect to a hypervisor</DialogTitle>
             <DialogDescription>
@@ -102,15 +104,10 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
           </DialogHeader>
           <div className="grid gap-4">
             {/* Name  */}
-            <div className='flex gap-4'>
+            <div className="flex gap-4">
               <form.AppField
                 name="name"
-                children={(field) => (
-                  <field.TextField
-                    label="Name"
-                    placeholder="Enter name"
-                  />
-                )}
+                children={(field) => <field.TextField label="Name" placeholder="Enter name" />}
               />
 
               {/* Vendor */}
@@ -142,11 +139,7 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
             <form.AppField
               name="apiUrl"
               children={(field) => (
-                <field.TextField
-                  label="API URL"
-                  placeholder="Enter API URL"
-                  type="url"
-                />
+                <field.TextField label="API URL" placeholder="Enter API URL" type="url" />
               )}
             />
 
@@ -154,20 +147,14 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
             <form.AppField
               name="apiKey"
               children={(field) => (
-                <field.TextField
-                  label="API Key"
-                  placeholder="Enter API Key"
-                  type="password"
-                />
+                <field.TextField label="API Key" placeholder="Enter API Key" type="password" />
               )}
             />
 
             {/* Connect Ports */}
             <form.AppField
               name="connectPortIds"
-              children={(field) => (
-                <DevicePortSelector initDeviceId={deviceId} />
-              )}
+              children={(field) => <DevicePortSelector initDeviceId={deviceId} />}
             />
           </div>
           <DialogFooter>

@@ -5,7 +5,7 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from '@/shared/components/ui/context-menu';
-import { IconEdit, IconMapPinFilled, IconMapSearch, IconTrash } from "@tabler/icons-react"
+import { IconEdit, IconMapPinFilled, IconMapSearch, IconTrash } from '@tabler/icons-react';
 import DeleteBuildingDialog from './delete-building-dialog';
 import { type Building } from '../buildings/_types/buildings';
 import { useBoolean } from '@/shared/hooks/use-boolean';
@@ -19,7 +19,7 @@ type Props = {
 export const BuildingMarkerContextMenu = ({ building }: Props) => {
   const { value: isDeleteDialogOpen, setValue: setIsDeleteDialogOpen } = useBoolean(false);
   const { value: isRenameDialogOpen, setValue: setIsRenameDialogOpen } = useBoolean(false);
-  const { setMovingBuildingId } = usePhysicalMapStore(state => state.actions);
+  const { setMovingBuildingId } = usePhysicalMapStore((state) => state.actions);
 
   const handleDelete = () => {
     setTimeout(() => {
@@ -55,7 +55,7 @@ export const BuildingMarkerContextMenu = ({ building }: Props) => {
 
       <ContextMenu>
         <ContextMenuTrigger>
-          <IconMapPinFilled className='text-orange-600 w-8 h-8 hover:scale-105 hover:text-orange-700' />
+          <IconMapPinFilled className="h-8 w-8 text-orange-600 hover:scale-105 hover:text-orange-700" />
         </ContextMenuTrigger>
         <ContextMenuContent>
           <ContextMenuItem onClick={handleRename}>

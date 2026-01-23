@@ -8,7 +8,6 @@ type Props = {
   device: VirtualMachine;
 };
 
-
 export const VirtualMachineDetails = ({ device }: Props) => {
   const { details } = device;
 
@@ -29,7 +28,9 @@ export const VirtualMachineDetails = ({ device }: Props) => {
         id: 'vmid',
         attribute: (
           <div className="flex items-center gap-2">
-            <span className="font-mono text-[10px] border rounded px-1 min-w-[20px] text-center h-4 flex items-center justify-center">ID</span>
+            <span className="flex h-4 min-w-[20px] items-center justify-center rounded border px-1 text-center font-mono text-[10px]">
+              ID
+            </span>
             <span className="text-sm">VM ID</span>
           </div>
         ),
@@ -70,7 +71,7 @@ export const VirtualMachineDetails = ({ device }: Props) => {
 
   if (!details) {
     return (
-      <div className="flex flex-col items-center justify-center p-8 text-center text-muted-foreground">
+      <div className="text-muted-foreground flex flex-col items-center justify-center p-8 text-center">
         <Activity className="mb-2 h-8 w-8 opacity-20" />
         <p>No details available</p>
       </div>
@@ -83,6 +84,3 @@ export const VirtualMachineDetails = ({ device }: Props) => {
     </div>
   );
 };
-
-
-

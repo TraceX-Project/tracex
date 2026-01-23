@@ -18,12 +18,15 @@ type Props = {
 
 const FloorPlanDisplay = ({ floor }: Props) => {
   const { data: rooms } = useGetRooms(floor.id);
-  const { setClickedPosition, setIsCreateRoomModalOpen, setMovingRoomId, setCursorPosition } = useRoomStore((state) => state.actions);
+  const { setClickedPosition, setIsCreateRoomModalOpen, setMovingRoomId, setCursorPosition } =
+    useRoomStore((state) => state.actions);
   const movingRoomId = useRoomStore((state) => state.movingRoomId);
 
   const { mutateAsync: updateRoom } = useUpdateRoom();
   const containerRef = useRef<HTMLDivElement>(null);
-  const { width: containerWidth = 0, height: containerHeight = 0 } = useResizeObserver({ ref: containerRef as React.RefObject<HTMLElement> });
+  const { width: containerWidth = 0, height: containerHeight = 0 } = useResizeObserver({
+    ref: containerRef as React.RefObject<HTMLElement>,
+  });
   const [naturalSize, setNaturalSize] = useState({ width: 0, height: 0 });
 
   const displaySize = useMemo(() => {
@@ -111,7 +114,10 @@ const FloorPlanDisplay = ({ floor }: Props) => {
     <>
       <div
         ref={containerRef}
-        className={cn('relative flex h-full w-full items-center justify-center overflow-hidden', movingRoomId && 'cursor-none')}
+        className={cn(
+          'relative flex h-full w-full items-center justify-center overflow-hidden',
+          movingRoomId && 'cursor-none'
+        )}
         onMouseLeave={() => setCursorPosition(null)}
       >
         <div
@@ -142,11 +148,13 @@ const FloorPlanDisplay = ({ floor }: Props) => {
 
           {rooms && naturalSize.width > 0 && naturalSize.height > 0 && (
             <div className="pointer-events-none absolute inset-0">
-              {rooms?.filter((room) => movingRoomId !== room.id).map((room) => (
-                <div key={room.id} className='pointer-events-auto room-marker'>
-                  <RoomMarker room={room} />
-                </div>
-              ))}
+              {rooms
+                ?.filter((room) => movingRoomId !== room.id)
+                .map((room) => (
+                  <div key={room.id} className="room-marker pointer-events-auto">
+                    <RoomMarker room={room} />
+                  </div>
+                ))}
             </div>
           )}
         </div>

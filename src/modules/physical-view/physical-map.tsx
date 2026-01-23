@@ -3,10 +3,18 @@
 import * as React from 'react';
 import { DEFAULT_MAP_CENTER, DEFAULT_ZOOM_LEVEL } from './_constants/constants';
 import { useGetBuildings } from '../buildings/_hooks/use-get-buildings';
-import { Map, MapLocateControl, MapMarker, MapMarkerClusterGroup, MapSearchControl, MapTileLayer, MapZoomControl } from "@/shared/components/ui/map"
-import "leaflet/dist/leaflet.css";
-import 'leaflet.markercluster/dist/MarkerCluster.css'
-import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
+import {
+  Map,
+  MapLocateControl,
+  MapMarker,
+  MapMarkerClusterGroup,
+  MapSearchControl,
+  MapTileLayer,
+  MapZoomControl,
+} from '@/shared/components/ui/map';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { IconMapPinFilled } from '@tabler/icons-react';
 import LocationInfoCard from './location-info-card';
 import { type PlaceFeature } from '@/shared/components/ui/place-autocomplete';
@@ -23,32 +31,34 @@ type Props = {
 };
 
 const PhysicalMap = ({ projectId }: Props) => {
-  const { data: buildings } = useGetBuildings(projectId)
-  const { setSelectedLocation, reset } = usePhysicalMapStore(state => state.actions)
-  const selectedLocation = usePhysicalMapStore(state => state.selectedLocation)
-  const movingBuildingId = usePhysicalMapStore(state => state.movingBuildingId)
+  const { data: buildings } = useGetBuildings(projectId);
+  const { setSelectedLocation, reset } = usePhysicalMapStore((state) => state.actions);
+  const selectedLocation = usePhysicalMapStore((state) => state.selectedLocation);
+  const movingBuildingId = usePhysicalMapStore((state) => state.movingBuildingId);
 
   useEffect(() => {
     reset();
   }, [reset]);
 
+  const handlePlaceSelect = useCallback(
+    (feature: PlaceFeature) => {
+      const position = feature.geometry.coordinates.toReversed();
+      console.log(position);
 
-  const handlePlaceSelect = useCallback((feature: PlaceFeature) => {
-    const position = feature.geometry.coordinates.toReversed()
-    console.log(position)
-
-    setSelectedLocation({
-      name: feature.properties.name ?? feature.properties.street ?? 'Unknown Location',
-      address: formatAddress(feature.properties),
-      location: {
-        lat: position[0],
-        lng: position[1]
-      }
-    })
-  }, [setSelectedLocation])
+      setSelectedLocation({
+        name: feature.properties.name ?? feature.properties.street ?? 'Unknown Location',
+        address: formatAddress(feature.properties),
+        location: {
+          lat: position[0],
+          lng: position[1],
+        },
+      });
+    },
+    [setSelectedLocation]
+  );
 
   return (
-    <div className="relative h-full w-full z-0">
+    <div className="relative z-0 h-full w-full">
       <Map center={DEFAULT_MAP_CENTER} zoom={DEFAULT_ZOOM_LEVEL} attributionControl={true}>
         <MapTileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -61,24 +71,21 @@ const PhysicalMap = ({ projectId }: Props) => {
 
         <MapMarkerClusterGroup>
           {buildings
-            ?.filter(b => b.id !== movingBuildingId)
+            ?.filter((b) => b.id !== movingBuildingId)
             .map((building, i) => (
-              <BuildingMarker
-                key={i}
-                projectId={projectId}
-                building={building}
-              />
+              <BuildingMarker key={i} projectId={projectId} building={building} />
             ))}
         </MapMarkerClusterGroup>
 
-        <MapSearchControl
-          lang='en'
-          onPlaceSelect={handlePlaceSelect}
-        />
-
+        <MapSearchControl lang="en" onPlaceSelect={handlePlaceSelect} />
 
         {selectedLocation && (
-          <MapMarker position={selectedLocation.location} icon={<IconMapPinFilled className='text-red-600 w-8 h-8 hover:scale-105 hover:text-red-700' />} />
+          <MapMarker
+            position={selectedLocation.location}
+            icon={
+              <IconMapPinFilled className="h-8 w-8 text-red-600 hover:scale-105 hover:text-red-700" />
+            }
+          />
         )}
 
         <MapClickHandler />
@@ -94,4 +101,3 @@ const PhysicalMap = ({ projectId }: Props) => {
 };
 
 export default PhysicalMap;
-

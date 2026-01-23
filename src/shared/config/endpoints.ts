@@ -34,7 +34,8 @@ export const ENDPOINTS = {
     upload: (id: string) => `${ROOTS.projects}/${id}/upload`,
     topology: (id: string) => `${ROOTS.projects}/${id}/topology`,
     thumbnail: (id: string) => `${ROOTS.projects}/${id}/thumbnail`,
-    getDevicesByProjectId: (projectId: string) => `${ROOTS.projects}/${projectId}/physical-devices?inRack=false`,
+    getDevicesByProjectId: (projectId: string) =>
+      `${ROOTS.projects}/${projectId}/physical-devices?inRack=false`,
     logicalDevices: (id: string) => `${ROOTS.projects}/${id}/logical-devices`,
     createServer: (id: string) => `${ROOTS.projects}/${id}/servers`,
   },
@@ -77,7 +78,7 @@ export const ENDPOINTS = {
     addDeviceToRack: (rackId: string) => `${ROOTS.racks}/${rackId}/devices`,
     getDevicesByRackId: (rackId: string) => `${ROOTS.racks}/${rackId}/devices`,
     updateRack: (rackId: string) => `${ROOTS.racks}/${rackId}`,
-  }
+  },
 };
 
-export const PROTON_API_URL = 'https://photon.komoot.io'
+export const PROTON_API_URL = 'https://photon.komoot.io';

@@ -1,43 +1,39 @@
 'use client';
 
-import React from 'react'
-import { useGetRacks } from './_hooks/use-get-racks'
+import React from 'react';
+import { useGetRacks } from './_hooks/use-get-racks';
 import EmptyRacks from './empty-racks';
 import IsLoadingPage from '../../shared/components/is-loading';
 import ManageRacks from './manage-racks';
 
-
 type Props = {
-  roomId: string
-}
+  roomId: string;
+};
 
 const RoomView = ({ roomId }: Props) => {
-  const { data: racks, isError,isLoading } = useGetRacks(roomId);
+  const { data: racks, isError, isLoading } = useGetRacks(roomId);
 
-  if (isLoading){
+  if (isLoading) {
     return (
-    <div className='flex h-full w-full items-center justify-center'>
-        <IsLoadingPage/>
-    </div>);
+      <div className="flex h-full w-full items-center justify-center">
+        <IsLoadingPage />
+      </div>
+    );
   }
   if (isError) {
+    return <div className="h-full w-full">{/* <ManageRacks roomId={roomId} /> */}</div>;
+  } else if (!racks?.length) {
     return (
-    <div className='w-full h-full'>
-      {/* <ManageRacks roomId={roomId} /> */}
-    </div>);
-  }
-  else if (!racks?.length) {
-    return (
-      <div className='flex h-full w-full items-center justify-center'>
+      <div className="flex h-full w-full items-center justify-center">
         <EmptyRacks roomId={roomId} />
       </div>
-    )
+    );
   }
   return (
-    <div className='w-full h-full'>
+    <div className="h-full w-full">
       <ManageRacks roomId={roomId} />
     </div>
-  )
-}
+  );
+};
 
-export default RoomView
+export default RoomView;

@@ -29,7 +29,6 @@ export const detailColumns: ColumnDef<DetailRow>[] = [
   },
 ];
 
-
 export const DeviceDetailsTable = ({ data, title = 'Details' }: Props) => {
   const { table } = useDataTable({
     data,
@@ -40,7 +39,7 @@ export const DeviceDetailsTable = ({ data, title = 'Details' }: Props) => {
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <div className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+        <div className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
           {title}
         </div>
         <Separator />

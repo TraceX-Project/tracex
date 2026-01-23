@@ -30,12 +30,20 @@ const DataTable = <TData,>({
   ...props
 }: Props<TData>) => {
   return (
-    <div className={cn("flex flex-col space-y-4", fullHeight ? "flex-1" : "w-full", className)} {...props}>
+    <div
+      className={cn('flex flex-col space-y-4', fullHeight ? 'flex-1' : 'w-full', className)}
+      {...props}
+    >
       {children}
-      <div className={cn("relative flex", fullHeight ? "flex-1" : "")}>
-        <div className={cn("flex overflow-hidden rounded-lg border", fullHeight ? "absolute inset-0" : "w-full")}>
+      <div className={cn('relative flex', fullHeight ? 'flex-1' : '')}>
+        <div
+          className={cn(
+            'flex overflow-hidden rounded-lg border',
+            fullHeight ? 'absolute inset-0' : 'w-full'
+          )}
+        >
           <ScrollArea className="h-full w-full">
-            <Table >
+            <Table>
               <TableHeader className="bg-muted sticky top-0 z-10">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>

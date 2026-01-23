@@ -18,14 +18,14 @@ type Props = {
   room: Room;
   isOpen: boolean;
   onClose: () => void;
-}
+};
 
 const RenameRoomDialog = ({ room, isOpen, onClose }: Props) => {
-  const { mutateAsync: updateRoom } = useUpdateRoom()
+  const { mutateAsync: updateRoom } = useUpdateRoom();
 
   const form = useAppForm({
     defaultValues: {
-      name: room.name
+      name: room.name,
     },
     validators: {
       onSubmit: createFloorSchema.pick({ name: true }).required(),
@@ -35,19 +35,19 @@ const RenameRoomDialog = ({ room, isOpen, onClose }: Props) => {
         await updateRoom({
           roomId: room.id,
           payload: {
-            name: value.name
+            name: value.name,
           },
-          floorId: room.floorId
-        })
-        onClose()
+          floorId: room.floorId,
+        });
+        onClose();
 
         toast.success('Room renamed successfully');
       } catch (error) {
-        console.log(error)
+        console.log(error);
         toast.error('Failed to rename room');
       }
-    }
-  })
+    },
+  });
 
   const handleSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
@@ -88,7 +88,7 @@ const RenameRoomDialog = ({ room, isOpen, onClose }: Props) => {
         </form>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default RenameRoomDialog
+export default RenameRoomDialog;

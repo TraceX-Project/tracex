@@ -1,12 +1,4 @@
-import {
-  Stage,
-  Layer,
-  Image as KonvaImage,
-  Text,
-  Label,
-  Tag,
-  Rect,
-} from 'react-konva';
+import { Stage, Layer, Image as KonvaImage, Text, Label, Tag, Rect } from 'react-konva';
 import { useRef, useMemo, useState } from 'react';
 import { useResizeObserver } from '@/shared/hooks/use-resize-observer';
 import useImage from 'use-image';

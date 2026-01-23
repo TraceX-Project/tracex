@@ -116,29 +116,24 @@ const SortableDevice = ({ device }: Props) => {
   };
 
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-    >
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <Dialog>
         <DialogTrigger asChild>
           <div
             role="button"
             className={cn(
-              "w-full bg-transparent border-none p-0 focus:outline-none text-left",
-              isDragging ? "cursor-grabbing shadow-lg" : "cursor-grab"
+              'w-full border-none bg-transparent p-0 text-left focus:outline-none',
+              isDragging ? 'cursor-grabbing shadow-lg' : 'cursor-grab'
             )}
           >
             <DeviceTemplate image={image} boxes={boxes} />
           </div>
         </DialogTrigger>
-        <DialogContent className="min-w-5xl w-fit">
+        <DialogContent className="w-fit min-w-5xl">
           <DialogHeader>
             <DialogTitle>Device Detail</DialogTitle>
           </DialogHeader>
-          <div className="space-y-6 w-full">
+          <div className="w-full space-y-6">
             <LabelingCanvas image={image} boxes={boxes} />
           </div>
         </DialogContent>

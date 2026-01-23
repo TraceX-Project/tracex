@@ -9,8 +9,9 @@ import { GripVertical } from 'lucide-react';
 import SortableDevice from './sortable-device';
 import AddDevicesModal from './add-devices-modal';
 import { Device } from '../logical-view/_types/logical-view';
+import { GetRacksResponse } from './_types/room';
 
-const SortableRack = ({ rack }: { rack: getRacksResponse }) => {
+const SortableRack = ({ rack }: { rack: GetRacksResponse }) => {
   const {
     attributes,
     listeners,

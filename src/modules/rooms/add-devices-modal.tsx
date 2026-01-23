@@ -15,7 +15,7 @@ import {
 import { Button } from '@/shared/components/ui/button';
 import { toast } from 'sonner';
 import { useAddDevicesToRack } from './_hooks/use-add-devices';
-import { type getRacksResponse, type DEVICE_OPTIONS } from './_types/room';
+import { type GetRacksResponse, type DEVICE_OPTIONS } from './_types/room';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,7 +29,7 @@ import { useGetDevicesInProject } from './_hooks/use-get-devices';
 import EditRackDialog from './edit-rack-dialog';
 
 type Props = {
-  rack: getRacksResponse;
+  rack: GetRacksResponse;
 };
 
 const AddDevicesModal = ({ rack }: Props) => {

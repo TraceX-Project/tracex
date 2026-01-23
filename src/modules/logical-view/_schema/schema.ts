@@ -18,7 +18,7 @@ export const connectHypervisorSchema = z.object({
     message: 'API key is required',
   }),
   vendor: z.enum(HypervisorVendor, {
-    message: "Vendor is required"
+    message: 'Vendor is required',
   }),
   apiUrl: z.url(),
   connectPortIds: z.array(z.uuidv4()).min(1, {
@@ -26,5 +26,5 @@ export const connectHypervisorSchema = z.object({
   }),
   deviceTemplateId: z.uuidv4({
     message: 'Invalid device template ID',
-  })
+  }),
 });

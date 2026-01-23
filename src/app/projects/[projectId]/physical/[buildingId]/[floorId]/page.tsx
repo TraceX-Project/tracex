@@ -8,7 +8,7 @@ type Props = {
 };
 
 export default async function FloorPage({ params }: Props) {
-  const { buildingId, floorId,projectId } = await params;
+  const { buildingId, floorId, projectId } = await params;
   const queryClient = new QueryClient();
 
   await Promise.all([

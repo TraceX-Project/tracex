@@ -1,9 +1,9 @@
-import { type FormType } from "@/shared/tanstack-form/form"
-import { DEVICE_TYPES_OPTIONS, DEVICE_VENDORS_OPTIONS } from "./_constants/device-template"
+import { type FormType } from '@/shared/tanstack-form/form';
+import { DEVICE_TYPES_OPTIONS, DEVICE_VENDORS_OPTIONS } from './_constants/device-template';
 
 type Props = {
-  form: FormType
-}
+  form: FormType;
+};
 
 const BasicInfoForm = ({ form }: Props) => {
   return (
@@ -64,7 +64,7 @@ const BasicInfoForm = ({ form }: Props) => {
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default BasicInfoForm
+export default BasicInfoForm;

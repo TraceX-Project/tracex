@@ -1,4 +1,4 @@
-import { type deviceTemplateSchema } from "../_schema/schema";
+import { type deviceTemplateSchema } from '../_schema/schema';
 import { type z } from 'zod';
 
 export enum Vendor {
@@ -12,12 +12,12 @@ export enum DeviceType {
   SWITCH = 'switch',
   SWITCH_STACK = 'switch_stack',
   SERVER = 'server',
-  VIRTUAL_MACHINE = 'virtual_machine'
+  VIRTUAL_MACHINE = 'virtual_machine',
 }
 
 export type GetDeviceTemplatesParams = {
-  type?: Exclude<DeviceType, DeviceType.SWITCH_STACK>[]
-}
+  type?: Exclude<DeviceType, DeviceType.SWITCH_STACK>[];
+};
 
 export enum Alignment {
   HORIZONTAL = 'horizontal',
@@ -43,7 +43,9 @@ export type DeviceTemplateFormData = z.infer<typeof deviceTemplateSchema>;
 
 export type PortRange = NonNullable<z.infer<typeof deviceTemplateSchema.shape.portRanges>>[number];
 
-export type BoundingBox = NonNullable<z.infer<typeof deviceTemplateSchema.shape.boundingBoxes>>[number];
+export type BoundingBox = NonNullable<
+  z.infer<typeof deviceTemplateSchema.shape.boundingBoxes>
+>[number];
 
 export type DeviceTemplate = {
   id: string;

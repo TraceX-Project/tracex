@@ -34,11 +34,11 @@ const DeviceTemplate = ({ image, boxes }: Props) => {
 
   return (
     <div
-        ref={containerRef}
-        className="relative w-full"
-        style={{
+      ref={containerRef}
+      className="relative w-full"
+      style={{
         aspectRatio: image ? `${image.width} / ${image.height}` : '300 / 44',
-        }}
+      }}
     >
       {width > 0 && height > 0 && (
         <Stage width={width} height={height} className="absolute top-0 left-0">

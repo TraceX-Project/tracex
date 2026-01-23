@@ -8,4 +8,4 @@ export const useGetRacks = (roomId: string) =>
     queryFn: () => getRacks(roomId),
     enabled: !!roomId,
     retry: false,
-});
+  });
