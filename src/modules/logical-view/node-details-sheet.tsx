@@ -5,10 +5,13 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/shared/components/ui/sheet';
+import { ScrollArea } from '@/shared/components/ui/scroll-area';
 import { useGetLogicalDevice } from './_hooks/use-get-logical-device';
 import { DeviceType } from '../admin/device-templates/_types/device-template';
 import { ServerDetails } from './server-details';
 import { VirtualMachineDetails } from './virtual-machine-details';
+import DeviceStackDetails from './device-stack-details';
+import DeviceDetails from './device-details';
 
 type Props = {
   open: boolean;
@@ -27,9 +30,14 @@ const NodeDetailsSheet = ({ open, onOpenChange, deviceId }: Props) => {
         return <ServerDetails device={device.data} />;
       case DeviceType.VIRTUAL_MACHINE:
         return <VirtualMachineDetails device={device.data} />;
-
+      case DeviceType.SWITCH_STACK:
+        return <DeviceStackDetails device={device.data} />;
+      case DeviceType.ROUTER:
+        return <DeviceDetails device={device.data} />;
+      case DeviceType.SWITCH:
+        return <DeviceDetails device={device.data} />;
       default:
-        return <div>Common Details Component</div>;
+        return <div>Common Details {JSON.stringify(device)}</div>;
     }
   };
 
@@ -52,9 +60,11 @@ const NodeDetailsSheet = ({ open, onOpenChange, deviceId }: Props) => {
             {!device && 'View detailed information about this device.'}
           </SheetDescription>
         </SheetHeader>
-        <div className="px-4">
-          {renderContent()}
-        </div>
+        <ScrollArea className="flex-1 min-h-0">
+          <div className="px-4 pb-6">
+            {renderContent()}
+          </div>
+        </ScrollArea>
       </SheetContent>
     </Sheet>
   );

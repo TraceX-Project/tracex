@@ -3,10 +3,7 @@ import { formatBytes } from '@/shared/utils/file';
 import { Activity, Cpu, MemoryStick, HardDrive, Server } from 'lucide-react';
 import { Separator } from '@/shared/components/ui/separator';
 import React, { useMemo } from 'react';
-import { useDataTable } from '@/shared/hooks/use-data-table';
-import DataTable from '@/shared/components/table/data-table';
-
-import { detailColumns, type DetailRow } from './details-table-config';
+import { DetailRow, DeviceDetailsTable } from './device-details-table';
 
 type Props = {
   device: VirtualMachine;
@@ -72,12 +69,6 @@ export const VirtualMachineDetails = ({ device }: Props) => {
     ];
   }, [details]);
 
-  const { table } = useDataTable({
-    data,
-    columns: detailColumns,
-    pageCount: 1,
-  });
-
   if (!details) {
     return (
       <div className="flex flex-col items-center justify-center p-8 text-center text-muted-foreground">
@@ -89,13 +80,7 @@ export const VirtualMachineDetails = ({ device }: Props) => {
 
   return (
     <div className="space-y-4">
-      <div className="space-y-2">
-        <div className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          Details
-        </div>
-        <Separator />
-      </div>
-      <DataTable table={table} withPagination={false} fullHeight={false} />
+      <DeviceDetailsTable data={data} />
     </div>
   );
 };

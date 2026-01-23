@@ -1,4 +1,5 @@
 import { type Alignment, type DeviceType, type Vendor } from "@/modules/admin/device-templates/_types/device-template";
+import { Device } from "@/modules/logical-view/_types/logical-view";
 
 export type Room = {
   id: string;
@@ -23,41 +24,23 @@ export type CreateRackRequest = {
   unitSize: number;
 };
 
-export type Device = {
-  id:string ,
-  name:string,
-  projectId:string,
-  sortOrder:number,
-  rackId:string,
-  deviceTemplateId:string,
-  deviceStackId:string | null,
-  stackMemberNumber:number | null,
-  x:number | null,
-  y:number | null,
-  createdAt:Date,
-  updatedAt:Date,
-  type: string,
-  deviceTemplate:deviceTemplate,
-  deviceInterfaces?:DeviceInterface[] 
-};
-
 export type Message = {
-  message:string
+  message: string
 }
 
 export type DeviceInterface = {
-  id:string,
-  name:string,
+  id: string,
+  name: string,
   x: number,
   y: number,
   width: number,
   height: number,
-  status:string,
+  status: string,
 }
 
 export type DevicePort = {
-  id:string,
-  name:string,
+  id: string,
+  name: string,
   x: number,
   y: number,
   width: number,
@@ -66,13 +49,13 @@ export type DevicePort = {
 }
 
 export type deviceTemplate = {
-  id:string,
-  modelName:string,
-  vendor:Vendor,
-  deviceType:DeviceType,
-  unitSize:number,
-  frontPanelUrl:string,
-  alignment:Alignment
+  id: string,
+  modelName: string,
+  vendor: Vendor,
+  deviceType: DeviceType,
+  unitSize: number,
+  frontPanelUrl: string,
+  alignment: Alignment
 }
 
 export type DEVICE_OPTIONS = {
