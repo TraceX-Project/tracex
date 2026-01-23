@@ -11,7 +11,7 @@ export const useCreateRack = () => {
     mutationFn: async ({ roomId, data }: { roomId: string; data: CreateRackRequest }) =>
       createRack(roomId, data),
     onSuccess: ({ roomId }) => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.rooms, roomId] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.racks, roomId] });
     },
   });
 };
