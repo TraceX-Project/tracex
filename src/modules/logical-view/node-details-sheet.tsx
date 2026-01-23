@@ -38,12 +38,12 @@ const NodeDetailsSheet = ({ open, onOpenChange, deviceId }: Props) => {
       <SheetContent className="w-[400px] sm:w-[540px]">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
-            {device?.data.name || 'Details'}
+            {device?.data.name ?? 'Details'}
           </SheetTitle>
           <SheetDescription>
             {device?.type === DeviceType.VIRTUAL_MACHINE && (
               <span className="flex items-center gap-1">
-                Virtual Machine on {device.data.details?.node || 'Unknown Node'}
+                Virtual Machine on {device.data.details?.node ?? 'Unknown Node'}
               </span>
             )}
             {device?.type === DeviceType.SERVER && (
