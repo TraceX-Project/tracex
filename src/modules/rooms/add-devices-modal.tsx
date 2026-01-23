@@ -15,7 +15,7 @@ import {
 import { Button } from '@/shared/components/ui/button';
 import { toast } from 'sonner';
 import { useAddDevicesToRack } from './_hooks/use-add-devices';
-import { type DEVICE_OPTIONS } from './_types/room';
+import { type getRacksResponse, type DEVICE_OPTIONS } from './_types/room';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,17 +26,19 @@ import {
 } from '@/shared/components/ui/dropdown-menu';
 import { EllipsisVertical } from 'lucide-react';
 import { useGetDevicesInProject } from './_hooks/use-get-devices';
+import EditRackDialog from './edit-rack-dialog';
 
 type Props = {
-  rackId: string;
+  rack: getRacksResponse;
 };
 
-const AddDevicesModal = ({ rackId }: Props) => {
+const AddDevicesModal = ({ rack }: Props) => {
   const { projectId } = useParams<{ projectId: string }>();
   const { mutateAsync: addDevicesToRack } = useAddDevicesToRack();
-  const { data: devices,isLoading } = useGetDevicesInProject(projectId);
+  const { data: devices, isLoading } = useGetDevicesInProject(projectId);
   const [deviceOptions, setDeviceOptions] = useState<DEVICE_OPTIONS[]>([]);
   const [addDevicesOpen, setAddDevicesOpen] = useState(false);
+  const [editRackOpen, setEditRackOpen] = useState(false);
 
   const form = useAppForm({
     defaultValues: {
@@ -48,7 +50,8 @@ const AddDevicesModal = ({ rackId }: Props) => {
     onSubmit: async ({ value }) => {
       try {
         await addDevicesToRack({
-          rackId: rackId,
+          rackId: rack.id,
+          roomId: rack.roomId,
           data: {
             deviceIds: value.deviceIds,
           },
@@ -90,7 +93,7 @@ const AddDevicesModal = ({ rackId }: Props) => {
         <DropdownMenuContent className="w-40" align="end">
           <DropdownMenuGroup>
             <DropdownMenuItem
-              onSelect={() => {
+              onClick={() => {
                 setTimeout(() => {
                   setAddDevicesOpen(true);
                 }, 100);
@@ -98,8 +101,15 @@ const AddDevicesModal = ({ rackId }: Props) => {
             >
               Add Devices
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Edit Rack</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() =>
+                setTimeout(() => {
+                  setEditRackOpen(true);
+                }, 100)
+              }
+            >
+              Edit Rack
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="text-red-600 focus:bg-red-50 focus:text-red-600">
               Delete Rack
@@ -108,17 +118,19 @@ const AddDevicesModal = ({ rackId }: Props) => {
         </DropdownMenuContent>
       </DropdownMenu>
       <Dialog open={addDevicesOpen} onOpenChange={setAddDevicesOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-4"
-          >
+        <DialogContent
+          className="sm:max-w-[425px]"
+          onPointerDown={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+          onKeyDown={(e) => e.stopPropagation()}
+        >
+          <form onSubmit={handleSubmit} className="space-y-4">
             <DialogHeader>
               <DialogTitle>Add Devices to Rack</DialogTitle>
             </DialogHeader>
             <div className="grid gap-4">
               <form.AppField
-                name="deviceIds" 
+                name="deviceIds"
                 children={(field) => (
                   <field.MultipleSelectField
                     overflowBehavior="cutoff"
@@ -144,6 +156,7 @@ const AddDevicesModal = ({ rackId }: Props) => {
           </form>
         </DialogContent>
       </Dialog>
+      <EditRackDialog rack={rack} open={editRackOpen} onOpenChange={setEditRackOpen} />
     </>
   );
 };

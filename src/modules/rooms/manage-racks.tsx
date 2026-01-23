@@ -112,7 +112,7 @@ const ManageRacks = ({ roomId }: { roomId: string }) => {
 
   useEffect(() => {
     if (allRacks) {
-      console.log(allRacks);
+      setRacks(allRacks);
     }
   }, [allRacks]);
 
@@ -129,9 +129,7 @@ const ManageRacks = ({ roomId }: { roomId: string }) => {
             {racks.map((rack) => (
               <SortableRack
                 key={rack.id}
-                id={rack.id}
-                name={rack.name}
-                devices={rack.devices}
+                rack={rack}
               />
             ))}
           </SortableContext>
