@@ -26,7 +26,7 @@ const DeviceTemplatesTable = () => {
     );
   }
 
-  return <DataTable table={table} />;
+  return <DataTable table={table} className="h-full" />;
 };
 
 export default DeviceTemplatesTable;

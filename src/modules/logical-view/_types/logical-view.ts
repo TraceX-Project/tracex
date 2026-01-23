@@ -1,6 +1,11 @@
-import { type DeviceTemplate, type DeviceType } from '@/modules/admin/device-templates/_types/device-template';
+import {
+  type DeviceTemplate,
+  type DeviceType,
+} from '@/modules/admin/device-templates/_types/device-template';
 import type z from 'zod';
 import { type connectHypervisorSchema } from '../_schema/schema';
+import { Server } from './server';
+import { VirtualMachine } from './virtual-machine';
 
 export type Topology = {
   nodes: Node[];
@@ -62,20 +67,32 @@ export type LogicalDevice = {
   updatedAt: string;
   deviceTemplate: DeviceTemplate;
   deviceInterfaces: DeviceInterface[];
-}
+};
 
 export type DeviceInterface = {
-  "id": string,
-  "name": string,
-  "portId": string,
-  "ipAddress": string,
-  "switchPortMode": string,
-  "description": string,
-  "deviceId": string,
-  "stackMemberNumber": number,
-  "createdAt": string,
-  "updatedAt": string,
-  "isConnected": boolean
-}
+  id: string;
+  name: string;
+  portId: string;
+  ipAddress: string;
+  switchPortMode: string;
+  description: string;
+  deviceId: string;
+  stackMemberNumber: number;
+  createdAt: string;
+  updatedAt: string;
+  isConnected: boolean;
+};
 
-export type CreateServerRequest = z.infer<typeof connectHypervisorSchema>
+export type CreateServerRequest = z.infer<typeof connectHypervisorSchema>;
+
+export type GetLogicalDeviceResponse =
+  | {
+      id: string;
+      type: DeviceType.SERVER;
+      data: Server;
+    }
+  | {
+      id: string;
+      type: DeviceType.VIRTUAL_MACHINE;
+      data: VirtualMachine;
+    };

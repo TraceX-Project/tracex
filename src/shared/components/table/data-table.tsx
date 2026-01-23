@@ -1,3 +1,4 @@
+import { cn } from '@/shared/lib/cn';
 import { flexRender, type Table as TanstackTable } from '@tanstack/react-table';
 import React from 'react';
 import {
@@ -15,14 +16,24 @@ import { getCommonPinningStyles } from '@/shared/utils/data-table';
 interface Props<TData> extends React.ComponentProps<'div'> {
   table: TanstackTable<TData>;
   actionBar?: React.ReactNode;
+  withPagination?: boolean;
+  fullHeight?: boolean;
 }
 
-const DataTable = <TData,>({ table, actionBar, children }: Props<TData>) => {
+const DataTable = <TData,>({
+  table,
+  actionBar,
+  children,
+  withPagination = true,
+  fullHeight = true,
+  className,
+  ...props
+}: Props<TData>) => {
   return (
-    <div className="flex flex-1 flex-col space-y-4">
+    <div className={cn("flex flex-col space-y-4", fullHeight ? "flex-1" : "w-full", className)} {...props}>
       {children}
-      <div className="relative flex flex-1">
-        <div className="absolute inset-0 flex overflow-hidden rounded-lg border">
+      <div className={cn("relative flex", fullHeight ? "flex-1" : "")}>
+        <div className={cn("flex overflow-hidden rounded-lg border", fullHeight ? "absolute inset-0" : "w-full")}>
           <ScrollArea className="h-full w-full">
             <Table >
               <TableHeader className="bg-muted sticky top-0 z-10">
@@ -73,10 +84,12 @@ const DataTable = <TData,>({ table, actionBar, children }: Props<TData>) => {
           </ScrollArea>
         </div>
       </div>
-      <div className="flex flex-col gap-2.5">
-        <DataTablePagination table={table} />
-        {actionBar && table.getFilteredSelectedRowModel().rows.length > 0 && actionBar}
-      </div>
+      {withPagination && (
+        <div className="flex flex-col gap-2.5">
+          <DataTablePagination table={table} />
+          {actionBar && table.getFilteredSelectedRowModel().rows.length > 0 && actionBar}
+        </div>
+      )}
     </div>
   );
 };
