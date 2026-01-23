@@ -7,31 +7,15 @@ import React, { useMemo } from 'react';
 import { useDataTable } from '@/shared/hooks/use-data-table';
 import DataTable from '@/shared/components/table/data-table';
 
+import { detailColumns, type DetailRow } from './details-table-config';
+
 type Props = {
   device: VirtualMachine;
 };
 
-type DetailRow = {
-  id: string;
-  attribute: React.ReactNode;
-  value: React.ReactNode;
-};
-
-const columns: ColumnDef<DetailRow>[] = [
-  {
-    accessorKey: 'attribute',
-    header: 'Attribute',
-    cell: ({ row }) => <div className="text-muted-foreground">{row.original.attribute}</div>,
-  },
-  {
-    accessorKey: 'value',
-    header: 'Value',
-    cell: ({ row }) => <div className="font-medium">{row.original.value}</div>,
-  },
-];
 
 export const VirtualMachineDetails = ({ device }: Props) => {
-  const {details} = device;
+  const { details } = device;
 
   const data: DetailRow[] = useMemo(() => {
     if (!details) return [];
@@ -91,7 +75,7 @@ export const VirtualMachineDetails = ({ device }: Props) => {
 
   const { table } = useDataTable({
     data,
-    columns,
+    columns: detailColumns,
     pageCount: 1,
   });
 
