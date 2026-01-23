@@ -2,7 +2,7 @@ import { request } from '@/shared/lib/api';
 import {
   type LogicalDevice,
   type CreateServerRequest,
-  GetLogicalDeviceResponse,
+  type GetLogicalDeviceResponse,
 } from '../_types/logical-view';
 import { ENDPOINTS } from '@/shared/config/endpoints';
 

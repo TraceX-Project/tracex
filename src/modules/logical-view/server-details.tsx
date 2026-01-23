@@ -1,8 +1,7 @@
-import { Server } from './_types/server';
+import { type Server } from './_types/server';
 import Image from 'next/image';
 import { Badge } from '@/shared/components/ui/badge';
 import { Globe, Server as ServerIcon, ShieldCheck } from 'lucide-react';
-import { Separator } from '@/shared/components/ui/separator';
 
 type Props = {
   device: Server;

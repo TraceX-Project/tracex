@@ -4,8 +4,8 @@ import {
 } from '@/modules/admin/device-templates/_types/device-template';
 import type z from 'zod';
 import { type connectHypervisorSchema } from '../_schema/schema';
-import { Server } from './server';
-import { VirtualMachine } from './virtual-machine';
+import { type Server } from './server';
+import { type VirtualMachine } from './virtual-machine';
 
 export type Topology = {
   nodes: Node[];

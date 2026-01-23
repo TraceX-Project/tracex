@@ -1,8 +1,8 @@
-import { VirtualMachine } from './_types/virtual-machine';
+import { type VirtualMachine } from './_types/virtual-machine';
 import { formatBytes } from '@/shared/utils/file';
 import { Activity, Cpu, MemoryStick, HardDrive, Server } from 'lucide-react';
 import { Separator } from '@/shared/components/ui/separator';
-import { ColumnDef } from '@tanstack/react-table';
+import { type ColumnDef } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 import { useDataTable } from '@/shared/hooks/use-data-table';
 import DataTable from '@/shared/components/table/data-table';
@@ -31,7 +31,7 @@ const columns: ColumnDef<DetailRow>[] = [
 ];
 
 export const VirtualMachineDetails = ({ device }: Props) => {
-  const details = device.details;
+  const {details} = device;
 
   const data: DetailRow[] = useMemo(() => {
     if (!details) return [];
