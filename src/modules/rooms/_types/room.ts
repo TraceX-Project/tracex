@@ -1,5 +1,5 @@
 import { type Alignment, type DeviceType, type Vendor } from "@/modules/admin/device-templates/_types/device-template";
-import { Device } from "@/modules/logical-view/_types/logical-view";
+import { type Device } from "@/modules/logical-view/_types/logical-view";
 
 export type Room = {
   id: string;

@@ -1,4 +1,4 @@
-import { Device } from "./_types/logical-view";
+import { type Device } from "./_types/logical-view";
 import { DeviceInterfacesTable } from "./device-interfaces-table";
 import { DeviceVlansTable } from "./device-vlans-table";
 import { DeviceFrontPanel } from "./device-front-panel";

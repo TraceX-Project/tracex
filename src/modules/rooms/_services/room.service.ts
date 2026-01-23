@@ -1,7 +1,8 @@
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
-import { type Device, type getRacksResponse, type Message, type Rack } from '../_types/room';
+import { type getRacksResponse, type Message, type Rack } from '../_types/room';
 import { type AddDeviceInput, type CreateRackInput } from '../_schema/schema';
+import { type Device } from '@/modules/logical-view/_types/logical-view';
 
 export const getRacks = async (roomId: string) => {
   const response = await request<getRacksResponse[]>({
@@ -20,7 +21,7 @@ export const createRack = async (roomId: string, body: CreateRackInput) => {
   return response;
 };
 
-export const addDevicesToRack = async (rackId:string, body: AddDeviceInput) => {
+export const addDevicesToRack = async (rackId: string, body: AddDeviceInput) => {
   const response = await request<Message>({
     method: 'POST',
     path: ENDPOINTS.racks.addDeviceToRack(rackId),

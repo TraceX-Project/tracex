@@ -1,9 +1,8 @@
 import { type VirtualMachine } from './_types/virtual-machine';
 import { formatBytes } from '@/shared/utils/file';
 import { Activity, Cpu, MemoryStick, HardDrive, Server } from 'lucide-react';
-import { Separator } from '@/shared/components/ui/separator';
 import React, { useMemo } from 'react';
-import { DetailRow, DeviceDetailsTable } from './device-details-table';
+import { type DetailRow, DeviceDetailsTable } from './device-details-table';
 
 type Props = {
   device: VirtualMachine;

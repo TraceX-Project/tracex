@@ -1,5 +1,5 @@
-import { DeviceVlan } from "./_types/device-vlan";
-import { ColumnDef } from "@tanstack/react-table";
+import { type DeviceVlan } from "./_types/device-vlan";
+import { type ColumnDef } from "@tanstack/react-table";
 import { useDataTable } from "@/shared/hooks/use-data-table";
 import DataTable from "@/shared/components/table/data-table";
 import { Separator } from "@/shared/components/ui/separator";

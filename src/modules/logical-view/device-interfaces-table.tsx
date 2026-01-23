@@ -1,5 +1,5 @@
-import { DeviceInterface } from "./_types/logical-view";
-import { ColumnDef } from "@tanstack/react-table";
+import { type DeviceInterface } from "./_types/logical-view";
+import { type ColumnDef } from "@tanstack/react-table";
 import { useDataTable } from "@/shared/hooks/use-data-table";
 import DataTable from "@/shared/components/table/data-table";
 import { Separator } from "@/shared/components/ui/separator";

@@ -6,8 +6,8 @@ import type z from 'zod';
 import { type connectHypervisorSchema } from '../_schema/schema';
 import { type Server } from './server';
 import { type VirtualMachine } from './virtual-machine';
-import { DeviceStack } from './device-stack';
-import { DeviceVlan } from './device-vlan';
+import { type DeviceStack } from './device-stack';
+import { type DeviceVlan } from './device-vlan';
 
 export type Topology = {
   nodes: Node[];

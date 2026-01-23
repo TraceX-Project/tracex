@@ -1,7 +1,5 @@
-import { Project } from "@/modules/projects/_types/projects";
-import { Device, DeviceInterface } from "./logical-view";
-import { DeviceTemplate } from "@/modules/admin/device-templates/_types/device-template";
-import { DeviceVlan } from "./device-vlan";
+import { type Project } from "@/modules/projects/_types/projects";
+import { type Device } from "./logical-view";
 
 export type DeviceStack = {
   id: string;

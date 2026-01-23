@@ -1,4 +1,4 @@
-import { DeviceStack } from "./_types/device-stack";
+import { type DeviceStack } from "./_types/device-stack";
 import { DeviceInterfacesTable } from "./device-interfaces-table";
 import { DeviceVlansTable } from "./device-vlans-table";
 import { DeviceFrontPanel } from "./device-front-panel";
