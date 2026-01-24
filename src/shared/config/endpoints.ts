@@ -9,6 +9,7 @@ const ROOTS = {
   logicalDevices: '/logical-devices',
   rooms: '/rooms',
   racks: '/racks',
+  servers: '/servers',
 };
 
 export const ENDPOINTS = {
@@ -80,6 +81,9 @@ export const ENDPOINTS = {
     addDeviceToRack: (rackId: string) => `${ROOTS.racks}/${rackId}/devices`,
     getDevicesByRackId: (rackId: string) => `${ROOTS.racks}/${rackId}/devices`,
     updateRack: (rackId: string) => `${ROOTS.racks}/${rackId}`,
+  },
+  servers: {
+    syncVms: (serverId: string) => `${ROOTS.servers}/${serverId}/sync-vms`,
   },
 };
 
