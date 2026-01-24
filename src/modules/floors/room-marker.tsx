@@ -35,19 +35,25 @@ const RoomMarker = ({ room }: Props) => {
     router.push(PATHS.projects.roomView(projectId, buildingId, floorId, room.id));
   };
 
-  const handleRename = () => {
+  const handleRename = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
     setTimeout(() => {
       setIsRenameDialogOpen(true);
     }, 100);
   };
 
-  const handleDelete = () => {
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
     setTimeout(() => {
       setIsDeleteDialogOpen(true);
     }, 100);
   };
 
   const handleChangeLocation = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
     const mapElement = document.getElementById('floor-plan-map');
     if (!mapElement) return;
 

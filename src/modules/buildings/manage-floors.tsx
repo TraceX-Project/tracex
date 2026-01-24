@@ -48,7 +48,7 @@ const ManageFloors = ({ buildingId }: Props) => {
 
   useEffect(() => {
     if (building?.floors) {
-      const sortedFloors = [...building.floors].sort((a, b) => a.sortOrder - b.sortOrder);
+      const sortedFloors = [...building.floors].sort((a, b) => b.sortOrder - a.sortOrder);
       setFloors(sortedFloors);
     }
   }, [building?.floors]);
@@ -117,7 +117,7 @@ const ManageFloors = ({ buildingId }: Props) => {
           >
             <SortableContext items={floors} strategy={verticalListSortingStrategy}>
               {floors.map((floor) => (
-                <SortableFloor key={floor.id} id={floor.id} name={floor.name} />
+                <SortableFloor key={floor.id} floor={floor} />
               ))}
             </SortableContext>
           </DndContext>
