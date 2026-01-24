@@ -14,7 +14,7 @@ import {
 } from '@/shared/components/ui/dialog';
 import { Button } from '@/shared/components/ui/button';
 import { toast } from 'sonner';
-import { useAddDevicesToRack } from './_hooks/use-add-devices';
+import { useAddDevicesToRack } from './_hooks/use-add-devices-to-rack';
 import { type GetRacksResponse, type DEVICE_OPTIONS } from './_types/room';
 import {
   DropdownMenu,
@@ -25,7 +25,7 @@ import {
   DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu';
 import { EllipsisVertical } from 'lucide-react';
-import { useGetDevicesInProject } from './_hooks/use-get-devices';
+import { useGetPhysicalDevices } from './_hooks/use-get-physical-devices';
 import EditRackDialog from './edit-rack-dialog';
 
 type Props = {
@@ -35,7 +35,7 @@ type Props = {
 const AddDevicesModal = ({ rack }: Props) => {
   const { projectId } = useParams<{ projectId: string }>();
   const { mutateAsync: addDevicesToRack } = useAddDevicesToRack();
-  const { data: devices, isLoading } = useGetDevicesInProject(projectId);
+  const { data: devices, isLoading } = useGetPhysicalDevices(projectId, { inRack: false });
   const [deviceOptions, setDeviceOptions] = useState<DEVICE_OPTIONS[]>([]);
   const [addDevicesOpen, setAddDevicesOpen] = useState(false);
   const [editRackOpen, setEditRackOpen] = useState(false);

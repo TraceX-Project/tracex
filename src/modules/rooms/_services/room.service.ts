@@ -1,8 +1,9 @@
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
-import { type GetRacksResponse, type Message, type Rack } from '../_types/room';
+import { GetDevicesInProjectParams, type GetRacksResponse, type Message, type Rack } from '../_types/room';
 import { type AddDeviceInput, type CreateRackInput } from '../_schema/schema';
 import { type Device } from '@/modules/logical-view/_types/logical-view';
+import { buildQueryString } from '@/shared/utils/query';
 
 export const getRacks = async (roomId: string) => {
   const response = await request<GetRacksResponse[]>({
@@ -39,10 +40,14 @@ export const addDevicesToRack = async (rackId: string, body: AddDeviceInput) => 
   return response;
 };
 
-export const getDevicesInProject = async (projectId: string) => {
+export const getPhysicalDevices = async (projectId: string, params?: GetDevicesInProjectParams) => {
+  const query = buildQueryString({
+    inRack: params?.inRack?.toString(),
+  })
+
   const response = await request<Device[]>({
     method: 'GET',
-    path: ENDPOINTS.projects.getDevicesByProjectId(projectId),
+    path: `${ENDPOINTS.projects.physicalDevices(projectId)}${query}`,
   });
   return response;
 };

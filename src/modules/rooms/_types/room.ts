@@ -86,3 +86,7 @@ export const DEVICE_OPTIONS = [
 export type AddDeviceRequest = {
   deviceIds: string[];
 };
+
+export type GetDevicesInProjectParams = {
+  inRack?: boolean;
+};

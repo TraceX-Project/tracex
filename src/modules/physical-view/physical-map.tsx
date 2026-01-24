@@ -25,6 +25,35 @@ import CreateBuildingDialog from './create-building-modal';
 import BuildingMarker from './building-marker';
 import MapClickHandler from './map-click-handler';
 import MovingBuildingMarker from './moving-building-marker';
+import { useMap } from 'react-leaflet';
+
+const MapController = () => {
+  const map = useMap();
+  const selectedLocation = usePhysicalMapStore((s) => s.selectedLocation);
+
+  useEffect(() => {
+    if (!selectedLocation?.location) return;
+
+    map.whenReady(() => {
+      map.invalidateSize();
+
+      const target: [number, number] = [
+        selectedLocation.location.lat,
+        selectedLocation.location.lng,
+      ];
+
+      const targetZoom = Math.max(map.getZoom(), 16);
+
+      map.flyTo(target, targetZoom, {
+        duration: 1.5,
+        easeLinearity: 0.25,
+      });
+    });
+  }, [map, selectedLocation]);
+
+  return null;
+};
+
 
 type Props = {
   projectId: string;
@@ -63,6 +92,8 @@ const PhysicalMap = ({ projectId }: Props) => {
         <MapTileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          keepBuffer={4}
+          updateWhenIdle={false}
         />
 
         <MapLocateControl className="top-auto right-1 bottom-4 left-auto" />
@@ -91,6 +122,7 @@ const PhysicalMap = ({ projectId }: Props) => {
         <MapClickHandler />
 
         <MovingBuildingMarker projectId={projectId} />
+        <MapController />
       </Map>
 
       <LocationInfoCard />
