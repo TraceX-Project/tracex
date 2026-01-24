@@ -1,7 +1,7 @@
 import { QUERY_KEYS } from '@/shared/constants/query-key';
 import { getQueryClient } from '@/shared/tanstack-query/get-query-client';
 import { useMutation } from '@tanstack/react-query';
-import { CreateRackInput } from '../_schema/schema';
+import { type CreateRackInput } from '../_schema/schema';
 import { updateRack } from '../_services/room.service';
 
 export const useUpdateRack = () => {

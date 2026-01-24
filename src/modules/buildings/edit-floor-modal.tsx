@@ -1,7 +1,7 @@
 'use client';
 
 import React, { type FormEvent, useCallback, useEffect } from 'react';
-import { Button, type buttonVariants } from '@/shared/components/ui/button';
+import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -15,7 +15,7 @@ import { useAppForm } from '@/shared/tanstack-form/form';
 import { toast } from 'sonner';
 import { useUpdateFloor } from '../floors/_hooks/use-floor';
 import { updateFloorSchema } from '../floors/_schema/floor';
-import { Floor } from '../floors/_types/floor';
+import { type Floor } from '../floors/_types/floor';
 
 type Props = {
   floor: Floor

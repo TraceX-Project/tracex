@@ -8,7 +8,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import DeleteFloorDialog from './delete-floor-dialog';
 import { useBoolean } from '@/shared/hooks/use-boolean';
 import EditFloorModal from './edit-floor-modal';
-import { Floor } from '../floors/_types/floor';
+import { type Floor } from '../floors/_types/floor';
 
 type Props = {
   floor: Floor;
