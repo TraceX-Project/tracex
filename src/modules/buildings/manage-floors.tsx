@@ -48,7 +48,7 @@ const ManageFloors = ({ buildingId }: Props) => {
 
   useEffect(() => {
     if (building?.floors) {
-      const sortedFloors = [...building.floors].sort((a, b) => a.sortOrder - b.sortOrder);
+      const sortedFloors = [...building.floors].sort((a, b) => b.sortOrder - a.sortOrder);
       setFloors(sortedFloors);
     }
   }, [building?.floors]);

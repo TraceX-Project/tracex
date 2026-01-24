@@ -19,7 +19,7 @@ const FloorSelector = ({ floors, currentFloorId }: Props) => {
   }>();
   const router = useRouter();
   const sortedFloors = useMemo(
-    () => [...floors].sort((a, b) => a.sortOrder - b.sortOrder),
+    () => [...floors].sort((a, b) => b.sortOrder - a.sortOrder),
     [floors]
   );
 

@@ -21,7 +21,7 @@ import NodeContextMenu from './node-context-menu';
 import ConnectHypervisorDialog from './connect-hypervisor-dialog';
 import DeleteNodeDialog from './delete-node-dialog';
 import NodeDetailsSheet from './node-details-sheet';
-import { type DeviceType } from '../admin/device-templates/_types/device-template';
+import { DeviceType } from '../admin/device-templates/_types/device-template';
 
 type Props = {
   projectId: string;
@@ -108,7 +108,7 @@ const LogicalView = ({ projectId }: Props) => {
         <Controls />
       </ReactFlow>
 
-      {menu && (
+      {menu && menu.type !== DeviceType.VIRTUAL_MACHINE && (
         <NodeContextMenu
           open={!!menu}
           menu={menu}
