@@ -40,7 +40,11 @@ const ManageFloors = ({ buildingId }: Props) => {
   const { mutateAsync: reorderFloors } = useReorderFloors();
   const [floors, setFloors] = useState(building?.floors ?? []);
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
