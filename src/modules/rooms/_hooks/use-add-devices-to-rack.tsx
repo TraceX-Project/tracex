@@ -19,6 +19,7 @@ export const useAddDevicesToRack = () => {
     }) => addDevicesToRack(rackId, data),
     onSuccess: (_, { roomId }) => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.racks, roomId] });
+      queryClient.invalidateQueries({queryKey:[QUERY_KEYS.physicalDevices]})
     },
   });
 };

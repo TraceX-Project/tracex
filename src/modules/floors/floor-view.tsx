@@ -37,7 +37,7 @@ const FloorView = ({ projectId, floorId, buildingId }: Props) => {
     <div className="relative h-full max-h-screen w-full max-w-screen">
       {floor && <FloorPlanDisplay floor={floor} />}
 
-      <div className="absolute right-4 bottom-4 sm:right-8">
+      <div className="absolute right-2 bottom-2 sm:right-4 sm:bottom-4">
         <FloorSelector floors={floors} currentFloorId={floorId} />
       </div>
     </div>

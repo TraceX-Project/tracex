@@ -30,6 +30,7 @@ import SortableFloor from './sortable-floor';
 import CreateFloorModal from './create-floor-modal';
 import { useReorderFloors } from './_hooks/use-reorder-floors';
 import { toast } from 'sonner';
+import { useBoolean } from '@/shared/hooks/use-boolean';
 
 type Props = {
   buildingId: string;
@@ -38,6 +39,7 @@ type Props = {
 const ManageFloors = ({ buildingId }: Props) => {
   const { data: building, isLoading } = useGetBuildingById(buildingId);
   const { mutateAsync: reorderFloors } = useReorderFloors();
+  const { value: isOpen, setValue: setIsOpen } = useBoolean(false);
   const [floors, setFloors] = useState(building?.floors ?? []);
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -55,7 +57,7 @@ const ManageFloors = ({ buildingId }: Props) => {
       const sortedFloors = [...building.floors].sort((a, b) => b.sortOrder - a.sortOrder);
       setFloors(sortedFloors);
     }
-  }, [building?.floors]);
+  }, [building?.floors, isOpen]);
 
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
@@ -75,7 +77,7 @@ const ManageFloors = ({ buildingId }: Props) => {
       const newFloorsOrder = arrayMove(floors, oldIndex, newIndex);
       const updatedFloors = newFloorsOrder.map((floor, index) => ({
         ...floor,
-        sortOrder: index,
+        sortOrder: newFloorsOrder.length - index,
       }));
 
       setFloors(updatedFloors);
@@ -93,7 +95,7 @@ const ManageFloors = ({ buildingId }: Props) => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button size="sm" variant="outline">
           <Layers />
@@ -120,9 +122,11 @@ const ManageFloors = ({ buildingId }: Props) => {
             onDragEnd={handleDragEnd}
           >
             <SortableContext items={floors} strategy={verticalListSortingStrategy}>
-              {floors.map((floor) => (
-                <SortableFloor key={floor.id} floor={floor} />
-              ))}
+              <div className="max-h-[60vh] overflow-y-auto">
+                {floors.map((floor) => (
+                  <SortableFloor key={floor.id} floor={floor} />
+                ))}
+              </div>
             </SortableContext>
           </DndContext>
         </div>

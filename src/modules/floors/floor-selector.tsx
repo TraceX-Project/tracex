@@ -31,7 +31,7 @@ const FloorSelector = ({ floors, currentFloorId }: Props) => {
   );
 
   return (
-    <div className="flex flex-col space-y-2 rounded-lg bg-white p-2 shadow-lg">
+    <div className="flex max-h-[30vh] flex-col space-y-2 overflow-y-auto rounded-lg bg-white p-2 shadow-lg">
       {sortedFloors.map((floor) => (
         <Button
           key={floor.id}
