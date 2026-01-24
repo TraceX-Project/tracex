@@ -1,7 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable';
 import React from 'react';
 import { CSS } from '@dnd-kit/utilities';
-import { GripVertical, MoreVertical } from 'lucide-react';
+import { MoreVertical } from 'lucide-react';
 import { Button } from '@/shared/components/ui/button';
 import { cn } from '@/shared/lib/cn';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/shared/components/ui/dropdown-menu';
@@ -39,21 +39,13 @@ const SortableFloor = ({ floor }: Props) => {
         ref={setNodeRef}
         style={style}
         className={cn(
-          'mb-2 flex items-center justify-between rounded-md border bg-white p-2',
+          'mb-2 flex cursor-grab items-center justify-between rounded-md border bg-white p-2 active:cursor-grabbing',
           isDragging && 'shadow-lg'
         )}
+        {...attributes}
+        {...listeners}
       >
         <span className="font-medium">{floor.name}</span>
-
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-6 w-6 cursor-grab active:cursor-grabbing"
-          {...attributes}
-          {...listeners}
-        >
-          <GripVertical className="h-4 w-4" />
-        </Button>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
