@@ -14,6 +14,16 @@ export const createFloor = async (buildingId: string, formData: FormData) => {
   return response;
 };
 
+export const updateFloor = async (floorId: string, formData: FormData) => {
+  const response = await request<Floor>({
+    method: 'PATCH',
+    path: ENDPOINTS.floors.update(floorId),
+    body: formData,
+  });
+
+  return response;
+};
+
 export const getFloorById = async (floorId: string) => {
   const response = await request<Floor>({
     method: 'GET',
@@ -55,6 +65,15 @@ export const getRoom = async (roomId: string) => {
   const response = await request<Room>({
     method: 'GET',
     path: ENDPOINTS.rooms.getById(roomId),
+  });
+
+  return response;
+};
+
+export const deleteFloor = async (floorId: string) => {
+  const response = await request<Floor>({
+    method: 'DELETE',
+    path: ENDPOINTS.floors.delete(floorId),
   });
 
   return response;

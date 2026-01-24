@@ -62,6 +62,8 @@ export const ENDPOINTS = {
     getById: (id: string) => `${ROOTS.floors}/${id}`,
     createRoom: (floorId: string) => `${ROOTS.floors}/${floorId}/rooms`,
     getRooms: (floorId: string) => `${ROOTS.floors}/${floorId}/rooms`,
+    delete: (id: string) => `${ROOTS.floors}/${id}`,
+    update: (id: string) => `${ROOTS.floors}/${id}`,
   },
   logicalDevices: {
     delete: (id: string) => `${ROOTS.logicalDevices}/${id}`,

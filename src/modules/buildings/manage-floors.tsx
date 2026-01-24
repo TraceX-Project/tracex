@@ -117,7 +117,7 @@ const ManageFloors = ({ buildingId }: Props) => {
           >
             <SortableContext items={floors} strategy={verticalListSortingStrategy}>
               {floors.map((floor) => (
-                <SortableFloor key={floor.id} id={floor.id} name={floor.name} />
+                <SortableFloor key={floor.id} floor={floor} />
               ))}
             </SortableContext>
           </DndContext>

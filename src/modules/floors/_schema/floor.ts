@@ -10,3 +10,9 @@ export const createFloorSchema = z.object({
 });
 
 export type CreateFloorSchema = z.infer<typeof createFloorSchema>;
+
+export const updateFloorSchema = createFloorSchema.extend({
+  floorPlan: z.instanceof(File).nullable(),
+});
+
+export type UpdateFloorSchema = z.infer<typeof updateFloorSchema>
