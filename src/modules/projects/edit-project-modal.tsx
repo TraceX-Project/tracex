@@ -1,11 +1,9 @@
 'use client';
 
-import React, { type FormEvent, useCallback } from 'react';
-import { useCreateProject } from './_hooks/use-create-project';
-import { useRouter } from 'next/navigation';
+import React, { type FormEvent, useCallback, useEffect } from 'react';
+import { useUpdateProject } from './_hooks/use-update-project';
 import { useAppForm } from '@/shared/tanstack-form/form';
 import { projectSchema } from './_schema/schema';
-import { PATHS } from '@/shared/config/paths';
 import { toast } from 'sonner';
 import {
   Dialog,
@@ -15,44 +13,52 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/shared/components/ui/dialog';
-import { useProjectModalStore } from './_store/project-modal.store';
 import { Button } from '@/shared/components/ui/button';
+import { type Project } from './_types/projects';
 
-const CreateProjectForm = () => {
-  const { mutateAsync: createNewProject } = useCreateProject();
-  const isOpen = useProjectModalStore((state) => state.isOpen);
-  const { closeModal } = useProjectModalStore((state) => state.actions);
-  const router = useRouter();
+type Props = {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  project: Project;
+};
+
+const EditProjectModal = ({ open, onOpenChange, project }: Props) => {
+  const { mutateAsync: updateProject } = useUpdateProject();
 
   const form = useAppForm({
     defaultValues: {
-      name: '',
+      name: project.name,
     },
     validators: {
       onSubmit: projectSchema,
     },
     onSubmit: async ({ value }) => {
       try {
-        const createdProject = await createNewProject({
-          name: value.name,
+        await updateProject({
+          projectId: project.id,
+          data: {
+            name: value.name,
+          },
         });
 
-        router.push(PATHS.projects.logical(createdProject.id));
-
         form.reset();
-
-        closeModal();
-
-        toast.success('Project created successfully!');
+        onOpenChange(false);
+        toast.success('Project updated successfully!');
       } catch (error) {
         toast.error(
           error instanceof Error
             ? error.message
-            : 'An unexpected error occurred while creating the project.'
+            : 'An unexpected error occurred while updating the project.'
         );
       }
     },
   });
+
+  useEffect(() => {
+    if (open) {
+      form.setFieldValue('name', project.name);
+    }
+  }, [open, project, form]);
 
   const handleSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
@@ -63,11 +69,11 @@ const CreateProjectForm = () => {
   );
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => closeModal()}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-xl">
         <form onSubmit={handleSubmit} className="space-y-4">
           <DialogHeader>
-            <DialogTitle>Create New Project</DialogTitle>
+            <DialogTitle>Edit Project</DialogTitle>
           </DialogHeader>
           {/* Name */}
           <form.AppField
@@ -81,7 +87,7 @@ const CreateProjectForm = () => {
               <Button variant="outline">Cancel</Button>
             </DialogClose>
             <form.AppForm>
-              <form.SubmitButton>Create</form.SubmitButton>
+              <form.SubmitButton>Save Changes</form.SubmitButton>
             </form.AppForm>
           </DialogFooter>
         </form>
@@ -90,4 +96,4 @@ const CreateProjectForm = () => {
   );
 };
 
-export default CreateProjectForm;
+export default EditProjectModal;

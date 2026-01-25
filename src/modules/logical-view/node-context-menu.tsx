@@ -4,9 +4,13 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from '@/shared/components/ui/dropdown-menu';
-import { IconPlugConnected, IconTrash } from '@tabler/icons-react';
+import { IconEdit, IconPlugConnected, IconRefresh, IconTrash } from '@tabler/icons-react';
 import { type NodeContextMenuState } from './_types/logical-view';
 import { DeviceType } from '../admin/device-templates/_types/device-template';
+import { useSyncVms } from './_hooks/use-sync-vms';
+import { cn } from '@/shared/lib/cn';
+import { toast } from 'sonner';
+import { useCallback } from 'react';
 
 type Props = {
   menu: NodeContextMenuState;
@@ -17,6 +21,24 @@ type Props = {
 };
 
 const NodeContextMenu = ({ menu, open, onClose, onConnect, onDelete }: Props) => {
+  const { mutateAsync: syncVms, isPending: isSyncing } = useSyncVms();
+
+  const handleSyncServer = useCallback(async () => {
+    try {
+      await syncVms({
+        serverId: menu.id,
+      });
+
+      onClose();
+
+      toast.success('Synced server successfully');
+    } catch (error) {
+      console.error(error);
+
+      toast.error('Failed to sync server');
+    }
+  }, [syncVms]);
+
   return (
     <DropdownMenu open={open} onOpenChange={onClose}>
       <DropdownMenuContent
@@ -32,6 +54,19 @@ const NodeContextMenu = ({ menu, open, onClose, onConnect, onDelete }: Props) =>
             <DropdownMenuItem onClick={onConnect}>
               <IconPlugConnected className="size-4" />
               <span>Connect a hypervisor</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+          </>
+        )}
+        {menu.type === DeviceType.SERVER && (
+          <>
+            <DropdownMenuItem>
+              <IconEdit className="size-4" />
+              <span>Edit</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem disabled={isSyncing} onClick={handleSyncServer}>
+              <IconRefresh className={cn('size-4', isSyncing && 'animate-spin')} />
+              <span>Sync</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
           </>

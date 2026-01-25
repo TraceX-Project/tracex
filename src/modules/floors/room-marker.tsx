@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { type Room } from '../rooms/_types/room';
 import { IconEdit, IconMapPinFilled, IconMapSearch, IconTrash } from '@tabler/icons-react';
 import {
@@ -12,9 +12,11 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/ui/
 import { useBoolean } from '@/shared/hooks/use-boolean';
 import { useRoomStore } from './_store/room.store';
 import RenameRoomDialog from './rename-room-dialog';
-import DeleteRoomDialog from './delete-room-dialog';
 import { useParams, useRouter } from 'next/navigation';
 import { PATHS } from '@/shared/config/paths';
+import { ConfirmDialog } from '@/shared/components/confirm-dialog';
+import { useDeleteRoom } from './_hooks/use-delete-room';
+import { toast } from 'sonner';
 
 type Props = {
   room: Room;
@@ -30,6 +32,7 @@ const RoomMarker = ({ room }: Props) => {
   const { value: isRenameDialogOpen, setValue: setIsRenameDialogOpen } = useBoolean(false);
   const { value: isDeleteDialogOpen, setValue: setIsDeleteDialogOpen } = useBoolean(false);
   const { setMovingRoomId, setCursorPosition } = useRoomStore((state) => state.actions);
+  const { mutateAsync: deleteRoom } = useDeleteRoom();
 
   const handleNavigate = () => {
     router.push(PATHS.projects.roomView(projectId, buildingId, floorId, room.id));
@@ -66,6 +69,18 @@ const RoomMarker = ({ room }: Props) => {
       setCursorPosition({ x, y });
     }, 100);
   };
+
+  const handleDeleteRoom = useCallback(async () => {
+    try {
+      await deleteRoom(room.id);
+      setIsDeleteDialogOpen(false);
+
+      toast.success('Room deleted successfully');
+    } catch (error) {
+      console.log(error);
+      toast.error('Failed to delete room');
+    }
+  }, [room.id, deleteRoom]);
 
   return (
     <>
@@ -115,10 +130,12 @@ const RoomMarker = ({ room }: Props) => {
         onClose={() => setIsRenameDialogOpen(false)}
       />
 
-      <DeleteRoomDialog
-        room={room}
-        isOpen={isDeleteDialogOpen}
-        onClose={() => setIsDeleteDialogOpen(false)}
+      <ConfirmDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+        title="Are you sure?"
+        description={`This action cannot be undone. This will permanently delete the room "${room.name}" and remove all associated data.`}
+        onConfirm={handleDeleteRoom}
       />
     </>
   );

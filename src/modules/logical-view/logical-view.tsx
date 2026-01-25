@@ -19,9 +19,11 @@ import { useGetTopology } from './_hooks/use-get-topology';
 import { type NodeContextMenuState } from './_types/logical-view';
 import NodeContextMenu from './node-context-menu';
 import ConnectHypervisorDialog from './connect-hypervisor-dialog';
-import DeleteNodeDialog from './delete-node-dialog';
 import NodeDetailsSheet from './node-details-sheet';
 import { DeviceType } from '../admin/device-templates/_types/device-template';
+import { ConfirmDialog } from '@/shared/components/confirm-dialog';
+import { toast } from 'sonner';
+import { useDeleteLogicalDevice } from './_hooks/use-delete-logical-device';
 
 type Props = {
   projectId: string;
@@ -37,6 +39,8 @@ const LogicalView = ({ projectId }: Props) => {
   const [isDetailsValuesOpen, setDetailsValuesOpen] = useState(false);
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement | null>(null);
+  const { mutateAsync: deleteLogicalDevice } = useDeleteLogicalDevice(projectId);
+
 
   const { nodes: layoutedNodes, edges: layoutedEdges } = useMemo(() => {
     const mappedDevices = mapDevicesToReactFlow(devices!);
@@ -89,6 +93,18 @@ const LogicalView = ({ projectId }: Props) => {
     setDetailsValuesOpen(true);
   }, []);
 
+  const handleDeleteNode = useCallback(async () => {
+    try {
+      await deleteLogicalDevice(selectedDeviceId!);
+      setDeleteDialogOpen(false);
+
+      toast.success('Node deleted successfully.');
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to delete node. Please try again.');
+    }
+  }, [deleteLogicalDevice, selectedDeviceId]);
+
   return (
     <div className="relative h-full w-full">
       <ReactFlow
@@ -123,11 +139,13 @@ const LogicalView = ({ projectId }: Props) => {
         open={isConnectDialogOpen}
         onOpenChange={setConnectDialogOpen}
       />
-      <DeleteNodeDialog
-        deviceId={selectedDeviceId!}
+
+      <ConfirmDialog
         open={isDeleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
-        projectId={projectId}
+        title="Are you absolutely sure?"
+        description="This action cannot be undone. This will permanently delete the selected node."
+        onConfirm={handleDeleteNode}
       />
 
       <NodeDetailsSheet

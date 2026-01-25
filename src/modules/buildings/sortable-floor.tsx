@@ -1,7 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable';
 import React from 'react';
 import { CSS } from '@dnd-kit/utilities';
-import { MoreVertical } from 'lucide-react';
+import { IconDotsVertical, IconPencil, IconTrash } from '@tabler/icons-react';
 import { Button } from '@/shared/components/ui/button';
 import { cn } from '@/shared/lib/cn';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/shared/components/ui/dropdown-menu';
@@ -55,14 +55,16 @@ const SortableFloor = ({ floor }: Props) => {
               aria-label="Project actions"
               className="h-6 w-6 p-1"
             >
-              <MoreVertical className="h-4 w-4" />
+              <IconDotsVertical className="size-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem onClick={() => setIsEditModalOpen(true)}>
+              <IconPencil className="size-4" />
               Edit
             </DropdownMenuItem>
             <DropdownMenuItem variant="destructive" onClick={handleDelete}>
+              <IconTrash className="size-4" />
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>

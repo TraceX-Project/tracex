@@ -1,6 +1,6 @@
 'use client';
 
-import React, { type FormEvent, useEffect, useState } from 'react';
+import React, { type FormEvent, useCallback, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useAppForm } from '@/shared/tanstack-form/form';
 import { addDeviceSchema } from '../rooms/_schema/schema';
@@ -32,6 +32,7 @@ type Props = {
   rack: GetRacksResponse;
 };
 
+// TODO: change component name
 const AddDevicesModal = ({ rack }: Props) => {
   const { projectId } = useParams<{ projectId: string }>();
   const { mutateAsync: addDevicesToRack } = useAddDevicesToRack();
@@ -56,8 +57,10 @@ const AddDevicesModal = ({ rack }: Props) => {
             deviceIds: value.deviceIds,
           },
         });
+
         form.reset();
         setAddDevicesOpen(false);
+
         toast.success('Devices added successfully.');
       } catch {
         toast.error('Failed to add devices. Please try again.');
@@ -65,12 +68,15 @@ const AddDevicesModal = ({ rack }: Props) => {
     },
   });
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-    form.handleSubmit();
-  };
+  const handleSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      form.handleSubmit();
+    },
+    [form]
+  );
 
+  // TODO: improve to useMemo
   useEffect(() => {
     if (devices) {
       console.log(devices);
@@ -108,15 +114,17 @@ const AddDevicesModal = ({ rack }: Props) => {
                 }, 100)
               }
             >
-              Edit Rack
+              Edit
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-red-600 focus:bg-red-50 focus:text-red-600">
-              Delete Rack
+            <DropdownMenuItem variant="destructive">
+              Delete
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      {/* TODO: Move to new components  */}
       <Dialog open={addDevicesOpen} onOpenChange={setAddDevicesOpen}>
         <DialogContent
           className="sm:max-w-[425px]"
@@ -156,6 +164,7 @@ const AddDevicesModal = ({ rack }: Props) => {
           </form>
         </DialogContent>
       </Dialog>
+
       <EditRackDialog rack={rack} open={editRackOpen} onOpenChange={setEditRackOpen} />
     </>
   );

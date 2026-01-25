@@ -14,7 +14,7 @@ import React from 'react';
 import { useProjectModalStore } from './_store/project-modal.store';
 
 const EmptyProject = () => {
-  const { setIsOpen } = useProjectModalStore((state) => state.actions);
+  const { openCreateModal } = useProjectModalStore((state) => state.actions);
 
   return (
     <Empty>
@@ -28,7 +28,7 @@ const EmptyProject = () => {
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
-        <Button onClick={() => setIsOpen(true)}>Create Project</Button>
+        <Button onClick={openCreateModal}>Create Project</Button>
       </EmptyContent>
     </Empty>
   );

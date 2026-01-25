@@ -30,6 +30,7 @@ export default async function ProjectsPage() {
             <ProjectList />
           </div>
         </div>
+
         <CreateProjectModal />
       </>
     </HydrationBoundary>

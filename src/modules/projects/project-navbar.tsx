@@ -68,8 +68,10 @@ const ProjectNavbar = ({ project }: Props) => {
   return (
     <header className="flex w-full shrink-0 items-center justify-between gap-2 border-b bg-white px-4 py-2">
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" onClick={() => router.back()}>
-          <ChevronLeft />
+        <Button variant="ghost" size="icon" asChild>
+          <Link href={PATHS.projects.root}>
+            <ChevronLeft />
+          </Link>
         </Button>
         <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
         <Breadcrumb>
