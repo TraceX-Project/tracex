@@ -9,10 +9,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu';
-import { Button, buttonVariants } from '@/shared/components/ui/button';
+import { Button } from '@/shared/components/ui/button';
 import { ConfirmDialog } from '@/shared/components/confirm-dialog';
 import { PATHS } from '@/shared/config/paths';
-import { cn } from '@/shared/lib/cn';
 import { EllipsisVertical } from 'lucide-react';
 import { useBoolean } from '@/shared/hooks/use-boolean';
 import { useDeleteDeviceTemplate } from './_hooks/use-delete-device-template';

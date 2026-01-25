@@ -18,14 +18,14 @@ import { PATHS } from '@/shared/config/paths';
 const NavMain = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const { setIsOpen } = useProjectModalStore((state) => state.actions);
+  const { openCreateModal } = useProjectModalStore((state) => state.actions);
 
   const handleNewProjectClick = () => {
     if (!pathname.startsWith('/projects')) {
       router.push(PATHS.projects.root);
     }
 
-    setIsOpen(true);
+    openCreateModal();
   };
 
   return (

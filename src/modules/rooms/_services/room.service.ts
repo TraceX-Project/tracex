@@ -1,6 +1,6 @@
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
-import { GetDevicesInProjectParams, type GetRacksResponse, type Message, type Rack } from '../_types/room';
+import { type GetDevicesInProjectParams, type GetRacksResponse, type Message, type Rack } from '../_types/room';
 import { type AddDeviceInput, type CreateRackInput } from '../_schema/schema';
 import { type Device } from '@/modules/logical-view/_types/logical-view';
 import { buildQueryString } from '@/shared/utils/query';

@@ -1,6 +1,4 @@
 import { ConfirmDialog } from '@/shared/components/confirm-dialog';
-import { cn } from '@/shared/lib/cn';
-import { buttonVariants } from '@/shared/components/ui/button';
 import { useDeleteFloor } from '../floors/_hooks/use-delete-floor';
 import { toast } from 'sonner';
 import { useParams, useRouter } from 'next/navigation';

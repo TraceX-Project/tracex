@@ -10,7 +10,7 @@ import {
 } from '@/shared/components/ui/alert-dialog';
 import { buttonVariants } from '@/shared/components/ui/button';
 import { cn } from '@/shared/lib/cn';
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 
 type ConfirmDialogProps = {
   open: boolean;
