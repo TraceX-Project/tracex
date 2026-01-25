@@ -95,7 +95,7 @@ const ProjectItem = ({ project }: ProjectItemProps) => {
         open={isOpen}
         onOpenChange={toggleIsOpen}
         title="Confirm Project Deletion"
-        description={`Are you sure you want to delete the project "${name}"? This action cannot be undone.`}
+        description={`Are you sure you want to delete the project "${project.name}"? This action cannot be undone.`}
         onConfirm={handleDelete}
       />
 
