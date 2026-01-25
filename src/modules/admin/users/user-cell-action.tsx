@@ -6,7 +6,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu';
-import { EllipsisVertical } from 'lucide-react';
+import { IconDotsVertical, IconPencil, IconTrash } from '@tabler/icons-react';
 import { Button } from '@/shared/components/ui/button';
 import { type User } from '@/modules/auth/_types/user';
 import ChangeRoleDialog from './change-role-dialog';
@@ -28,18 +28,22 @@ const UserCellAction = ({ user }: Props) => {
             className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
             size="icon"
           >
-            <EllipsisVertical />
+            <IconDotsVertical className="size-4" />
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem onClick={() => setOpenChangeRole(true)}>Change Role</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setOpenChangeRole(true)}>
+            <IconPencil className="size-4" />
+            <span className="whitespace-nowrap">Change Role</span>
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             variant="destructive"
             className="text-red-600 focus:bg-red-50 focus:text-red-600"
           >
-            Remove User
+            <IconTrash className="size-4" />
+            <span className="whitespace-nowrap">Remove User</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

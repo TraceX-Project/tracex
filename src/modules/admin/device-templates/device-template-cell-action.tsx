@@ -27,6 +27,7 @@ import { useBoolean } from '@/shared/hooks/use-boolean';
 import { useDeleteDeviceTemplate } from './_hooks/use-delete-device-template';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import { IconPencil, IconTrash } from '@tabler/icons-react';
 
 type Props = {
   deviceTemplate: DeviceTemplate;
@@ -61,10 +62,14 @@ const DeviceTemplateCellAction = ({ deviceTemplate }: Props) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-32">
           <DropdownMenuItem asChild>
-            <Link href={PATHS.admin.deviceTemplates.edit(deviceTemplate.id)}>Edit</Link>
+            <Link href={PATHS.admin.deviceTemplates.edit(deviceTemplate.id)}>
+              <IconPencil className="size-4" />
+              Edit
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setOpen(true)} variant="destructive">
+            <IconTrash className="size-4" />
             Delete
           </DropdownMenuItem>
         </DropdownMenuContent>

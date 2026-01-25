@@ -19,6 +19,7 @@ import { useDeleteProject } from './_hooks/use-delete-project';
 import { toast } from 'sonner';
 import { Skeleton } from '@/shared/components/ui/skeleton';
 import EmptyProject from './empty-project';
+import { IconPencil, IconTrash } from '@tabler/icons-react';
 
 type ProjectItemProps = {
   name: string;
@@ -71,9 +72,14 @@ const ProjectItem = ({ name, id }: ProjectItemProps) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
-              <Link href={PATHS.projects.edit(id)}>Edit</Link>
+
+              <Link href={PATHS.projects.edit(id)}>
+                <IconPencil className="size-4" />
+                Edit
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem variant="destructive" onClick={toggleIsOpen}>
+              <IconTrash className="size-4" />
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
