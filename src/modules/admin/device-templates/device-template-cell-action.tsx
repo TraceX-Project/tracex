@@ -10,16 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu';
 import { Button, buttonVariants } from '@/shared/components/ui/button';
-import {
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogTitle,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogDescription,
-} from '@/shared/components/ui/alert-dialog';
+import { ConfirmDialog } from '@/shared/components/confirm-dialog';
 import { PATHS } from '@/shared/config/paths';
 import { cn } from '@/shared/lib/cn';
 import { EllipsisVertical } from 'lucide-react';
@@ -75,26 +66,18 @@ const DeviceTemplateCellAction = ({ deviceTemplate }: Props) => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <AlertDialog open={open} onOpenChange={setOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Confirm Delete</AlertDialogTitle>
-            <AlertDialogDescription>
-              Do you want to delete <strong>{deviceTemplate.modelName}</strong>? This action cannot
-              be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              className={cn(buttonVariants({ variant: 'destructive' }))}
-              onClick={handleDeleteDeviceTemplate}
-            >
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ConfirmDialog
+        open={open}
+        onOpenChange={setOpen}
+        title="Confirm Delete"
+        description={
+          <>
+            Do you want to delete <strong>{deviceTemplate.modelName}</strong>? This action cannot
+            be undone.
+          </>
+        }
+        onConfirm={handleDeleteDeviceTemplate}
+      />
     </>
   );
 };

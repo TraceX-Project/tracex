@@ -12,7 +12,6 @@ import { Button } from '@/shared/components/ui/button';
 import { MoreVertical } from 'lucide-react';
 import { PATHS } from '@/shared/config/paths';
 import { useGetProjects } from './_hooks/use-get-projects';
-import DeleteProjectModal from './delete-project-modal';
 import { useBoolean } from '@/shared/hooks/use-boolean';
 import { useCallback } from 'react';
 import { useDeleteProject } from './_hooks/use-delete-project';
@@ -20,6 +19,7 @@ import { toast } from 'sonner';
 import { Skeleton } from '@/shared/components/ui/skeleton';
 import EmptyProject from './empty-project';
 import { IconPencil, IconTrash } from '@tabler/icons-react';
+import { ConfirmDialog } from '@/shared/components/confirm-dialog';
 
 type ProjectItemProps = {
   name: string;
@@ -86,10 +86,11 @@ const ProjectItem = ({ name, id }: ProjectItemProps) => {
         </DropdownMenu>
       </div>
 
-      <DeleteProjectModal
+      <ConfirmDialog
         open={isOpen}
         onOpenChange={toggleIsOpen}
-        projectName={name}
+        title="Confirm Project Deletion"
+        description={`Are you sure you want to delete the project "${name}"? This action cannot be undone.`}
         onConfirm={handleDelete}
       />
     </div>
