@@ -13,6 +13,25 @@ export type Room = {
   floorId: string;
 };
 
+export type RackDevice = Device & {
+  deviceInterfaces: {
+    id: string;
+    name: string;
+    x: number
+    y: number;
+    width: number;
+    height: number;
+    connectedInterface: RackDeviceConnectedInterface
+  }[]
+}
+
+export type RackDeviceConnectedInterface = {
+  id: string;
+  name: string;
+  deviceName: string;
+  deviceId: string
+}
+
 export type Rack = {
   name: string;
   id: string;
@@ -21,6 +40,7 @@ export type Rack = {
   sortOrder: number;
   roomId: string;
   unitSize: number;
+  devices: RackDevice[]
 };
 
 export type CreateRackRequest = {
@@ -42,40 +62,10 @@ export type DeviceInterface = {
   status: string;
 };
 
-export type DevicePort = {
-  id: string;
-  name: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  portNumber: number;
-};
-
-export type deviceTemplate = {
-  id: string;
-  modelName: string;
-  vendor: Vendor;
-  deviceType: DeviceType;
-  unitSize: number;
-  frontPanelUrl: string;
-  alignment: Alignment;
-};
 
 export type DEVICE_OPTIONS = {
   value: string;
   label: string;
-};
-
-export type GetRacksResponse = {
-  id: string;
-  roomId: string;
-  name: string;
-  unitSize: number;
-  sortOrder: number;
-  createdAt: Date;
-  updatedAt: Date;
-  devices: Device[];
 };
 
 export const DEVICE_OPTIONS = [

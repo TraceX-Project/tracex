@@ -9,9 +9,9 @@ import { GripVertical } from 'lucide-react';
 import SortableDevice from './sortable-device';
 import AddDevicesModal from './add-devices-modal';
 import { type Device } from '../logical-view/_types/logical-view';
-import { type GetRacksResponse } from './_types/room';
+import { RackDevice, type Rack } from './_types/room';
 
-const SortableRack = ({ rack }: { rack: GetRacksResponse }) => {
+const SortableRack = ({ rack }: { rack: Rack }) => {
   const {
     attributes,
     listeners,
@@ -54,13 +54,12 @@ const SortableRack = ({ rack }: { rack: GetRacksResponse }) => {
         </div>
       </div>
 
-      {/* Device sorting area - No DndContext here! */}
       <div className="flex flex-1 flex-col">
         <SortableContext
           items={rack.devices.map((d: Device) => d.id)}
           strategy={verticalListSortingStrategy}
         >
-          {rack.devices.map((device: Device) => (
+          {rack.devices.map((device: RackDevice) => (
             <SortableDevice key={device.id} device={device} />
           ))}
         </SortableContext>

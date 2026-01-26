@@ -1,6 +1,6 @@
 'use client';
 import { useSortable } from '@dnd-kit/sortable';
-import React, { useState } from 'react'; // Removed useRef
+import React, { useMemo, useRef } from 'react';
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/shared/lib/cn';
 import { Dialog } from '@/shared/components/ui/dialog';
@@ -10,104 +10,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/components/ui/dialog';
-import { type DeviceInterface, type DevicePort } from './_types/room';
-import { type Device } from '../logical-view/_types/logical-view';
-import LabelingCanvas from './labeling-canvas';
-import useImage from 'use-image';
-import DeviceTemplate from './device-template';
+import { type RackDevice } from './_types/room';
+import DevicePortMap from './device-port-map';
 
 type Props = {
-  device: Device;
+  device: RackDevice;
 };
 
 const SortableDevice = ({ device }: Props) => {
-  const deviceInterfaces: DeviceInterface[] = [
-    {
-      id: '9fa04aea-fa50-4c1d-a9de-7e56e58b8087',
-      name: 'GigabitEthernet1/0/1',
-      x: 52,
-      y: 18,
-      width: 17,
-      height: 15,
-      status: 'connected',
-    },
-
-    {
-      id: 'e2e03dc5-3242-4454-b952-d10c959a6692',
-      name: 'GigabitEthernet1/0/3',
-      x: 74,
-      y: 18,
-      width: 18,
-      height: 15,
-      status: 'connected',
-    },
-
-    {
-      id: '9cd3e2d5-a260-44f6-af7f-a68f94680675',
-      name: 'GigabitEthernet1/0/5',
-      x: 97,
-      y: 18,
-
-      width: 17,
-
-      height: 15,
-
-      status: 'connected',
-    },
-
-    {
-      id: 'd3bd3d5c-3123-4026-a30c-d1877b954a74',
-
-      name: 'GigabitEthernet1/0/6',
-
-      x: 97,
-
-      y: 41,
-
-      width: 17,
-
-      height: 15,
-
-      status: 'connected',
-    },
-
-    {
-      id: '407b72e4-4ad2-4731-994e-0a7e7d82083f',
-
-      name: 'GigabitEthernet1/0/7',
-
-      x: 119,
-
-      y: 18,
-
-      width: 17,
-
-      height: 15,
-
-      status: 'connected',
-    },
-  ];
-
-  const [boxes, _] = useState<DevicePort[]>(
-    deviceInterfaces.map((d, index) => ({
-      id: d.id,
-      name: d.name,
-      x: d.x,
-      y: d.y,
-      width: d.width,
-      height: d.height,
-      portNumber: index + 1,
-    }))
-  );
-
-  console.log('boxes', boxes);
-
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: device.id,
   });
-
-  // Load image here (or inside LabelingCanvas, but here is fine to cache it)
-  const [image] = useImage(device.deviceTemplate.frontPanelUrl ?? '', 'anonymous');
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -116,25 +29,28 @@ const SortableDevice = ({ device }: Props) => {
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div ref={setNodeRef} style={style} {...attributes}>
       <Dialog>
         <DialogTrigger asChild>
           <div
             role="button"
             className={cn(
-              'w-full border-none bg-transparent p-0 text-left focus:outline-none',
-              isDragging ? 'cursor-grabbing shadow-lg' : 'cursor-grab'
+              'w-full border-none bg-transparent p-0 text-left focus:outline-none cursor-grab',
+              isDragging && 'cursor-grabbing shadow-lg'
             )}
+            {...listeners}
           >
-            <DeviceTemplate image={image} boxes={boxes} />
+            <DevicePortMap device={device} />
           </div>
         </DialogTrigger>
-        <DialogContent className="w-fit min-w-5xl">
+        <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
-            <DialogTitle>Device Detail</DialogTitle>
+            <DialogTitle>{device.name}</DialogTitle>
           </DialogHeader>
-          <div className="w-full space-y-6">
-            <LabelingCanvas image={image} boxes={boxes} />
+          <div className="w-full">
+            <div className="relative flex min-h-[200px] w-full items-center justify-center overflow-hidden rounded-md border bg-slate-100 p-6">
+              <DevicePortMap device={device} />
+            </div>
           </div>
         </DialogContent>
       </Dialog>

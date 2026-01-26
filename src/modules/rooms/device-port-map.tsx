@@ -1,32 +1,36 @@
+'use client';
+
+import { useMemo, useRef } from 'react';
 import { Stage, Layer, Image as KonvaImage } from 'react-konva';
-import { useRef, useMemo } from 'react';
-import { useResizeObserver } from '@/shared/hooks/use-resize-observer';
 import useImage from 'use-image';
-import { type DevicePort } from '@/modules/rooms/_types/room';
+import { RackDevice } from './_types/room';
+import { useResizeObserver } from '@/shared/hooks/use-resize-observer';
 import PortItem from './port-box-item';
 
 type Props = {
-  image: HTMLImageElement | undefined;
-  boxes: DevicePort[];
+  device: RackDevice;
 };
 
-const DeviceTemplate = ({ image, boxes }: Props) => {
+const DevicePortMap = ({ device }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [portHeader] = useImage('/assets/icons/gRealCopperST_HeadDown.png');
+  const [image] = useImage(device.deviceTemplate.frontPanelUrl ?? '', 'anonymous');
+  const [portHeader] = useImage('/assets/icons/lan-port.png', 'anonymous');
 
   const { width = 0, height = 0 } = useResizeObserver({
     ref: containerRef as React.RefObject<HTMLElement>,
   });
 
   const scale = useMemo(() => {
-    if (!image || width === 0 || height === 0) return 1;
-    const scaleWidth = width / image.width;
-    const scaleHeight = height / image.height;
-    return Math.min(scaleWidth, scaleHeight);
+    if (!image || width === 0 || height === 0) {
+      return 1;
+    }
+
+    const items = [width / image.width, height / image.height];
+
+    return Math.min(...items);
   }, [image, width, height]);
 
-  // Image Positioning
   const imgWidth = image ? image.width * scale : 0;
   const imgHeight = image ? image.height * scale : 0;
   const imgX = (width - imgWidth) / 2;
@@ -55,7 +59,7 @@ const DeviceTemplate = ({ image, boxes }: Props) => {
             )}
 
             {image &&
-              boxes?.map((box, i) => (
+              device.deviceInterfaces?.map((box, i) => (
                 <PortItem
                   key={`box-${i}`}
                   box={box}
@@ -73,4 +77,4 @@ const DeviceTemplate = ({ image, boxes }: Props) => {
   );
 };
 
-export default DeviceTemplate;
+export default DevicePortMap;
