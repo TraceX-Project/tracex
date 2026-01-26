@@ -27,6 +27,7 @@ export type Position = {
 export type Node = {
   id: string;
   name: string;
+  inRack: boolean;
   position: Position;
   type: DeviceType;
 };

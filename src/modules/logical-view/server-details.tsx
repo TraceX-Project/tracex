@@ -50,7 +50,11 @@ export const ServerDetails = ({ device }: Props) => {
             <span className="text-sm">API URL</span>
           </div>
         ),
-        value: <span className="font-mono text-sm">{device.apiUrl}</span>,
+        value: (
+          <span className="font-mono text-sm block truncate max-w-[200px]" title={device.apiUrl}>
+            {device.apiUrl}
+          </span>
+        ),
       },
     ];
   }, [device]);
