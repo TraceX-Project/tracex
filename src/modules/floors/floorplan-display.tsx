@@ -115,7 +115,7 @@ const FloorPlanDisplay = ({ floor }: Props) => {
       <div
         ref={containerRef}
         className={cn(
-          'relative flex h-full w-full items-center justify-center overflow-hidden',
+          'relative flex h-full w-full items-center justify-center overflow-hidden select-none',
           movingRoomId && 'cursor-none'
         )}
         onMouseLeave={() => setCursorPosition(null)}
@@ -134,7 +134,7 @@ const FloorPlanDisplay = ({ floor }: Props) => {
             src={floor.planUrl}
             alt="Floor Plan"
             fill
-            className="object-contain"
+            className="object-contain pointer-events-none"
             onLoadingComplete={(img) => {
               setNaturalSize({
                 width: img.naturalWidth,
