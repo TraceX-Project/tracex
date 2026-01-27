@@ -13,7 +13,7 @@ export type Room = {
   floorId: string;
 };
 
-export type RackDevice = Device & {
+export type RackDevice = Omit<Device, 'deviceInterfaces'> & {
   deviceInterfaces: {
     id: string;
     name: string;

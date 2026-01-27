@@ -5,7 +5,8 @@ import { Stage, Layer, Image as KonvaImage } from 'react-konva';
 import useImage from 'use-image';
 import { RackDevice } from './_types/room';
 import { useResizeObserver } from '@/shared/hooks/use-resize-observer';
-import PortItem from './port-box-item';
+import PortItem from '../admin/device-templates/port-item';
+import PortTooltipOverlay from './port-tooltip-overlay';
 
 type Props = {
   device: RackDevice;
@@ -45,33 +46,38 @@ const DevicePortMap = ({ device }: Props) => {
       }}
     >
       {width > 0 && height > 0 && (
-        <Stage width={width} height={height} className="absolute top-0 left-0">
-          <Layer>
-            {image && (
-              <KonvaImage
-                image={image}
-                scaleX={scale}
-                scaleY={scale}
-                x={imgX}
-                y={imgY}
-                listening={false}
-              />
-            )}
-
-            {image &&
-              device.deviceInterfaces?.map((box, i) => (
-                <PortItem
-                  key={`box-${i}`}
-                  box={box}
-                  scale={scale}
-                  imgX={imgX}
-                  imgY={imgY}
-                  strokeWidth={0.5}
-                  portHeaderImage={portHeader}
+        <>
+          {/* Canvas Layer */}
+          <Stage width={width} height={height} className="absolute top-0 left-0">
+            <Layer>
+              {image && (
+                <KonvaImage
+                  image={image}
+                  scaleX={scale}
+                  scaleY={scale}
+                  x={imgX}
+                  y={imgY}
+                  listening={false}
                 />
-              ))}
-          </Layer>
-        </Stage>
+              )}
+
+              {image &&
+                device.deviceInterfaces?.map((box, i) => (
+                  <PortItem
+                    key={`box-${i}`}
+                    box={box}
+                    scale={scale}
+                    imgX={imgX}
+                    imgY={imgY}
+                    strokeWidth={1}
+                    portHeaderImage={portHeader}
+                  />
+                ))}
+            </Layer>
+          </Stage>
+
+          <PortTooltipOverlay device={device} scale={scale} imgX={imgX} imgY={imgY} />
+        </>
       )}
     </div>
   );

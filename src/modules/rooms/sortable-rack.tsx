@@ -56,7 +56,7 @@ const SortableRack = ({ rack }: { rack: Rack }) => {
 
       <div className="flex flex-1 flex-col">
         <SortableContext
-          items={rack.devices.map((d: Device) => d.id)}
+          items={rack.devices.map((d: RackDevice) => d.id)}
           strategy={verticalListSortingStrategy}
         >
           {rack.devices.map((device: RackDevice) => (
