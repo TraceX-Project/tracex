@@ -1,4 +1,4 @@
-import { RackDevice } from './_types/room';
+import { type RackDevice } from './_types/room';
 import {
   Tooltip,
   TooltipContent,

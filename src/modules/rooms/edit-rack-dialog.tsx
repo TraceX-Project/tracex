@@ -13,10 +13,10 @@ import {
 import { Button } from '@/shared/components/ui/button';
 import { toast } from 'sonner';
 import { useUpdateRack } from './_hooks/use-update-rack';
-import { type GetRacksResponse } from './_types/room';
+import { type Rack } from './_types/room';
 
 type Props = {
-  rack: GetRacksResponse;
+  rack: Rack;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };

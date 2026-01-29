@@ -3,7 +3,7 @@
 import { useMemo, useRef } from 'react';
 import { Stage, Layer, Image as KonvaImage } from 'react-konva';
 import useImage from 'use-image';
-import { RackDevice } from './_types/room';
+import { type RackDevice } from './_types/room';
 import { useResizeObserver } from '@/shared/hooks/use-resize-observer';
 import PortItem from '../admin/device-templates/port-item';
 import PortTooltipOverlay from './port-tooltip-overlay';

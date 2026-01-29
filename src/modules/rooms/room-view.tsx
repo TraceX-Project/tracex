@@ -4,7 +4,7 @@ import React from 'react';
 import { useGetRacks } from './_hooks/use-get-racks';
 import EmptyRacks from './empty-racks';
 import IsLoadingPage from '../../shared/components/is-loading';
-import ManageRacks from './manage-racks';
+import RoomRacks from './room-racks';
 
 type Props = {
   roomId: string;
@@ -30,9 +30,7 @@ const RoomView = ({ roomId }: Props) => {
     );
   }
   return (
-    <div className="h-full w-full">
-      <ManageRacks roomId={roomId} />
-    </div>
+    <RoomRacks roomId={roomId} racks={racks} />
   );
 };
 

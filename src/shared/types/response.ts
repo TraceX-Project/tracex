@@ -4,3 +4,8 @@ export type ErrorResponse = {
   message: string | string[];
   error: string | string[];
 };
+
+
+export type MessageResponse = {
+  message: string;
+};

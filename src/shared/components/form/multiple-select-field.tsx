@@ -9,6 +9,7 @@ import {
   MultiSelectValue,
 } from '@/shared/components/ui/multi-select';
 import { Field, FieldLabel, FieldContent, FieldError, FieldDescription } from '../ui/field';
+import { cn } from '@/shared/lib/cn';
 
 interface Option {
   value: string;
@@ -45,40 +46,42 @@ const MultipleSelectField = ({
   const hasErrors = field.state.meta.errors.length > 0;
 
   return (
-    <Field orientation={orientation}>
-      <MultiSelect
-        single={single}
-        values={field.state.value || []}
-        onValuesChange={(values) => field.handleChange(values)}
-      >
-        {orientation !== 'vertical' && description ? (
-          <FieldContent>
-            {label && <FieldLabel htmlFor={field.name}>{label}</FieldLabel>}
-            {description && <FieldDescription>{description}</FieldDescription>}
-          </FieldContent>
-        ) : (
-          <>
-            {label && <FieldLabel htmlFor={field.name}>{label}</FieldLabel>}
-            {description && <FieldDescription>{description}</FieldDescription>}
-          </>
-        )}
+    <div className='min-w-0 w-full'>
+      <Field orientation={orientation}>
+        <MultiSelect
+          single={single}
+          values={field.state.value || []}
+          onValuesChange={(values) => field.handleChange(values)}
+        >
+          {orientation !== 'vertical' && description ? (
+            <FieldContent>
+              {label && <FieldLabel htmlFor={field.name}>{label}</FieldLabel>}
+              {description && <FieldDescription>{description}</FieldDescription>}
+            </FieldContent>
+          ) : (
+            <>
+              {label && <FieldLabel htmlFor={field.name}>{label}</FieldLabel>}
+              {description && <FieldDescription>{description}</FieldDescription>}
+            </>
+          )}
 
-        <MultiSelectTrigger className={className} aria-invalid={hasErrors} {...triggerProps}>
-          <MultiSelectValue placeholder={placeholder} overflowBehavior={overflowBehavior} />
-        </MultiSelectTrigger>
-        <MultiSelectContent search={search}>
-          <MultiSelectGroup>
-            {options.map((option) => (
-              <MultiSelectItem key={option.value} value={option.value}>
-                {option.label}
-              </MultiSelectItem>
-            ))}
-          </MultiSelectGroup>
-        </MultiSelectContent>
-      </MultiSelect>
+          <MultiSelectTrigger className={cn("w-full min-w-0", className)} aria-invalid={hasErrors} {...triggerProps}>
+            <MultiSelectValue placeholder={placeholder} overflowBehavior={overflowBehavior} />
+          </MultiSelectTrigger>
+          <MultiSelectContent search={search}>
+            <MultiSelectGroup>
+              {options.map((option) => (
+                <MultiSelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </MultiSelectItem>
+              ))}
+            </MultiSelectGroup>
+          </MultiSelectContent>
+        </MultiSelect>
 
-      {showErrorMessage && hasErrors && <FieldError errors={field.state.meta.errors} />}
-    </Field>
+        {showErrorMessage && hasErrors && <FieldError errors={field.state.meta.errors} />}
+      </Field>
+    </div>
   );
 };
 

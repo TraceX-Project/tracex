@@ -1,8 +1,5 @@
-import {
-  type Alignment,
-  type DeviceType,
-  type Vendor,
-} from '@/modules/admin/device-templates/_types/device-template';
+
+
 import { type Device } from '@/modules/logical-view/_types/logical-view';
 
 export type Room = {
@@ -48,10 +45,6 @@ export type CreateRackRequest = {
   unitSize: number;
 };
 
-export type Message = {
-  message: string;
-};
-
 export type DeviceInterface = {
   id: string;
   name: string;
@@ -72,10 +65,6 @@ export const DEVICE_OPTIONS = [
   { value: 'test', label: 'Cisco Switch' },
   { value: 'test2', label: 'Dell Router' },
 ];
-
-export type AddDeviceRequest = {
-  deviceIds: string[];
-};
 
 export type GetDevicesInProjectParams = {
   inRack?: boolean;

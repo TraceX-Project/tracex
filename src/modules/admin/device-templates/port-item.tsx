@@ -1,3 +1,4 @@
+import type Konva from 'konva';
 import { memo } from 'react';
 import { Rect, Group, Image, Text } from 'react-konva';
 
@@ -8,7 +9,7 @@ export interface PortBox {
   height: number;
   name?: string;
   portNumber?: number;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 type Props = {
@@ -22,7 +23,7 @@ type Props = {
   isSelected?: boolean;
   showLabel?: boolean;
   onClick?: () => void;
-  onDragEnd?: (e: any) => void;
+  onDragEnd?: (e: Konva.KonvaEventObject<DragEvent>) => void;
   name?: string;
 };
 
@@ -46,7 +47,7 @@ const PortItem = memo(
     const absWidth = box.width * scale;
     const absHeight = box.height * scale;
 
-    const labelText = box.portNumber?.toString() || box.name || '';
+    const labelText = box.portNumber?.toString() ?? box.name ?? '';
 
     return (
       <Group

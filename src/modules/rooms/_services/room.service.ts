@@ -1,12 +1,13 @@
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
-import { type GetDevicesInProjectParams, type GetRacksResponse, type Message, type Rack } from '../_types/room';
-import { type AddDeviceInput, type CreateRackInput } from '../_schema/schema';
+import { type GetDevicesInProjectParams, type Rack } from '../_types/room';
+import { type AddDevicesToRackInput, type CreateRackInput } from '../_schema/schema';
 import { type Device } from '@/modules/logical-view/_types/logical-view';
 import { buildQueryString } from '@/shared/utils/query';
+import { type MessageResponse } from '@/shared/types/response';
 
 export const getRacks = async (roomId: string) => {
-  const response = await request<GetRacksResponse[]>({
+  const response = await request<Rack[]>({
     method: 'GET',
     path: ENDPOINTS.rooms.getRacks(roomId),
   });
@@ -15,9 +16,17 @@ export const getRacks = async (roomId: string) => {
 
 export const updateRack = async (rackId: string, body: CreateRackInput) => {
   const response = await request<Rack>({
-    method: 'PUT',
+    method: 'PATCH',
     path: ENDPOINTS.racks.updateRack(rackId),
     body,
+  });
+  return response;
+};
+
+export const deleteRack = async (rackId: string) => {
+  const response = await request<Rack>({
+    method: 'DELETE',
+    path: ENDPOINTS.racks.delete(rackId),
   });
   return response;
 };
@@ -31,8 +40,8 @@ export const createRack = async (roomId: string, body: CreateRackInput) => {
   return response;
 };
 
-export const addDevicesToRack = async (rackId: string, body: AddDeviceInput) => {
-  const response = await request<Message>({
+export const addDevicesToRack = async (rackId: string, body: AddDevicesToRackInput) => {
+  const response = await request<MessageResponse>({
     method: 'POST',
     path: ENDPOINTS.racks.addDeviceToRack(rackId),
     body,

@@ -1,4 +1,4 @@
-import { Stage, Layer, Image as KonvaImage, Rect, Group, Text, Transformer } from 'react-konva';
+import { Stage, Layer, Image as KonvaImage, Transformer } from 'react-konva';
 import { type BoundingBox } from './_types/device-template';
 import { forwardRef, useRef, useEffect, useCallback } from 'react';
 import type Konva from 'konva';
