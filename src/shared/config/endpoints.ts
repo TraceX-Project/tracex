@@ -83,6 +83,7 @@ export const ENDPOINTS = {
     getDevicesByRackId: (rackId: string) => `${ROOTS.racks}/${rackId}/devices`,
     updateRack: (rackId: string) => `${ROOTS.racks}/${rackId}`,
     delete: (rackId: string) => `${ROOTS.racks}/${rackId}`,
+    removeDeviceFromRack: (rackId: string, deviceId: string) => `${ROOTS.racks}/${rackId}/devices/${deviceId}`,
   },
   servers: {
     syncVms: (serverId: string) => `${ROOTS.servers}/${serverId}/sync-vms`,

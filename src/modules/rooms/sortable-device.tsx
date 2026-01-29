@@ -20,9 +20,12 @@ import {
 import { IconTrash, IconReplace } from "@tabler/icons-react";
 import { useBoolean } from "@/shared/hooks/use-boolean";
 import { ConfirmDialog } from "@/shared/components/confirm-dialog";
+import { useRemoveDeviceFromRack } from "./_hooks/use-remove-device-from-rack";
+import { toast } from "sonner";
 
 type Props = {
   device: RackDevice;
+  roomId: string;
 };
 
 export type DeviceSortableType = 'device'
@@ -57,8 +60,9 @@ export const DeviceCard = forwardRef<HTMLDivElement, DeviceCardProps>(
 
 DeviceCard.displayName = "DeviceCard";
 
-const SortableDevice = ({ device }: Props) => {
+const SortableDevice = ({ device, roomId }: Props) => {
   const { value: isDialogOpen, setValue: setIsDialogOpen } = useBoolean();
+  const { mutateAsync: removeDeviceFromRack } = useRemoveDeviceFromRack()
   const { value: removeDeviceDialog, setValue: setRemoveDeviceDialog } =
     useBoolean();
 
@@ -87,6 +91,22 @@ const SortableDevice = ({ device }: Props) => {
     setTimeout(() => setIsDialogOpen(true), 100);
   }, []);
 
+  const handleRemoveDialog = useCallback(() => {
+    setTimeout(() => setRemoveDeviceDialog(true), 100);
+  }, []);
+
+  const handleRemoveDeviceFromRack = useCallback(async () => {
+    try {
+      await removeDeviceFromRack({ rackId: device.rackId, deviceId: device.id, roomId })
+
+      setRemoveDeviceDialog(false)
+
+      toast.success(`Remove ${device.name} from rack successfully`)
+    } catch (error) {
+      toast.error(`Failed to remove ${device.name} from rack`)
+    }
+  }, [device, removeDeviceFromRack])
+
   return (
     <>
       <div ref={setNodeRef} style={style} {...attributes}>
@@ -108,7 +128,7 @@ const SortableDevice = ({ device }: Props) => {
               <ContextMenuSeparator />
               <ContextMenuItem
                 variant="destructive"
-                onClick={() => setRemoveDeviceDialog(true)}
+                onClick={handleRemoveDialog}
               >
                 <IconTrash className="size-4" />
                 Remove
@@ -132,9 +152,11 @@ const SortableDevice = ({ device }: Props) => {
       <ConfirmDialog
         open={removeDeviceDialog}
         onOpenChange={setRemoveDeviceDialog}
-        onConfirm={function (): Promise<void> | void {
-          throw new Error("Function not implemented.");
-        }}
+        onConfirm={handleRemoveDeviceFromRack}
+        title="Remove Device"
+        description={`Are you sure you want to remove ${device.name} from this rack?`}
+        confirmText="Remove"
+        cancelText="Cancel"
       />
     </>
   );

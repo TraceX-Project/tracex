@@ -92,7 +92,7 @@ const SortableRack = ({ rack }: Props) => {
     >
       <SortableContext items={rack.devices.map((device) => device.id)}>
         {rack.devices.map((device) => (
-          <SortableDevice key={device.id} device={device} />
+          <SortableDevice key={device.id} device={device} roomId={rack.roomId} />
         ))}
       </SortableContext>
     </RackCard>

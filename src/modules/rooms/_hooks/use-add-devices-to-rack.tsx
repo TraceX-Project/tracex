@@ -2,7 +2,7 @@ import { QUERY_KEYS } from '@/shared/constants/query-key';
 import { getQueryClient } from '@/shared/tanstack-query/get-query-client';
 import { useMutation } from '@tanstack/react-query';
 import { addDevicesToRack } from '../_services/room.service';
-import { AddDevicesToRackRequest } from '../_schema/schema';
+import { type AddDevicesToRackRequest } from '../_schema/schema';
 
 export const useAddDevicesToRack = () => {
   const queryClient = getQueryClient();

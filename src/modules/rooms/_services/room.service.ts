@@ -1,7 +1,7 @@
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
 import { type GetDevicesInProjectParams, type Rack } from '../_types/room';
-import { AddDevicesToRackRequest, type AddDevicesToRackInput, type CreateRackInput } from '../_schema/schema';
+import { type AddDevicesToRackRequest, type CreateRackInput } from '../_schema/schema';
 import { type Device } from '@/modules/logical-view/_types/logical-view';
 import { buildQueryString } from '@/shared/utils/query';
 import { type MessageResponse } from '@/shared/types/response';
@@ -57,6 +57,14 @@ export const getPhysicalDevices = async (projectId: string, params?: GetDevicesI
   const response = await request<Device[]>({
     method: 'GET',
     path: `${ENDPOINTS.projects.physicalDevices(projectId)}${query}`,
+  });
+  return response;
+};
+
+export const removeDeviceFromRack = async (rackId: string, deviceId: string) => {
+  const response = await request<MessageResponse>({
+    method: 'DELETE',
+    path: ENDPOINTS.racks.removeDeviceFromRack(rackId, deviceId),
   });
   return response;
 };

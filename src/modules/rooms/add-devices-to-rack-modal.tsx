@@ -1,7 +1,6 @@
 import { useAppForm } from "@/shared/tanstack-form/form";
 import { type Rack } from "./_types/room";
 import { addDevicesToRackSchema } from "./_schema/schema";
-import z from "zod";
 import { useGetPhysicalDevices } from "./_hooks/use-get-physical-devices";
 import { useParams } from "next/navigation";
 import { type FormEvent, useCallback, useMemo } from "react";
