@@ -28,7 +28,7 @@ export const createRackSchema = z.object({
 
 export const addDevicesToRackSchema = z.object({
   deviceIds: z
-    .array(z.uuid({ message: 'Invalid device ID' }))
+    .array(z.uuidv4({ message: 'Invalid device ID' }))
     .min(1, 'At least one device must be added'),
 });
 
@@ -39,3 +39,10 @@ export type AddDevicesToRackInput = z.infer<typeof addDevicesToRackSchema>;
 export const updateRoomSchema = createRoomSchema.partial();
 
 export type UpdateRoomInput = z.infer<typeof updateRoomSchema>;
+
+export type AddDevicesToRackRequest = {
+  devices: {
+    deviceId: string;
+    uPosition?: number;
+  }[];
+};

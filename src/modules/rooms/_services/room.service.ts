@@ -1,7 +1,7 @@
 import { ENDPOINTS } from '@/shared/config/endpoints';
 import { request } from '@/shared/lib/api';
 import { type GetDevicesInProjectParams, type Rack } from '../_types/room';
-import { type AddDevicesToRackInput, type CreateRackInput } from '../_schema/schema';
+import { AddDevicesToRackRequest, type AddDevicesToRackInput, type CreateRackInput } from '../_schema/schema';
 import { type Device } from '@/modules/logical-view/_types/logical-view';
 import { buildQueryString } from '@/shared/utils/query';
 import { type MessageResponse } from '@/shared/types/response';
@@ -40,7 +40,7 @@ export const createRack = async (roomId: string, body: CreateRackInput) => {
   return response;
 };
 
-export const addDevicesToRack = async (rackId: string, body: AddDevicesToRackInput) => {
+export const addDevicesToRack = async (rackId: string, body: AddDevicesToRackRequest) => {
   const response = await request<MessageResponse>({
     method: 'POST',
     path: ENDPOINTS.racks.addDeviceToRack(rackId),
