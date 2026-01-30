@@ -46,3 +46,10 @@ export type AddDevicesToRackRequest = {
     uPosition?: number;
   }[];
 };
+
+export const moveDeviceToRackSchema = z.object({
+  buildingId: z.uuidv4({ message: 'Invalid building ID' }),
+  roomId: z.uuidv4({ message: 'Invalid room ID' }),
+  floorId: z.uuidv4({ message: 'Invalid floor ID' }),
+  rackId: z.uuidv4({ message: 'Invalid rack ID' }),
+});

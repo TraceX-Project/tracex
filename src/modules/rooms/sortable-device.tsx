@@ -1,39 +1,35 @@
-import { useSortable } from "@dnd-kit/sortable";
-import { type RackDevice } from "./_types/room";
-import { CSS } from "@dnd-kit/utilities";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/shared/components/ui/dialog";
-import DevicePortMap from "./device-port-map";
-import { cn } from "@/shared/lib/cn";
-import { useCallback, forwardRef } from "react";
+import { useSortable } from '@dnd-kit/sortable';
+import { type RackDevice } from './_types/room';
+import { CSS } from '@dnd-kit/utilities';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/shared/components/ui/dialog';
+import DevicePortMap from './device-port-map';
+import { cn } from '@/shared/lib/cn';
+import { useCallback, forwardRef } from 'react';
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
-} from "@/shared/components/ui/context-menu";
-import { IconTrash, IconReplace } from "@tabler/icons-react";
-import { useBoolean } from "@/shared/hooks/use-boolean";
-import { ConfirmDialog } from "@/shared/components/confirm-dialog";
-import { useRemoveDeviceFromRack } from "./_hooks/use-remove-device-from-rack";
-import { toast } from "sonner";
+} from '@/shared/components/ui/context-menu';
+import { IconTrash, IconReplace } from '@tabler/icons-react';
+import { useBoolean } from '@/shared/hooks/use-boolean';
+import { ConfirmDialog } from '@/shared/components/confirm-dialog';
+import { useRemoveDeviceFromRack } from './_hooks/use-remove-device-from-rack';
+import { toast } from 'sonner';
+import MoveToRackModal from './move-to-rack-modal';
 
 type Props = {
   device: RackDevice;
   roomId: string;
 };
 
-export type DeviceSortableType = 'device'
+export type DeviceSortableType = 'device';
 
 export type DeviceSortableData = {
-  type: DeviceSortableType,
-  device: RackDevice
-}
+  type: DeviceSortableType;
+  device: RackDevice;
+};
 
 export interface DeviceCardProps extends React.HTMLAttributes<HTMLDivElement> {
   device: RackDevice;
@@ -47,8 +43,8 @@ export const DeviceCard = forwardRef<HTMLDivElement, DeviceCardProps>(
         ref={ref}
         {...props}
         className={cn(
-          "w-full border-none bg-transparent p-0 text-left focus:outline-none cursor-grab",
-          isDragging && "cursor-grabbing shadow-lg opacity-50",
+          'w-full cursor-grab border-none bg-transparent p-0 text-left focus:outline-none',
+          isDragging && 'cursor-grabbing opacity-50 shadow-lg',
           className
         )}
       >
@@ -58,25 +54,18 @@ export const DeviceCard = forwardRef<HTMLDivElement, DeviceCardProps>(
   }
 );
 
-DeviceCard.displayName = "DeviceCard";
+DeviceCard.displayName = 'DeviceCard';
 
 const SortableDevice = ({ device, roomId }: Props) => {
   const { value: isDialogOpen, setValue: setIsDialogOpen } = useBoolean();
-  const { mutateAsync: removeDeviceFromRack } = useRemoveDeviceFromRack()
-  const { value: removeDeviceDialog, setValue: setRemoveDeviceDialog } =
-    useBoolean();
+  const { mutateAsync: removeDeviceFromRack } = useRemoveDeviceFromRack();
+  const { value: removeDeviceDialog, setValue: setRemoveDeviceDialog } = useBoolean();
+  const { value: moveToRackDialog, setValue: setMoveToRackDialog } = useBoolean();
 
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: device.id,
     data: {
-      type: "device",
+      type: 'device',
       device,
     } satisfies DeviceSortableData,
   });
@@ -95,17 +84,21 @@ const SortableDevice = ({ device, roomId }: Props) => {
     setTimeout(() => setRemoveDeviceDialog(true), 100);
   }, []);
 
+  const handleOpenMoveToRack = useCallback(() => {
+    setTimeout(() => setMoveToRackDialog(true), 100);
+  }, []);
+
   const handleRemoveDeviceFromRack = useCallback(async () => {
     try {
-      await removeDeviceFromRack({ rackId: device.rackId, deviceId: device.id, roomId })
+      await removeDeviceFromRack({ rackId: device.rackId, deviceId: device.id, roomId });
 
-      setRemoveDeviceDialog(false)
+      setRemoveDeviceDialog(false);
 
-      toast.success(`Remove ${device.name} from rack successfully`)
+      toast.success(`Remove ${device.name} from rack successfully`);
     } catch (error) {
-      toast.error(`Failed to remove ${device.name} from rack`)
+      toast.error(`Failed to remove ${device.name} from rack`);
     }
-  }, [device, removeDeviceFromRack])
+  }, [device, removeDeviceFromRack]);
 
   return (
     <>
@@ -121,15 +114,12 @@ const SortableDevice = ({ device, roomId }: Props) => {
               />
             </ContextMenuTrigger>
             <ContextMenuContent>
-              <ContextMenuItem>
+              <ContextMenuItem onClick={handleOpenMoveToRack}>
                 <IconReplace className="size-4" />
                 Move to Rack
               </ContextMenuItem>
               <ContextMenuSeparator />
-              <ContextMenuItem
-                variant="destructive"
-                onClick={handleRemoveDialog}
-              >
+              <ContextMenuItem variant="destructive" onClick={handleRemoveDialog}>
                 <IconTrash className="size-4" />
                 Remove
               </ContextMenuItem>
@@ -158,9 +148,14 @@ const SortableDevice = ({ device, roomId }: Props) => {
         confirmText="Remove"
         cancelText="Cancel"
       />
+
+      <MoveToRackModal
+        open={moveToRackDialog}
+        onOpenChange={setMoveToRackDialog}
+        deviceId={device.id}
+      />
     </>
   );
 };
 
 export default SortableDevice;
-
