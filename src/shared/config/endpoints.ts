@@ -76,11 +76,14 @@ export const ENDPOINTS = {
     getById: (id: string) => `${ROOTS.rooms}/${id}`,
     getRacks: (roomId: string) => `${ROOTS.rooms}/${roomId}/racks`,
     createRack: (roomId: string) => `${ROOTS.rooms}/${roomId}/racks`,
+    reorderRacks: (roomId: string) => `${ROOTS.rooms}/${roomId}/racks/reorder`,
   },
   racks: {
     addDeviceToRack: (rackId: string) => `${ROOTS.racks}/${rackId}/devices`,
     getDevicesByRackId: (rackId: string) => `${ROOTS.racks}/${rackId}/devices`,
     updateRack: (rackId: string) => `${ROOTS.racks}/${rackId}`,
+    delete: (rackId: string) => `${ROOTS.racks}/${rackId}`,
+    removeDeviceFromRack: (rackId: string, deviceId: string) => `${ROOTS.racks}/${rackId}/devices/${deviceId}`,
   },
   servers: {
     syncVms: (serverId: string) => `${ROOTS.servers}/${serverId}/sync-vms`,

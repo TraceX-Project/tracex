@@ -26,16 +26,30 @@ export const createRackSchema = z.object({
     .max(100, 'Unit size must be at most 100'),
 });
 
-export const addDeviceSchema = z.object({
+export const addDevicesToRackSchema = z.object({
   deviceIds: z
-    .array(z.uuid({ message: 'Invalid device ID' }))
+    .array(z.uuidv4({ message: 'Invalid device ID' }))
     .min(1, 'At least one device must be added'),
 });
 
 export type CreateRoomInput = z.infer<typeof createRoomSchema>;
 export type CreateRackInput = z.infer<typeof createRackSchema>;
-export type AddDeviceInput = z.infer<typeof addDeviceSchema>;
+export type AddDevicesToRackInput = z.infer<typeof addDevicesToRackSchema>;
 
 export const updateRoomSchema = createRoomSchema.partial();
 
 export type UpdateRoomInput = z.infer<typeof updateRoomSchema>;
+
+export type AddDevicesToRackRequest = {
+  devices: {
+    deviceId: string;
+    uPosition?: number;
+  }[];
+};
+
+export const moveDeviceToRackSchema = z.object({
+  buildingId: z.uuidv4({ message: 'Invalid building ID' }),
+  roomId: z.uuidv4({ message: 'Invalid room ID' }),
+  floorId: z.uuidv4({ message: 'Invalid floor ID' }),
+  rackId: z.uuidv4({ message: 'Invalid rack ID' }),
+});

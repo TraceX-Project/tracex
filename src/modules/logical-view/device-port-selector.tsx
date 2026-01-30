@@ -194,8 +194,6 @@ const DevicePortSelector = ({ initDeviceId }: Props) => {
         <PlusIcon className="mr-2 size-4" />
         Add Connected Device
       </Button>
-
-      {/* {hasGlobalErrors && <FieldError errors={field.state.meta.errors} />} */}
     </div>
   );
 };

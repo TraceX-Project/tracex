@@ -3,7 +3,7 @@ import React from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Field, FieldLabel, FieldContent, FieldError, FieldDescription } from '../ui/field';
 
-interface SelectOption {
+export interface SelectOption {
   value: string;
   label: string;
 }
@@ -15,6 +15,7 @@ interface Props extends React.ComponentProps<'select'> {
   description?: string;
   showErrorMessage?: boolean;
   orientation?: 'vertical' | 'horizontal' | 'responsive';
+  onValueChange?: (value: string) => void;
 }
 
 const SelectField = ({
@@ -43,7 +44,15 @@ const SelectField = ({
         </>
       )}
 
-      <Select defaultValue={field.state.value} onValueChange={field.handleChange}>
+      <Select
+        defaultValue={field.state.value}
+        value={field.state.value}
+        onValueChange={(value) => {
+          field.handleChange(value);
+          selectProps.onValueChange?.(value);
+        }}
+        disabled={selectProps.disabled}
+      >
         <SelectTrigger className="w-full" aria-invalid={hasErrors}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>

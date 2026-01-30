@@ -1,7 +1,8 @@
-import { Stage, Layer, Image as KonvaImage, Rect, Group, Text, Transformer } from 'react-konva';
+import { Stage, Layer, Image as KonvaImage, Transformer } from 'react-konva';
 import { type BoundingBox } from './_types/device-template';
 import { forwardRef, useRef, useEffect, useCallback } from 'react';
 import type Konva from 'konva';
+import PortItem from '@/modules/admin/device-templates/port-item';
 
 type Props = {
   width: number;
@@ -117,49 +118,21 @@ const LabelingCanvas = forwardRef<HTMLDivElement, Props>(
               />
             )}
             {image &&
-              boxes?.map((box, i) => {
-                const id = `box-${i}`;
-                const isSelected = selectedIndex === i;
-
-                const absX = (width - image.width * scale) / 2 + box.x * scale;
-                const absY = (height - image.height * scale) / 2 + box.y * scale;
-                const absWidth = box.width * scale;
-                const absHeight = box.height * scale;
-
-                return (
-                  <Group
-                    key={i}
-                    x={absX}
-                    y={absY}
-                    draggable
-                    name={id}
-                    onDragEnd={(e) => handleDragEnd(e, i, box)}
-                    onClick={() => onSelect(i)}
-                  >
-                    <Rect
-                      width={absWidth}
-                      height={absHeight}
-                      stroke={isSelected ? '#FF3939' : '#39FF14'}
-                      strokeWidth={isSelected ? 2 : 2}
-                      fill={isSelected ? 'rgba(0, 163, 255, 0.2)' : 'transparent'}
-                    />
-                    <Text
-                      text={`${box.portNumber}`}
-                      width={absWidth}
-                      height={absHeight}
-                      fontSize={Math.min(
-                        absHeight * 0.8,
-                        Math.max(10, absWidth / (box.portNumber.toString().length * 0.7))
-                      )}
-                      fill="white"
-                      align="center"
-                      verticalAlign="middle"
-                      fontStyle="bold"
-                      wrap="none"
-                    />
-                  </Group>
-                );
-              })}
+              boxes?.map((box, i) => (
+                <PortItem
+                  key={i}
+                  box={box}
+                  scale={scale}
+                  imgX={(width - image.width * scale) / 2}
+                  imgY={(height - image.height * scale) / 2}
+                  isSelected={selectedIndex === i}
+                  draggable
+                  name={`box-${i}`}
+                  onDragEnd={(e) => handleDragEnd(e, i, box)}
+                  onClick={() => onSelect(i)}
+                  showLabel
+                />
+              ))}
             <Transformer
               ref={trRef}
               rotateEnabled={false}

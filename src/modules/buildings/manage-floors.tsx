@@ -31,6 +31,7 @@ import CreateFloorModal from './create-floor-modal';
 import { useReorderFloors } from './_hooks/use-reorder-floors';
 import { toast } from 'sonner';
 import { useBoolean } from '@/shared/hooks/use-boolean';
+import { restrictToVerticalAxis, restrictToParentElement } from '@dnd-kit/modifiers';
 
 type Props = {
   buildingId: string;
@@ -120,6 +121,7 @@ const ManageFloors = ({ buildingId }: Props) => {
             sensors={sensors}
             collisionDetection={closestCenter}
             onDragEnd={handleDragEnd}
+            modifiers={[restrictToVerticalAxis, restrictToParentElement]}
           >
             <SortableContext items={floors} strategy={verticalListSortingStrategy}>
               <div className="max-h-[60vh] overflow-y-auto">

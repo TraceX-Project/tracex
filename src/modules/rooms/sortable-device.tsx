@@ -1,144 +1,160 @@
-'use client';
 import { useSortable } from '@dnd-kit/sortable';
-import React, { useState } from 'react'; // Removed useRef
+import { type RackDevice } from './_types/room';
 import { CSS } from '@dnd-kit/utilities';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/shared/components/ui/dialog';
+import DevicePortMap from './device-port-map';
 import { cn } from '@/shared/lib/cn';
-import { Dialog } from '@/shared/components/ui/dialog';
+import { useCallback, forwardRef } from 'react';
 import {
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/shared/components/ui/dialog';
-import { type DeviceInterface, type DevicePort } from './_types/room';
-import { type Device } from '../logical-view/_types/logical-view';
-import LabelingCanvas from './labeling-canvas';
-import useImage from 'use-image';
-import DeviceTemplate from './device-template';
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
+} from '@/shared/components/ui/context-menu';
+import { IconTrash, IconReplace } from '@tabler/icons-react';
+import { useBoolean } from '@/shared/hooks/use-boolean';
+import { ConfirmDialog } from '@/shared/components/confirm-dialog';
+import { useRemoveDeviceFromRack } from './_hooks/use-remove-device-from-rack';
+import { toast } from 'sonner';
+import MoveToRackModal from './move-to-rack-modal';
 
 type Props = {
-  device: Device;
+  device: RackDevice;
+  roomId: string;
 };
 
-const SortableDevice = ({ device }: Props) => {
-  const deviceInterfaces: DeviceInterface[] = [
-    {
-      id: '9fa04aea-fa50-4c1d-a9de-7e56e58b8087',
-      name: 'GigabitEthernet1/0/1',
-      x: 52,
-      y: 18,
-      width: 17,
-      height: 15,
-      status: 'connected',
-    },
+export type DeviceSortableType = 'device';
 
-    {
-      id: 'e2e03dc5-3242-4454-b952-d10c959a6692',
-      name: 'GigabitEthernet1/0/3',
-      x: 74,
-      y: 18,
-      width: 18,
-      height: 15,
-      status: 'connected',
-    },
+export type DeviceSortableData = {
+  type: DeviceSortableType;
+  device: RackDevice;
+};
 
-    {
-      id: '9cd3e2d5-a260-44f6-af7f-a68f94680675',
-      name: 'GigabitEthernet1/0/5',
-      x: 97,
-      y: 18,
+export interface DeviceCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  device: RackDevice;
+  isDragging?: boolean;
+}
 
-      width: 17,
+export const DeviceCard = forwardRef<HTMLDivElement, DeviceCardProps>(
+  ({ device, isDragging, className, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        {...props}
+        className={cn(
+          'w-full cursor-grab border-none bg-transparent p-0 text-left focus:outline-none',
+          isDragging && 'cursor-grabbing opacity-50 shadow-lg',
+          className
+        )}
+      >
+        <DevicePortMap device={device} />
+      </div>
+    );
+  }
+);
 
-      height: 15,
+DeviceCard.displayName = 'DeviceCard';
 
-      status: 'connected',
-    },
-
-    {
-      id: 'd3bd3d5c-3123-4026-a30c-d1877b954a74',
-
-      name: 'GigabitEthernet1/0/6',
-
-      x: 97,
-
-      y: 41,
-
-      width: 17,
-
-      height: 15,
-
-      status: 'connected',
-    },
-
-    {
-      id: '407b72e4-4ad2-4731-994e-0a7e7d82083f',
-
-      name: 'GigabitEthernet1/0/7',
-
-      x: 119,
-
-      y: 18,
-
-      width: 17,
-
-      height: 15,
-
-      status: 'connected',
-    },
-  ];
-
-  const [boxes, _] = useState<DevicePort[]>(
-    deviceInterfaces.map((d, index) => ({
-      id: d.id,
-      name: d.name,
-      x: d.x,
-      y: d.y,
-      width: d.width,
-      height: d.height,
-      portNumber: index + 1,
-    }))
-  );
-
-  console.log('boxes', boxes);
+const SortableDevice = ({ device, roomId }: Props) => {
+  const { value: isDialogOpen, setValue: setIsDialogOpen } = useBoolean();
+  const { mutateAsync: removeDeviceFromRack } = useRemoveDeviceFromRack();
+  const { value: removeDeviceDialog, setValue: setRemoveDeviceDialog } = useBoolean();
+  const { value: moveToRackDialog, setValue: setMoveToRackDialog } = useBoolean();
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: device.id,
+    data: {
+      type: 'device',
+      device,
+    } satisfies DeviceSortableData,
   });
 
-  // Load image here (or inside LabelingCanvas, but here is fine to cache it)
-  const [image] = useImage(device.deviceTemplate.frontPanelUrl ?? '', 'anonymous');
-
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: CSS.Translate.toString(transform),
     transition,
-    opacity: isDragging ? 0.5 : 1,
+    opacity: isDragging ? 0.3 : 1,
   };
 
+  const handleViewDetails = useCallback(() => {
+    setTimeout(() => setIsDialogOpen(true), 100);
+  }, []);
+
+  const handleRemoveDialog = useCallback(() => {
+    setTimeout(() => setRemoveDeviceDialog(true), 100);
+  }, []);
+
+  const handleOpenMoveToRack = useCallback(() => {
+    setTimeout(() => setMoveToRackDialog(true), 100);
+  }, []);
+
+  const handleRemoveDeviceFromRack = useCallback(async () => {
+    try {
+      await removeDeviceFromRack({ rackId: device.rackId, deviceId: device.id, roomId });
+
+      setRemoveDeviceDialog(false);
+
+      toast.success(`Remove ${device.name} from rack successfully`);
+    } catch (error) {
+      toast.error(`Failed to remove ${device.name} from rack`);
+    }
+  }, [device, removeDeviceFromRack]);
+
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <Dialog>
-        <DialogTrigger asChild>
-          <div
-            role="button"
-            className={cn(
-              'w-full border-none bg-transparent p-0 text-left focus:outline-none',
-              isDragging ? 'cursor-grabbing shadow-lg' : 'cursor-grab'
-            )}
-          >
-            <DeviceTemplate image={image} boxes={boxes} />
-          </div>
-        </DialogTrigger>
-        <DialogContent className="w-fit min-w-5xl">
-          <DialogHeader>
-            <DialogTitle>Device Detail</DialogTitle>
-          </DialogHeader>
-          <div className="w-full space-y-6">
-            <LabelingCanvas image={image} boxes={boxes} />
-          </div>
-        </DialogContent>
-      </Dialog>
-    </div>
+    <>
+      <div ref={setNodeRef} style={style} {...attributes}>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <ContextMenu>
+            <ContextMenuTrigger>
+              <DeviceCard
+                device={device}
+                isDragging={isDragging}
+                onClick={handleViewDetails}
+                {...listeners}
+              />
+            </ContextMenuTrigger>
+            <ContextMenuContent>
+              <ContextMenuItem onClick={handleOpenMoveToRack}>
+                <IconReplace className="size-4" />
+                Move to Rack
+              </ContextMenuItem>
+              <ContextMenuSeparator />
+              <ContextMenuItem variant="destructive" onClick={handleRemoveDialog}>
+                <IconTrash className="size-4" />
+                Remove
+              </ContextMenuItem>
+            </ContextMenuContent>
+          </ContextMenu>
+
+          <DialogContent className="sm:max-w-3xl">
+            <DialogHeader>
+              <DialogTitle>{device.name}</DialogTitle>
+            </DialogHeader>
+            <div className="w-full">
+              <div className="relative flex min-h-[200px] w-full items-center justify-center overflow-hidden rounded-md border bg-slate-100 p-6">
+                <DevicePortMap device={device} />
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      <ConfirmDialog
+        open={removeDeviceDialog}
+        onOpenChange={setRemoveDeviceDialog}
+        onConfirm={handleRemoveDeviceFromRack}
+        title="Remove Device"
+        description={`Are you sure you want to remove ${device.name} from this rack?`}
+        confirmText="Remove"
+        cancelText="Cancel"
+      />
+
+      <MoveToRackModal
+        open={moveToRackDialog}
+        onOpenChange={setMoveToRackDialog}
+        deviceId={device.id}
+      />
+    </>
   );
 };
 
