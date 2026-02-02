@@ -22,6 +22,7 @@ import MoveToRackModal from './move-to-rack-modal';
 type Props = {
   device: RackDevice;
   roomId: string;
+  style?: React.CSSProperties;
 };
 
 export type DeviceSortableType = 'device';
@@ -43,7 +44,7 @@ export const DeviceCard = forwardRef<HTMLDivElement, DeviceCardProps>(
         ref={ref}
         {...props}
         className={cn(
-          'w-full cursor-grab border-none bg-transparent p-0 text-left focus:outline-none',
+          'w-full cursor-grab border-none bg-transparent p-0 text-left focus:outline-none h-full overflow-hidden',
           isDragging && 'cursor-grabbing opacity-50 shadow-lg',
           className
         )}
@@ -56,7 +57,7 @@ export const DeviceCard = forwardRef<HTMLDivElement, DeviceCardProps>(
 
 DeviceCard.displayName = 'DeviceCard';
 
-const SortableDevice = ({ device, roomId }: Props) => {
+const SortableDevice = ({ device, roomId, style: propStyle }: Props) => {
   const { value: isDialogOpen, setValue: setIsDialogOpen } = useBoolean();
   const { mutateAsync: removeDeviceFromRack } = useRemoveDeviceFromRack();
   const { value: removeDeviceDialog, setValue: setRemoveDeviceDialog } = useBoolean();
@@ -70,10 +71,11 @@ const SortableDevice = ({ device, roomId }: Props) => {
     } satisfies DeviceSortableData,
   });
 
-  const style = {
+  const style: React.CSSProperties = {
     transform: CSS.Translate.toString(transform),
     transition,
     opacity: isDragging ? 0.3 : 1,
+    ...propStyle,
   };
 
   const handleViewDetails = useCallback(() => {
@@ -105,7 +107,7 @@ const SortableDevice = ({ device, roomId }: Props) => {
       <div ref={setNodeRef} style={style} {...attributes}>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <ContextMenu>
-            <ContextMenuTrigger>
+            <ContextMenuTrigger className="h-full">
               <DeviceCard
                 device={device}
                 isDragging={isDragging}
@@ -131,7 +133,7 @@ const SortableDevice = ({ device, roomId }: Props) => {
               <DialogTitle>{device.name}</DialogTitle>
             </DialogHeader>
             <div className="w-full">
-              <div className="relative flex min-h-[200px] w-full items-center justify-center overflow-hidden rounded-md border bg-slate-100 p-6">
+              <div className="relative flex h-[200px] w-full overflow-hidden rounded-md border bg-slate-100">
                 <DevicePortMap device={device} />
               </div>
             </div>

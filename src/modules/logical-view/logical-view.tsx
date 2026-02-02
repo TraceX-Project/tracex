@@ -105,6 +105,10 @@ const LogicalView = ({ projectId }: Props) => {
     }
   }, [deleteLogicalDevice, selectedDeviceId]);
 
+  const handleNodeDragStop = useCallback(() => {
+    console.log("stop drag");
+  }, []);
+
   return (
     <div className="relative h-full w-full">
       <ReactFlow
@@ -118,6 +122,7 @@ const LogicalView = ({ projectId }: Props) => {
         onPaneClick={onPaneClick}
         onNodeContextMenu={onNodeContextMenu}
         onNodeClick={onNodeClick}
+        onNodeDragStop={handleNodeDragStop}
         fitView
       >
         <Background variant={BackgroundVariant.Dots} />

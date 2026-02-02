@@ -15,8 +15,8 @@ type Props = {
 const DevicePortMap = ({ device }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [image] = useImage(device.deviceTemplate.frontPanelUrl ?? '', 'anonymous');
-  const [portHeader] = useImage('/assets/icons/lan-port.png', 'anonymous');
+  const [image, status] = useImage(device.deviceTemplate.frontPanelUrl ?? '');
+  const [portHeader] = useImage('/assets/icons/lan-port.png');
 
   const { width = 0, height = 0 } = useResizeObserver({
     ref: containerRef as React.RefObject<HTMLElement>,
@@ -40,14 +40,10 @@ const DevicePortMap = ({ device }: Props) => {
   return (
     <div
       ref={containerRef}
-      className="relative w-full"
-      style={{
-        aspectRatio: image ? `${image.width} / ${image.height}` : '300 / 44',
-      }}
+      className="relative w-full h-full"
     >
       {width > 0 && height > 0 && (
         <>
-          {/* Canvas Layer */}
           <Stage width={width} height={height} className="absolute top-0 left-0">
             <Layer>
               {image && (
