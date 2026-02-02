@@ -35,6 +35,7 @@ export type Rack = {
   sortOrder: number;
   roomId: string;
   unitSize: number;
+  usedUnits: number;
   devices: RackDevice[];
 };
 

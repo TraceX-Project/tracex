@@ -43,7 +43,12 @@ export const RackCard = forwardRef<HTMLDivElement, RackCardProps>(
         >
           <GripVertical className="h-4 w-4 text-slate-400" />
 
-          <p className="text-sm font-bold uppercase">{rack.name}</p>
+          <div className="flex flex-col items-center">
+            <p className="text-sm font-bold uppercase">{rack.name}</p>
+            <p className={cn("text-xs text-muted-foreground")}>
+              Used: {rack.usedUnits} / {rack.unitSize} U
+            </p>
+          </div>
 
           <div
             onPointerDown={(e) => e.stopPropagation()}
