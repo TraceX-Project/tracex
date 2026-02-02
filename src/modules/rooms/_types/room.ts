@@ -1,5 +1,3 @@
-
-
 import { type Device } from '@/modules/logical-view/_types/logical-view';
 
 export type Room = {
@@ -14,20 +12,20 @@ export type RackDevice = Omit<Device, 'deviceInterfaces'> & {
   deviceInterfaces: {
     id: string;
     name: string;
-    x: number
+    x: number;
     y: number;
     width: number;
     height: number;
-    connectedInterface: RackDeviceConnectedInterface
-  }[]
-}
+    connectedInterface: RackDeviceConnectedInterface;
+  }[];
+};
 
 export type RackDeviceConnectedInterface = {
   id: string;
   name: string;
   deviceName: string;
-  deviceId: string
-}
+  deviceId: string;
+};
 
 export type Rack = {
   name: string;
@@ -37,7 +35,7 @@ export type Rack = {
   sortOrder: number;
   roomId: string;
   unitSize: number;
-  devices: RackDevice[]
+  devices: RackDevice[];
 };
 
 export type CreateRackRequest = {
@@ -54,17 +52,6 @@ export type DeviceInterface = {
   height: number;
   status: string;
 };
-
-
-export type DEVICE_OPTIONS = {
-  value: string;
-  label: string;
-};
-
-export const DEVICE_OPTIONS = [
-  { value: 'test', label: 'Cisco Switch' },
-  { value: 'test2', label: 'Dell Router' },
-];
 
 export type GetDevicesInProjectParams = {
   inRack?: boolean;
