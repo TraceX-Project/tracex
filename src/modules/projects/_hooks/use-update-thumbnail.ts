@@ -10,7 +10,7 @@ export const useUpdateThumbnail = () => {
   return useMutation({
     mutationFn: async ({ projectId }: { projectId: string }) => {
       const imageBuffer = await generateThumbnail(projectId);
-      const blob = new Blob([imageBuffer], { type: 'image/png' });
+      const blob = new Blob([new Uint8Array(imageBuffer)], { type: 'image/png' });
       const file = new File([blob], `${projectId}.png`, { type: 'image/png' });
       const formData = new FormData();
       formData.append('file', file);
