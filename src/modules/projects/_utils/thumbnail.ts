@@ -37,9 +37,12 @@ export const generateThumbnail = async (projectId: string) => {
       }
     );
 
+    await page.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 2 });
     const projectUrl = `${ENV.NEXT_PUBLIC_APP_URL}${PATHS.projects.logical(projectId)}`;
     await page.goto(projectUrl, { waitUntil: 'networkidle0', timeout: 30000 });
-    await page.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 2 });
+    
+    // Wait for fitView animation and rendering stability
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
     await page.evaluate(() => {
       const tabs = document.getElementById('view-tabs-container');
