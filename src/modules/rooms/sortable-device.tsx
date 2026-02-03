@@ -35,10 +35,11 @@ export type DeviceSortableData = {
 export interface DeviceCardProps extends React.HTMLAttributes<HTMLDivElement> {
   device: RackDevice;
   isDragging?: boolean;
+  fill?: boolean;
 }
 
 export const DeviceCard = forwardRef<HTMLDivElement, DeviceCardProps>(
-  ({ device, isDragging, className, ...props }, ref) => {
+  ({ device, isDragging, className, fill, ...props }, ref) => {
     return (
       <div
         ref={ref}
@@ -49,7 +50,7 @@ export const DeviceCard = forwardRef<HTMLDivElement, DeviceCardProps>(
           className
         )}
       >
-        <DevicePortMap device={device} />
+        <DevicePortMap device={device} fill={fill} />
       </div>
     );
   }
@@ -112,6 +113,7 @@ const SortableDevice = ({ device, roomId, style: propStyle }: Props) => {
                 device={device}
                 isDragging={isDragging}
                 onClick={handleViewDetails}
+                fill
                 {...listeners}
               />
             </ContextMenuTrigger>

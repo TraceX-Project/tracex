@@ -10,9 +10,10 @@ import PortTooltipOverlay from './port-tooltip-overlay';
 
 type Props = {
   device: RackDevice;
+  fill?: boolean;
 };
 
-const DevicePortMap = ({ device }: Props) => {
+const DevicePortMap = ({ device, fill = false }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [image, status] = useImage(device.deviceTemplate.frontPanelUrl ?? '');
@@ -22,18 +23,24 @@ const DevicePortMap = ({ device }: Props) => {
     ref: containerRef as React.RefObject<HTMLElement>,
   });
 
-  const scale = useMemo(() => {
+  const { scaleX, scaleY } = useMemo(() => {
     if (!image || width === 0 || height === 0) {
-      return 1;
+      return { scaleX: 1, scaleY: 1 };
     }
 
-    const items = [width / image.width, height / image.height];
+    const scaleX = width / image.width;
+    const scaleY = height / image.height;
 
-    return Math.min(...items);
-  }, [image, width, height]);
+    if (fill) {
+      return { scaleX, scaleY };
+    }
 
-  const imgWidth = image ? image.width * scale : 0;
-  const imgHeight = image ? image.height * scale : 0;
+    const minScale = Math.min(scaleX, scaleY);
+    return { scaleX: minScale, scaleY: minScale };
+  }, [image, width, height, fill]);
+
+  const imgWidth = image ? image.width * scaleX : 0;
+  const imgHeight = image ? image.height * scaleY : 0;
   const imgX = (width - imgWidth) / 2;
   const imgY = (height - imgHeight) / 2;
 
@@ -44,13 +51,18 @@ const DevicePortMap = ({ device }: Props) => {
     >
       {width > 0 && height > 0 && (
         <>
+          {status === 'failed' && (
+            <div className="absolute inset-0 flex items-center justify-center text-red-500 font-medium">
+              Image failed to load
+            </div>
+          )}
           <Stage width={width} height={height} className="absolute top-0 left-0">
             <Layer>
               {image && (
                 <KonvaImage
                   image={image}
-                  scaleX={scale}
-                  scaleY={scale}
+                  scaleX={scaleX}
+                  scaleY={scaleY}
                   x={imgX}
                   y={imgY}
                   listening={false}
@@ -62,7 +74,8 @@ const DevicePortMap = ({ device }: Props) => {
                   <PortItem
                     key={`box-${i}`}
                     box={box}
-                    scale={scale}
+                    scaleX={scaleX}
+                    scaleY={scaleY}
                     imgX={imgX}
                     imgY={imgY}
                     strokeWidth={1}
@@ -72,7 +85,7 @@ const DevicePortMap = ({ device }: Props) => {
             </Layer>
           </Stage>
 
-          <PortTooltipOverlay device={device} scale={scale} imgX={imgX} imgY={imgY} />
+          <PortTooltipOverlay device={device} scale={scaleX} imgX={imgX} imgY={imgY} />
         </>
       )}
     </div>

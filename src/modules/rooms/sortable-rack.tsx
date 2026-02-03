@@ -70,7 +70,7 @@ export const RackCard = forwardRef<HTMLDivElement, RackCardProps>(
 
 RackCard.displayName = "RackCard";
 
-const UNIT_HEIGHT = 22; // Height of 1U in pixels
+const UNIT_HEIGHT = 30; // Height of 1U in pixels
 const DEFAULT_UNIT_SIZE = 42;
 
 
@@ -150,7 +150,7 @@ const SortableRack = ({ rack }: Props) => {
       rack={rack}
       isDragging={isDragging}
       handleProps={{ ...attributes, ...listeners }}
-      className="w-[280px]"
+      className="w-[350px]"
     >
       <div
         className="relative w-full border-b border-black bg-slate-100"
