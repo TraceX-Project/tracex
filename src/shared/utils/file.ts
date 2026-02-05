@@ -21,7 +21,7 @@ export const formatBytes = (
 }
 
 export const convertBufferToFile = (
-  buffer: any,
+  buffer: ArrayLike<number> | ArrayBuffer,
   filename: string,
   type = 'image/png'
 ) => {
