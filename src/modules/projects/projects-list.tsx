@@ -46,12 +46,13 @@ const ProjectItem = ({ project }: ProjectItemProps) => {
     }
   }, [project.id, project.name, deleteProject]);
 
+
   return (
     <>
       <div className="overflow-hidden rounded-md border bg-white shadow transition-shadow duration-300 hover:shadow-lg">
         <Link href={PATHS.projects.logical(project.id)} passHref>
           <Image
-            src="https://www.cisco.com/content/dam/cisco-cdc/site/images/legacy/assets/swa/img/anchor-info/network-designed-628x353.jpg"
+            src={project.thumbnailUrl ?? "https://www.cisco.com/content/dam/cisco-cdc/site/images/legacy/assets/swa/img/anchor-info/network-designed-628x353.jpg"}
             alt={project.name}
             width={400}
             height={250}

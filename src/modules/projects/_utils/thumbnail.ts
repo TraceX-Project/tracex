@@ -3,8 +3,6 @@
 import puppeteer from 'puppeteer';
 import { ENV } from '@/shared/config/env';
 import { PATHS } from '@/shared/config/paths';
-import path from 'path';
-import fs from 'fs';
 import { cookies } from 'next/headers';
 import { COOKIE_NAME } from '@/shared/constants/cookie';
 
@@ -24,7 +22,7 @@ export const generateThumbnail = async (projectId: string) => {
       throw new Error('Missing authentication cookies');
     }
 
-    await page.setCookie(
+    await page.browserContext().setCookie(
       {
         name: COOKIE_NAME.accessToken,
         value: accessToken,
@@ -39,17 +37,38 @@ export const generateThumbnail = async (projectId: string) => {
       }
     );
 
-    const projectUrl = `${ENV.NEXT_PUBLIC_APP_URL}${PATHS.projects.logical(projectId)}`;
-    await page.goto(projectUrl, { waitUntil: 'domcontentloaded', timeout: 10000 });
-    await page.setViewport({ width: 800, height: 600 });
+    await page.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 2 });
 
-    const outputDir = path.join(process.cwd(), 'public/thumbnails');
-    if (!fs.existsSync(outputDir)) {
-      fs.mkdirSync(outputDir, { recursive: true });
+    const projectUrl = `${ENV.NEXT_PUBLIC_APP_URL}${PATHS.projects.logical(projectId)}`;
+    await page.goto(projectUrl, { waitUntil: 'networkidle0', timeout: 30000 });
+
+    // Wait for fitView animation and rendering stability
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Hide UI elements that should not be in the thumbnail
+    await page.evaluate(() => {
+      const tabs = document.getElementById('view-tabs-container');
+      if (tabs) {
+        tabs.style.display = 'none';
+      }
+
+      const controls = document.querySelector('.react-flow__controls');
+      if (controls) {
+        (controls as HTMLElement).style.display = 'none';
+      }
+
+      const attribution = document.querySelector('.react-flow__attribution');
+      if (attribution) {
+        (attribution as HTMLElement).style.display = 'none';
+      }
+    });
+
+    const element = await page.$('#project-main-content');
+    if (!element) {
+      throw new Error('Main content element not found');
     }
 
-    const outputPath = path.join(outputDir, `${projectId}.png`);
-    await page.screenshot({ path: outputPath as `${string}.png`, type: 'png' });
+    return await element.screenshot({ type: 'png' });
   } finally {
     await browser.close();
   }
