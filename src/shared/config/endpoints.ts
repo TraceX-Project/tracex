@@ -69,6 +69,7 @@ export const ENDPOINTS = {
   logicalDevices: {
     delete: (id: string) => `${ROOTS.logicalDevices}/${id}`,
     getById: (id: string) => `${ROOTS.logicalDevices}/${id}`,
+    updatePosition: (id: string) => `${ROOTS.logicalDevices}/${id}/position`,
   },
   rooms: {
     deleteById: (id: string) => `${ROOTS.rooms}/${id}`,
