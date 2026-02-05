@@ -106,17 +106,9 @@ const LogicalView = ({ projectId }: Props) => {
     }
   }, [deleteLogicalDevice, selectedDeviceId]);
 
-  const timeoutRef = useRef<NodeJS.Timeout>(null);
-
   const onNodeDragStop = useCallback(
-    (_: React.MouseEvent, node: Node) => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-
-      timeoutRef.current = setTimeout(() => {
-        updateThumbnail({ projectId });
-      }, 2000);
+    async () => {
+      await updateThumbnail({ projectId });
     },
     [projectId, updateThumbnail]
   );

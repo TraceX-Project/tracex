@@ -1,10 +1,10 @@
-export function formatBytes(
+export const formatBytes = (
   bytes: number,
   opts: {
     decimals?: number;
     sizeType?: 'accurate' | 'normal';
   } = {}
-) {
+) => {
   const { decimals = 0, sizeType = 'normal' } = opts;
 
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
@@ -16,7 +16,15 @@ export function formatBytes(
 
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
 
-  return `${(bytes / Math.pow(1024, i)).toFixed(decimals)} ${
-    sizeType === 'accurate' ? (accurateSizes[i] ?? 'Bytest') : (sizes[i] ?? 'Bytes')
-  }`;
+  return `${(bytes / Math.pow(1024, i)).toFixed(decimals)} ${sizeType === 'accurate' ? (accurateSizes[i] ?? 'Bytest') : (sizes[i] ?? 'Bytes')
+    }`;
 }
+
+export const convertBufferToFile = (
+  buffer: any,
+  filename: string,
+  type = 'image/png'
+) => {
+  const blob = new Blob([new Uint8Array(buffer)], { type });
+  return new File([blob], filename, { type });
+};

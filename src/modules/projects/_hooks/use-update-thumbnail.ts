@@ -3,6 +3,7 @@ import { updateThumbnail } from '../_services/projects.service';
 import { getQueryClient } from '@/shared/tanstack-query/get-query-client';
 import { QUERY_KEYS } from '@/shared/constants/query-key';
 import { generateThumbnail } from '../_utils/thumbnail';
+import { convertBufferToFile } from '@/shared/utils/file';
 
 export const useUpdateThumbnail = () => {
   const queryClient = getQueryClient();
@@ -10,11 +11,12 @@ export const useUpdateThumbnail = () => {
   return useMutation({
     mutationFn: async ({ projectId }: { projectId: string }) => {
       const imageBuffer = await generateThumbnail(projectId);
-      const blob = new Blob([new Uint8Array(imageBuffer)], { type: 'image/png' });
-      const file = new File([blob], `${projectId}.png`, { type: 'image/png' });
+
+      const file = convertBufferToFile(imageBuffer, `${projectId}-${Date.now()}.png`);
+
       const formData = new FormData();
       formData.append('file', file);
-      
+
       return await updateThumbnail(projectId, formData);
     },
     onSuccess: () => {
