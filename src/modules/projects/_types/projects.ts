@@ -1,6 +1,7 @@
 export type Project = {
   id: string;
   name: string;
+  thumbnailUrl: string;
 };
 
 export type CreateProjectRequest = {

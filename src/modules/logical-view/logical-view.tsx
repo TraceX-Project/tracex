@@ -24,6 +24,7 @@ import { DeviceType } from '../admin/device-templates/_types/device-template';
 import { ConfirmDialog } from '@/shared/components/confirm-dialog';
 import { toast } from 'sonner';
 import { useDeleteLogicalDevice } from './_hooks/use-delete-logical-device';
+import { useUpdateThumbnail } from '../projects/_hooks/use-update-thumbnail';
 
 type Props = {
   projectId: string;
@@ -40,7 +41,7 @@ const LogicalView = ({ projectId }: Props) => {
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement | null>(null);
   const { mutateAsync: deleteLogicalDevice } = useDeleteLogicalDevice(projectId);
-
+  const { mutateAsync: updateThumbnail } = useUpdateThumbnail();
 
   const { nodes: layoutedNodes, edges: layoutedEdges } = useMemo(() => {
     const mappedDevices = mapDevicesToReactFlow(devices!);
@@ -105,6 +106,13 @@ const LogicalView = ({ projectId }: Props) => {
     }
   }, [deleteLogicalDevice, selectedDeviceId]);
 
+  const onNodeDragStop = useCallback(
+    async () => {
+      await updateThumbnail({ projectId });
+    },
+    [projectId, updateThumbnail]
+  );
+
   return (
     <div className="relative h-full w-full">
       <ReactFlow
@@ -118,6 +126,7 @@ const LogicalView = ({ projectId }: Props) => {
         onPaneClick={onPaneClick}
         onNodeContextMenu={onNodeContextMenu}
         onNodeClick={onNodeClick}
+        onNodeDragStop={onNodeDragStop}
         fitView
       >
         <Background variant={BackgroundVariant.Dots} />

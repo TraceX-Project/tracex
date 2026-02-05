@@ -20,6 +20,7 @@ import { toast } from 'sonner';
 import { useBoolean } from '@/shared/hooks/use-boolean';
 import { useGetDeviceTemplates } from '../admin/device-templates/_hooks/use-get-device-templates';
 import { DeviceType } from '../admin/device-templates/_types/device-template';
+import { useUpdateThumbnail } from '../projects/_hooks/use-update-thumbnail';
 
 type Props = {
   projectId: string;
@@ -30,6 +31,7 @@ const CreateDeviceModal = ({ projectId }: Props) => {
     type: [DeviceType.ROUTER, DeviceType.SWITCH],
   });
   const { mutateAsync: addDevice } = useAddDevice();
+  const { mutateAsync: updateThumbnail } = useUpdateThumbnail();
   const { value: open, setValue: setOpen } = useBoolean();
 
   const transformedDeviceTemplates = useMemo(
@@ -59,6 +61,7 @@ const CreateDeviceModal = ({ projectId }: Props) => {
         });
 
         await addDevice({ projectId, formData });
+        await updateThumbnail({ projectId });
         setOpen(false);
       } catch (error) {
         toast.error('Failed to add device. Please try again.');
