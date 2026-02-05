@@ -51,6 +51,7 @@ export type Device = {
   createdAt: string;
   updatedAt: string;
   type: string;
+  uPosition: number;
   deviceInterfaces: DeviceInterface[];
   deviceTemplate: DeviceTemplate;
   deviceVlans: DeviceVlan[];
@@ -96,27 +97,27 @@ export type CreateServerRequest = z.infer<typeof connectHypervisorSchema>;
 
 export type GetLogicalDeviceResponse =
   | {
-      id: string;
-      type: DeviceType.SERVER;
-      data: Server;
-    }
+    id: string;
+    type: DeviceType.SERVER;
+    data: Server;
+  }
   | {
-      id: string;
-      type: DeviceType.VIRTUAL_MACHINE;
-      data: VirtualMachine;
-    }
+    id: string;
+    type: DeviceType.VIRTUAL_MACHINE;
+    data: VirtualMachine;
+  }
   | {
-      id: string;
-      type: DeviceType.SWITCH_STACK;
-      data: DeviceStack;
-    }
+    id: string;
+    type: DeviceType.SWITCH_STACK;
+    data: DeviceStack;
+  }
   | {
-      id: string;
-      type: DeviceType.ROUTER;
-      data: Device;
-    }
+    id: string;
+    type: DeviceType.ROUTER;
+    data: Device;
+  }
   | {
-      id: string;
-      type: DeviceType.SWITCH;
-      data: Device;
-    };
+    id: string;
+    type: DeviceType.SWITCH;
+    data: Device;
+  };

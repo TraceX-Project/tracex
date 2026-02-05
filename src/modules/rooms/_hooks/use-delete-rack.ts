@@ -10,6 +10,7 @@ export const useDeleteRack = () => {
     mutationFn: (rackId: string) => deleteRack(rackId),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.racks] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.physicalDevices] });
     },
   });
 }

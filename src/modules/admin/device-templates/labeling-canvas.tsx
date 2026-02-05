@@ -122,7 +122,8 @@ const LabelingCanvas = forwardRef<HTMLDivElement, Props>(
                 <PortItem
                   key={i}
                   box={box}
-                  scale={scale}
+                  scaleX={scale}
+                  scaleY={scale}
                   imgX={(width - image.width * scale) / 2}
                   imgY={(height - image.height * scale) / 2}
                   isSelected={selectedIndex === i}

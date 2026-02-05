@@ -39,7 +39,7 @@ const RackActionsMenu = ({ rack }: Props) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => setAddDevicesToRackOpen(true)}>
+          <DropdownMenuItem onClick={() => setAddDevicesToRackOpen(true)} disabled={rack.usedUnits === rack.unitSize}>
             <IconPlus className="size-4" />
             Add devices
           </DropdownMenuItem>

@@ -84,7 +84,7 @@ const UpdateRackDialog = ({ rack, open, onOpenChange }: Props) => {
             {/* Floor Plan */}
             <form.AppField
               name="unitSize"
-              children={(field) => <field.NumberField label="Unit Size" />}
+              children={(field) => <field.NumberField label="Unit Size" min={0} max={100} />}
             />
           </div>
           <DialogFooter>

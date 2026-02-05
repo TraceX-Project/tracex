@@ -14,7 +14,8 @@ export interface PortBox {
 
 type Props = {
   box: PortBox;
-  scale: number;
+  scaleX: number;
+  scaleY: number;
   imgX?: number;
   imgY?: number;
   strokeWidth?: number;
@@ -30,7 +31,8 @@ type Props = {
 const PortItem = memo(
   ({
     box,
-    scale,
+    scaleX,
+    scaleY,
     imgX = 0,
     imgY = 0,
     strokeWidth = 1,
@@ -42,10 +44,10 @@ const PortItem = memo(
     onDragEnd,
     name,
   }: Props) => {
-    const absX = imgX + box.x * scale;
-    const absY = imgY + box.y * scale;
-    const absWidth = box.width * scale;
-    const absHeight = box.height * scale;
+    const absX = imgX + box.x * scaleX;
+    const absY = imgY + box.y * scaleY;
+    const absWidth = box.width * scaleX;
+    const absHeight = box.height * scaleY;
 
     const labelText = box.portNumber?.toString() ?? box.name ?? '';
 
