@@ -9,7 +9,14 @@ import { COOKIE_NAME } from '@/shared/constants/cookie';
 export const generateThumbnail = async (projectId: string) => {
   const cookieStore = await cookies();
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: 'shell',
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-gpu',
+      '--no-zygote',
+      '--single-process',
+    ],
   });
 
   try {

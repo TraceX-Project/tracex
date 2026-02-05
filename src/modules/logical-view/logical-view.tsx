@@ -14,7 +14,7 @@ import {
 } from '@xyflow/react';
 import { NODE_TYPES } from './_constants/logical-view';
 import { mapDevicesToReactFlow } from './_utils/react-flow';
-import { getLayoutedElements } from './_utils/graph';
+
 import { useGetTopology } from './_hooks/use-get-topology';
 import { type NodeContextMenuState } from './_types/logical-view';
 import NodeContextMenu from './node-context-menu';
@@ -44,9 +44,7 @@ const LogicalView = ({ projectId }: Props) => {
   const { mutateAsync: updateThumbnail } = useUpdateThumbnail();
 
   const { nodes: layoutedNodes, edges: layoutedEdges } = useMemo(() => {
-    const mappedDevices = mapDevicesToReactFlow(devices!);
-
-    return getLayoutedElements(mappedDevices.nodes, mappedDevices.edges);
+    return mapDevicesToReactFlow(devices!);
   }, [devices]);
 
   useEffect(() => {
