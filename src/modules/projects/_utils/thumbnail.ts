@@ -5,8 +5,11 @@ import { ENV } from '@/shared/config/env';
 import { PATHS } from '@/shared/config/paths';
 import { cookies } from 'next/headers';
 import { COOKIE_NAME } from '@/shared/constants/cookie';
+import { ENDPOINTS } from '@/shared/config/endpoints';
+import { request } from '@/shared/lib/api';
+import { convertBufferToFile } from '@/shared/utils/file';
 
-export const generateThumbnail = async (projectId: string) => {
+export const captureAndSaveThumbnail = async (projectId: string) => {
   const cookieStore = await cookies();
   const browser = await puppeteer.launch({
     headless: 'shell',
@@ -47,10 +50,13 @@ export const generateThumbnail = async (projectId: string) => {
     await page.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 2 });
 
     const projectUrl = `${ENV.NEXT_PUBLIC_APP_URL}${PATHS.projects.logical(projectId)}`;
-    await page.goto(projectUrl, { waitUntil: 'networkidle0', timeout: 30000 });
+    await page.goto(projectUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+
+    // Wait for the main content to be present
+    await page.waitForSelector('#project-main-content', { timeout: 10000 });
 
     // Wait for fitView animation and rendering stability
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // Hide UI elements that should not be in the thumbnail
     await page.evaluate(() => {
@@ -75,7 +81,17 @@ export const generateThumbnail = async (projectId: string) => {
       throw new Error('Main content element not found');
     }
 
-    return await element.screenshot({ type: 'png' });
+    const buffer = await element.screenshot({ type: 'png' });
+    const file = convertBufferToFile(buffer, `${projectId}-${Date.now()}.png`);
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return await request<void>({
+      method: 'PATCH',
+      path: ENDPOINTS.projects.thumbnail(projectId),
+      body: formData,
+    });
   } finally {
     await browser.close();
   }

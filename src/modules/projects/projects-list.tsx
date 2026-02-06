@@ -22,6 +22,7 @@ import { IconPencil, IconTrash } from '@tabler/icons-react';
 import { ConfirmDialog } from '@/shared/components/confirm-dialog';
 import EditProjectModal from './edit-project-modal';
 import { type Project } from './_types/projects';
+import ProjectThumbnailPlaceholder from './project-thumbnail-placeholder';
 
 type ProjectItemProps = {
   project: Project
@@ -56,13 +57,19 @@ const ProjectItem = ({ project }: ProjectItemProps) => {
         >
           <span className="sr-only">View project {project.name}</span>
         </Link>
-        <Image
-          src={project.thumbnailUrl ?? "https://www.cisco.com/content/dam/cisco-cdc/site/images/legacy/assets/swa/img/anchor-info/network-designed-628x353.jpg"}
-          alt={project.name}
-          width={400}
-          height={250}
-          className="h-48 w-full object-cover border-b"
-        />
+
+
+        {project.thumbnailUrl ? (
+          <Image
+            src={project.thumbnailUrl}
+            alt={project.name}
+            width={400}
+            height={250}
+            className="h-48 w-full object-contain p-2 border-b"
+          />
+        ) : (
+          <ProjectThumbnailPlaceholder className="h-48 w-full border-b" />
+        )}
 
         <div className="flex items-center justify-between p-4">
           <h3 className="truncate text-base font-semibold">{project.name}</h3>

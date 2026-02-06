@@ -34,7 +34,7 @@ const CreateDeviceModal = ({ projectId }: Props) => {
     type: [DeviceType.ROUTER, DeviceType.SWITCH],
   });
   const { mutateAsync: addDevice } = useAddDevice();
-  const { mutateAsync: updateThumbnail } = useUpdateThumbnail();
+  const { triggerUpdate: updateThumbnail } = useUpdateThumbnail();
   const { mutateAsync: updateDevicePositions } = useUpdateDevicePositions();
   const { value: open, setValue: setOpen } = useBoolean();
   const { data: topology } = useGetTopology(projectId);
@@ -99,7 +99,7 @@ const CreateDeviceModal = ({ projectId }: Props) => {
           }
         }
 
-        await updateThumbnail({ projectId });
+        updateThumbnail({ projectId });
 
         setOpen(false);
       } catch (error) {

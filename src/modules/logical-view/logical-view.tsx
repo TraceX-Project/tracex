@@ -42,7 +42,7 @@ const LogicalView = ({ projectId }: Props) => {
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement | null>(null);
   const { mutateAsync: deleteLogicalDevice } = useDeleteLogicalDevice(projectId);
-  const { mutateAsync: updateThumbnail } = useUpdateThumbnail();
+  const { triggerUpdate: updateThumbnail } = useUpdateThumbnail();
   const { mutateAsync: updateDevicePositions } = useUpdateDevicePositions();
 
   const { nodes: layoutedNodes, edges: layoutedEdges } = useMemo(() => {
@@ -98,6 +98,7 @@ const LogicalView = ({ projectId }: Props) => {
     try {
       await deleteLogicalDevice(selectedDeviceId!);
       setDeleteDialogOpen(false);
+      updateThumbnail({ projectId, forceImmediate: true });
 
       toast.success('Node deleted successfully.');
     } catch (error) {
@@ -116,7 +117,7 @@ const LogicalView = ({ projectId }: Props) => {
         }]
       })
 
-      await updateThumbnail({ projectId });
+      updateThumbnail({ projectId });
     },
     [projectId, updateDevicePositions, updateThumbnail]
   );
