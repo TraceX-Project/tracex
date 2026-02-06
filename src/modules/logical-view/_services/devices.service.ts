@@ -3,7 +3,6 @@ import {
   type LogicalDevice,
   type CreateServerRequest,
   type GetLogicalDeviceResponse,
-  Position,
 } from '../_types/logical-view';
 import { ENDPOINTS } from '@/shared/config/endpoints';
 
