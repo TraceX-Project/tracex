@@ -25,6 +25,7 @@ import { ConfirmDialog } from '@/shared/components/confirm-dialog';
 import { toast } from 'sonner';
 import { useDeleteLogicalDevice } from './_hooks/use-delete-logical-device';
 import { useUpdateThumbnail } from '../projects/_hooks/use-update-thumbnail';
+import { useUpdateDevicePositions } from './_hooks/use-update-device-positions';
 
 type Props = {
   projectId: string;
@@ -42,6 +43,7 @@ const LogicalView = ({ projectId }: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const { mutateAsync: deleteLogicalDevice } = useDeleteLogicalDevice(projectId);
   const { mutateAsync: updateThumbnail } = useUpdateThumbnail();
+  const { mutateAsync: updateDevicePositions } = useUpdateDevicePositions();
 
   const { nodes: layoutedNodes, edges: layoutedEdges } = useMemo(() => {
     return mapDevicesToReactFlow(devices!);
@@ -105,10 +107,18 @@ const LogicalView = ({ projectId }: Props) => {
   }, [deleteLogicalDevice, selectedDeviceId]);
 
   const onNodeDragStop = useCallback(
-    async () => {
+    async (e: React.MouseEvent, node: Node) => {
+      await updateDevicePositions({
+        positions: [{
+          id: node.id,
+          x: node.position.x,
+          y: node.position.y,
+        }]
+      })
+
       await updateThumbnail({ projectId });
     },
-    [projectId, updateThumbnail]
+    [projectId, updateDevicePositions, updateThumbnail]
   );
 
   return (

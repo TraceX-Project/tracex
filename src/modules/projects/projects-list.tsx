@@ -49,16 +49,20 @@ const ProjectItem = ({ project }: ProjectItemProps) => {
 
   return (
     <>
-      <div className="overflow-hidden rounded-md border bg-white shadow transition-shadow duration-300 hover:shadow-lg">
-        <Link href={PATHS.projects.logical(project.id)} passHref>
-          <Image
-            src={project.thumbnailUrl ?? "https://www.cisco.com/content/dam/cisco-cdc/site/images/legacy/assets/swa/img/anchor-info/network-designed-628x353.jpg"}
-            alt={project.name}
-            width={400}
-            height={250}
-            className="h-48 w-full cursor-pointer object-cover"
-          />
+      <div className="relative overflow-hidden rounded-md border bg-white shadow transition-shadow duration-300 hover:shadow-lg">
+        <Link
+          href={PATHS.projects.logical(project.id)}
+          className="absolute inset-0 z-10"
+        >
+          <span className="sr-only">View project {project.name}</span>
         </Link>
+        <Image
+          src={project.thumbnailUrl ?? "https://www.cisco.com/content/dam/cisco-cdc/site/images/legacy/assets/swa/img/anchor-info/network-designed-628x353.jpg"}
+          alt={project.name}
+          width={400}
+          height={250}
+          className="h-48 w-full object-cover border-b"
+        />
 
         <div className="flex items-center justify-between p-4">
           <h3 className="truncate text-base font-semibold">{project.name}</h3>
@@ -69,7 +73,7 @@ const ProjectItem = ({ project }: ProjectItemProps) => {
                 variant="ghost"
                 size="icon"
                 aria-label="Project actions"
-                className="h-6 w-6 p-1"
+                className="relative z-20 h-6 w-6 p-1"
               >
                 <MoreVertical className="h-4 w-4" />
               </Button>

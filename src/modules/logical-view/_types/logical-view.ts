@@ -121,3 +121,9 @@ export type GetLogicalDeviceResponse =
     type: DeviceType.SWITCH;
     data: Device;
   };
+
+export type UpdateDevicePositionsRequest = {
+  id: string;
+  x: number;
+  y: number;
+}

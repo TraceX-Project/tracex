@@ -43,13 +43,3 @@ export const getLogicalDeviceById = async (id: string): Promise<GetLogicalDevice
 
   return response;
 };
-
-export const updateDevicePosition = async (id: string, position: Position) => {
-  const response = await request({
-    method: 'PATCH',
-    path: ENDPOINTS.logicalDevices.updatePosition(id),
-    body: position,
-  });
-
-  return response;
-}
