@@ -10,6 +10,7 @@ import { type Token } from '@/modules/auth/_types/auth';
 import { redirect } from 'next/navigation';
 import { PATHS } from '../config/paths';
 import { ApiError } from './api-error';
+import { getFilenameFromContentDisposition } from '../utils/file';
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -127,4 +128,52 @@ export async function request<T>({
   }
 
   return apiFetch<T>(url, method, token, body);
+}
+
+export async function download({
+  method,
+  path,
+  body,
+  auth = true,
+}: RequestOptions): Promise<{ data: string; contentType: string; filename: string }> {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get(COOKIE_NAME.accessToken)?.value;
+  const refreshToken = cookieStore.get(COOKIE_NAME.refreshToken)?.value;
+  const url = `${ENV.NEXT_PUBLIC_API_URL}${path}`;
+
+  let token = accessToken;
+
+  if (auth && (!accessToken || (await isTokenExpired(accessToken)))) {
+    if (refreshToken) {
+      try {
+        const { accessToken: newAccessToken } = await refresh(refreshToken);
+        token = newAccessToken;
+      } catch {}
+    }
+  }
+
+  const headers: HeadersInit = {};
+  if (auth && token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  headers['Content-Type'] = 'application/json';
+
+  const response = await fetch(url, {
+    method,
+    headers,
+    body: body ? JSON.stringify(body) : undefined,
+  });
+
+  if (!response.ok) {
+    throw new ApiError('Download failed', response.status);
+  }
+
+  const arrayBuffer = await response.arrayBuffer();
+  const base64 = Buffer.from(arrayBuffer).toString('base64');
+  const contentType = response.headers.get('content-type') ?? 'application/octet-stream';
+  const contentDisposition = response.headers.get('content-disposition');
+  const filename = getFilenameFromContentDisposition(contentDisposition);
+
+  return { data: base64, contentType, filename };
 }

@@ -7,7 +7,7 @@ import Link from 'next/link';
 import React from 'react';
 import { type Project } from './_types/projects';
 import CreateDeviceModal from '../logical-view/create-device-modal';
-import { IconFileExport } from '@tabler/icons-react';
+
 import { useParams, usePathname } from 'next/navigation';
 import { Separator } from '@/shared/components/ui/separator';
 import {
@@ -23,6 +23,7 @@ import { useRouter } from 'next/navigation';
 import CreateRackModal from '../rooms/create-rack-modal';
 import { useGetRoom } from '../floors/_hooks/use-get-room';
 import { useGetFloorById } from '../floors/_hooks/use-floor';
+import ProjectExportButton from './project-export-button';
 
 type Props = {
   project: Project;
@@ -139,9 +140,7 @@ const ProjectNavbar = ({ project }: Props) => {
           <Share2 className="h-4 w-4" />
         </Button>
 
-        <Button size="sm" variant="outline">
-          <IconFileExport size={16} />
-        </Button>
+        <ProjectExportButton projectId={project.id} />
       </div>
     </header>
   );
