@@ -82,17 +82,11 @@ const CreateDeviceModal = ({ projectId }: Props) => {
           const allNodes = [...existingNodes, ...newNodes];
           const layoutedPositions = getLayoutedPositions(allNodes, edges);
 
-          const positionsToUpdate = [];
-          for (const device of newDevices) {
-            const position = layoutedPositions.get(device.id);
-            if (position) {
-              positionsToUpdate.push({
-                id: device.id,
-                x: position.x,
-                y: position.y,
-              });
-            }
-          }
+          const positionsToUpdate = newDevices.map((device) => ({
+            id: device.id,
+            x: layoutedPositions.get(device.id)?.x ?? 0,
+            y: layoutedPositions.get(device.id)?.y ?? 0,
+          }));
 
           if (positionsToUpdate.length > 0) {
             await updateDevicePositions({ positions: positionsToUpdate });

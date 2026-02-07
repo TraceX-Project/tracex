@@ -4,7 +4,9 @@ import { QUERY_KEYS } from '@/shared/constants/query-key';
 import { captureAndSaveThumbnail } from '../_utils/thumbnail';
 import { useCallback, useEffect } from 'react';
 
-const pendingUpdates = new Map<string, NodeJS.Timeout>();
+import { useDebouncedCallback } from '@/shared/hooks/use-debounce-callback';
+
+const pendingProjects = new Set<string>();
 const DEBOUNCE_MS = 2000;
 
 export const useUpdateThumbnail = () => {
@@ -19,37 +21,29 @@ export const useUpdateThumbnail = () => {
     },
   });
 
+  const debouncedMutate = useDebouncedCallback((projectId: string) => {
+    pendingProjects.delete(projectId);
+    mutate({ projectId });
+  }, DEBOUNCE_MS);
+
   const triggerUpdate = useCallback(
     ({ projectId, forceImmediate = false }: { projectId: string; forceImmediate?: boolean }) => {
-      if (pendingUpdates.has(projectId)) {
-        clearTimeout(pendingUpdates.get(projectId));
-        pendingUpdates.delete(projectId);
-      }
-
-      const performUpdate = () => {
-        pendingUpdates.delete(projectId);
-        mutate({ projectId });
-      };
-
       if (forceImmediate) {
-        performUpdate();
+        pendingProjects.delete(projectId);
+        mutate({ projectId });
         return;
       }
 
-      const timer = setTimeout(() => {
-        performUpdate();
-      }, DEBOUNCE_MS);
-
-      pendingUpdates.set(projectId, timer);
+      pendingProjects.add(projectId);
+      debouncedMutate(projectId);
     },
-    [mutate]
+    [debouncedMutate, mutate]
   );
 
   useEffect(() => {
     const handleUnload = () => {
-      for (const [projectId, timer] of pendingUpdates.entries()) {
-        clearTimeout(timer);
-        pendingUpdates.delete(projectId);
+      for (const projectId of pendingProjects) {
+        pendingProjects.delete(projectId);
         captureAndSaveThumbnail(projectId).catch(console.error);
       }
     };
