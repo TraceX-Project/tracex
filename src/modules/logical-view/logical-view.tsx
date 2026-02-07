@@ -14,7 +14,7 @@ import {
 } from '@xyflow/react';
 import { NODE_TYPES } from './_constants/logical-view';
 import { mapDevicesToReactFlow } from './_utils/react-flow';
-import { getLayoutedElements } from './_utils/graph';
+
 import { useGetTopology } from './_hooks/use-get-topology';
 import { type NodeContextMenuState } from './_types/logical-view';
 import NodeContextMenu from './node-context-menu';
@@ -25,6 +25,7 @@ import { ConfirmDialog } from '@/shared/components/confirm-dialog';
 import { toast } from 'sonner';
 import { useDeleteLogicalDevice } from './_hooks/use-delete-logical-device';
 import { useUpdateThumbnail } from '../projects/_hooks/use-update-thumbnail';
+import { useUpdateDevicePositions } from './_hooks/use-update-device-positions';
 
 type Props = {
   projectId: string;
@@ -41,12 +42,11 @@ const LogicalView = ({ projectId }: Props) => {
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement | null>(null);
   const { mutateAsync: deleteLogicalDevice } = useDeleteLogicalDevice(projectId);
-  const { mutateAsync: updateThumbnail } = useUpdateThumbnail();
+  const { triggerUpdate: updateThumbnail } = useUpdateThumbnail();
+  const { mutateAsync: updateDevicePositions } = useUpdateDevicePositions();
 
   const { nodes: layoutedNodes, edges: layoutedEdges } = useMemo(() => {
-    const mappedDevices = mapDevicesToReactFlow(devices!);
-
-    return getLayoutedElements(mappedDevices.nodes, mappedDevices.edges);
+    return mapDevicesToReactFlow(devices!);
   }, [devices]);
 
   useEffect(() => {
@@ -98,6 +98,7 @@ const LogicalView = ({ projectId }: Props) => {
     try {
       await deleteLogicalDevice(selectedDeviceId!);
       setDeleteDialogOpen(false);
+      updateThumbnail({ projectId, forceImmediate: true });
 
       toast.success('Node deleted successfully.');
     } catch (error) {
@@ -107,10 +108,18 @@ const LogicalView = ({ projectId }: Props) => {
   }, [deleteLogicalDevice, selectedDeviceId]);
 
   const onNodeDragStop = useCallback(
-    async () => {
-      await updateThumbnail({ projectId });
+    async (e: React.MouseEvent, node: Node) => {
+      await updateDevicePositions({
+        positions: [{
+          id: node.id,
+          x: node.position.x,
+          y: node.position.y,
+        }]
+      })
+
+      updateThumbnail({ projectId });
     },
-    [projectId, updateThumbnail]
+    [projectId, updateDevicePositions, updateThumbnail]
   );
 
   return (

@@ -21,6 +21,9 @@ import { useBoolean } from '@/shared/hooks/use-boolean';
 import { useGetDeviceTemplates } from '../admin/device-templates/_hooks/use-get-device-templates';
 import { DeviceType } from '../admin/device-templates/_types/device-template';
 import { useUpdateThumbnail } from '../projects/_hooks/use-update-thumbnail';
+import { useUpdateDevicePositions } from './_hooks/use-update-device-positions';
+import { getLayoutedPositions } from './_utils/position';
+import { useGetTopology } from './_hooks/use-get-topology';
 
 type Props = {
   projectId: string;
@@ -31,8 +34,10 @@ const CreateDeviceModal = ({ projectId }: Props) => {
     type: [DeviceType.ROUTER, DeviceType.SWITCH],
   });
   const { mutateAsync: addDevice } = useAddDevice();
-  const { mutateAsync: updateThumbnail } = useUpdateThumbnail();
+  const { triggerUpdate: updateThumbnail } = useUpdateThumbnail();
+  const { mutateAsync: updateDevicePositions } = useUpdateDevicePositions();
   const { value: open, setValue: setOpen } = useBoolean();
+  const { data: topology } = useGetTopology(projectId);
 
   const transformedDeviceTemplates = useMemo(
     () =>
@@ -56,14 +61,43 @@ const CreateDeviceModal = ({ projectId }: Props) => {
         const formData = new FormData();
 
         formData.append('deviceTemplateId', value.deviceTemplateId);
+
         value.files.forEach((file) => {
           formData.append('files', file);
         });
 
-        await addDevice({ projectId, formData });
-        await updateThumbnail({ projectId });
+        const newDevices = await addDevice({ projectId, formData });
+        const existingNodes = topology?.nodes ?? [];
+        const edges = topology?.edges ?? [];
+
+        if (newDevices && Array.isArray(newDevices)) {
+          const newNodes = newDevices.map((device) => ({
+            id: device.id,
+            name: device.name,
+            type: device.type as DeviceType,
+            position: { x: 0, y: 0 },
+            inRack: false,
+          }));
+
+          const allNodes = [...existingNodes, ...newNodes];
+          const layoutedPositions = getLayoutedPositions(allNodes, edges);
+
+          const positionsToUpdate = newDevices.map((device) => ({
+            id: device.id,
+            x: layoutedPositions.get(device.id)?.x ?? 0,
+            y: layoutedPositions.get(device.id)?.y ?? 0,
+          }));
+
+          if (positionsToUpdate.length > 0) {
+            await updateDevicePositions({ positions: positionsToUpdate });
+          }
+        }
+
+        updateThumbnail({ projectId });
+
         setOpen(false);
       } catch (error) {
+        console.error(error);
         toast.error('Failed to add device. Please try again.');
       }
     },
