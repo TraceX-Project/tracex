@@ -2,9 +2,10 @@ import {
   type CreateProjectRequest,
   type Project,
   type UpdateProjectRequest,
+  type DocumentFormat,
 } from '../_types/projects';
 import { ENDPOINTS } from '@/shared/config/endpoints';
-import { request } from '@/shared/lib/api';
+import { download, request } from '@/shared/lib/api';
 
 export const createProject = async (payload: CreateProjectRequest) => {
   const response = await request<Project>({
@@ -58,6 +59,16 @@ export const updateThumbnail = async (projectId: string, body: FormData) => {
     method: 'PATCH',
     path: ENDPOINTS.projects.thumbnail(projectId),
     body,
+  });
+
+  return response;
+};
+
+export const generateDocument = async (projectId: string, format: DocumentFormat) => {
+  const response = await download({
+    method: 'POST',
+    path: ENDPOINTS.projects.generateDocument(projectId),
+    body: { format },
   });
 
   return response;

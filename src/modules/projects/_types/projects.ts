@@ -9,3 +9,8 @@ export type CreateProjectRequest = {
 };
 
 export type UpdateProjectRequest = Partial<CreateProjectRequest>;
+
+export enum DocumentFormat {
+  PDF = 'pdf',
+  DOCX = 'docx',
+}

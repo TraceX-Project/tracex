@@ -19,15 +19,6 @@ const nextConfig: NextConfig = {
       // For Google profile images
       new URL('https://lh3.googleusercontent.com/**'),
 
-      // For mock up images
-      new URL('https://media.router-switch.com/**'),
-      new URL('https://www.cisco.com/**'),
-      {
-        protocol: 'https',
-        hostname: 'nc.agogfox.cc',
-        port: '',
-        pathname: '/**', // This allows all paths from this domain
-      },
       // For minio (local)
       {
         protocol: 'http',

@@ -35,10 +35,10 @@ export const ENDPOINTS = {
     upload: (id: string) => `${ROOTS.projects}/${id}/upload`,
     topology: (id: string) => `${ROOTS.projects}/${id}/topology`,
     thumbnail: (id: string) => `${ROOTS.projects}/${id}/thumbnail`,
-    physicalDevices: (projectId: string) =>
-      `${ROOTS.projects}/${projectId}/physical-devices`,
+    physicalDevices: (projectId: string) => `${ROOTS.projects}/${projectId}/physical-devices`,
     logicalDevices: (id: string) => `${ROOTS.projects}/${id}/logical-devices`,
     createServer: (id: string) => `${ROOTS.projects}/${id}/servers`,
+    generateDocument: (id: string) => `${ROOTS.projects}/${id}/document`,
   },
   deviceTemplates: {
     create: `${ROOTS.deviceTemplates}`,
@@ -84,7 +84,8 @@ export const ENDPOINTS = {
     getDevicesByRackId: (rackId: string) => `${ROOTS.racks}/${rackId}/devices`,
     updateRack: (rackId: string) => `${ROOTS.racks}/${rackId}`,
     delete: (rackId: string) => `${ROOTS.racks}/${rackId}`,
-    removeDeviceFromRack: (rackId: string, deviceId: string) => `${ROOTS.racks}/${rackId}/devices/${deviceId}`,
+    removeDeviceFromRack: (rackId: string, deviceId: string) =>
+      `${ROOTS.racks}/${rackId}/devices/${deviceId}`,
   },
   servers: {
     syncVms: (serverId: string) => `${ROOTS.servers}/${serverId}/sync-vms`,
