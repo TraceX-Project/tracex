@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import { useGetLogicalDevices } from './_hooks/use-get-logical-devices';
 import { Label } from '@/shared/components/ui/label';
-import { useCallback, useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useFieldContext } from '@/shared/tanstack-form/form';
 import {
   Select,
@@ -23,7 +23,7 @@ import {
   MultiSelectValue,
 } from '@/shared/components/ui/multi-select';
 import { FieldError } from '@/shared/components/ui/field';
-import { ServerConnection } from './_types/server';
+import { type ServerConnection } from './_types/server';
 
 type Props = {
   initDeviceId: string;
