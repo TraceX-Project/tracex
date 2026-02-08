@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from '@/shared/components/ui/dialog';
 import { useAppForm } from '@/shared/tanstack-form/form';
-import { useCallback, type FormEvent, useMemo } from 'react';
+import { useCallback, type FormEvent, useMemo, useEffect } from 'react';
 import { toast } from 'sonner';
 import { HYPERVISOR_VENDORS_OPTIONS } from './_constants/logical-view';
 import { connectHypervisorSchema } from './_schema/schema';
@@ -45,7 +45,7 @@ const EditServerModal = ({ open, onOpenChange, deviceId }: Props) => {
       apiKey: '',
       vendor: server?.vendor,
       apiUrl: server?.apiUrl,
-      connectPortIds: [] as string[],
+      connectPortIds: server?.serverConnections?.map((c) => c.deviceInterfaceId) ?? [],
       deviceTemplateId: server?.deviceTemplateId,
     },
     validators: {
@@ -53,7 +53,6 @@ const EditServerModal = ({ open, onOpenChange, deviceId }: Props) => {
     },
     onSubmit: async ({ value }) => {
       try {
-        console.log(value);
 
         onOpenChange(false);
       } catch (error) {
@@ -61,6 +60,20 @@ const EditServerModal = ({ open, onOpenChange, deviceId }: Props) => {
       }
     },
   });
+
+  useEffect(() => {
+    if (server) {
+      form.reset({
+        name: server.name,
+        apiKey: '',
+        vendor: server.vendor,
+        apiUrl: server.apiUrl,
+        connectPortIds:
+          server.serverConnections?.map((c) => c.deviceInterfaceId) ?? [],
+        deviceTemplateId: server.deviceTemplateId,
+      });
+    }
+  }, [server, form]);
 
   const handleSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
@@ -132,7 +145,7 @@ const EditServerModal = ({ open, onOpenChange, deviceId }: Props) => {
             {/* Connect Ports */}
             <form.AppField
               name="connectPortIds"
-              children={(field) => <DevicePortSelector initDeviceId={deviceId} />}
+              children={(field) => <DevicePortSelector initDeviceId={deviceId} initServerConections={server?.serverConnections ?? []} />}
             />
           </div>
           <DialogFooter>

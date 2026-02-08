@@ -1,8 +1,6 @@
-import {
-  type DeviceTemplate,
-} from '@/modules/admin/device-templates/_types/device-template';
+import { type DeviceTemplate } from '@/modules/admin/device-templates/_types/device-template';
 import { type Project } from '@/modules/projects/_types/projects';
-import { type HypervisorVendor } from './logical-view';
+import { DeviceInterface, type HypervisorVendor } from './logical-view';
 
 export type ServerConnection = {
   id: string;
@@ -11,6 +9,7 @@ export type ServerConnection = {
   deviceInterfaceId: string;
   createdAt: string;
   updatedAt: string;
+  deviceInterface: DeviceInterface;
 };
 
 export type Server = {

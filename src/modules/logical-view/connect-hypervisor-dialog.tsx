@@ -154,7 +154,12 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
             {/* Connect Ports */}
             <form.AppField
               name="connectPortIds"
-              children={(field) => <DevicePortSelector initDeviceId={deviceId} />}
+              children={(field) => (
+                <DevicePortSelector
+                  initDeviceId={deviceId}
+                  initServerConections={[]}
+                />
+              )}
             />
           </div>
           <DialogFooter>

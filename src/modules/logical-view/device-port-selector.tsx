@@ -3,7 +3,7 @@
 import { useParams } from 'next/navigation';
 import { useGetLogicalDevices } from './_hooks/use-get-logical-devices';
 import { Label } from '@/shared/components/ui/label';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { useFieldContext } from '@/shared/tanstack-form/form';
 import {
   Select,
@@ -23,21 +23,54 @@ import {
   MultiSelectValue,
 } from '@/shared/components/ui/multi-select';
 import { FieldError } from '@/shared/components/ui/field';
+import { ServerConnection } from './_types/server';
 
 type Props = {
   initDeviceId: string;
+  initServerConections: ServerConnection[]
 };
 
-const DevicePortSelector = ({ initDeviceId }: Props) => {
+const DevicePortSelector = ({ initDeviceId, initServerConections }: Props) => {
   const { projectId } = useParams<{ projectId: string }>();
   const field = useFieldContext<string[]>();
   const { data: devices = [] } = useGetLogicalDevices(projectId);
+
   const [rows, setRows] = useState<
     {
       deviceId: string;
       portIds: string[];
     }[]
-  >([{ deviceId: initDeviceId, portIds: [] }]);
+  >([]);
+
+  useEffect(() => {
+    if (devices.length === 0) return;
+
+    if (initServerConections.length > 0) {
+      const interfaceToDeviceMap = new Map<string, string>();
+      devices.forEach((d) => {
+        d.deviceInterfaces.forEach((i) => interfaceToDeviceMap.set(i.id, d.id));
+      });
+
+      const portIdsByDevice = new Map<string, string[]>();
+      initServerConections.forEach((conn) => {
+        const devId = interfaceToDeviceMap.get(conn.deviceInterfaceId);
+        if (devId) {
+          const existing = portIdsByDevice.get(devId) || [];
+          existing.push(conn.deviceInterfaceId);
+          portIdsByDevice.set(devId, existing);
+        }
+      });
+
+      const newRows: typeof rows = [];
+      portIdsByDevice.forEach((pIds, devId) => {
+        newRows.push({ deviceId: devId, portIds: pIds });
+      });
+
+      setRows(newRows);
+    } else {
+      setRows([{ deviceId: initDeviceId, portIds: [] }]);
+    }
+  }, [devices, initServerConections, initDeviceId]);
 
   useEffect(() => {
     const allSelectedPortIds = rows.flatMap((row) => row.portIds);
@@ -63,7 +96,7 @@ const DevicePortSelector = ({ initDeviceId }: Props) => {
         .map((intf) => ({
           value: intf.id,
           label: intf.name,
-          disabled: intf.isConnected,
+          disabled: intf.isConnected && !initServerConections.some((conn) => conn.deviceInterfaceId === intf.id),
         })) ?? []
     );
   };
@@ -109,8 +142,6 @@ const DevicePortSelector = ({ initDeviceId }: Props) => {
     return null;
   };
 
-  const hasGlobalErrors = field.state.meta.errors.length > 0;
-
   return (
     <div className="space-y-3">
       <Label>Connected Ports</Label>
@@ -126,7 +157,7 @@ const DevicePortSelector = ({ initDeviceId }: Props) => {
               <div className="flex items-center gap-2">
                 <Select
                   value={row.deviceId}
-                  disabled={isInitialRow}
+                  disabled={isInitialRow && initServerConections.length === 0}
                   onValueChange={(deviceId) => handleDeviceChange(index, deviceId)}
                 >
                   <SelectTrigger className="w-[180px]">

@@ -96,12 +96,23 @@ const CreateDeviceModal = ({ projectId }: Props) => {
         updateThumbnail({ projectId });
 
         setOpen(false);
+        form.reset();
       } catch (error) {
         console.error(error);
         toast.error('Failed to add device. Please try again.');
       }
     },
   });
+
+  const handleOpenChange = useCallback(
+    (isOpen: boolean) => {
+      setOpen(isOpen);
+      if (!isOpen) {
+        form.reset();
+      }
+    },
+    [form, setOpen]
+  );
 
   const handleSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
@@ -112,7 +123,7 @@ const CreateDeviceModal = ({ projectId }: Props) => {
   );
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button size="sm" variant="outline">
           <Plus />
@@ -156,9 +167,7 @@ const CreateDeviceModal = ({ projectId }: Props) => {
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline" onClick={() => form.reset()}>
-                Cancel
-              </Button>
+              <Button variant="outline">Cancel</Button>
             </DialogClose>
 
             <form.AppForm>
