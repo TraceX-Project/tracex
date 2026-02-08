@@ -26,6 +26,8 @@ import { toast } from 'sonner';
 import { useDeleteLogicalDevice } from './_hooks/use-delete-logical-device';
 import { useUpdateThumbnail } from '../projects/_hooks/use-update-thumbnail';
 import { useUpdateDevicePositions } from './_hooks/use-update-device-positions';
+import EditServerModal from './edit-server-modal';
+import { useBoolean } from '@/shared/hooks/use-boolean';
 
 type Props = {
   projectId: string;
@@ -36,9 +38,10 @@ const LogicalView = ({ projectId }: Props) => {
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const { data: devices } = useGetTopology(projectId);
   const [menu, setMenu] = useState<NodeContextMenuState | null>(null);
-  const [isConnectDialogOpen, setConnectDialogOpen] = useState(false);
-  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [isDetailsValuesOpen, setDetailsValuesOpen] = useState(false);
+  const { value: isConnectDialogOpen, setValue: setConnectDialogOpen } = useBoolean(false)
+  const { value: isDeleteDialogOpen, setValue: setDeleteDialogOpen } = useBoolean(false)
+  const { value: isDetailsValuesOpen, setValue: setDetailsValuesOpen } = useBoolean(false)
+  const { value: isEditServerModalOpen, setValue: setEditServerModalOpen } = useBoolean(false)
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement | null>(null);
   const { mutateAsync: deleteLogicalDevice } = useDeleteLogicalDevice(projectId);
@@ -85,6 +88,13 @@ const LogicalView = ({ projectId }: Props) => {
   const onOpenDeleteDialog = useCallback(() => {
     if (menu) {
       setDeleteDialogOpen(true);
+      setSelectedDeviceId(menu.id);
+    }
+  }, [menu]);
+
+  const onOpenEditDialog = useCallback(() => {
+    if (menu) {
+      setEditServerModalOpen(true);
       setSelectedDeviceId(menu.id);
     }
   }, [menu]);
@@ -149,8 +159,15 @@ const LogicalView = ({ projectId }: Props) => {
           onClose={onPaneClick}
           onConnect={onOpenConnectDialog}
           onDelete={onOpenDeleteDialog}
+          onEdit={onOpenEditDialog}
         />
       )}
+
+      <EditServerModal
+        open={isEditServerModalOpen}
+        onOpenChange={setEditServerModalOpen}
+        deviceId={selectedDeviceId!}
+      />
 
       <ConnectHypervisorDialog
         deviceId={selectedDeviceId!}

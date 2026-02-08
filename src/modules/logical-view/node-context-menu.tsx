@@ -18,9 +18,10 @@ type Props = {
   onClose: () => void;
   onConnect: () => void;
   onDelete: () => void;
+  onEdit: () => void;
 };
 
-const NodeContextMenu = ({ menu, open, onClose, onConnect, onDelete }: Props) => {
+const NodeContextMenu = ({ menu, open, onClose, onConnect, onDelete, onEdit }: Props) => {
   const { mutateAsync: syncVms, isPending: isSyncing } = useSyncVms();
 
   const handleSyncServer = useCallback(async () => {
@@ -60,7 +61,7 @@ const NodeContextMenu = ({ menu, open, onClose, onConnect, onDelete }: Props) =>
         )}
         {menu.type === DeviceType.SERVER && (
           <>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={onEdit}>
               <IconEdit className="size-4" />
               <span>Edit</span>
             </DropdownMenuItem>
