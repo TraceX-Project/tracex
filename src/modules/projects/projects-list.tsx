@@ -7,9 +7,14 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
 } from '@/shared/components/ui/dropdown-menu';
 import { Button } from '@/shared/components/ui/button';
-import { MoreVertical } from 'lucide-react';
+import { MoreVertical, FileDown, FileText } from 'lucide-react';
 import { PATHS } from '@/shared/config/paths';
 import { useGetProjects } from './_hooks/use-get-projects';
 import { useBoolean } from '@/shared/hooks/use-boolean';
@@ -18,11 +23,14 @@ import { useDeleteProject } from './_hooks/use-delete-project';
 import { toast } from 'sonner';
 import { Skeleton } from '@/shared/components/ui/skeleton';
 import EmptyProject from './empty-project';
-import { IconPencil, IconTrash } from '@tabler/icons-react';
+import { IconPencil, IconTrash, IconFileExport } from '@tabler/icons-react';
 import { ConfirmDialog } from '@/shared/components/confirm-dialog';
 import EditProjectModal from './edit-project-modal';
 import { type Project } from './_types/projects';
 import ProjectThumbnailPlaceholder from './project-thumbnail-placeholder';
+import { DocumentFormat } from './_types/projects';
+import { useGenerateDocument } from './_hooks/use-generate-document';
+import { base64ToBlob, downloadFile } from '@/shared/utils/file';
 
 type ProjectItemProps = {
   project: Project
@@ -32,6 +40,22 @@ const ProjectItem = ({ project }: ProjectItemProps) => {
   const { mutateAsync: deleteProject } = useDeleteProject();
   const { value: isOpen, toggle: toggleIsOpen } = useBoolean(false);
   const { value: isEditOpen, setValue: setIsEditOpen } = useBoolean(false);
+  const { mutateAsync: generateDocument } = useGenerateDocument();
+
+  const handleGenerateDocument = useCallback(async (format: DocumentFormat) => {
+    try {
+      const { data, contentType, filename } = await generateDocument({ projectId: project.id, format });
+      const blob = base64ToBlob(data, contentType);
+
+      downloadFile(blob, filename);
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : 'An unexpected error occurred while generating the document.'
+      );
+    }
+  }, [project.id, generateDocument]);
 
   const handleDelete = useCallback(async () => {
     try {
@@ -93,7 +117,29 @@ const ProjectItem = ({ project }: ProjectItemProps) => {
               >
                 <IconPencil className="size-4" />
                 Edit
-              </DropdownMenuItem>
+              </DropdownMenuItem> <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <IconFileExport className="mr-2 h-4 w-4" />
+                  Export
+                </DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuItem
+                      onClick={() => handleGenerateDocument(DocumentFormat.PDF)}
+                    >
+                      <FileDown className="mr-2 h-4 w-4" />
+                      Export as PDF
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => handleGenerateDocument(DocumentFormat.DOCX)}
+                    >
+                      <FileText className="mr-2 h-4 w-4" />
+                      Export as DOCX
+                    </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+              </DropdownMenuSub>
+              <DropdownMenuSeparator />
               <DropdownMenuItem variant="destructive" onClick={toggleIsOpen}>
                 <IconTrash className="size-4" />
                 Delete
