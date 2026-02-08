@@ -55,7 +55,7 @@ const DevicePortSelector = ({ initDeviceId, initServerConections }: Props) => {
       initServerConections.forEach((conn) => {
         const devId = interfaceToDeviceMap.get(conn.deviceInterfaceId);
         if (devId) {
-          const existing = portIdsByDevice.get(devId) || [];
+          const existing = portIdsByDevice.get(devId) ?? [];
           existing.push(conn.deviceInterfaceId);
           portIdsByDevice.set(devId, existing);
         }
