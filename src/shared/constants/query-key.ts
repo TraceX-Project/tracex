@@ -12,4 +12,5 @@ export const QUERY_KEYS = {
   topology: 'topology',
   logicalDevices: 'logicalDevices',
   racks: 'racks',
+  servers: 'servers',
 };

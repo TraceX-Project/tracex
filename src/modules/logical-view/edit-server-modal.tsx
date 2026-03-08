@@ -1,5 +1,3 @@
-'use client';
-
 import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
@@ -11,27 +9,23 @@ import {
   DialogTitle,
 } from '@/shared/components/ui/dialog';
 import { useAppForm } from '@/shared/tanstack-form/form';
-import React, { type FormEvent, useCallback, useMemo } from 'react';
+import { useCallback, type FormEvent, useMemo, useEffect } from 'react';
 import { toast } from 'sonner';
-import { connectHypervisorSchema } from './_schema/schema';
-
-import { type HypervisorVendor } from './_types/logical-view';
-import { useParams } from 'next/navigation';
 import { HYPERVISOR_VENDORS_OPTIONS } from './_constants/logical-view';
+import { connectHypervisorSchema } from './_schema/schema';
 import DevicePortSelector from './device-port-selector';
-import { useCreateServer } from './_hooks/use-create-server';
 import { useGetDeviceTemplates } from '../admin/device-templates/_hooks/use-get-device-templates';
 import { DeviceType } from '../admin/device-templates/_types/device-template';
+import { useGetServer } from './_hooks/use-get-server';
 
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   deviceId: string;
-};
+}
 
-const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
-  const { projectId } = useParams<{ projectId: string }>();
-  const { mutateAsync: createServer } = useCreateServer();
+const EditServerModal = ({ open, onOpenChange, deviceId }: Props) => {
+  const { data: server } = useGetServer(deviceId);
   const { data: deviceTemplates } = useGetDeviceTemplates({
     type: [DeviceType.SERVER],
   });
@@ -47,31 +41,39 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
 
   const form = useAppForm({
     defaultValues: {
-      name: '',
+      name: server?.name,
       apiKey: '',
-      vendor: '' as HypervisorVendor,
-      apiUrl: '',
-      connectPortIds: [] as string[],
-      deviceTemplateId: '',
+      vendor: server?.vendor,
+      apiUrl: server?.apiUrl,
+      connectPortIds: server?.serverConnections?.map((c) => c.deviceInterfaceId) ?? [],
+      deviceTemplateId: server?.deviceTemplateId,
     },
     validators: {
       onSubmit: connectHypervisorSchema,
     },
     onSubmit: async ({ value }) => {
       try {
-        console.log(value);
-        await createServer({
-          projectId,
-          data: value,
-        });
 
-        toast.success('Hypervisor connected successfully.');
         onOpenChange(false);
       } catch (error) {
         toast.error('Failed to connect hypervisor. Please try again.');
       }
     },
   });
+
+  useEffect(() => {
+    if (server) {
+      form.reset({
+        name: server.name,
+        apiKey: '',
+        vendor: server.vendor,
+        apiUrl: server.apiUrl,
+        connectPortIds:
+          server.serverConnections?.map((c) => c.deviceInterfaceId) ?? [],
+        deviceTemplateId: server.deviceTemplateId,
+      });
+    }
+  }, [server, form]);
 
   const handleSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
@@ -81,19 +83,8 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
     [form]
   );
 
-  const handleOpenChange = useCallback(
-    (newOpen: boolean) => {
-      if (!newOpen) {
-        form.reset();
-      }
-
-      onOpenChange(newOpen);
-    },
-    [form, onOpenChange]
-  );
-
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-full sm:max-w-xl">
         <form onSubmit={handleSubmit} className="space-y-4">
           <DialogHeader>
@@ -154,12 +145,7 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
             {/* Connect Ports */}
             <form.AppField
               name="connectPortIds"
-              children={(field) => (
-                <DevicePortSelector
-                  initDeviceId={deviceId}
-                  initServerConections={[]}
-                />
-              )}
+              children={(field) => <DevicePortSelector initDeviceId={deviceId} initServerConections={server?.serverConnections ?? []} />}
             />
           </div>
           <DialogFooter>
@@ -176,7 +162,7 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
         </form>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default ConnectHypervisorDialog;
+export default EditServerModal

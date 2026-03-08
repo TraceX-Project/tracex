@@ -89,6 +89,7 @@ export const ENDPOINTS = {
   },
   servers: {
     syncVms: (serverId: string) => `${ROOTS.servers}/${serverId}/sync-vms`,
+    getById: (id: string) => `${ROOTS.servers}/${id}`,
   },
 };
 
