@@ -51,6 +51,11 @@ const LabelingForm = ({ form }: Props) => {
     handlePredictPorts();
   }, [frontPanelFile, predictPorts]);
 
+  const alignmentRef = useRef(alignment ?? Alignment.HORIZONTAL);
+  useEffect(() => {
+    alignmentRef.current = alignment ?? Alignment.HORIZONTAL;
+  }, [alignment]);
+
   useEffect(() => {
     if (!predictBoxes?.ports) return;
 
@@ -62,10 +67,8 @@ const LabelingForm = ({ form }: Props) => {
       portNumber: i + 1,
     }));
 
-    const currentAlignment = alignment ?? Alignment.HORIZONTAL;
-
-    setBoxes(reindexBoxes(rawBoxes, currentAlignment));
-  }, [predictBoxes?.ports, alignment]);
+    setBoxes(reindexBoxes(rawBoxes, alignmentRef.current));
+  }, [predictBoxes?.ports]);
 
   /* ---------- image url ---------- */
   const [imageUrl, setImageUrl] = useState<string | null>(null);
