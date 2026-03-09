@@ -1,34 +1,58 @@
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
-import { type Rack } from "./_types/room"
-import { IconDotsVertical, IconEdit, IconPlus, IconTrash } from "@tabler/icons-react"
-import { Button } from "@/shared/components/ui/button"
-import { ConfirmDialog } from "@/shared/components/confirm-dialog"
-import { useCallback } from "react"
-import { useDeleteRack } from "./_hooks/use-delete-rack"
-import { toast } from "sonner"
-import { useBoolean } from "@/shared/hooks/use-boolean"
-import EditRackDialog from "./edit-rack-dialog"
-import AddDevicesToRackModal from "./add-devices-to-rack-modal"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/shared/components/ui/dropdown-menu';
+import { type Rack } from './_types/room';
+import { IconDotsVertical, IconEdit, IconPlus, IconTrash } from '@tabler/icons-react';
+import { Button } from '@/shared/components/ui/button';
+import { ConfirmDialog } from '@/shared/components/confirm-dialog';
+import { useCallback } from 'react';
+import { useDeleteRack } from './_hooks/use-delete-rack';
+import { toast } from 'sonner';
+import { useBoolean } from '@/shared/hooks/use-boolean';
+import EditRackDialog from './edit-rack-dialog';
+import AddDevicesToRackModal from './add-devices-to-rack-modal';
 
 type Props = {
-  rack: Rack
-}
+  rack: Rack;
+};
 
 const RackActionsMenu = ({ rack }: Props) => {
-  const { value: isDeleteDialogOpen, setValue: setDeleteDialogOpen } = useBoolean()
-  const { value: editRackOpen, setValue: setEditRackOpen } = useBoolean()
-  const { value: addDevicesToRackOpen, setValue: setAddDevicesToRackOpen } = useBoolean()
-  const { mutateAsync: deleteRack } = useDeleteRack()
+  const { value: isDeleteDialogOpen, setValue: setDeleteDialogOpen } = useBoolean();
+  const { value: editRackOpen, setValue: setEditRackOpen } = useBoolean();
+  const { value: addDevicesToRackOpen, setValue: setAddDevicesToRackOpen } = useBoolean();
+  const { mutateAsync: deleteRack } = useDeleteRack();
+
+  const handleOpenAddDevicesToRack = () => {
+    setTimeout(() => {
+      setAddDevicesToRackOpen(true);
+    }, 100);
+  };
+
+  const handleOpenEditRack = () => {
+    setTimeout(() => {
+      setEditRackOpen(true);
+    }, 100);
+  };
+
+  const handleOpenDeleteDialog = () => {
+    setTimeout(() => {
+      setDeleteDialogOpen(true);
+    }, 100);
+  };
 
   const handleDeleteRack = useCallback(async () => {
     try {
-      await deleteRack(rack.id)
-      toast.success("Rack deleted successfully")
+      await deleteRack(rack.id);
+      toast.success('Rack deleted successfully');
     } catch (error) {
-      console.error(error)
-      toast.error("Failed to delete rack")
+      console.error(error);
+      toast.error('Failed to delete rack');
     }
-  }, [])
+  }, []);
 
   return (
     <>
@@ -39,16 +63,19 @@ const RackActionsMenu = ({ rack }: Props) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => setAddDevicesToRackOpen(true)} disabled={rack.usedUnits === rack.unitSize}>
+          <DropdownMenuItem
+            onClick={handleOpenAddDevicesToRack}
+            disabled={rack.usedUnits === rack.unitSize}
+          >
             <IconPlus className="size-4" />
             Add devices
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setEditRackOpen(true)}>
+          <DropdownMenuItem onClick={handleOpenEditRack}>
             <IconEdit className="size-4" />
             Edit
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive" onClick={() => setDeleteDialogOpen(true)}>
+          <DropdownMenuItem variant="destructive" onClick={handleOpenDeleteDialog}>
             <IconTrash className="size-4" />
             Delete
           </DropdownMenuItem>
@@ -63,11 +90,7 @@ const RackActionsMenu = ({ rack }: Props) => {
         description={`Are you sure you want to delete ${rack.name}?`}
       />
 
-      <EditRackDialog
-        rack={rack}
-        open={editRackOpen}
-        onOpenChange={setEditRackOpen}
-      />
+      <EditRackDialog rack={rack} open={editRackOpen} onOpenChange={setEditRackOpen} />
 
       <AddDevicesToRackModal
         open={addDevicesToRackOpen}
@@ -75,7 +98,7 @@ const RackActionsMenu = ({ rack }: Props) => {
         rack={rack}
       />
     </>
-  )
-}
+  );
+};
 
-export default RackActionsMenu
+export default RackActionsMenu;
