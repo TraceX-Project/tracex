@@ -1,11 +1,28 @@
 import { type FormType } from '@/shared/tanstack-form/form';
 import { DEVICE_TYPES_OPTIONS, DEVICE_VENDORS_OPTIONS } from './_constants/device-template';
+import { type DeviceTemplateFormData } from './_types/device-template';
+import { useStore } from '@tanstack/react-form';
+import { useEffect, useRef } from 'react';
 
 type Props = {
   form: FormType;
 };
 
 const BasicInfoForm = ({ form }: Props) => {
+  const frontPanel = useStore(
+    form.store,
+    (state) => (state.values as DeviceTemplateFormData).frontPanel
+  );
+
+  const isFirstRenderRef = useRef(true);
+  useEffect(() => {
+    if (isFirstRenderRef.current) {
+      isFirstRenderRef.current = false;
+      return;
+    }
+    form.setFieldValue('boundingBoxes', []);
+  }, [frontPanel]);
+
   return (
     <div className="grid grid-cols-12 gap-4">
       {/* Model Name */}
