@@ -153,7 +153,7 @@ const LabelingPortConfiguration = ({ form }: Props) => {
                     <field.NumberField
                       label="Running Number"
                       placeholder="Starting from"
-                      min={1}
+                      min={0}
                       className="text-sm"
                     />
                   )}

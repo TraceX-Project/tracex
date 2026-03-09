@@ -32,5 +32,5 @@ export const DEFAULT_DEVICE_TEMPLATE_PORT_RANGE = {
   start: 1,
   end: 2,
   prefix: '',
-  runningNumber: 1,
+  runningNumber: 0,
 };

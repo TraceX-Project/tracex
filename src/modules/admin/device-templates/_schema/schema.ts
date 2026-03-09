@@ -47,7 +47,7 @@ export const deviceTemplateSchema = z
             }),
             runningNumber: z
               .number({ message: 'Running number must be a number' })
-              .min(1, { message: 'Running number must be greater than zero' }),
+              .min(0, { message: 'Running number must be a non-negative number' }),
             portType: z.enum(PortType, { message: 'Port type must be a valid port type' }),
             id: z.uuidv4(),
           })
