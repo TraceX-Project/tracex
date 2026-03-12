@@ -42,9 +42,7 @@ export const deviceTemplateSchema = z
             end: z
               .number({ message: 'End port must be a number' })
               .min(1, { message: 'End port must be greater than zero' }),
-            prefix: z.string({ message: 'Prefix must be a string' }).regex(PORT_PREFIX_REGEX, {
-              message: 'Prefix must be in format X/Y (e.g., 1/0, 2/1)',
-            }),
+            prefix: z.string({ message: 'Prefix must be a string' }),
             runningNumber: z
               .number({ message: 'Running number must be a number' })
               .min(0, { message: 'Running number must be a non-negative number' }),
@@ -55,6 +53,18 @@ export const deviceTemplateSchema = z
             message: 'Start port must be less than or equal to end port',
             path: ['end'],
           })
+          .refine(
+            (value) => {
+              if (value.portType === PortType.ETHER || value.portType === PortType.WLAN) {
+                return true;
+              }
+
+              return PORT_PREFIX_REGEX.test(value.prefix);
+            },
+            {
+              message: 'Prefix must be in format X/Y (e.g., 1/0, 2/1)',
+            }
+          )
       )
       .optional(),
     boundingBoxes: z

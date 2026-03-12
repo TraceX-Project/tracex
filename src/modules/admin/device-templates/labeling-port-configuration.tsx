@@ -8,7 +8,10 @@ import { Button } from '@/shared/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/ui/tooltip';
 import { v4 as uuidv4 } from 'uuid';
-import { DEVICE_PORT_TYPES_OPTIONS } from './_constants/device-template';
+import {
+  DEVICE_PORT_TYPES_OPTIONS,
+  PORT_TYPES_OPTIONS_BY_VENDOR,
+} from './_constants/device-template';
 import { Plus, Trash2 } from 'lucide-react';
 import { useStore } from '@tanstack/react-form';
 import { type FormType } from '@/shared/tanstack-form/form';
@@ -23,6 +26,9 @@ const LabelingPortConfiguration = ({ form }: Props) => {
     form.store,
     (state) => (state.values as DeviceTemplateFormData).portRanges ?? []
   );
+
+  const vendor = useStore(form.store, (state) => (state.values as DeviceTemplateFormData).vendor);
+  const portTypeOptions = PORT_TYPES_OPTIONS_BY_VENDOR[vendor] ?? [];
 
   React.useEffect(() => {
     if (portRanges.length === 0) {
@@ -107,7 +113,7 @@ const LabelingPortConfiguration = ({ form }: Props) => {
                   children={(field) => (
                     <field.SelectField
                       label="Port Type"
-                      options={DEVICE_PORT_TYPES_OPTIONS}
+                      options={portTypeOptions}
                       placeholder="Select port type"
                     />
                   )}
