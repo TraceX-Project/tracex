@@ -1,8 +1,10 @@
-import { type Node, type Edge } from '../_types/logical-view';
 import { DEFAULT_NODE_HEIGHT, DEFAULT_NODE_WIDTH } from '../_constants/logical-view';
 import dagre from '@dagrejs/dagre';
 
-export const getLayoutedPositions = (nodes: Node[], edges: Edge[]) => {
+export const getLayoutedPositions = (
+  nodes: { id: string }[],
+  edges: { source: string; target: string }[]
+) => {
   const g = new dagre.graphlib.Graph();
   g.setGraph({
     rankdir: 'LR',
