@@ -9,7 +9,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/ui/tooltip';
 import { v4 as uuidv4 } from 'uuid';
 import {
-  DEVICE_PORT_TYPES_OPTIONS,
   PORT_TYPES_OPTIONS_BY_VENDOR,
 } from './_constants/device-template';
 import { Plus, Trash2 } from 'lucide-react';
