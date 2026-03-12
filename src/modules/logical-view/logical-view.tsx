@@ -28,6 +28,7 @@ import { useUpdateThumbnail } from '../projects/_hooks/use-update-thumbnail';
 import { useUpdateDevicePositions } from './_hooks/use-update-device-positions';
 import EditServerModal from './edit-server-modal';
 import { useBoolean } from '@/shared/hooks/use-boolean';
+import { getLayoutedPositions } from './_utils/position';
 
 type Props = {
   projectId: string;
@@ -52,10 +53,24 @@ const LogicalView = ({ projectId }: Props) => {
     return mapDevicesToReactFlow(devices!);
   }, [devices]);
 
+
+  const isInitialized = useRef(false);
+
   useEffect(() => {
-    if (layoutedNodes && layoutedEdges) {
-      setNodes(layoutedNodes);
+    if (layoutedNodes && layoutedEdges && !isInitialized.current) {
+      const layoutedPositions = getLayoutedPositions(layoutedNodes, layoutedEdges);
+
+      const finalNodes = layoutedNodes.map((node) => {
+        const isDefault = node.position.x === 0 && node.position.y === 0;
+        return {
+          ...node,
+          position: isDefault ? layoutedPositions.get(node.id)! : node.position,
+        };
+      });
+
+      setNodes(finalNodes);
       setEdges(layoutedEdges);
+      isInitialized.current = true;
     }
   }, [layoutedNodes, layoutedEdges, setEdges, setNodes]);
 

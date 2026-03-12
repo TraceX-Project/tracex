@@ -4,7 +4,12 @@ import dagre from '@dagrejs/dagre';
 
 export const getLayoutedPositions = (nodes: Node[], edges: Edge[]) => {
   const g = new dagre.graphlib.Graph();
-  g.setGraph({ rankdir: 'LR' });
+  g.setGraph({
+    rankdir: 'LR',
+    nodesep: 80,
+    ranksep: 150,
+    ranker: 'network-simplex',
+  });
   g.setDefaultEdgeLabel(() => ({}));
 
 
@@ -21,7 +26,10 @@ export const getLayoutedPositions = (nodes: Node[], edges: Edge[]) => {
   const positions = new Map<string, { x: number; y: number }>();
   g.nodes().forEach((nodeId) => {
     const node = g.node(nodeId);
-    positions.set(nodeId, { x: node.x, y: node.y });
+    positions.set(nodeId, {
+      x: node.x - DEFAULT_NODE_WIDTH / 2,
+      y: node.y - DEFAULT_NODE_HEIGHT / 2,
+    });
   });
 
   return positions;

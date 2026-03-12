@@ -12,6 +12,8 @@ export const mapDevicesToReactFlow = (devices: Topology) => {
     id: `${edge.source}-${edge.target}`,
     source: edge.source,
     target: edge.target,
+    type: 'smoothstep',
+    animated: true,
   }));
 
   return { nodes, edges };
