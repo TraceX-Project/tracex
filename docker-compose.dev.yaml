@@ -1,0 +1,13 @@
+services:
+  client:
+    container_name: tracex-client
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV
+      - NEXT_PUBLIC_API_URL
+      - NEXT_PUBLIC_APP_URL

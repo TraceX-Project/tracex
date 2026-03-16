@@ -1,0 +1,25 @@
+name: CE-cloud prod
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ce-cloud
+    environment: ce-cloud
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Deploy docker-compose stack
+        run: docker compose -f docker-compose.prod.yaml up -d --build --force-recreate
+        env:
+          NODE_ENV: ${{ vars.NODE_ENV }}
+          NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL }}
+          NEXT_PUBLIC_APP_URL: ${{ vars.NEXT_PUBLIC_APP_URL }}
+
+      - name: Prune Docker System
+        run: docker system prune -af
