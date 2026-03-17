@@ -68,7 +68,13 @@ const DevicePortSelector = ({ initDeviceId, initServerConections }: Props) => {
 
       setRows(newRows);
     } else {
-      setRows([{ deviceId: initDeviceId, portIds: [] }]);
+      setRows((prev) => {
+        if (prev.length === 0) {
+          return [{ deviceId: initDeviceId, portIds: [] }];
+        }
+        return prev;
+      });
+
     }
   }, [devices, initServerConections, initDeviceId]);
 

@@ -23,6 +23,17 @@ export const DEVICE_PORT_TYPES_OPTIONS = [
   { value: PortType.TEN_GIGABIT_ETHERNET, label: 'TenGigabitEthernet' },
 ];
 
+export const MIKROTIK_PORT_TYPES_OPTIONS = [
+  { value: PortType.ETHER, label: 'Ether' },
+  { value: PortType.WLAN, label: 'WLAN' },
+];
+
+export const PORT_TYPES_OPTIONS_BY_VENDOR: Partial<Record<Vendor, typeof DEVICE_PORT_TYPES_OPTIONS>> = {
+  [Vendor.MIKROTIK]: MIKROTIK_PORT_TYPES_OPTIONS,
+  [Vendor.CISCO]: DEVICE_PORT_TYPES_OPTIONS,
+  [Vendor.DELL]: DEVICE_PORT_TYPES_OPTIONS,
+};
+
 export const DEVICE_ACCEPTED_FILE_TYPES = ['image/jpeg', 'image/png'];
 
 export const DEVICE_MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
@@ -32,5 +43,5 @@ export const DEFAULT_DEVICE_TEMPLATE_PORT_RANGE = {
   start: 1,
   end: 2,
   prefix: '',
-  runningNumber: 1,
+  runningNumber: 0,
 };

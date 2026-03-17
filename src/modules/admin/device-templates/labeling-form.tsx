@@ -141,6 +141,36 @@ const LabelingForm = ({ form }: Props) => {
     });
   }, []);
 
+  const copiedBoxRef = useRef<BoundingBox | null>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement).tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      if (!e.ctrlKey && !e.metaKey) return;
+
+      if (e.key === 'c' && selectedBoxIndex !== null) {
+        copiedBoxRef.current = boxes[selectedBoxIndex];
+      }
+
+      if (e.key === 'v' && copiedBoxRef.current) {
+        e.preventDefault();
+        const copied = copiedBoxRef.current;
+        const newBox: BoundingBox = {
+          ...copied,
+          x: copied.x + 10,
+          y: copied.y + 10,
+          portNumber: boxes.length + 1,
+        };
+        setBoxes((prev) => [...prev, newBox]);
+        setSelectedBoxIndex(boxes.length);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [boxes, selectedBoxIndex]);
+
   return (
     <div className="flex h-full flex-col gap-4">
       <LabelingCanvas

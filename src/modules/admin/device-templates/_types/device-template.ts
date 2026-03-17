@@ -28,6 +28,9 @@ export enum PortType {
   FAST_ETHERNET = 'FastEthernet',
   GIGABIT_ETHERNET = 'GigabitEthernet',
   TEN_GIGABIT_ETHERNET = 'TenGigabitEthernet',
+  ETHER = 'Ether',
+  WLAN = 'Wlan',
+  SERIAL = 'Serial',
 }
 
 export type Port = {
