@@ -10,15 +10,22 @@ export const deviceTemplateColumns: ColumnDef<DeviceTemplate>[] = [
     accessorKey: 'frontPanelUrl',
     header: 'Front Panel',
     cell: ({ row }) => {
+      const frontPanelUrl = row.getValue<string>('frontPanelUrl');
+
+      if (!frontPanelUrl) {
+        return null;
+      }
+
       return (
         <div className="relative mx-10 h-24 w-120">
           <Image
-            src={row.getValue('frontPanelUrl')}
+            src={frontPanelUrl}
             alt={row.getValue('modelName')}
             className="rounded-md"
             style={{ objectFit: 'contain', width: '100%', height: '100%' }}
             width={480}
             height={96}
+            unoptimized
           />
         </div>
       );
