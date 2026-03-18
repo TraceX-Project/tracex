@@ -8,13 +8,14 @@ export async function GET(request: Request) {
 
   const code = searchParams.get('code');
   const state = searchParams.get('state');
+  const iss = searchParams.get('iss');
 
   if (!code || !state) {
     return NextResponse.redirect(new URL(PATHS.login, request.url));
   }
 
   try {
-    const token = await googleLogin({ code, state });
+    const token = await googleLogin({ code, state, iss: iss ?? undefined });
 
     const response = new NextResponse(
       `

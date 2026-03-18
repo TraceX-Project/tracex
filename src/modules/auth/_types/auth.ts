@@ -5,6 +5,7 @@ export type GetGoogleLoginUrlResponse = {
 export type GoogleLoginRequest = {
   code: string;
   state: string;
+  iss?: string;
 };
 
 export type Token = {
