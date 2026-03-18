@@ -37,9 +37,10 @@ const MapClickHandler = () => {
           try {
             const response = await reverseGeocode(e.latlng.lat, e.latlng.lng, controller.signal);
 
+            const feature = response.features?.[0];
             setSelectedLocation({
-              name: response.features[0]?.properties?.name ?? 'Unknown Location',
-              address: formatAddress(response.features[0]?.properties),
+              name: feature?.properties?.name ?? 'Unknown Location',
+              address: formatAddress(feature?.properties),
               location: e.latlng,
             });
           } catch (error) {

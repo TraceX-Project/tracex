@@ -126,7 +126,6 @@ const PhysicalMap = ({ projectId }: Props) => {
       </Map>
 
       <LocationInfoCard />
-      <LocationInfoCard />
       <CreateBuildingDialog projectId={projectId} />
     </div>
   );

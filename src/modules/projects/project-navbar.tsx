@@ -136,10 +136,6 @@ const ProjectNavbar = ({ project }: Props) => {
       <div className="space-x-2.5">
         {renderButtons()}
 
-        <Button size="sm" variant="outline">
-          <Share2 className="h-4 w-4" />
-        </Button>
-
         <ProjectExportButton projectId={project.id} />
       </div>
     </header>

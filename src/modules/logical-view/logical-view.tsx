@@ -29,6 +29,8 @@ import { useUpdateDevicePositions } from './_hooks/use-update-device-positions';
 import EditServerModal from './edit-server-modal';
 import { useBoolean } from '@/shared/hooks/use-boolean';
 import { getLayoutedPositions } from './_utils/position';
+import { Button } from '@/shared/components/ui/button';
+import { LayoutDashboard } from 'lucide-react';
 
 type Props = {
   projectId: string;
@@ -57,9 +59,11 @@ const LogicalView = ({ projectId }: Props) => {
   const isInitialized = useRef(false);
 
   useEffect(() => {
-    if (layoutedNodes && layoutedEdges && !isInitialized.current) {
-      const layoutedPositions = getLayoutedPositions(layoutedNodes, layoutedEdges);
+    if (!layoutedNodes || !layoutedEdges) return;
 
+    const layoutedPositions = getLayoutedPositions(layoutedNodes, layoutedEdges);
+
+    if (!isInitialized.current) {
       const finalNodes = layoutedNodes.map((node) => {
         const isDefault = node.position.x === 0 && node.position.y === 0;
         return {
@@ -67,10 +71,19 @@ const LogicalView = ({ projectId }: Props) => {
           position: isDefault ? layoutedPositions.get(node.id)! : node.position,
         };
       });
-
       setNodes(finalNodes);
       setEdges(layoutedEdges);
       isInitialized.current = true;
+    } else {
+      // Preserve positions of existing nodes; auto-layout only new ones
+      setNodes((currentNodes) => {
+        const currentPositions = new Map(currentNodes.map((n) => [n.id, n.position]));
+        return layoutedNodes.map((node) => ({
+          ...node,
+          position: currentPositions.get(node.id) ?? layoutedPositions.get(node.id) ?? node.position,
+        }));
+      });
+      setEdges(layoutedEdges);
     }
   }, [layoutedNodes, layoutedEdges, setEdges, setNodes]);
 
@@ -132,19 +145,43 @@ const LogicalView = ({ projectId }: Props) => {
     }
   }, [deleteLogicalDevice, selectedDeviceId]);
 
+  const handleAutoLayout = useCallback(async () => {
+    if (!layoutedNodes || !layoutedEdges) return;
+    
+    const layoutedPositions = getLayoutedPositions(layoutedNodes, layoutedEdges);
+
+    const updatedNodes = nodes.map((node) => ({
+      ...node,
+      position: layoutedPositions.get(node.id) ?? node.position,
+    }));
+
+    setNodes(updatedNodes);
+
+    await updateDevicePositions({
+      positions: updatedNodes.map((n) => ({
+        id: n.id,
+        x: n.position.x,
+        y: n.position.y,
+      })),
+    });
+
+    updateThumbnail({ projectId });
+
+  }, [layoutedNodes, layoutedEdges, nodes, setNodes, updateDevicePositions, updateThumbnail, projectId]);
+
   const onNodeDragStop = useCallback(
-    async (e: React.MouseEvent, node: Node) => {
+    async (_e: React.MouseEvent, _node: Node) => {
       await updateDevicePositions({
-        positions: [{
-          id: node.id,
-          x: node.position.x,
-          y: node.position.y,
-        }]
-      })
+        positions: nodes.map((n) => ({
+          id: n.id,
+          x: n.position.x,
+          y: n.position.y,
+        })),
+      });
 
       updateThumbnail({ projectId });
     },
-    [projectId, updateDevicePositions, updateThumbnail]
+    [projectId, nodes, updateDevicePositions, updateThumbnail]
   );
 
   return (
@@ -166,6 +203,13 @@ const LogicalView = ({ projectId }: Props) => {
         <Background variant={BackgroundVariant.Dots} />
         <Controls />
       </ReactFlow>
+
+      <div className="absolute top-4 right-4 z-10">
+        <Button size="sm" variant="outline" onClick={handleAutoLayout}>
+          <LayoutDashboard />
+          Auto Layout
+        </Button>
+      </div>
 
       {menu && menu.type !== DeviceType.VIRTUAL_MACHINE && (
         <NodeContextMenu
