@@ -2,7 +2,7 @@
 
 import { Button } from '@/shared/components/ui/button';
 import { PATHS } from '@/shared/config/paths';
-import { ChevronLeft, Server, Share2 } from 'lucide-react';
+import { ChevronLeft, Server } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 import { type Project } from './_types/projects';
