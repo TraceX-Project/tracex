@@ -49,11 +49,6 @@ const NodeDetailsSheet = ({ open, onOpenChange, deviceId }: Props) => {
             {device?.data.name ?? 'Details'}
           </SheetTitle>
           <SheetDescription>
-            {device?.type === DeviceType.VIRTUAL_MACHINE && (
-              <span className="flex items-center gap-1">
-                Virtual Machine on {device.data.details?.node ?? 'Unknown Node'}
-              </span>
-            )}
             {device?.type === DeviceType.SERVER && (
               <span className="capitalize">{device.data.vendor} Server</span>
             )}
