@@ -9,10 +9,7 @@ type Props = {
 };
 
 export const VirtualMachineDetails = ({ device }: Props) => {
-  const { details } = device;
-
   const data: DetailRow[] = useMemo(() => {
-    if (!details) return [];
     return [
       {
         id: 'node',
@@ -22,7 +19,7 @@ export const VirtualMachineDetails = ({ device }: Props) => {
             <span className="text-sm">Node</span>
           </div>
         ),
-        value: <span className="font-mono text-sm">{details.node}</span>,
+        value: <span className="font-mono text-sm">{device.name}</span>,
       },
       {
         id: 'vmid',
@@ -34,7 +31,7 @@ export const VirtualMachineDetails = ({ device }: Props) => {
             <span className="text-sm">VM ID</span>
           </div>
         ),
-        value: <span className="font-mono text-sm">{details.vmid}</span>,
+        value: <span className="font-mono text-sm">{device.externalId}</span>,
       },
       {
         id: 'cpu',
@@ -44,7 +41,7 @@ export const VirtualMachineDetails = ({ device }: Props) => {
             <span className="text-sm">CPU Cores</span>
           </div>
         ),
-        value: details.maxcpu,
+        value: device.cpuCores,
       },
       {
         id: 'mem',
@@ -54,7 +51,7 @@ export const VirtualMachineDetails = ({ device }: Props) => {
             <span className="text-sm">Memory</span>
           </div>
         ),
-        value: formatBytes(details.maxmem),
+        value: formatBytes(device.ram),
       },
       {
         id: 'disk',
@@ -64,12 +61,12 @@ export const VirtualMachineDetails = ({ device }: Props) => {
             <span className="text-sm">Max Disk</span>
           </div>
         ),
-        value: formatBytes(details.maxdisk),
+        value: device.disk ? formatBytes(device.disk) : 'N/A',
       },
     ];
-  }, [details]);
+  }, [device]);
 
-  if (!details) {
+  if (!device) {
     return (
       <div className="text-muted-foreground flex flex-col items-center justify-center p-8 text-center">
         <Activity className="mb-2 h-8 w-8 opacity-20" />
