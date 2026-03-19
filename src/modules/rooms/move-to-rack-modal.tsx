@@ -27,9 +27,10 @@ type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   deviceId: string;
+  sourceRoomId: string;
 };
 
-const MoveToRackModal = ({ open, onOpenChange, deviceId }: Props) => {
+const MoveToRackModal = ({ open, onOpenChange, deviceId, sourceRoomId }: Props) => {
   const { projectId } = useParams<{ projectId: string }>();
   const { mutateAsync: addDevicesToRack } = useAddDevicesToRack();
 
@@ -50,11 +51,13 @@ const MoveToRackModal = ({ open, onOpenChange, deviceId }: Props) => {
         await addDevicesToRack({
           rackId: value.rackId,
           roomId: value.roomId,
+          sourceRoomId,
           data: {
             devices: [{ deviceId }],
           },
         });
-
+        
+        onOpenChange(false);
         toast.success('Device moved to rack successfully');
       } catch (error) {
         toast.error('Failed to move device to rack');

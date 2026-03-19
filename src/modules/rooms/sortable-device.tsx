@@ -157,6 +157,7 @@ const SortableDevice = ({ device, roomId, style: propStyle }: Props) => {
         open={moveToRackDialog}
         onOpenChange={setMoveToRackDialog}
         deviceId={device.id}
+        sourceRoomId={roomId}
       />
     </>
   );
