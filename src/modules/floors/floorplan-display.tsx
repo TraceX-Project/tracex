@@ -142,6 +142,7 @@ const FloorPlanDisplay = ({ floor }: Props) => {
               });
             }}
             priority
+            unoptimized
           />
 
           <GhostMarker />
