@@ -1,6 +1,6 @@
 import React from 'react';
 import { HYPERVISOR_VENDORS_OPTIONS } from './_constants/logical-view';
-import { FormType } from '@/shared/tanstack-form/form';
+import { type FormType } from '@/shared/tanstack-form/form';
 
 type Props = {
   form: FormType;
@@ -11,7 +11,7 @@ const CredentialsStep = ({ form }: Props) => {
     <div className="grid gap-4">
       <form.AppField
         name="vendor"
-        children={(field: any) => (
+        children={(field) => (
           <field.SelectField
             label="Vendor"
             options={HYPERVISOR_VENDORS_OPTIONS}
@@ -22,14 +22,14 @@ const CredentialsStep = ({ form }: Props) => {
 
       <form.AppField
         name="apiUrl"
-        children={(field: any) => (
+        children={(field) => (
           <field.TextField label="API URL" placeholder="Enter API URL" type="url" />
         )}
       />
 
       <form.AppField
         name="apiKey"
-        children={(field: any) => (
+        children={(field) => (
           <field.TextField label="API Key" placeholder="Enter API Key" type="password" />
         )}
       />

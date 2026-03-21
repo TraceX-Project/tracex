@@ -89,7 +89,6 @@ const LogicalView = ({ projectId }: Props) => {
 
       if (!ref.current) return;
 
-      const pane = ref.current.getBoundingClientRect();
       setMenu({
         id: node.id,
         x: event.clientX,
@@ -107,7 +106,7 @@ const LogicalView = ({ projectId }: Props) => {
       setDeleteDialogOpen(true);
       setSelectedDeviceId(menu.id);
     }
-  }, [menu]);
+  }, [menu, setDeleteDialogOpen]);
 
   const onOpenEditDialog = useCallback(() => {
     if (menu) {
@@ -118,7 +117,7 @@ const LogicalView = ({ projectId }: Props) => {
   const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
     setSelectedDeviceId(node.id);
     setDetailsValuesOpen(true);
-  }, []);
+  }, [setDetailsValuesOpen]);
 
   const handleDeleteNode = useCallback(async () => {
     try {
@@ -131,7 +130,7 @@ const LogicalView = ({ projectId }: Props) => {
       console.error(error);
       toast.error('Failed to delete node. Please try again.');
     }
-  }, [deleteLogicalDevice, selectedDeviceId]);
+  }, [deleteLogicalDevice, selectedDeviceId, projectId, setDeleteDialogOpen, updateThumbnail]);
 
   const handleAutoLayout = useCallback(async () => {
     if (!layoutedNodes || !layoutedEdges) return;

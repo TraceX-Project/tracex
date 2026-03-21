@@ -37,7 +37,7 @@ const NodeContextMenu = ({ menu, open, onClose, onDelete, onEdit }: Props) => {
 
       toast.error('Failed to sync server');
     }
-  }, [syncVms]);
+  }, [syncVms, menu.id, onClose]);
 
   return (
     <DropdownMenu open={open} onOpenChange={onClose}>

@@ -5,9 +5,9 @@ import { Badge } from '@/shared/components/ui/badge';
 import { Separator } from '@/shared/components/ui/separator';
 import { useGetDeviceTemplates } from '../admin/device-templates/_hooks/use-get-device-templates';
 import { DeviceType } from '../admin/device-templates/_types/device-template';
-import { HypervisorNode } from './_types/logical-view';
+import { type HypervisorNode } from './_types/logical-view';
 import DevicePortSelector from './device-port-selector';
-import { FormType } from '@/shared/tanstack-form/form';
+import { type FormType } from '@/shared/tanstack-form/form';
 import { useStore } from '@tanstack/react-form';
 
 type NodeConfig = {

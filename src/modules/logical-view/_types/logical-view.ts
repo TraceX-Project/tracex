@@ -61,7 +61,7 @@ export type NodeContextMenuState = {
   id: string;
   x: number;
   y: number;
-  type: DeviceType | string;
+  type: DeviceType;
 };
 
 export type LogicalDevice = {

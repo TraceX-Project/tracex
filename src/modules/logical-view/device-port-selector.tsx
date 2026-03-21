@@ -77,7 +77,7 @@ const DevicePortSelector = ({
     if (JSON.stringify(allSelectedPortIds) !== JSON.stringify(value)) {
       onChange(allSelectedPortIds);
     }
-  }, [rows]);
+  }, [rows, onChange, value]);
 
   const getDeviceOptions = (currentDeviceId: string) => {
     const selectedDeviceSet = new Set(

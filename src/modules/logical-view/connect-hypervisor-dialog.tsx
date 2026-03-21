@@ -9,12 +9,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/shared/components/ui/dialog';
-import { FormType, useAppForm } from '@/shared/tanstack-form/form';
+import { type FormType, useAppForm } from '@/shared/tanstack-form/form';
 import React, { type FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import {
   connectHypervisorCredentialsSchema,
-  connectHypervisorNodesSchema,
   connectHypervisorSchema,
 } from './_schema/schema';
 import { type HypervisorNode, type HypervisorVendor } from './_types/logical-view';
@@ -49,7 +48,7 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
   const stepper = useStepper();
   const { mutateAsync: fetchNodes, isPending: isFetchingNodes } = useGetServerNodes();
   const [hypervisorNodes, setHypervisorNodes] = useState<HypervisorNode[]>([]);
-  const lastFetchedCredentials = useRef<{ apiUrl: string; apiKey: string; vendor: string } | null>(
+  const lastFetchedCredentials = useRef<{ apiUrl: string; apiKey: string; vendor: HypervisorVendor } | null>(
     null
   );
 
@@ -59,7 +58,7 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
       setHypervisorNodes([]);
       lastFetchedCredentials.current = null;
     }
-  }, [open]);
+  }, [open, stepper]);
 
   const form = useAppForm({
     defaultValues: {
