@@ -18,7 +18,6 @@ import { mapDevicesToReactFlow } from './_utils/react-flow';
 import { useGetTopology } from './_hooks/use-get-topology';
 import { type NodeContextMenuState } from './_types/logical-view';
 import NodeContextMenu from './node-context-menu';
-import ConnectHypervisorDialog from './connect-hypervisor-dialog';
 import NodeDetailsSheet from './node-details-sheet';
 import { DeviceType } from '../admin/device-templates/_types/device-template';
 import { ConfirmDialog } from '@/shared/components/confirm-dialog';
@@ -26,7 +25,6 @@ import { toast } from 'sonner';
 import { useDeleteLogicalDevice } from './_hooks/use-delete-logical-device';
 import { useUpdateThumbnail } from '../projects/_hooks/use-update-thumbnail';
 import { useUpdateDevicePositions } from './_hooks/use-update-device-positions';
-import EditServerModal from './edit-server-modal';
 import { useBoolean } from '@/shared/hooks/use-boolean';
 import { getLayoutedPositions } from './_utils/position';
 import { Button } from '@/shared/components/ui/button';
@@ -41,10 +39,8 @@ const LogicalView = ({ projectId }: Props) => {
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const { data: devices } = useGetTopology(projectId);
   const [menu, setMenu] = useState<NodeContextMenuState | null>(null);
-  const { value: isConnectDialogOpen, setValue: setConnectDialogOpen } = useBoolean(false)
-  const { value: isDeleteDialogOpen, setValue: setDeleteDialogOpen } = useBoolean(false)
-  const { value: isDetailsValuesOpen, setValue: setDetailsValuesOpen } = useBoolean(false)
-  const { value: isEditServerModalOpen, setValue: setEditServerModalOpen } = useBoolean(false)
+  const { value: isDeleteDialogOpen, setValue: setDeleteDialogOpen } = useBoolean(false);
+  const { value: isDetailsValuesOpen, setValue: setDetailsValuesOpen } = useBoolean(false);
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement | null>(null);
   const { mutateAsync: deleteLogicalDevice } = useDeleteLogicalDevice(projectId);
@@ -54,7 +50,6 @@ const LogicalView = ({ projectId }: Props) => {
   const { nodes: layoutedNodes, edges: layoutedEdges } = useMemo(() => {
     return mapDevicesToReactFlow(devices!);
   }, [devices]);
-
 
   const isInitialized = useRef(false);
 
@@ -80,7 +75,8 @@ const LogicalView = ({ projectId }: Props) => {
         const currentPositions = new Map(currentNodes.map((n) => [n.id, n.position]));
         return layoutedNodes.map((node) => ({
           ...node,
-          position: currentPositions.get(node.id) ?? layoutedPositions.get(node.id) ?? node.position,
+          position:
+            currentPositions.get(node.id) ?? layoutedPositions.get(node.id) ?? node.position,
         }));
       });
       setEdges(layoutedEdges);
@@ -106,13 +102,6 @@ const LogicalView = ({ projectId }: Props) => {
 
   const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
 
-  const onOpenConnectDialog = useCallback(() => {
-    if (menu) {
-      setConnectDialogOpen(true);
-      setSelectedDeviceId(menu.id);
-    }
-  }, [menu]);
-
   const onOpenDeleteDialog = useCallback(() => {
     if (menu) {
       setDeleteDialogOpen(true);
@@ -122,7 +111,6 @@ const LogicalView = ({ projectId }: Props) => {
 
   const onOpenEditDialog = useCallback(() => {
     if (menu) {
-      setEditServerModalOpen(true);
       setSelectedDeviceId(menu.id);
     }
   }, [menu]);
@@ -147,7 +135,7 @@ const LogicalView = ({ projectId }: Props) => {
 
   const handleAutoLayout = useCallback(async () => {
     if (!layoutedNodes || !layoutedEdges) return;
-    
+
     const layoutedPositions = getLayoutedPositions(layoutedNodes, layoutedEdges);
 
     const updatedNodes = nodes.map((node) => ({
@@ -166,8 +154,15 @@ const LogicalView = ({ projectId }: Props) => {
     });
 
     updateThumbnail({ projectId });
-
-  }, [layoutedNodes, layoutedEdges, nodes, setNodes, updateDevicePositions, updateThumbnail, projectId]);
+  }, [
+    layoutedNodes,
+    layoutedEdges,
+    nodes,
+    setNodes,
+    updateDevicePositions,
+    updateThumbnail,
+    projectId,
+  ]);
 
   const onNodeDragStop = useCallback(
     async (_e: React.MouseEvent, _node: Node) => {
@@ -211,28 +206,17 @@ const LogicalView = ({ projectId }: Props) => {
         </Button>
       </div>
 
-      {menu && menu.type !== DeviceType.VIRTUAL_MACHINE && (
-        <NodeContextMenu
-          open={!!menu}
-          menu={menu}
-          onClose={onPaneClick}
-          onConnect={onOpenConnectDialog}
-          onDelete={onOpenDeleteDialog}
-          onEdit={onOpenEditDialog}
-        />
-      )}
-
-      <EditServerModal
-        open={isEditServerModalOpen}
-        onOpenChange={setEditServerModalOpen}
-        deviceId={selectedDeviceId!}
-      />
-
-      <ConnectHypervisorDialog
-        deviceId={selectedDeviceId!}
-        open={isConnectDialogOpen}
-        onOpenChange={setConnectDialogOpen}
-      />
+      {menu &&
+        menu.type !== DeviceType.VIRTUAL_MACHINE &&
+        menu.type !== DeviceType.VIRTUAL_SWITCH && (
+          <NodeContextMenu
+            open={!!menu}
+            menu={menu}
+            onClose={onPaneClick}
+            onDelete={onOpenDeleteDialog}
+            onEdit={onOpenEditDialog}
+          />
+        )}
 
       <ConfirmDialog
         open={isDeleteDialogOpen}

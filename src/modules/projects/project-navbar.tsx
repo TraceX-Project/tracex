@@ -2,11 +2,18 @@
 
 import { Button } from '@/shared/components/ui/button';
 import { PATHS } from '@/shared/config/paths';
-import { ChevronLeft, Server } from 'lucide-react';
+import { ChevronLeft, PlusIcon, RouterIcon, Server } from 'lucide-react';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { type Project } from './_types/projects';
 import CreateDeviceModal from '../logical-view/create-device-modal';
+import ConnectHypervisorDialog from '../logical-view/connect-hypervisor-dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/shared/components/ui/dropdown-menu';
 
 import { useParams, usePathname } from 'next/navigation';
 import { Separator } from '@/shared/components/ui/separator';
@@ -31,7 +38,8 @@ type Props = {
 
 const ProjectNavbar = ({ project }: Props) => {
   const pathname = usePathname();
-  const router = useRouter();
+  const [createDeviceOpen, setCreateDeviceOpen] = useState(false);
+  const [hypervisorOpen, setHypervisorOpen] = useState(false);
   const params = useParams<{
     projectId: string;
     buildingId?: string;
@@ -58,7 +66,35 @@ const ProjectNavbar = ({ project }: Props) => {
     }
 
     if (pathname.includes(PATHS.projects.logical(project.id))) {
-      return <CreateDeviceModal projectId={params.projectId} />;
+      return (
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                <PlusIcon className="size-4" />
+                Add Device
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onSelect={() => setCreateDeviceOpen(true)}>
+                <RouterIcon className="size-4" />
+                Router / Switch
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => setHypervisorOpen(true)}>
+                <Server className="size-4" />
+                Server
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <CreateDeviceModal
+            projectId={params.projectId}
+            open={createDeviceOpen}
+            onOpenChange={setCreateDeviceOpen}
+          />
+          <ConnectHypervisorDialog open={hypervisorOpen} onOpenChange={setHypervisorOpen} />
+        </>
+      );
     }
 
     if (pathname.includes(PATHS.projects.physical(project.id))) {

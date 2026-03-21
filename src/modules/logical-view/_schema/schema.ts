@@ -10,10 +10,28 @@ export const createDeviceSchema = z.object({
   }),
 });
 
+export const connectHypervisorCredentialsSchema = z.object({
+  apiKey: z.string().min(1, { message: 'API key is required' }),
+  vendor: z.enum(HypervisorVendor, { message: 'Vendor is required' }),
+  apiUrl: z.url(),
+});
+
+export const connectHypervisorNodesSchema = z.object({
+  nodes: z
+    .array(
+      z.object({
+        name: z.string().min(1),
+        deviceTemplateId: z.uuidv4({ message: 'Device template is required' }),
+        connectPortIds: z.array(z.uuidv4()).min(1, {
+          message: 'At least one port must be connected',
+        }),
+      }),
+      { message: 'At least one node must be configured' }
+    )
+    .min(1, { message: 'At least one node must be configured' }),
+});
+
 export const connectHypervisorSchema = z.object({
-  name: z.string().min(1, {
-    message: 'Name is required',
-  }),
   apiKey: z.string().min(1, {
     message: 'API key is required',
   }),
@@ -21,10 +39,15 @@ export const connectHypervisorSchema = z.object({
     message: 'Vendor is required',
   }),
   apiUrl: z.url(),
-  connectPortIds: z.array(z.uuidv4()).min(1, {
-    message: 'At least one port ID must be provided',
-  }),
-  deviceTemplateId: z.uuidv4({
-    message: 'Invalid device template ID',
-  }),
+  nodes: z
+    .array(
+      z.object({
+        name: z.string().min(1),
+        deviceTemplateId: z.uuidv4({ message: 'Invalid device template ID' }),
+        connectPortIds: z.array(z.uuidv4()).min(1, {
+          message: 'At least one port ID must be provided',
+        }),
+      }),
+    )
+    .min(1, { message: 'At least one node must be configured' }),
 });

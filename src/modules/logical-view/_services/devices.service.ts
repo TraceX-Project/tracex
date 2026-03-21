@@ -3,6 +3,8 @@ import {
   type LogicalDevice,
   type CreateServerRequest,
   type GetLogicalDeviceResponse,
+  type HypervisorNode,
+  type GetServerNodesRequest,
 } from '../_types/logical-view';
 import { ENDPOINTS } from '@/shared/config/endpoints';
 
@@ -10,6 +12,16 @@ export const getLogicalDevices = async (projectId: string) => {
   const response = await request<LogicalDevice[]>({
     method: 'GET',
     path: ENDPOINTS.projects.logicalDevices(projectId),
+  });
+
+  return response;
+};
+
+export const getServerNodes = async (data: GetServerNodesRequest): Promise<HypervisorNode[]> => {
+  const response = await request<HypervisorNode[]>({
+    method: 'POST',
+    path: ENDPOINTS.servers.getNodes,
+    body: data,
   });
 
   return response;

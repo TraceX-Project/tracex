@@ -61,7 +61,7 @@ export type NodeContextMenuState = {
   id: string;
   x: number;
   y: number;
-  type: DeviceType;
+  type: DeviceType | string;
 };
 
 export type LogicalDevice = {
@@ -91,6 +91,18 @@ export type DeviceInterface = {
   createdAt: string;
   updatedAt: string;
   isConnected: boolean;
+};
+
+export type HypervisorNode = {
+  externalId: string;
+  name: string;
+  status: string;
+};
+
+export type GetServerNodesRequest = {
+  apiUrl: string;
+  apiKey: string;
+  vendor: HypervisorVendor;
 };
 
 export type CreateServerRequest = z.infer<typeof connectHypervisorSchema>;
