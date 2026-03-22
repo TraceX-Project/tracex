@@ -39,8 +39,22 @@ export async function isTokenExpired(token: string): Promise<boolean> {
 
 export async function clearTokenCookies() {
   const cookieStore = await cookies();
-  cookieStore.delete(COOKIE_NAME.accessToken);
-  cookieStore.delete(COOKIE_NAME.refreshToken);
+
+  const deleteOptions = {
+    path: '/',
+    domain: new URL(ENV.NEXT_PUBLIC_APP_URL).hostname,
+    secure: ENV.NODE_ENV === 'production',
+    sameSite: 'lax' as const,
+  };
+
+  cookieStore.delete({
+    name: COOKIE_NAME.accessToken,
+    ...deleteOptions,
+  });
+  cookieStore.delete({
+    name: COOKIE_NAME.refreshToken,
+    ...deleteOptions,
+  });
 }
 
 export async function getUserRoleFromToken(token: string): Promise<string | null> {

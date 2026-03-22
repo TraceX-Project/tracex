@@ -58,7 +58,7 @@ const ConnectHypervisorDialog = ({ open, onOpenChange, deviceId }: Props) => {
       setHypervisorNodes([]);
       lastFetchedCredentials.current = null;
     }
-  }, [open, stepper]);
+  }, [open]);
 
   const form = useAppForm({
     defaultValues: {

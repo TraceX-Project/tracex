@@ -26,7 +26,7 @@ import { useDeleteLogicalDevice } from './_hooks/use-delete-logical-device';
 import { useUpdateThumbnail } from '../projects/_hooks/use-update-thumbnail';
 import { useUpdateDevicePositions } from './_hooks/use-update-device-positions';
 import { useBoolean } from '@/shared/hooks/use-boolean';
-import { getLayoutedPositions } from './_utils/position';
+import { getEdgeHandles, getLayoutedPositions } from './_utils/position';
 import { Button } from '@/shared/components/ui/button';
 import { LayoutDashboard } from 'lucide-react';
 
@@ -58,28 +58,46 @@ const LogicalView = ({ projectId }: Props) => {
 
     const layoutedPositions = getLayoutedPositions(layoutedNodes, layoutedEdges);
 
+    const applyHandles = (
+      edgeList: typeof layoutedEdges,
+      posMap: Map<string, { x: number; y: number }>
+    ) =>
+      edgeList.map((edge) => {
+        const src = posMap.get(edge.source);
+        const tgt = posMap.get(edge.target);
+        if (!src || !tgt) return edge;
+        return { ...edge, ...getEdgeHandles(src, tgt) };
+      });
+
     if (!isInitialized.current) {
+      const connectedIds = new Set(layoutedEdges.flatMap((e) => [e.source, e.target]));
       const finalNodes = layoutedNodes.map((node) => {
+        const isIsolated = !connectedIds.has(node.id);
         const isDefault = node.position.x === 0 && node.position.y === 0;
+        // Isolated nodes always use the computed free-slot position to avoid edge overlap
         return {
           ...node,
-          position: isDefault ? layoutedPositions.get(node.id)! : node.position,
+          position:
+            isIsolated || isDefault ? layoutedPositions.get(node.id)! : node.position,
         };
       });
+      const finalPosMap = new Map(finalNodes.map((n) => [n.id, n.position]));
       setNodes(finalNodes);
-      setEdges(layoutedEdges);
+      setEdges(applyHandles(layoutedEdges, finalPosMap));
       isInitialized.current = true;
     } else {
       // Preserve positions of existing nodes; auto-layout only new ones
       setNodes((currentNodes) => {
         const currentPositions = new Map(currentNodes.map((n) => [n.id, n.position]));
-        return layoutedNodes.map((node) => ({
+        const nextNodes = layoutedNodes.map((node) => ({
           ...node,
           position:
             currentPositions.get(node.id) ?? layoutedPositions.get(node.id) ?? node.position,
         }));
+        const posMap = new Map(nextNodes.map((n) => [n.id, n.position]));
+        setEdges(applyHandles(layoutedEdges, posMap));
+        return nextNodes;
       });
-      setEdges(layoutedEdges);
     }
   }, [layoutedNodes, layoutedEdges, setEdges, setNodes]);
 
@@ -141,8 +159,16 @@ const LogicalView = ({ projectId }: Props) => {
       ...node,
       position: layoutedPositions.get(node.id) ?? node.position,
     }));
+    const posMap = new Map(updatedNodes.map((n) => [n.id, n.position]));
+    const updatedEdges = layoutedEdges.map((edge) => {
+      const src = posMap.get(edge.source);
+      const tgt = posMap.get(edge.target);
+      if (!src || !tgt) return edge;
+      return { ...edge, ...getEdgeHandles(src, tgt) };
+    });
 
     setNodes(updatedNodes);
+    setEdges(updatedEdges);
 
     await updateDevicePositions({
       positions: updatedNodes.map((n) => ({

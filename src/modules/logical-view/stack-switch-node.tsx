@@ -15,8 +15,14 @@ const StackSwitchNode = memo(({ data }: Props) => {
     <div className="relative">
       <Image src="/assets/icons/stack-switch.svg" alt="switch icon" width={36} height={36} />
       {!data.inRack && <NotInRackIndicator />}
-      <Handle type="source" position={Position.Bottom} />
-      <Handle type="target" position={Position.Top} />
+      <Handle type="source" position={Position.Top} id="top" className="!opacity-0" />
+      <Handle type="source" position={Position.Bottom} id="bottom" className="!opacity-0" />
+      <Handle type="source" position={Position.Left} id="left" className="!opacity-0" />
+      <Handle type="source" position={Position.Right} id="right" className="!opacity-0" />
+      <Handle type="target" position={Position.Top} id="top" className="!opacity-0" />
+      <Handle type="target" position={Position.Bottom} id="bottom" className="!opacity-0" />
+      <Handle type="target" position={Position.Left} id="left" className="!opacity-0" />
+      <Handle type="target" position={Position.Right} id="right" className="!opacity-0" />
     </div>
   );
 });
