@@ -13,6 +13,7 @@ export enum DeviceType {
   SWITCH_STACK = 'switch_stack',
   SERVER = 'server',
   VIRTUAL_MACHINE = 'virtual_machine',
+  VIRTUAL_SWITCH = 'virtual_switch',
 }
 
 export type GetDeviceTemplatesParams = {

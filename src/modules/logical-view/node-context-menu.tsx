@@ -4,7 +4,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from '@/shared/components/ui/dropdown-menu';
-import { IconEdit, IconPlugConnected, IconRefresh, IconTrash } from '@tabler/icons-react';
+import { IconEdit, IconRefresh, IconTrash } from '@tabler/icons-react';
 import { type NodeContextMenuState } from './_types/logical-view';
 import { DeviceType } from '../admin/device-templates/_types/device-template';
 import { useSyncVms } from './_hooks/use-sync-vms';
@@ -16,12 +16,11 @@ type Props = {
   menu: NodeContextMenuState;
   open: boolean;
   onClose: () => void;
-  onConnect: () => void;
   onDelete: () => void;
   onEdit: () => void;
 };
 
-const NodeContextMenu = ({ menu, open, onClose, onConnect, onDelete, onEdit }: Props) => {
+const NodeContextMenu = ({ menu, open, onClose, onDelete, onEdit }: Props) => {
   const { mutateAsync: syncVms, isPending: isSyncing } = useSyncVms();
 
   const handleSyncServer = useCallback(async () => {
@@ -38,7 +37,7 @@ const NodeContextMenu = ({ menu, open, onClose, onConnect, onDelete, onEdit }: P
 
       toast.error('Failed to sync server');
     }
-  }, [syncVms]);
+  }, [syncVms, menu.id, onClose]);
 
   return (
     <DropdownMenu open={open} onOpenChange={onClose}>
@@ -50,15 +49,6 @@ const NodeContextMenu = ({ menu, open, onClose, onConnect, onDelete, onEdit }: P
         }}
         className="z-50 min-w-max"
       >
-        {menu.type !== DeviceType.SERVER && (
-          <>
-            <DropdownMenuItem onClick={onConnect}>
-              <IconPlugConnected className="size-4" />
-              <span>Connect a hypervisor</span>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-          </>
-        )}
         {menu.type === DeviceType.SERVER && (
           <>
             <DropdownMenuItem onClick={onEdit}>
@@ -72,6 +62,7 @@ const NodeContextMenu = ({ menu, open, onClose, onConnect, onDelete, onEdit }: P
             <DropdownMenuSeparator />
           </>
         )}
+
         <DropdownMenuItem variant="destructive" onClick={onDelete}>
           <IconTrash className="size-4" />
           <span>Delete</span>

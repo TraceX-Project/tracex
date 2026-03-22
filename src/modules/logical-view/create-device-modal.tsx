@@ -9,32 +9,28 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/shared/components/ui/dialog';
 import { useAppForm } from '@/shared/tanstack-form/form';
-import { Plus } from 'lucide-react';
 import { type FormEvent, useCallback, useMemo } from 'react';
 import { createDeviceSchema } from './_schema/schema';
 import { useAddDevice } from './_hooks/use-add-device';
 import { toast } from 'sonner';
-import { useBoolean } from '@/shared/hooks/use-boolean';
 import { useGetDeviceTemplates } from '../admin/device-templates/_hooks/use-get-device-templates';
 import { DeviceType } from '../admin/device-templates/_types/device-template';
 import { useUpdateThumbnail } from '../projects/_hooks/use-update-thumbnail';
 
-
 type Props = {
   projectId: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 };
 
-const CreateDeviceModal = ({ projectId }: Props) => {
+const CreateDeviceModal = ({ projectId, open, onOpenChange }: Props) => {
   const { data: deviceTemplates } = useGetDeviceTemplates({
     type: [DeviceType.ROUTER, DeviceType.SWITCH],
   });
   const { mutateAsync: addDevice } = useAddDevice();
   const { triggerUpdate: updateThumbnail } = useUpdateThumbnail();
-  const { value: open, setValue: setOpen } = useBoolean();
-
 
   const transformedDeviceTemplates = useMemo(
     () =>
@@ -65,10 +61,9 @@ const CreateDeviceModal = ({ projectId }: Props) => {
 
         await addDevice({ projectId, formData });
 
-
         updateThumbnail({ projectId });
 
-        setOpen(false);
+        onOpenChange(false);
         form.reset();
       } catch (error) {
         console.error(error);
@@ -76,16 +71,6 @@ const CreateDeviceModal = ({ projectId }: Props) => {
       }
     },
   });
-
-  const handleOpenChange = useCallback(
-    (isOpen: boolean) => {
-      setOpen(isOpen);
-      if (!isOpen) {
-        form.reset();
-      }
-    },
-    [form, setOpen]
-  );
 
   const handleSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
@@ -96,13 +81,13 @@ const CreateDeviceModal = ({ projectId }: Props) => {
   );
 
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>
-        <Button size="sm" variant="outline">
-          <Plus />
-          Add device
-        </Button>
-      </DialogTrigger>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        onOpenChange(isOpen);
+        if (!isOpen) form.reset();
+      }}
+    >
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit} className="space-y-4">
           <DialogHeader>
@@ -112,7 +97,6 @@ const CreateDeviceModal = ({ projectId }: Props) => {
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4">
-            {/* Device Template */}
             <form.AppField
               name="deviceTemplateId"
               children={(field) => (
@@ -124,7 +108,6 @@ const CreateDeviceModal = ({ projectId }: Props) => {
               )}
             />
 
-            {/* Configuration Files */}
             <form.AppField
               name="files"
               children={(field) => (

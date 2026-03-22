@@ -88,6 +88,7 @@ export const ENDPOINTS = {
       `${ROOTS.racks}/${rackId}/devices/${deviceId}`,
   },
   servers: {
+    getNodes: `${ROOTS.servers}/nodes`,
     syncVms: (serverId: string) => `${ROOTS.servers}/${serverId}/sync-vms`,
     getById: (id: string) => `${ROOTS.servers}/${id}`,
   },

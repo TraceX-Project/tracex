@@ -93,6 +93,18 @@ export type DeviceInterface = {
   isConnected: boolean;
 };
 
+export type HypervisorNode = {
+  externalId: string;
+  name: string;
+  status: string;
+};
+
+export type GetServerNodesRequest = {
+  apiUrl: string;
+  apiKey: string;
+  vendor: HypervisorVendor;
+};
+
 export type CreateServerRequest = z.infer<typeof connectHypervisorSchema>;
 
 export type GetLogicalDeviceResponse =

@@ -3,8 +3,7 @@
 import { useParams } from 'next/navigation';
 import { useGetLogicalDevices } from './_hooks/use-get-logical-devices';
 import { Label } from '@/shared/components/ui/label';
-import { useCallback, useEffect, useState } from 'react';
-import { useFieldContext } from '@/shared/tanstack-form/form';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Select,
   SelectContent,
@@ -24,73 +23,66 @@ import {
 } from '@/shared/components/ui/multi-select';
 import { FieldError } from '@/shared/components/ui/field';
 import { type ServerConnection } from './_types/server';
+import { groupPortIdsByDevice } from './_utils/port-rows';
 
 type Props = {
+  value: string[];
+  onChange: (ids: string[]) => void;
   initDeviceId: string;
-  initServerConections: ServerConnection[]
+  initServerConections: ServerConnection[];
+  usedPortIds?: string[];
+  errors?: string[];
 };
 
-const DevicePortSelector = ({ initDeviceId, initServerConections }: Props) => {
+const DevicePortSelector = ({
+  value,
+  onChange,
+  initDeviceId,
+  initServerConections,
+  usedPortIds = [],
+  errors = [],
+}: Props) => {
   const { projectId } = useParams<{ projectId: string }>();
-  const field = useFieldContext<string[]>();
   const { data: devices = [] } = useGetLogicalDevices(projectId);
 
-  const [rows, setRows] = useState<
-    {
-      deviceId: string;
-      portIds: string[];
-    }[]
-  >([]);
+  const [rows, setRows] = useState<{ deviceId: string; portIds: string[] }[]>([]);
+
+  const valueRef = useRef(value);
+  valueRef.current = value;
 
   useEffect(() => {
     if (devices.length === 0) return;
 
     if (initServerConections.length > 0) {
-      const interfaceToDeviceMap = new Map<string, string>();
-      devices.forEach((d) => {
-        d.deviceInterfaces.forEach((i) => interfaceToDeviceMap.set(i.id, d.id));
-      });
-
-      const portIdsByDevice = new Map<string, string[]>();
-      initServerConections.forEach((conn) => {
-        const devId = interfaceToDeviceMap.get(conn.deviceInterfaceId);
-        if (devId) {
-          const existing = portIdsByDevice.get(devId) ?? [];
-          existing.push(conn.deviceInterfaceId);
-          portIdsByDevice.set(devId, existing);
-        }
-      });
-
-      const newRows: typeof rows = [];
-      portIdsByDevice.forEach((pIds, devId) => {
-        newRows.push({ deviceId: devId, portIds: pIds });
-      });
-
-      setRows(newRows);
+      setRows(
+        groupPortIdsByDevice(
+          devices,
+          initServerConections.map((c) => c.deviceInterfaceId)
+        )
+      );
     } else {
       setRows((prev) => {
-        if (prev.length === 0) {
-          return [{ deviceId: initDeviceId, portIds: [] }];
+        if (prev.length > 0) {
+          return prev;
         }
-        return prev;
-      });
 
+        const restoredRows = groupPortIdsByDevice(devices, valueRef.current);
+        return restoredRows.length > 0 ? restoredRows : [{ deviceId: initDeviceId, portIds: [] }];
+      });
     }
   }, [devices, initServerConections, initDeviceId]);
 
   useEffect(() => {
     const allSelectedPortIds = rows.flatMap((row) => row.portIds);
-
-    if (JSON.stringify(allSelectedPortIds) !== JSON.stringify(field.state.value)) {
-      field.handleChange(allSelectedPortIds);
+    if (JSON.stringify(allSelectedPortIds) !== JSON.stringify(value)) {
+      onChange(allSelectedPortIds);
     }
-  }, [rows]);
+  }, [rows, onChange, value]);
 
   const getDeviceOptions = (currentDeviceId: string) => {
     const selectedDeviceSet = new Set(
       rows.map((row) => row.deviceId).filter((id) => id !== currentDeviceId)
     );
-
     return devices.filter((device) => !selectedDeviceSet.has(device.id));
   };
 
@@ -102,7 +94,10 @@ const DevicePortSelector = ({ initDeviceId, initServerConections }: Props) => {
         .map((intf) => ({
           value: intf.id,
           label: intf.name,
-          disabled: intf.isConnected && !initServerConections.some((conn) => conn.deviceInterfaceId === intf.id),
+          disabled:
+            usedPortIds.includes(intf.id) ||
+            (intf.isConnected &&
+              !initServerConections.some((conn) => conn.deviceInterfaceId === intf.id)),
         })) ?? []
     );
   };
@@ -132,17 +127,12 @@ const DevicePortSelector = ({ initDeviceId, initServerConections }: Props) => {
     });
   }, []);
 
-  const getRowError = (row: (typeof rows)[number], index: number) => {
-    const isSubmitted = field.state.meta.errors.length > 0;
-
-    if (!isSubmitted) return null;
-
-    if (!row.deviceId) {
-      return 'Please select a device';
+  const getRowError = (row: (typeof rows)[number]) => {
+    if (errors.length === 0) {
+      return null;
     }
-
-    if (row.deviceId && row.portIds.length === 0) {
-      return 'Please select at least one interface';
+    if (!row.deviceId || row.portIds.length === 0) {
+      return errors[0];
     }
 
     return null;
@@ -156,14 +146,14 @@ const DevicePortSelector = ({ initDeviceId, initServerConections }: Props) => {
           const isInitialRow = index === 0;
           const deviceOptions = getDeviceOptions(row.deviceId);
           const interfaceOptions = getInterfaceOptions(row.deviceId);
-          const rowError = getRowError(row, index);
+          const rowError = getRowError(row);
 
           return (
             <div key={index} className="space-y-1">
               <div className="flex items-center gap-2">
                 <Select
                   value={row.deviceId}
-                  disabled={isInitialRow && initServerConections.length === 0}
+                  disabled={isInitialRow && !!initDeviceId && initServerConections.length === 0}
                   onValueChange={(deviceId) => handleDeviceChange(index, deviceId)}
                 >
                   <SelectTrigger className="w-[180px]">
@@ -214,7 +204,7 @@ const DevicePortSelector = ({ initDeviceId, initServerConections }: Props) => {
                   </Button>
                 )}
               </div>
-              {rowError && <FieldError className="ml-1 text-xs" errors={[{ message: rowError }]} />}
+              {rowError && <FieldError errors={[{ message: rowError }]} />}
             </div>
           );
         })}

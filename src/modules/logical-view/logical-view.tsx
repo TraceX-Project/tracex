@@ -18,7 +18,6 @@ import { mapDevicesToReactFlow } from './_utils/react-flow';
 import { useGetTopology } from './_hooks/use-get-topology';
 import { type NodeContextMenuState } from './_types/logical-view';
 import NodeContextMenu from './node-context-menu';
-import ConnectHypervisorDialog from './connect-hypervisor-dialog';
 import NodeDetailsSheet from './node-details-sheet';
 import { DeviceType } from '../admin/device-templates/_types/device-template';
 import { ConfirmDialog } from '@/shared/components/confirm-dialog';
@@ -26,9 +25,8 @@ import { toast } from 'sonner';
 import { useDeleteLogicalDevice } from './_hooks/use-delete-logical-device';
 import { useUpdateThumbnail } from '../projects/_hooks/use-update-thumbnail';
 import { useUpdateDevicePositions } from './_hooks/use-update-device-positions';
-import EditServerModal from './edit-server-modal';
 import { useBoolean } from '@/shared/hooks/use-boolean';
-import { getLayoutedPositions } from './_utils/position';
+import { getEdgeHandles, getLayoutedPositions } from './_utils/position';
 import { Button } from '@/shared/components/ui/button';
 import { LayoutDashboard } from 'lucide-react';
 
@@ -41,10 +39,8 @@ const LogicalView = ({ projectId }: Props) => {
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const { data: devices } = useGetTopology(projectId);
   const [menu, setMenu] = useState<NodeContextMenuState | null>(null);
-  const { value: isConnectDialogOpen, setValue: setConnectDialogOpen } = useBoolean(false)
-  const { value: isDeleteDialogOpen, setValue: setDeleteDialogOpen } = useBoolean(false)
-  const { value: isDetailsValuesOpen, setValue: setDetailsValuesOpen } = useBoolean(false)
-  const { value: isEditServerModalOpen, setValue: setEditServerModalOpen } = useBoolean(false)
+  const { value: isDeleteDialogOpen, setValue: setDeleteDialogOpen } = useBoolean(false);
+  const { value: isDetailsValuesOpen, setValue: setDetailsValuesOpen } = useBoolean(false);
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement | null>(null);
   const { mutateAsync: deleteLogicalDevice } = useDeleteLogicalDevice(projectId);
@@ -55,7 +51,6 @@ const LogicalView = ({ projectId }: Props) => {
     return mapDevicesToReactFlow(devices!);
   }, [devices]);
 
-
   const isInitialized = useRef(false);
 
   useEffect(() => {
@@ -63,27 +58,46 @@ const LogicalView = ({ projectId }: Props) => {
 
     const layoutedPositions = getLayoutedPositions(layoutedNodes, layoutedEdges);
 
+    const applyHandles = (
+      edgeList: typeof layoutedEdges,
+      posMap: Map<string, { x: number; y: number }>
+    ) =>
+      edgeList.map((edge) => {
+        const src = posMap.get(edge.source);
+        const tgt = posMap.get(edge.target);
+        if (!src || !tgt) return edge;
+        return { ...edge, ...getEdgeHandles(src, tgt) };
+      });
+
     if (!isInitialized.current) {
+      const connectedIds = new Set(layoutedEdges.flatMap((e) => [e.source, e.target]));
       const finalNodes = layoutedNodes.map((node) => {
+        const isIsolated = !connectedIds.has(node.id);
         const isDefault = node.position.x === 0 && node.position.y === 0;
+        // Isolated nodes always use the computed free-slot position to avoid edge overlap
         return {
           ...node,
-          position: isDefault ? layoutedPositions.get(node.id)! : node.position,
+          position:
+            isIsolated || isDefault ? layoutedPositions.get(node.id)! : node.position,
         };
       });
+      const finalPosMap = new Map(finalNodes.map((n) => [n.id, n.position]));
       setNodes(finalNodes);
-      setEdges(layoutedEdges);
+      setEdges(applyHandles(layoutedEdges, finalPosMap));
       isInitialized.current = true;
     } else {
       // Preserve positions of existing nodes; auto-layout only new ones
       setNodes((currentNodes) => {
         const currentPositions = new Map(currentNodes.map((n) => [n.id, n.position]));
-        return layoutedNodes.map((node) => ({
+        const nextNodes = layoutedNodes.map((node) => ({
           ...node,
-          position: currentPositions.get(node.id) ?? layoutedPositions.get(node.id) ?? node.position,
+          position:
+            currentPositions.get(node.id) ?? layoutedPositions.get(node.id) ?? node.position,
         }));
+        const posMap = new Map(nextNodes.map((n) => [n.id, n.position]));
+        setEdges(applyHandles(layoutedEdges, posMap));
+        return nextNodes;
       });
-      setEdges(layoutedEdges);
     }
   }, [layoutedNodes, layoutedEdges, setEdges, setNodes]);
 
@@ -93,7 +107,6 @@ const LogicalView = ({ projectId }: Props) => {
 
       if (!ref.current) return;
 
-      const pane = ref.current.getBoundingClientRect();
       setMenu({
         id: node.id,
         x: event.clientX,
@@ -106,23 +119,15 @@ const LogicalView = ({ projectId }: Props) => {
 
   const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
 
-  const onOpenConnectDialog = useCallback(() => {
-    if (menu) {
-      setConnectDialogOpen(true);
-      setSelectedDeviceId(menu.id);
-    }
-  }, [menu]);
-
   const onOpenDeleteDialog = useCallback(() => {
     if (menu) {
       setDeleteDialogOpen(true);
       setSelectedDeviceId(menu.id);
     }
-  }, [menu]);
+  }, [menu, setDeleteDialogOpen]);
 
   const onOpenEditDialog = useCallback(() => {
     if (menu) {
-      setEditServerModalOpen(true);
       setSelectedDeviceId(menu.id);
     }
   }, [menu]);
@@ -130,7 +135,7 @@ const LogicalView = ({ projectId }: Props) => {
   const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
     setSelectedDeviceId(node.id);
     setDetailsValuesOpen(true);
-  }, []);
+  }, [setDetailsValuesOpen]);
 
   const handleDeleteNode = useCallback(async () => {
     try {
@@ -143,19 +148,27 @@ const LogicalView = ({ projectId }: Props) => {
       console.error(error);
       toast.error('Failed to delete node. Please try again.');
     }
-  }, [deleteLogicalDevice, selectedDeviceId]);
+  }, [deleteLogicalDevice, selectedDeviceId, projectId, setDeleteDialogOpen, updateThumbnail]);
 
   const handleAutoLayout = useCallback(async () => {
     if (!layoutedNodes || !layoutedEdges) return;
-    
+
     const layoutedPositions = getLayoutedPositions(layoutedNodes, layoutedEdges);
 
     const updatedNodes = nodes.map((node) => ({
       ...node,
       position: layoutedPositions.get(node.id) ?? node.position,
     }));
+    const posMap = new Map(updatedNodes.map((n) => [n.id, n.position]));
+    const updatedEdges = layoutedEdges.map((edge) => {
+      const src = posMap.get(edge.source);
+      const tgt = posMap.get(edge.target);
+      if (!src || !tgt) return edge;
+      return { ...edge, ...getEdgeHandles(src, tgt) };
+    });
 
     setNodes(updatedNodes);
+    setEdges(updatedEdges);
 
     await updateDevicePositions({
       positions: updatedNodes.map((n) => ({
@@ -166,8 +179,15 @@ const LogicalView = ({ projectId }: Props) => {
     });
 
     updateThumbnail({ projectId });
-
-  }, [layoutedNodes, layoutedEdges, nodes, setNodes, updateDevicePositions, updateThumbnail, projectId]);
+  }, [
+    layoutedNodes,
+    layoutedEdges,
+    nodes,
+    setNodes,
+    updateDevicePositions,
+    updateThumbnail,
+    projectId,
+  ]);
 
   const onNodeDragStop = useCallback(
     async (_e: React.MouseEvent, _node: Node) => {
@@ -211,28 +231,17 @@ const LogicalView = ({ projectId }: Props) => {
         </Button>
       </div>
 
-      {menu && menu.type !== DeviceType.VIRTUAL_MACHINE && (
-        <NodeContextMenu
-          open={!!menu}
-          menu={menu}
-          onClose={onPaneClick}
-          onConnect={onOpenConnectDialog}
-          onDelete={onOpenDeleteDialog}
-          onEdit={onOpenEditDialog}
-        />
-      )}
-
-      <EditServerModal
-        open={isEditServerModalOpen}
-        onOpenChange={setEditServerModalOpen}
-        deviceId={selectedDeviceId!}
-      />
-
-      <ConnectHypervisorDialog
-        deviceId={selectedDeviceId!}
-        open={isConnectDialogOpen}
-        onOpenChange={setConnectDialogOpen}
-      />
+      {menu &&
+        menu.type !== DeviceType.VIRTUAL_MACHINE &&
+        menu.type !== DeviceType.VIRTUAL_SWITCH && (
+          <NodeContextMenu
+            open={!!menu}
+            menu={menu}
+            onClose={onPaneClick}
+            onDelete={onOpenDeleteDialog}
+            onEdit={onOpenEditDialog}
+          />
+        )}
 
       <ConfirmDialog
         open={isDeleteDialogOpen}

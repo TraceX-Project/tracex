@@ -1,20 +1,15 @@
 import React, { memo } from 'react';
-import Image from 'next/image';
 import { Handle, Position } from '@xyflow/react';
-
-import NotInRackIndicator from '@/shared/components/not-in-rack-indicator';
 
 type Props = {
   data: {
-    inRack: boolean;
+    label: string;
   };
 };
 
-const StackSwitchNode = memo(({ data }: Props) => {
+const VSwitchNode = memo(({ data }: Props) => {
   return (
-    <div className="relative">
-      <Image src="/assets/icons/stack-switch.svg" alt="switch icon" width={36} height={36} />
-      {!data.inRack && <NotInRackIndicator />}
+    <div className="flex flex-col items-center gap-1">
       <Handle type="source" position={Position.Top} id="top" className="!opacity-0" />
       <Handle type="source" position={Position.Bottom} id="bottom" className="!opacity-0" />
       <Handle type="source" position={Position.Left} id="left" className="!opacity-0" />
@@ -23,10 +18,13 @@ const StackSwitchNode = memo(({ data }: Props) => {
       <Handle type="target" position={Position.Bottom} id="bottom" className="!opacity-0" />
       <Handle type="target" position={Position.Left} id="left" className="!opacity-0" />
       <Handle type="target" position={Position.Right} id="right" className="!opacity-0" />
+      <div className="rounded border bg-white px-2 py-1 text-xs font-medium shadow-sm">
+        {data.label}
+      </div>
     </div>
   );
 });
 
-StackSwitchNode.displayName = 'StackSwitchNode';
+VSwitchNode.displayName = 'VSwitchNode';
 
-export default StackSwitchNode;
+export default VSwitchNode;

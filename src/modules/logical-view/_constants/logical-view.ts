@@ -5,6 +5,7 @@ import StackSwitchNode from '../stack-switch-node';
 import { HypervisorVendor } from '../_types/logical-view';
 import ServerNode from '../server-node';
 import VMNode from '../vm-node';
+import VSwitchNode from '../vswitch-node';
 
 export const NODE_TYPES = {
   [`${DeviceType.ROUTER}`]: RouterNode,
@@ -12,6 +13,7 @@ export const NODE_TYPES = {
   [`${DeviceType.SWITCH_STACK}`]: StackSwitchNode,
   [`${DeviceType.SERVER}`]: ServerNode,
   [`${DeviceType.VIRTUAL_MACHINE}`]: VMNode,
+  [`${DeviceType.VIRTUAL_SWITCH}`]: VSwitchNode,
 };
 
 export const DEFAULT_NODE_WIDTH = 172;
