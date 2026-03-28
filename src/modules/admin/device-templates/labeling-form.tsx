@@ -62,8 +62,8 @@ const LabelingForm = ({ form }: Props) => {
     const rawBoxes = predictBoxes.ports.map((p, i) => ({
       x: p.x,
       y: p.y,
-      width: p.w,
-      height: p.h,
+      width: p.width,
+      height: p.height,
       portNumber: i + 1,
     }));
 
