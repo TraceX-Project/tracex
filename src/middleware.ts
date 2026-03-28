@@ -39,7 +39,7 @@ async function callRefresh(
       body: JSON.stringify({ refreshToken }),
     });
     if (!response.ok) return null;
-    return response.json();
+    return (await response.json()) as { accessToken: string; refreshToken: string };
   } catch {
     return null;
   }
@@ -49,7 +49,7 @@ function setTokensOnResponse(
   response: NextResponse,
   tokens: { accessToken: string; refreshToken: string },
 ) {
-  const hostname = new URL(ENV.NEXT_PUBLIC_APP_URL).hostname;
+  const { hostname } = new URL(ENV.NEXT_PUBLIC_APP_URL);
   const secure = ENV.NODE_ENV === 'production';
 
   response.cookies.set(COOKIE_NAME.accessToken, tokens.accessToken, {
@@ -112,7 +112,7 @@ export default async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL(PATHS.projects.root, request.url));
     }
 
-    return response;
+    return response.json() as Promise<{ accessToken: string; refreshToken: string }>;
   }
 
   if (pathname === PATHS.login) {
