@@ -37,8 +37,8 @@ export enum PortType {
 export type Port = {
   x: number;
   y: number;
-  w: number;
-  h: number;
+  width: number;
+  height: number;
 };
 
 export type UpdateDeviceTemplateRequest = Partial<CreateDeviceTemplateRequest>;
@@ -77,8 +77,8 @@ export type DevicePorts = {
 export type PortInput = {
   x: number;
   y: number;
-  w: number;
-  h: number;
+  width: number;
+  height: number;
 };
 
 export type CreateDeviceTemplateRequest = {

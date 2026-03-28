@@ -3,10 +3,8 @@
 import { cookies } from 'next/headers';
 import { ENV } from '../config/env';
 import { COOKIE_NAME } from '../constants/cookie';
-import { isTokenExpired, setTokenCookies } from '@/modules/auth/_utils/token';
+import { isTokenExpired } from '@/modules/auth/_utils/token';
 import { type ErrorResponse, type SuccessResponse } from '../types/response';
-import { ENDPOINTS } from '../config/endpoints';
-import { type Token } from '@/modules/auth/_types/auth';
 import { redirect } from 'next/navigation';
 import { PATHS } from '../config/paths';
 import { ApiError } from './api-error';
@@ -72,27 +70,6 @@ const apiFetch = async <T>(
   return result as SuccessResponse<T>;
 };
 
-const refresh = async (refreshToken: string): Promise<Token> => {
-  const refreshUrl = `${ENV.NEXT_PUBLIC_API_URL}${ENDPOINTS.auth.refresh}`;
-  const response = await fetch(refreshUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ refreshToken }),
-  });
-
-  if (!response.ok) {
-    throw new Error('Unauthorized: Refresh token is invalid or expired');
-  }
-
-  const token = (await response.json()) as SuccessResponse<Token>;
-
-  await setTokenCookies(token);
-
-  return token;
-};
-
 export async function request<T>({
   method,
   path,
@@ -101,33 +78,17 @@ export async function request<T>({
 }: RequestOptions): Promise<SuccessResponse<T>> {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get(COOKIE_NAME.accessToken)?.value;
-  const refreshToken = cookieStore.get(COOKIE_NAME.refreshToken)?.value;
   const url = `${ENV.NEXT_PUBLIC_API_URL}${path}`;
 
   if (!auth) {
     return apiFetch<T>(url, method, undefined, body);
   }
 
-  if (!accessToken && !refreshToken) {
+  if (!accessToken || (await isTokenExpired(accessToken))) {
     redirect(PATHS.login);
   }
 
-  let token = accessToken;
-
-  if (!accessToken || (await isTokenExpired(accessToken))) {
-    if (!refreshToken) {
-      redirect(PATHS.login);
-    }
-
-    try {
-      const { accessToken } = await refresh(refreshToken);
-      token = accessToken;
-    } catch {
-      redirect(PATHS.login);
-    }
-  }
-
-  return apiFetch<T>(url, method, token, body);
+  return apiFetch<T>(url, method, accessToken, body);
 }
 
 export async function download({
@@ -138,23 +99,15 @@ export async function download({
 }: RequestOptions): Promise<{ data: string; contentType: string; filename: string }> {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get(COOKIE_NAME.accessToken)?.value;
-  const refreshToken = cookieStore.get(COOKIE_NAME.refreshToken)?.value;
   const url = `${ENV.NEXT_PUBLIC_API_URL}${path}`;
 
-  let token = accessToken;
-
   if (auth && (!accessToken || (await isTokenExpired(accessToken)))) {
-    if (refreshToken) {
-      try {
-        const { accessToken: newAccessToken } = await refresh(refreshToken);
-        token = newAccessToken;
-      } catch {}
-    }
+    redirect(PATHS.login);
   }
 
   const headers: HeadersInit = {};
-  if (auth && token) {
-    headers.Authorization = `Bearer ${token}`;
+  if (auth && accessToken) {
+    headers.Authorization = `Bearer ${accessToken}`;
   }
 
   headers['Content-Type'] = 'application/json';
