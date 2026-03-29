@@ -1,4 +1,4 @@
-import { IconMapPinFilled } from '@tabler/icons-react';
+import { IconServer } from '@tabler/icons-react';
 import React from 'react';
 import { useRoomStore } from './_store/room.store';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
@@ -23,7 +23,13 @@ const GhostMarker = () => {
       <TooltipProvider>
         <TooltipPrimitive.Root open={true}>
           <TooltipPrimitive.Trigger asChild>
-            <IconMapPinFilled className="size-8 text-blue-500 opacity-70" />
+            <div className="flex flex-col items-center opacity-70">
+              <div className="rounded-lg bg-green-400 p-1.5 shadow-[0_0_10px_2px_rgba(74,222,128,0.7)]">
+                <IconServer className="size-5 text-white" />
+              </div>
+              <div className="h-3 w-0.5 bg-green-400" />
+              <div className="size-1.5 rounded-full bg-green-400" />
+            </div>
           </TooltipPrimitive.Trigger>
 
           {/* 
