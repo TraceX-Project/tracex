@@ -74,7 +74,7 @@ const CreateRoomModal = ({ floorId }: Props) => {
             {/* Name */}
             <form.AppField
               name="name"
-              children={(field) => <field.TextField label="Name" placeholder="Enter floor name" />}
+              children={(field) => <field.TextField label="Name" placeholder="Enter room name" />}
             />
           </div>
           <DialogFooter>

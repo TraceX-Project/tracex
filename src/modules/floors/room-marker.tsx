@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { type Room } from '../rooms/_types/room';
-import { IconEdit, IconMapPinFilled, IconMapSearch, IconTrash } from '@tabler/icons-react';
+import { IconEdit, IconMapSearch, IconServer, IconTrash } from '@tabler/icons-react';
 import {
   ContextMenu,
   ContextMenuContent,
@@ -96,10 +96,16 @@ const RoomMarker = ({ room }: Props) => {
           <ContextMenuTrigger>
             <Tooltip>
               <TooltipTrigger asChild>
-                <IconMapPinFilled className="size-7 text-blue-500 transition-colors hover:text-blue-600" />
+                <div className="flex flex-col items-center">
+                  <div className="rounded-lg bg-green-400 p-1.5 shadow-[0_0_10px_2px_rgba(74,222,128,0.7)] transition-all hover:bg-green-300 hover:shadow-[0_0_16px_4px_rgba(74,222,128,0.9)]">
+                    <IconServer className="size-5 text-white" />
+                  </div>
+                  <div className="h-3 w-0.5 bg-green-400" />
+                  <div className="size-1.5 rounded-full bg-green-400" />
+                </div>
               </TooltipTrigger>
               <TooltipContent side="bottom" sideOffset={-6}>
-                <p>{room.name}</p>
+                <p>{room.name} test</p>
               </TooltipContent>
             </Tooltip>
           </ContextMenuTrigger>
