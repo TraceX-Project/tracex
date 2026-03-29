@@ -225,7 +225,7 @@ const LogicalView = ({ projectId }: Props) => {
       </ReactFlow>
 
       <div className="absolute top-4 right-4 z-10">
-        <Button size="sm" variant="outline" onClick={handleAutoLayout}>
+        <Button id="auto-layout-btn" size="sm" variant="outline" onClick={handleAutoLayout}>
           <LayoutDashboard />
           Auto Layout
         </Button>

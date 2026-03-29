@@ -74,6 +74,11 @@ export const captureAndSaveThumbnail = async (projectId: string) => {
       if (attribution) {
         (attribution as HTMLElement).style.display = 'none';
       }
+
+      const autoLayoutButton = document.getElementById('auto-layout-btn');
+      if (autoLayoutButton) {
+        autoLayoutButton.style.display = 'none';
+      }
     });
 
     const element = await page.$('#project-main-content');
