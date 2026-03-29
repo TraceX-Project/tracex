@@ -15,6 +15,7 @@ export const DeviceFrontPanel = ({ src, alt }: Props) => {
           src={src}
           alt={alt}
           fill
+          unoptimized
           className="object-contain drop-shadow-md transition-transform duration-500 group-hover:scale-105"
         />
       </div>

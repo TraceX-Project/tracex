@@ -90,6 +90,7 @@ const ProjectItem = ({ project }: ProjectItemProps) => {
             width={400}
             height={250}
             className="h-48 w-full object-contain p-2 border-b"
+            unoptimized
           />
         ) : (
           <ProjectThumbnailPlaceholder className="h-48 w-full border-b" />
