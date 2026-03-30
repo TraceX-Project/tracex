@@ -3,7 +3,7 @@ name: CE-cloud prod
 on:
   push:
     branches:
-      - main
+      - develop
 
 jobs:
   deploy:

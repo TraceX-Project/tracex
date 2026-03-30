@@ -4,6 +4,11 @@ const nextConfig: NextConfig = {
   /* config options here */
   output: 'standalone',
   reactStrictMode: false,
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
+  },
   transpilePackages: ['@t3-oss/env-nextjs', '@t3-oss/env-core'],
   async redirects() {
     return [
