@@ -25,8 +25,8 @@ export const deviceTemplateSchema = z
     frontPanel: z
       .instanceof(File, { message: 'Front panel must be a valid file' })
       .refine((file) => !!file, { message: 'Front panel image is required' })
-      .refine((file) => file.size <= 2 * 1024 * 1024, {
-        message: 'File size must be less than 2MB',
+      .refine((file) => file.size <= 10 * 1024 * 1024, {
+        message: 'File size must be less than 10MB',
       })
       .refine((file) => ['image/jpeg', 'image/png'].includes(file.type), {
         message: 'Only JPEG and PNG files are accepted',
