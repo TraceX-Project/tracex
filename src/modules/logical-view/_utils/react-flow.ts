@@ -1,3 +1,4 @@
+import { MarkerType } from '@xyflow/react';
 import { type Topology, type Node, type Edge } from '../_types/logical-view';
 
 const EDGE_COLORS = [
@@ -35,7 +36,7 @@ export const mapDevicesToReactFlow = (devices: Topology) => {
       type: 'smoothstep',
       animated: true,
       style: { stroke: color, strokeWidth: 2 },
-      markerEnd: { type: 'arrowclosed' as const, color },
+      markerEnd: { type: MarkerType.ArrowClosed, color },
     };
   });
 
