@@ -81,13 +81,26 @@ const LogicalView = ({ projectId }: Props) => {
     }
   }, [deleteLogicalDevice, selectedDeviceId, projectId, setDeleteDialogOpen, updateThumbnail]);
 
+  const prevNodeCountRef = useRef<number | undefined>(undefined);
+
   useEffect(() => {
-    // Delay slightly to ensure CytoscapeCanvas has finished adding the new node asynchronously
-    const timer = setTimeout(() => {
-      handleAutoLayout();
-    }, 200);
-    return () => clearTimeout(timer);
-  }, [topology.nodes.length, handleAutoLayout]);
+    const currentLength = topology.nodes.length;
+
+    // Trigger auto-layout only if nodes were added (current length > previous length)
+    // and skip the initial load (prevNodeCount is undefined until first real data fetch)
+    if (prevNodeCountRef.current !== undefined && currentLength > prevNodeCountRef.current) {
+      const timer = setTimeout(() => {
+        handleAutoLayout();
+      }, 200);
+      prevNodeCountRef.current = currentLength;
+      return () => clearTimeout(timer);
+    }
+
+    // Only set the previous count after the initial fetch resolves
+    if (devices !== undefined) {
+      prevNodeCountRef.current = currentLength;
+    }
+  }, [topology.nodes.length, devices, handleAutoLayout]);
 
   return (
     <div className="relative h-full w-full" onClick={onPaneClick}>

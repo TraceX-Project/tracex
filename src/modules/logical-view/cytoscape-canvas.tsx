@@ -227,7 +227,7 @@ const CytoscapeCanvas = forwardRef<CytoscapeCanvasRef, Props>(
             {
               selector: 'edge',
               style: {
-                width: 10,
+                width: 5,
                 'line-color': '#334155',
                 'line-style': 'solid',
                 'target-arrow-shape': 'none',
