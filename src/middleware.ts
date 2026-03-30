@@ -112,7 +112,7 @@ export default async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL(PATHS.projects.root, request.url));
     }
 
-    return response.json() as Promise<{ accessToken: string; refreshToken: string }>;
+    return response;
   }
 
   if (pathname === PATHS.login) {

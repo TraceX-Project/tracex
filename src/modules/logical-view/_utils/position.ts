@@ -1,86 +1,124 @@
 import { DEFAULT_NODE_HEIGHT, DEFAULT_NODE_WIDTH } from '../_constants/logical-view';
-import dagre from '@dagrejs/dagre';
 
 const TIER: Record<string, number> = {
-  router:          0,
-  switch:          1,
-  switch_stack:    1,
-  server:          2,
-  virtual_switch:  3,
+  router: 0,
+  switch: 1,
+  switch_stack: 1,
+  server: 2,
+  virtual_switch: 3,
   virtual_machine: 4,
 };
 
-const getTier = (type: string): number => TIER[type] ?? 2;
+const X_GAP = 80;
+const Y_GAP = 120;
+
+const getTier = (type?: string): number => TIER[type ?? ''] ?? 2;
 
 export const getLayoutedPositions = (
   nodes: { id: string; type?: string }[],
   edges: { source: string; target: string }[]
 ): Map<string, { x: number; y: number }> => {
-  const g = new dagre.graphlib.Graph();
-  g.setGraph({
-    rankdir: 'LR',
-    nodesep: 60,
-    ranksep: 80,
-    ranker: 'network-simplex',
-  });
-  g.setDefaultEdgeLabel(() => ({}));
+  if (!nodes?.length) return new Map();
 
-  const nodeTypeMap = new Map(nodes.map((n) => [n.id, n.type ?? '']));
-  const connectedIds = new Set(edges.flatMap((e) => [e.source, e.target]));
-  const isolatedNodes = nodes.filter((n) => !connectedIds.has(n.id));
+  const typeMap = new Map(nodes.map((n) => [n.id, n.type ?? '']));
 
-  nodes.forEach((node) => {
-    if (connectedIds.has(node.id)) {
-      g.setNode(node.id, { width: DEFAULT_NODE_WIDTH, height: DEFAULT_NODE_HEIGHT });
+  // Build cross-tier child map (higher tier → lower tier only)
+  const childrenMap = new Map<string, string[]>(nodes.map((n) => [n.id, []]));
+  const hasParent = new Set<string>();
+
+  edges.forEach((e) => {
+    const st = getTier(typeMap.get(e.source));
+    const tt = getTier(typeMap.get(e.target));
+    if (st < tt) {
+      childrenMap.get(e.source)!.push(e.target);
+      hasParent.add(e.target);
+    } else if (tt < st) {
+      childrenMap.get(e.target)!.push(e.source);
+      hasParent.add(e.source);
     }
+    // same-tier (peer) edges: skip — they don't affect placement
   });
 
-  edges.forEach((edge) => {
-    const s = getTier(nodeTypeMap.get(edge.source) ?? '');
-    const t = getTier(nodeTypeMap.get(edge.target) ?? '');
+  // Compute minimum subtree width needed for each node (Reingold-Tilford)
+  const widthCache = new Map<string, number>();
+  const computing = new Set<string>();
 
-    // Same tier = peer connection — skip to avoid same-rank edge routing crash in dagre
-    if (s === t) return;
+  const subtreeWidth = (id: string): number => {
+    if (widthCache.has(id)) return widthCache.get(id)!;
+    if (computing.has(id)) return DEFAULT_NODE_WIDTH; // cycle guard
+    computing.add(id);
 
-    // Always feed dagre edges that flow top → bottom regardless of raw data direction
-    g.setEdge(s < t ? edge.source : edge.target, s < t ? edge.target : edge.source);
-  });
+    const children = childrenMap.get(id) ?? [];
+    let w = DEFAULT_NODE_WIDTH;
+    if (children.length) {
+      const childrenTotalW =
+        children.reduce((sum, cid) => sum + subtreeWidth(cid), 0) +
+        (children.length - 1) * X_GAP;
+      w = Math.max(w, childrenTotalW);
+    }
 
-  dagre.layout(g);
+    computing.delete(id);
+    widthCache.set(id, w);
+    return w;
+  };
+
+  nodes.forEach((n) => subtreeWidth(n.id));
 
   const positions = new Map<string, { x: number; y: number }>();
-  let graphRight = -Infinity;
-  let graphTop = Infinity;
+  const placed = new Set<string>();
 
-  g.nodes().forEach((nodeId) => {
-    const node = g.node(nodeId);
-    const x = node.x - DEFAULT_NODE_WIDTH / 2;
-    const y = node.y - DEFAULT_NODE_HEIGHT / 2;
-    positions.set(nodeId, { x, y });
-    graphRight = Math.max(graphRight, x + DEFAULT_NODE_WIDTH);
-    graphTop   = Math.min(graphTop, y);
-  });
+  const place = (id: string, centerX: number, y: number) => {
+    if (placed.has(id)) return;
+    placed.add(id);
+    positions.set(id, { x: centerX - DEFAULT_NODE_WIDTH / 2, y });
 
-  // Place isolated nodes to the right — in TB layout this zone is guaranteed edge-free
-  const PADDING = 60;
-  const STEP_X  = DEFAULT_NODE_WIDTH  + PADDING;
-  const STEP_Y  = DEFAULT_NODE_HEIGHT + PADDING;
-  const colCount = Math.max(1, Math.ceil(Math.sqrt(isolatedNodes.length)));
-  const originX  = (positions.size > 0 ? graphRight : 0) + PADDING;
-  const originY  = graphTop === Infinity ? 0 : graphTop;
+    const children = childrenMap.get(id) ?? [];
+    if (!children.length) return;
 
-  isolatedNodes.forEach((node, i) => {
-    positions.set(node.id, {
-      x: originX + (i % colCount) * STEP_X,
-      y: originY + Math.floor(i / colCount) * STEP_Y,
+    const childY = y + DEFAULT_NODE_HEIGHT + Y_GAP;
+    const totalW =
+      children.reduce((sum, cid) => sum + subtreeWidth(cid), 0) +
+      (children.length - 1) * X_GAP;
+
+    let cx = centerX - totalW / 2;
+    children.forEach((cid) => {
+      const cw = subtreeWidth(cid);
+      place(cid, cx + cw / 2, childY);
+      cx += cw + X_GAP;
     });
+  };
+
+  // Place roots (nodes with no cross-tier parent) across the top row
+  const roots = nodes.filter((n) => !hasParent.has(n.id));
+  const totalRootW =
+    roots.reduce((sum, r) => sum + subtreeWidth(r.id), 0) +
+    (roots.length - 1) * X_GAP;
+
+  let rootCX = -totalRootW / 2;
+  roots.forEach((r) => {
+    const rw = subtreeWidth(r.id);
+    place(r.id, rootCX + rw / 2, 0);
+    rootCX += rw + X_GAP;
   });
+
+  // Nodes unreachable from roots (isolated / in cycles) — place in a row below
+  const unplaced = nodes.filter((n) => !placed.has(n.id));
+  if (unplaced.length) {
+    const maxY = Math.max(...[...positions.values()].map((p) => p.y), 0);
+    const startX =
+      -(unplaced.length * (DEFAULT_NODE_WIDTH + X_GAP) - X_GAP) / 2;
+    unplaced.forEach((n, i) => {
+      positions.set(n.id, {
+        x: startX + i * (DEFAULT_NODE_WIDTH + X_GAP),
+        y: maxY + DEFAULT_NODE_HEIGHT + Y_GAP,
+      });
+    });
+  }
 
   return positions;
 };
 
-// Given two node positions (top-left corner), return which handles to use
-// so the edge exits/enters from the most natural side.
+// Return which handles give the most natural edge routing between two nodes
 export const getEdgeHandles = (
   source: { x: number; y: number },
   target: { x: number; y: number }
@@ -92,9 +130,8 @@ export const getEdgeHandles = (
     return dy > 0
       ? { sourceHandle: 'bottom', targetHandle: 'top' }
       : { sourceHandle: 'top', targetHandle: 'bottom' };
-  } else {
-    return dx > 0
-      ? { sourceHandle: 'right', targetHandle: 'left' }
-      : { sourceHandle: 'left', targetHandle: 'right' };
   }
+  return dx > 0
+    ? { sourceHandle: 'right', targetHandle: 'left' }
+    : { sourceHandle: 'left', targetHandle: 'right' };
 };
