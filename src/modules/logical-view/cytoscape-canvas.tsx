@@ -5,25 +5,87 @@ import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 
 import { type Topology, type NodeContextMenuState } from './_types/logical-view';
 import { DeviceType } from '../admin/device-templates/_types/device-template';
 
-
-const NODE_ICON: Partial<Record<string, string>> = {
-  [DeviceType.ROUTER]:         '/assets/icons/router.svg',
-  [DeviceType.SWITCH]:         '/assets/icons/switch.svg',
-  [DeviceType.SWITCH_STACK]:   '/assets/icons/switch.svg',
-  [DeviceType.SERVER]:         '/assets/icons/server.svg',
-  [DeviceType.VIRTUAL_MACHINE]:'/assets/icons/vm.svg',
-  [DeviceType.VIRTUAL_SWITCH]: '/assets/icons/switch.svg',
+// Icon SVG file path per device type
+const NODE_ICON_PATH: Partial<Record<string, string>> = {
+  [DeviceType.ROUTER]:          '/assets/icons/router.svg',
+  [DeviceType.SWITCH]:          '/assets/icons/switch.svg',
+  [DeviceType.SWITCH_STACK]:    '/assets/icons/switch.svg',
+  [DeviceType.SERVER]:          '/assets/icons/server.svg',
+  [DeviceType.VIRTUAL_MACHINE]: '/assets/icons/vm.svg',
+  [DeviceType.VIRTUAL_SWITCH]:  '/assets/icons/switch.svg',
 };
 
-// Node background color per device type
+// Node background color per device type (all white as requested)
 const NODE_BG: Partial<Record<string, string>> = {
-  [DeviceType.ROUTER]:          '#0c1a2e',
-  [DeviceType.SWITCH]:          '#0f172a',
-  [DeviceType.SWITCH_STACK]:    '#0f172a',
-  [DeviceType.SERVER]:          '#0c2010',
-  [DeviceType.VIRTUAL_MACHINE]: '#1a0c2e',
-  [DeviceType.VIRTUAL_SWITCH]:  '#0f172a',
+  [DeviceType.ROUTER]:          '#ffffff',
+  [DeviceType.SWITCH]:          '#ffffff',
+  [DeviceType.SWITCH_STACK]:    '#ffffff',
+  [DeviceType.SERVER]:          '#ffffff',
+  [DeviceType.VIRTUAL_MACHINE]: '#ffffff',
+  [DeviceType.VIRTUAL_SWITCH]:  '#ffffff',
 };
+
+// --- Inline SVG rendering for centered icons ---
+const NODE_SIZE = 56;
+const ICON_PADDING = 10; // padding around the icon inside the node
+
+const svgCache = new Map<string, string>();
+
+/**
+ * Render an inline SVG with the icon centered inside a background rectangle.
+ * Returns a base64 data URI.
+ */
+async function renderNodeSvg(
+  iconPath: string,
+  bgColor: string
+): Promise<string> {
+  const cacheKey = `${iconPath}::${bgColor}`;
+  const cached = svgCache.get(cacheKey);
+  if (cached) return cached;
+
+  const res = await fetch(iconPath);
+  const raw = await res.text();
+
+  // Extract the inner SVG content and viewBox
+  const viewBoxMatch = raw.match(/viewBox="([^"]+)"/);
+  const viewBox = viewBoxMatch?.[1] ?? '0 0 32 32';
+
+  // Strip XML declaration and outer <svg> wrapper, keep inner content
+  const innerContent = raw
+    .replace(/<\?xml[^?]*\?>\s*/g, '')
+    .replace(/<svg[^>]*>/, '')
+    .replace(/<\/svg>\s*$/, '');
+
+  const p = ICON_PADDING;
+  const iconArea = NODE_SIZE - p * 2;
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${NODE_SIZE}" height="${NODE_SIZE}">
+    <rect x="0" y="0" width="${NODE_SIZE}" height="${NODE_SIZE}" rx="6" ry="6" fill="${bgColor}"/>
+    <svg x="${p}" y="${p}" width="${iconArea}" height="${iconArea}" viewBox="${viewBox}">
+      ${innerContent}
+    </svg>
+  </svg>`;
+
+  const dataUri = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
+  svgCache.set(cacheKey, dataUri);
+  return dataUri;
+}
+
+/**
+ * Pre-build SVG data URIs for all device types.
+ * Returns a map of deviceType → data URI.
+ */
+async function buildNodeIcons(): Promise<Map<string, string>> {
+  const entries = Object.entries(NODE_ICON_PATH) as [string, string][];
+  const map = new Map<string, string>();
+  await Promise.all(
+    entries.map(async ([type, path]) => {
+      const bg = NODE_BG[type] ?? '#0f172a';
+      map.set(type, await renderNodeSvg(path, bg));
+    })
+  );
+  return map;
+}
 
 type Props = {
   topology: Topology | undefined;
@@ -91,8 +153,14 @@ const CytoscapeCanvas = forwardRef<CytoscapeCanvasRef, Props>(
     useEffect(() => {
       if (!containerRef.current || initialized.current || !topology?.nodes?.length) return;
 
+      let cancelled = false;
+
+      (async () => {
+        const iconMap = await buildNodeIcons();
+        if (cancelled) return;
+
       const cy = cytoscape({
-        container: containerRef.current,
+        container: containerRef.current!,
         elements: {
           nodes: topology.nodes.map((n) => ({
             data: {
@@ -100,8 +168,7 @@ const CytoscapeCanvas = forwardRef<CytoscapeCanvasRef, Props>(
               label: n.name,
               type: n.type,
               inRack: n.inRack,
-              icon: NODE_ICON[n.type] ?? '/assets/icons/switch.svg',
-              bg: NODE_BG[n.type] ?? '#0f172a',
+              icon: iconMap.get(n.type) ?? '',
             },
             position: { x: n.position?.x ?? 0, y: n.position?.y ?? 0 },
           })),
@@ -120,20 +187,18 @@ const CytoscapeCanvas = forwardRef<CytoscapeCanvasRef, Props>(
               shape: 'rectangle',
               'background-opacity': 0,
               'background-image': 'data(icon)',
-              'background-fit': 'none',
-              'background-width': '80%',
-              'background-height': '80%',
-              'background-position-x': '10%',
-              'background-position-y': '10%',
+              'background-fit': 'cover',
+              'background-width': '100%',
+              'background-height': '100%',
               'border-width': 0,
-              width: 42,
-              height: 42,
+              width: 56,
+              height: 56,
               label: 'data(label)',
               color: '#94a3b8',
-              'font-size': 10,
+              'font-size': 12,
               'text-valign': 'bottom',
               'text-halign': 'center',
-              'text-margin-y': 5,
+              'text-margin-y': 6,
               'font-family': 'Inter, system-ui, sans-serif',
               'text-wrap': 'ellipsis',
               'text-max-width': '90px',
@@ -198,15 +263,15 @@ const CytoscapeCanvas = forwardRef<CytoscapeCanvasRef, Props>(
       });
 
       // Fixed pixel size — scale node inversely with zoom
-      const NODE_PX = 42;
-      const FONT_PX = 10;
+      const NODE_PX = 56;
+      const FONT_PX = 12;
       const applyFixedSize = () => {
         const z = cy.zoom();
         cy.nodes().style({
           width: NODE_PX / z,
           height: NODE_PX / z,
           'font-size': FONT_PX / z,
-          'text-margin-y': 5 / z,
+          'text-margin-y': 6 / z,
         });
       };
       applyFixedSize();
@@ -238,8 +303,11 @@ const CytoscapeCanvas = forwardRef<CytoscapeCanvasRef, Props>(
         cyRef.current = null;
         initialized.current = false;
       };
+      })(); // end async IIFE
+
+      return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [topology?.nodes?.length]);
+    }, [!!topology?.nodes?.length]);
 
     // Sync topology changes after initialization (add/remove nodes & edges)
     useEffect(() => {
@@ -249,23 +317,25 @@ const CytoscapeCanvas = forwardRef<CytoscapeCanvasRef, Props>(
       const existingNodeIds = new Set(cy.nodes().map((n) => n.id()));
       const incomingNodeIds = new Set(topology.nodes.map((n) => n.id));
 
-      // Add new nodes
-      topology.nodes.forEach((n) => {
-        if (!existingNodeIds.has(n.id)) {
-          cy.add({
-            group: 'nodes',
-            data: {
-              id: n.id,
-              label: n.name,
-              type: n.type,
-              inRack: n.inRack,
-              icon: NODE_ICON[n.type] ?? '/assets/icons/switch.svg',
-              bg: NODE_BG[n.type] ?? '#0f172a',
-            },
-            position: { x: 0, y: 0 },
-          });
-        }
-      });
+      // Add new nodes (async to build icons)
+      (async () => {
+        const iconMap = await buildNodeIcons();
+        topology.nodes.forEach((n) => {
+          if (!existingNodeIds.has(n.id)) {
+            cy.add({
+              group: 'nodes',
+              data: {
+                id: n.id,
+                label: n.name,
+                type: n.type,
+                inRack: n.inRack,
+                icon: iconMap.get(n.type) ?? '',
+              },
+              position: { x: 0, y: 0 },
+            });
+          }
+        });
+      })();
 
       // Remove deleted nodes
       cy.nodes().forEach((n) => {
