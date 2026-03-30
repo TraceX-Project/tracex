@@ -47,7 +47,7 @@ async function renderNodeSvg(
   const raw = await res.text();
 
   // Extract the inner SVG content and viewBox
-  const viewBoxMatch = raw.match(/viewBox="([^"]+)"/);
+  const viewBoxMatch = /viewBox="([^"]+)"/.exec(raw);
   const viewBox = viewBoxMatch?.[1] ?? '0 0 32 32';
 
   // Strip XML declaration and outer <svg> wrapper, keep inner content
