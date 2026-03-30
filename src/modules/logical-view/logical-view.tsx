@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useGetTopology } from './_hooks/use-get-topology';
 import { type NodeContextMenuState } from './_types/logical-view';
 import NodeContextMenu from './node-context-menu';
@@ -80,6 +80,14 @@ const LogicalView = ({ projectId }: Props) => {
       toast.error('Failed to delete node. Please try again.');
     }
   }, [deleteLogicalDevice, selectedDeviceId, projectId, setDeleteDialogOpen, updateThumbnail]);
+
+  useEffect(() => {
+    // Delay slightly to ensure CytoscapeCanvas has finished adding the new node asynchronously
+    const timer = setTimeout(() => {
+      handleAutoLayout();
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [topology.nodes.length, handleAutoLayout]);
 
   return (
     <div className="relative h-full w-full" onClick={onPaneClick}>
