@@ -111,7 +111,7 @@ const FileField = (props: FileFieldProps) => {
     onUpload,
     progresses,
     accept = { 'image/*': [] },
-    maxSize = 1024 * 1024 * 2,
+    maxSize = 1024 * 1024 * 10,
     maxFiles = 1,
     multiple = false,
     disabled = false,
@@ -152,8 +152,12 @@ const FileField = (props: FileFieldProps) => {
       field.setValue(multiple || maxFiles > 1 ? updatedFiles : updatedFiles[0]);
 
       if (rejectedFiles.length > 0) {
-        rejectedFiles.forEach(({ file }) => {
-          toast.error(`File ${file.name} was rejected`);
+        rejectedFiles.forEach(({ file, errors }) => {
+          const isTooLarge = errors.some((e) => e.code === 'file-too-large');
+          const message = isTooLarge
+            ? `File ${file.name} exceeds ${Math.round(maxSize / 1024 / 1024)}MB limit`
+            : `File ${file.name} was rejected`;
+          toast.error(message);
         });
       }
 
