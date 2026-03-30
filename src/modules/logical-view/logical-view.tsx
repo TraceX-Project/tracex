@@ -1,20 +1,6 @@
 'use client';
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import '@xyflow/react/dist/style.css';
-import {
-  ReactFlow,
-  Background,
-  BackgroundVariant,
-  Controls,
-  useNodesState,
-  useEdgesState,
-  type Node,
-  type Edge,
-} from '@xyflow/react';
-import { NODE_TYPES } from './_constants/logical-view';
-import { mapDevicesToReactFlow } from './_utils/react-flow';
-
 import { useGetTopology } from './_hooks/use-get-topology';
 import { type NodeContextMenuState } from './_types/logical-view';
 import NodeContextMenu from './node-context-menu';
@@ -26,98 +12,52 @@ import { useDeleteLogicalDevice } from './_hooks/use-delete-logical-device';
 import { useUpdateThumbnail } from '../projects/_hooks/use-update-thumbnail';
 import { useUpdateDevicePositions } from './_hooks/use-update-device-positions';
 import { useBoolean } from '@/shared/hooks/use-boolean';
-import { getEdgeHandles, getLayoutedPositions } from './_utils/position';
 import { Button } from '@/shared/components/ui/button';
 import { LayoutDashboard } from 'lucide-react';
+import CytoscapeCanvas, { type CytoscapeCanvasRef } from './cytoscape-canvas';
 
 type Props = {
   projectId: string;
 };
 
 const LogicalView = ({ projectId }: Props) => {
-  const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const { data: devices } = useGetTopology(projectId);
   const [menu, setMenu] = useState<NodeContextMenuState | null>(null);
   const { value: isDeleteDialogOpen, setValue: setDeleteDialogOpen } = useBoolean(false);
-  const { value: isDetailsValuesOpen, setValue: setDetailsValuesOpen } = useBoolean(false);
+  const { value: isDetailsOpen, setValue: setDetailsOpen } = useBoolean(false);
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
-  const ref = useRef<HTMLDivElement | null>(null);
   const { mutateAsync: deleteLogicalDevice } = useDeleteLogicalDevice(projectId);
   const { triggerUpdate: updateThumbnail } = useUpdateThumbnail();
   const { mutateAsync: updateDevicePositions } = useUpdateDevicePositions();
+  const canvasRef = useRef<CytoscapeCanvasRef>(null);
 
-  const { nodes: layoutedNodes, edges: layoutedEdges } = useMemo(() => {
-    return mapDevicesToReactFlow(devices!);
-  }, [devices]);
+  const topology = useMemo(() => devices ?? { nodes: [], edges: [] }, [devices]);
 
-  const isInitialized = useRef(false);
-
-  useEffect(() => {
-    if (!layoutedNodes || !layoutedEdges) return;
-
-    const layoutedPositions = getLayoutedPositions(layoutedNodes, layoutedEdges);
-
-    const applyHandles = (
-      edgeList: typeof layoutedEdges,
-      posMap: Map<string, { x: number; y: number }>
-    ) =>
-      edgeList.map((edge) => {
-        const src = posMap.get(edge.source);
-        const tgt = posMap.get(edge.target);
-        if (!src || !tgt) return edge;
-        return { ...edge, ...getEdgeHandles(src, tgt) };
-      });
-
-    if (!isInitialized.current) {
-      const connectedIds = new Set(layoutedEdges.flatMap((e) => [e.source, e.target]));
-      const finalNodes = layoutedNodes.map((node) => {
-        const isIsolated = !connectedIds.has(node.id);
-        const isDefault = node.position.x === 0 && node.position.y === 0;
-        // Isolated nodes always use the computed free-slot position to avoid edge overlap
-        return {
-          ...node,
-          position:
-            isIsolated || isDefault ? layoutedPositions.get(node.id)! : node.position,
-        };
-      });
-      const finalPosMap = new Map(finalNodes.map((n) => [n.id, n.position]));
-      setNodes(finalNodes);
-      setEdges(applyHandles(layoutedEdges, finalPosMap));
-      isInitialized.current = true;
-    } else {
-      // Preserve positions of existing nodes; auto-layout only new ones
-      setNodes((currentNodes) => {
-        const currentPositions = new Map(currentNodes.map((n) => [n.id, n.position]));
-        const nextNodes = layoutedNodes.map((node) => ({
-          ...node,
-          position:
-            currentPositions.get(node.id) ?? layoutedPositions.get(node.id) ?? node.position,
-        }));
-        const posMap = new Map(nextNodes.map((n) => [n.id, n.position]));
-        setEdges(applyHandles(layoutedEdges, posMap));
-        return nextNodes;
-      });
-    }
-  }, [layoutedNodes, layoutedEdges, setEdges, setNodes]);
-
-  const onNodeContextMenu = useCallback(
-    (event: React.MouseEvent, node: Node) => {
-      event.preventDefault();
-
-      if (!ref.current) return;
-
-      setMenu({
-        id: node.id,
-        x: event.clientX,
-        y: event.clientY,
-        type: node.type as DeviceType,
-      });
+  const handlePositionsChange = useCallback(
+    async (positions: { id: string; x: number; y: number }[]) => {
+      await updateDevicePositions({ positions });
+      updateThumbnail({ projectId });
     },
-    [setMenu]
+    [projectId, updateDevicePositions, updateThumbnail]
   );
 
-  const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
+  const handleNodeClick = useCallback((id: string) => {
+    setSelectedDeviceId(id);
+    setDetailsOpen(true);
+  }, [setDetailsOpen]);
+
+  const handleNodeContextMenu = useCallback((state: NodeContextMenuState) => {
+    setMenu(state);
+  }, []);
+
+  const handleAutoLayout = useCallback(async () => {
+    const positions = canvasRef.current?.runAutoLayout();
+    if (!positions?.length) return;
+    await updateDevicePositions({ positions });
+    updateThumbnail({ projectId });
+  }, [projectId, updateDevicePositions, updateThumbnail]);
+
+  const onPaneClick = useCallback(() => setMenu(null), []);
 
   const onOpenDeleteDialog = useCallback(() => {
     if (menu) {
@@ -127,106 +67,41 @@ const LogicalView = ({ projectId }: Props) => {
   }, [menu, setDeleteDialogOpen]);
 
   const onOpenEditDialog = useCallback(() => {
-    if (menu) {
-      setSelectedDeviceId(menu.id);
-    }
+    if (menu) setSelectedDeviceId(menu.id);
   }, [menu]);
-
-  const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
-    setSelectedDeviceId(node.id);
-    setDetailsValuesOpen(true);
-  }, [setDetailsValuesOpen]);
 
   const handleDeleteNode = useCallback(async () => {
     try {
       await deleteLogicalDevice(selectedDeviceId!);
       setDeleteDialogOpen(false);
       updateThumbnail({ projectId, forceImmediate: true });
-
       toast.success('Node deleted successfully.');
-    } catch (error) {
-      console.error(error);
+    } catch {
       toast.error('Failed to delete node. Please try again.');
     }
   }, [deleteLogicalDevice, selectedDeviceId, projectId, setDeleteDialogOpen, updateThumbnail]);
 
-  const handleAutoLayout = useCallback(async () => {
-    if (!layoutedNodes || !layoutedEdges) return;
-
-    const layoutedPositions = getLayoutedPositions(layoutedNodes, layoutedEdges);
-
-    const updatedNodes = nodes.map((node) => ({
-      ...node,
-      position: layoutedPositions.get(node.id) ?? node.position,
-    }));
-    const posMap = new Map(updatedNodes.map((n) => [n.id, n.position]));
-    const updatedEdges = layoutedEdges.map((edge) => {
-      const src = posMap.get(edge.source);
-      const tgt = posMap.get(edge.target);
-      if (!src || !tgt) return edge;
-      return { ...edge, ...getEdgeHandles(src, tgt) };
-    });
-
-    setNodes(updatedNodes);
-    setEdges(updatedEdges);
-
-    await updateDevicePositions({
-      positions: updatedNodes.map((n) => ({
-        id: n.id,
-        x: n.position.x,
-        y: n.position.y,
-      })),
-    });
-
-    updateThumbnail({ projectId });
-  }, [
-    layoutedNodes,
-    layoutedEdges,
-    nodes,
-    setNodes,
-    updateDevicePositions,
-    updateThumbnail,
-    projectId,
-  ]);
-
-  const onNodeDragStop = useCallback(
-    async (_e: React.MouseEvent, _node: Node) => {
-      await updateDevicePositions({
-        positions: nodes.map((n) => ({
-          id: n.id,
-          x: n.position.x,
-          y: n.position.y,
-        })),
-      });
-
-      updateThumbnail({ projectId });
-    },
-    [projectId, nodes, updateDevicePositions, updateThumbnail]
-  );
+  useEffect(() => {
+    // Delay slightly to ensure CytoscapeCanvas has finished adding the new node asynchronously
+    const timer = setTimeout(() => {
+      handleAutoLayout();
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [topology.nodes.length, handleAutoLayout]);
 
   return (
-    <div className="relative h-full w-full">
-      <ReactFlow
-        ref={ref}
-        nodes={nodes}
-        edges={edges}
-        nodeTypes={NODE_TYPES}
-        nodesConnectable={false}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onPaneClick={onPaneClick}
-        onNodeContextMenu={onNodeContextMenu}
-        onNodeClick={onNodeClick}
-        onNodeDragStop={onNodeDragStop}
-        fitView
-      >
-        <Background variant={BackgroundVariant.Dots} />
-        <Controls />
-      </ReactFlow>
+    <div className="relative h-full w-full" onClick={onPaneClick}>
+      <CytoscapeCanvas
+        ref={canvasRef}
+        topology={topology}
+        onNodeClick={handleNodeClick}
+        onNodeContextMenu={handleNodeContextMenu}
+        onPositionsChange={handlePositionsChange}
+      />
 
       <div className="absolute top-4 right-4 z-10">
-        <Button id="auto-layout-btn" size="sm" variant="outline" onClick={handleAutoLayout}>
-          <LayoutDashboard />
+        <Button size="sm" variant="outline" onClick={handleAutoLayout}>
+          <LayoutDashboard className="mr-1.5 h-4 w-4" />
           Auto Layout
         </Button>
       </div>
@@ -253,8 +128,8 @@ const LogicalView = ({ projectId }: Props) => {
 
       <NodeDetailsSheet
         deviceId={selectedDeviceId!}
-        open={isDetailsValuesOpen}
-        onOpenChange={setDetailsValuesOpen}
+        open={isDetailsOpen}
+        onOpenChange={setDetailsOpen}
       />
     </div>
   );
