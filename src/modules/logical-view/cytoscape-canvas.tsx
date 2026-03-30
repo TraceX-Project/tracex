@@ -26,7 +26,10 @@ const NODE_BG: Partial<Record<string, string>> = {
 };
 
 // --- Inline SVG rendering for centered icons ---
-const NODE_SIZE = 56;
+const NODE_SIZE = 56; // SVG resolution
+const NODE_PX = 42;   // Display size on canvas
+const FONT_PX = 12;
+
 const ICON_PADDING = 10; // padding around the icon inside the node
 
 const svgCache = new Map<string, string>();
@@ -195,17 +198,17 @@ const CytoscapeCanvas = forwardRef<CytoscapeCanvasRef, Props>(
                 'background-width': '100%',
                 'background-height': '100%',
                 'border-width': 0,
-                width: 56,
-                height: 56,
+                width: NODE_PX,
+                height: NODE_PX,
                 label: 'data(label)',
                 color: '#94a3b8',
-                'font-size': 12,
+                'font-size': FONT_PX,
                 'text-valign': 'bottom',
                 'text-halign': 'center',
                 'text-margin-y': 6,
                 'font-family': 'Inter, system-ui, sans-serif',
-                'text-wrap': 'ellipsis',
-                'text-max-width': '90px',
+                // 'text-wrap': 'ellipsis',
+                // 'text-max-width': '40px',
               },
             },
             {
@@ -224,7 +227,7 @@ const CytoscapeCanvas = forwardRef<CytoscapeCanvasRef, Props>(
             {
               selector: 'edge',
               style: {
-                width: 1.5,
+                width: 10,
                 'line-color': '#334155',
                 'line-style': 'solid',
                 'target-arrow-shape': 'none',
@@ -267,8 +270,6 @@ const CytoscapeCanvas = forwardRef<CytoscapeCanvasRef, Props>(
         });
 
         // Fixed pixel size — scale node inversely with zoom
-        const NODE_PX = 56;
-        const FONT_PX = 12;
         const applyFixedSize = () => {
           const z = cy.zoom();
           cy.nodes().style({
@@ -279,6 +280,7 @@ const CytoscapeCanvas = forwardRef<CytoscapeCanvasRef, Props>(
           });
         };
         applyFixedSize();
+        cy.on('zoom', applyFixedSize);
 
         // Drag stop → save positions (debounced)
         let dragTimer: ReturnType<typeof setTimeout> | null = null;
@@ -363,6 +365,15 @@ const CytoscapeCanvas = forwardRef<CytoscapeCanvasRef, Props>(
                 },
               });
             }
+          });
+
+          // Apply current zoom scaling to all nodes (fixes small new nodes)
+          const z = cy.zoom();
+          cy.nodes().style({
+            width: NODE_PX / z,
+            height: NODE_PX / z,
+            'font-size': FONT_PX / z,
+            'text-margin-y': 6 / z,
           });
         });
       })();
