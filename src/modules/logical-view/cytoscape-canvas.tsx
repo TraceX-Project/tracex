@@ -1,6 +1,6 @@
 'use client';
 
-import cytoscape, { type Core } from 'cytoscape';
+import cytoscape, { type Core, type NodeSingular } from 'cytoscape';
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import { type Topology, type NodeContextMenuState } from './_types/logical-view';
 import { DeviceType } from '../admin/device-templates/_types/device-template';
@@ -174,17 +174,19 @@ const CytoscapeCanvas = forwardRef<CytoscapeCanvasRef, Props>(
 
       // Tap = click on node
       cy.on('tap', 'node', (e) => {
-        onNodeClickRef.current(e.target.id());
+        const node = e.target as NodeSingular;
+        onNodeClickRef.current(node.id());
       });
 
       // Right-click context menu
       cy.on('cxttap', 'node', (e) => {
-        const native = e.originalEvent as MouseEvent;
+        const node = e.target as NodeSingular;
+        const native = e.originalEvent;
         onNodeContextMenuRef.current({
-          id: e.target.id(),
+          id: node.id(),
           x: native.clientX,
           y: native.clientY,
-          type: e.target.data('type') as DeviceType,
+          type: node.data('type') as DeviceType,
         });
       });
 
