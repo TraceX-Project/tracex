@@ -117,15 +117,17 @@ const CytoscapeCanvas = forwardRef<CytoscapeCanvasRef, Props>(
           {
             selector: 'node',
             style: {
+              shape: 'rectangle',
               'background-opacity': 0,
               'background-image': 'data(icon)',
-              'background-fit': 'contain',
-              'background-clip': 'none',
-              'background-width': '100%',
-              'background-height': '100%',
+              'background-fit': 'none',
+              'background-width': '80%',
+              'background-height': '80%',
+              'background-position-x': '10%',
+              'background-position-y': '10%',
               'border-width': 0,
-              width: 36,
-              height: 36,
+              width: 42,
+              height: 42,
               label: 'data(label)',
               color: '#94a3b8',
               'font-size': 10,
@@ -153,16 +155,21 @@ const CytoscapeCanvas = forwardRef<CytoscapeCanvasRef, Props>(
           {
             selector: 'edge',
             style: {
-              width: 1.8,
-              'line-color': '#475569',
+              width: 1.5,
+              'line-color': '#334155',
+              'line-style': 'solid',
               'target-arrow-shape': 'none',
               'curve-style': 'straight',
-              opacity: 0.7,
+              opacity: 0.6,
             },
           },
           {
             selector: 'edge:selected',
-            style: { width: 3, opacity: 1 },
+            style: {
+              width: 2.5,
+              'line-color': '#6366f1',
+              opacity: 1,
+            },
           },
         ],
         layout: { name: 'preset' },
@@ -189,6 +196,20 @@ const CytoscapeCanvas = forwardRef<CytoscapeCanvasRef, Props>(
           type: node.data('type') as DeviceType,
         });
       });
+
+      // Fixed pixel size — scale node inversely with zoom
+      const NODE_PX = 42;
+      const FONT_PX = 10;
+      const applyFixedSize = () => {
+        const z = cy.zoom();
+        cy.nodes().style({
+          width: NODE_PX / z,
+          height: NODE_PX / z,
+          'font-size': FONT_PX / z,
+          'text-margin-y': 5 / z,
+        });
+      };
+      applyFixedSize();
 
       // Drag stop → save positions (debounced)
       let dragTimer: ReturnType<typeof setTimeout> | null = null;
