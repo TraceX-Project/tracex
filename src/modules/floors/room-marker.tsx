@@ -105,7 +105,7 @@ const RoomMarker = ({ room }: Props) => {
                 </div>
               </TooltipTrigger>
               <TooltipContent side="bottom" sideOffset={-6}>
-                <p>{room.name} test</p>
+                <p>{room.name}</p>
               </TooltipContent>
             </Tooltip>
           </ContextMenuTrigger>
