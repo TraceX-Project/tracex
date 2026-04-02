@@ -1,29 +1,24 @@
 FROM node:22-alpine AS base
-
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-
 RUN corepack enable
-
 WORKDIR /usr/app
 
 FROM base AS deps
-
 COPY package.json pnpm-lock.yaml ./
-
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store pnpm install --frozen-lockfile
 
 FROM base AS builder
-
+ENV NEXT_TELEMETRY_DISABLED 1
 COPY --from=deps --chown=nextjs:nodejs /usr/app/node_modules ./node_modules
 COPY . .
-
 RUN pnpm run build
 
-FROM node:22-alpine AS runner
-
+FROM base AS runner
 WORKDIR /usr/app
-
+ENV NEXT_TELEMETRY_DISABLED 1
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 RUN apk add --no-cache \
   chromium \
   nss \
@@ -32,21 +27,14 @@ RUN apk add --no-cache \
   ca-certificates \
   ttf-freefont
 
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
-
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
 
-USER nextjs
-
-COPY --chown=nextjs:nodejs --from=builder /usr/app/node_modules ./node_modules
 COPY --chown=nextjs:nodejs --from=builder /usr/app/.next/standalone ./
 COPY --chown=nextjs:nodejs --from=builder /usr/app/.next/static ./.next/static
 COPY --chown=nextjs:nodejs --from=builder /usr/app/public ./public
 
+USER nextjs
 EXPOSE 3000
 
 CMD [ "node", "server.js" ]

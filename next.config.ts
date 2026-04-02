@@ -22,7 +22,11 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       // For Google profile images
-      new URL('https://lh3.googleusercontent.com/**'),
+      {
+	protocol: 'https',
+	hostname: '*.googleusercontent.com',
+	pathname: '/**',
+      },
 
       // For minio (local)
       {
@@ -33,7 +37,11 @@ const nextConfig: NextConfig = {
       },
 
       // For minio (production)
-      new URL('https://trx-minio.agogfox.cc/**'),
+      {
+	protocol: 'https',
+	hostname: 'tracex-minio.cloud.ce.kmitl.ac.th',
+	pathname: '/**',
+      },
     ],
   },
 };
